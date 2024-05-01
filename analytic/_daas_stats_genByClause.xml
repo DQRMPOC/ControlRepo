@@ -1,0 +1,73 @@
+<analytic>
+	<analytic>.daas.stats.genByClause</analytic>
+	<code_text>{[timeCol;symCol;timeRack;granularityUnit;args]
+  
+    //if it's tick level there is no by clause
+    if[`tick~granularityUnit;
+        :();
+        ];
+    
+    
+    //Otherwise it's timeRack and sym
+    byDict:.daas.util.genByDict[timeRack;timeCol;symCol];
+    
+    
+    //if it's no granularity, it's just by sym
+    if[`~granularityUnit;
+        byDict:enlist[symCol]!enlist symCol;
+        ];
+    
+    //if it is a classic analytic parameter, we structure by date to be reduced at gw
+    $[(`hdb=.daas.cfg.procType) and (null granularityUnit) and 11=abs type args[`analytics];
+        ((enlist`date)!enlist`date),byDict;
+        byDict
+        ]
+          
+    }</code_text>
+	<description>Applies column aggregations for correct table when aggregating by interval.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>timeCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>symCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>timeRack</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>granularityUnit</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasStats</analyticgroup>
+</analytic>

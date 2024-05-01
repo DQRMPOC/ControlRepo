@@ -1,0 +1,32 @@
+<analytic>
+	<analytic>daasQRChooseQPs</analytic>
+	<code_text>{[request]
+  // Choose gateway to service request
+  // Returns name of gateway
+ / gws:.qr.user.getGatewayLoads[];
+/  :exec first process from gws where workload=min workload
+
+
+
+
+exec first process from .qr.user.getGatewayLoads[] where process in(exec procName from .daas.routingQPs where QR=.ex.getInstanceName[],procUp),workload=min workload
+ }</code_text>
+	<description>Sample analytic for QR instance hook mapping routed requests to databases</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype>Symbol[]</returntype>
+	<returndata>ds_rdb_fx,ds_hdb_fx</returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription>List of targets for request</returndescription>
+	<param>
+		<parameter>request</parameter>
+		<default></default>
+		<description>Name of analytic</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxQR</analyticgroup>
+</analytic>

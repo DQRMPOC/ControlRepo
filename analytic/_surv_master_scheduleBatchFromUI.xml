@@ -1,0 +1,77 @@
+<analytic>
+	<analytic>.surv.master.scheduleBatchFromUI</analytic>
+	<code_text>{[batchConfig;batchJobs;dt;reuseBenchmarks;batchName;assetClass;scheduleTime;repeatFrequency]
+
+    wfName:.surv.assetPrefixes[assetClass];
+	.surv.master.runBatchOnClone (`batchConfig`batchJobs`dt`reuseBenchmarks`batchName`instanceType`assetClass`wfName`schedTime`repeatFreq)!(batchConfig;batchJobs;dt;reuseBenchmarks;batchName;`replay;assetClass;wfName;scheduleTime;repeatFrequency);
+
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>batchConfig</parameter>
+		<default>SURV_ALERT_BATCH</default>
+		<description>job details for batch</description>
+		<required>1</required>
+		<datatype>Config</datatype>
+	</param>
+	<param>
+		<parameter>batchJobs</parameter>
+		<default>SURV_BATCH_JOBS:REPLAY_DEFAULT</default>
+		<description>jobs in batch</description>
+		<required>1</required>
+		<datatype>Config</datatype>
+	</param>
+	<param>
+		<parameter>dt</parameter>
+		<default>2000.01.01</default>
+		<description>date of data to analyse</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>reuseBenchmarks</parameter>
+		<default>false</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<param>
+		<parameter>batchName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>assetClass</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>scheduleTime</parameter>
+		<default>2020.06.04D21:37:31.836000000</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Timestamp</datatype>
+	</param>
+	<param>
+		<parameter>repeatFrequency</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Timespan</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatchUI</analyticgroup>
+</analytic>

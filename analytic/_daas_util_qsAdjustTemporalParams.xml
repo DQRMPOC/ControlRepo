@@ -1,0 +1,45 @@
+<analytic>
+	<analytic>.daas.util.qsAdjustTemporalParams</analytic>
+	<code_text>{[params]
+params[`rackStart]:params`startTime;
+params[`rackEnd]:params`endTime;
+
+//procName:`$1#3_"_" vs string .ex.getInstanceName[]; 
+//this should not be done like this, how else identify process type?
+//using .daas.cfg.procType instead of procName
+
+processBoundaryDict:`hdb`rdb!((&lt;;params`time;.z.D+00:00:00.000);(&gt;;params`time;.z.D+00:00:00.000));
+
+params[`temporalWhereClause]:$[count params[`temporalWhereClause];
+    params[`temporalWhereClause],enlist processBoundaryDict[.daas.cfg.procType];
+    enlist processBoundaryDict[.daas.cfg.procType]];
+params[`rackTemporalWhereClause]:params[`temporalWhereClause];
+params
+ }</code_text>
+	<description>changes the table name into the name defined for the asset class, eg trade to eqTrade for equities</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

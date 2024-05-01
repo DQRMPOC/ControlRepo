@@ -1,0 +1,183 @@
+<analytic>
+	<analytic>.daas.trth.requestAction</analytic>
+	<code_text>{[reportData;dictn;reportStats]
+
+.log.out[.z.h;"Entered .daas.trth.requestAction";()];
+
+
+/check file name contains no underscores
+reportStats[`rptSchNameOrig]: `$ssr[string reportStats[`rptSchNameOrig];"_";"."];
+if[(string reportStats[`rptSchNameOrig])like("*_*");
+	.daas.trth.requestFailed[reportStats;"Invalid Request Instance Name: Cannot contain underscores '_' "];
+	];
+
+/ put the request into a pending state: The .rpt.sentDocs table will be used (piggybacked) and upserted with the report/request details - the dxReportSaveToPDF name needs changed to the aname of the trth action that called this!
+`.rpt.sentDocs upsert (first exec ID from .rpt.docGen;first exec handle from .rpt.docGen;.z.P;reportStats[`rptSchNameOrig];reportStats`rptID;`.daas.trth.requestAction;`;`;`);
+
+valid:.daas.trth.validateRequest[dictn;reportStats];
+dictn:valid 1;
+requestSym:valid 0;
+
+
+//checking if we need to run multiple or single report
+requestSym:r:$[(`$dictn`requestType) in `HistoricalReference`TermsAndConditions`TickHistoryTimeAndSales;
+	.daas.trth.requestMultiAction[requestSym;dictn[`startDateTime];dictn[`endDateTime]];
+    
+    (`$dictn`requestType) in `TickHistoryRaw`TickHistoryMarketDepth;
+    
+        .daas.trth.rawRequestSplit[requestSym;dictn[`startDateTime];dictn[`endDateTime]];
+       
+        enlist requestSym
+	];
+
+
+
+/if we have got to this point, the job is accepted
+/upsert it into a table, with each sub job
+/can only have 50 at a time up in trth land
+/get the PD to publish when one has been downloaded to request the next.	
+	
+`.daas.trth.javaQueue upsert {(.z.p;`$string[x`rptID],"_",string[x`reportName];`$(";" vs string[y])8;0Np;y;x)}[reportStats;] each requestSym;
+
+/ones that have a non null java time are currently in progress, so we need to await processing daemon to clear them.
+/we can have up to 50 with a javaTime.
+
+if[rcount:reqNum:50-exec count i from .daas.trth.javaQueue where not null javaTime;
+	ready:select from .daas.trth.javaQueue where null javaTime;
+	requestSyms:exec requestSym from (min(reqNum;count ready))#ready;
+	];
+    
+if[not rcount;
+    .log.warn[.z.h;"the queue .daas.trth.javaQueue is full. Not running report until jobs finished - ";-3!exec distinct id from .daas.trth.javaQueue where not null javaTime];
+    ];
+
+//send off request
+.daas.trth.javaRequest[requestSyms;reportStats];
+
+//If it's not tick history, we can flush the javaQueue and exit
+if[not (`$dictn`requestType) in `TickHistoryRaw`TickHistoryMarketDepth;
+   delete from `.daas.trth.javaQueue where requestSym in r;
+   :(`;`a`b!1 2);
+   ];
+    
+//drop a config with overall details of req - used in processing, removes need to communicate with report gen
+.[{x 0: csv 0: y};((`$":",getenv[`REPORTSETTINGS_CONFIG_DROP],"/",("_" sv string reportStats[`rptID`rptSchNameOrig]),".csv");enlist dictn);{.log.out[.z.h;"could not drop report settings config ";x]}];
+
+:(`;`a`b!1 2);
+}</code_text>
+	<description>Information on the allowed parameters:
+
+requestType: TickHistoryRaw | TickHistoryMarketDepth | Composite | CorporateActionsStandard
+
+startDateTime: Format is year-month-dateThour:min:sec.millisec e.g. 2017-10-11T17:30:00.000 or kdb format of .z.D-N, e.g for yesterday use .z.D-1
+
+endDateTime: Format is year-month-dateThour:min:sec.millisec e.g 2017-10-11T17:30:00.000 or kdb format of .z.D-N, e.g for yesterday use .z.D-1
+
+ricType: allRics | eq | fi | fut | idx | fx | eqL2 | futL2 | lisOpt | ricChain (N.B input is not overwritten by manualRicInput or csvUpload)
+
+manualRicInput: Format is kdb symbol list, e.g. `VOD.L`IBM.N
+
+csvUpload: Specify a csv filename uploaded using the Client Upload dashboard, Tick History Directory. Format is a single column of RIC's with the header name sym.
+
+applyValidation: true | false (Note: This means the system will try to determine the asset class. The default is false)
+
+assetClass: EQUITY | FUTURE | FOREX | FIXED | INDEX | MNYM | LISOPT (Note: Use when applyValidation is false. The input must be capitalised)
+
+marketView: L1 | mbpL2 | legacyL2 (Note: The default is L1)</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>requestType</name>
+				<datatype>String</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>startDateTime</name>
+				<datatype>String</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>endDateTime</name>
+				<datatype>String</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>ricType</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>manualRicInput</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>csvUpload</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>applyValidation</name>
+				<datatype>Boolean</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>assetClass</name>
+				<datatype>String</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>marketView</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>0</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

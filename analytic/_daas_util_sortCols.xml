@@ -1,0 +1,36 @@
+<analytic>
+	<analytic>.daas.util.sortCols</analytic>
+	<code_text>{[tbl;params]
+        if[not `sortCols in key params;
+	        :tbl;
+	    ];
+
+        orderFunc:(xasc;xdesc) `desc = first params`sortCols;
+        :orderFunc[last params`sortCols; tbl];
+}</code_text>
+	<description>sorts table on either asc/desc on chosen column</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tbl</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,36 @@
+<analytic>
+	<analytic>.daas.util.l2snapshot</analytic>
+	<code_text>{[params]
+
+time:params`endTime;
+symList:params`symList;
+nLevels:params`numLevels;
+tableName:.daas.util.applyAssetClassTableName[params]`dataType;
+
+if[1=count time;
+		time:enlist time;
+		];
+	//below line for not using the new intrasnap framework
+	/`time xcols raze (.daas.util.l2GenOrderBook[nLevels;;`time;symList;tableName] each time)[`newTab]
+	
+	`time xcols raze (.daas.util.l2GenOrderBookFromIntra[nLevels;;`time;symList;tableName;params] each time)`newTab
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

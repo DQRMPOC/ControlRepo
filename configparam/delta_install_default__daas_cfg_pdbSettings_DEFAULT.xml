@@ -1,0 +1,37 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.pdbSettings</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>writeFreqTimeMS</element>
+		<elementType>Long</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>writeFreqRowCount</element>
+		<elementType>Long</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>persistDir</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>hdbDir</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>symBackupDir</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+</configparam>

@@ -1,0 +1,81 @@
+<analytic>
+	<analytic>.daas.util.quoteStatsWriteDown</analytic>
+	<code_text>{[dt;args;region]
+    
+    assetClass:args`assetClass;
+    hdbParams:"_"vs .daas.cfg.hdbDir assetClass;
+    hdbParams[2]:upper string region;
+    hdbDir:string .utils.checkForEnvVar "_" sv hdbParams;
+    system"l ",hdbDir;
+
+    syms:value raze exec sym from ?[.daas.meta.getSchemaFromArgs[args;`quote;assetClass;`getStats];enlist(=;`date;dt);0b;(enlist `sym)!enlist (distinct;`sym)];
+
+    colClause:.daas.cfg.columnDefaults[`barQuote];
+
+    system "l ",hdbDir;
+
+    paramsDict:(!) . flip (
+        (`symList;          syms);
+        (`assetClass;       assetClass);
+        (`startDate;        dt);
+        (`endDate;          dt);
+        (`analytics;        colClause);
+        (`filterRule;       args`quoteFilter);
+        (`time;             args`timeCol);
+        (`granularityUnit;  `minute);
+        (`granularity;      1i);
+        (`dataType;         `quote)
+        );
+
+    MinStats:update `p#sym from `sym`time xasc 0!first getStats[paramsDict];
+    .daas.quoteMinStats:{[t]columns:exec c from meta[t] where t = "s";@[t;columns;value]}[MinStats];
+    `quoteMinStats upsert .daas.quoteMinStats;
+    .daas.util.statsUpsert[dt;`.daas.quoteMinStats;`minute;args];
+
+    system "l ",hdbDir;
+    colClause:a!.daas.cfg.writedownAggregationFunctions[]a:`time,.daas.cfg.columnDefaults[`barQuote];
+
+    // roll up the minute buckets and set the correct bucket start time
+    .daas.quoteDayStats:update `p#sym from `sym`time xasc 0!?[quoteMinStats;();(enlist `sym)!enlist `sym ;colClause];
+    .daas.quoteDayStats:update time:.daas.util.getDayBarStart[dt;args`timeCol] from .daas.quoteDayStats;
+
+    .daas.util.statsUpsert[dt;`.daas.quoteDayStats;`day;args];
+
+    .[`quoteMinStats;();:;.ds.schema[`quoteMinStats]];
+    .Q.gc[];
+    .log.out[.z.h;"Quote stats complete";.Q.w[]%1e9];
+    
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dt</parameter>
+		<default></default>
+		<description>symbol</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>region</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

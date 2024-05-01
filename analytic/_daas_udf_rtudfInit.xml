@@ -1,0 +1,48 @@
+<analytic>
+	<analytic>.daas.udf.rtudfInit</analytic>
+	<code_text>{[]
+    .init.terminateOnFail:0b;
+    .daas.cfg.procType:`udf;
+
+    /define init script
+    init:{
+    	//Load funcs
+    	.al.loadgroupfunctions`daasUtil;
+    	.al.loadgroupfunctions`daasUDF;
+    	.al.loadgroupfunctions`daasPython;    
+    	.al.loadinstruction`.daas.cfg.serverCfg;
+    
+    
+    	.daas.udf.setNodeEnvs[];
+    	.daas.udf.loadNodeUDF[];
+        if[count select from .daas.udf.udfFuncStore where funcLang=`python,funcName in .daas.udf.rtConfig`UDF;
+            .daas.python.initialiseMultiProcessing[];
+            ];
+    	.daas.udf.runUDFInits[];
+    	.daas.udf.nodeDataSub each( distinct raze raze .daas.udf.rtConfig`mappedTab`mappedTrig) except `;
+    	.daas.udf.nodeAPImap[];
+    	};
+    
+    //run the init with err trap for termination
+    @[init
+        ::;
+    	{.log.err[`initfunction;"Failed to initialise";x];
+    		if[.init.terminateOnFail;
+    			.log.err[`initfunction;"Terminating";::];
+    			exit 0;
+    			];
+    		}
+    	][]
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

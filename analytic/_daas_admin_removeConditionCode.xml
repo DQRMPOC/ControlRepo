@@ -1,0 +1,33 @@
+<analytic>
+	<analytic>.daas.admin.removeConditionCode</analytic>
+	<code_text>{[exchName;conditionCode]
+tab:.uc.getActiveParamValue[`.daas.cfg.filterRuleConfig;`];
+tab:delete from tab where exch = exchName, cond= conditionCode;
+.daas.admin.editFilterConfigParam[tab;`.daas.cfg.filterRuleConfig;`]
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>exchName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>conditionCode</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

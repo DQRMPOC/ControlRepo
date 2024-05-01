@@ -1,0 +1,15 @@
+<analyticgroup>
+	<name>daasStats</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.stats.genByClause</analytic>
+	<analytic>.daas.stats.genStatsBuckets</analytic>
+	<analytic>.daas.stats.genStatsColClause</analytic>
+	<analytic>.daas.stats.getUnderlyingStatsTab</analytic>
+	<analytic>.daas.stats.isBucketOverBoundary</analytic>
+	<analytic>.daas.stats.outboundAdjustments</analytic>
+	<analytic>.daas.stats.readPivotDataset</analytic>
+	<analytic>.daas.stats.readRdbHdbBoundarySpanData</analytic>
+	<analytic>.daas.stats.removeSpanBucket</analytic>
+	<analytic>.daas.stats.updateTimeBucket</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

@@ -1,0 +1,69 @@
+<analytic>
+	<analytic>.daas.events.adminResponse</analytic>
+	<code_text>{[data]
+    `.daas.events.adminRecords upsert data;
+    `.daas.events.eventRecords upsert data;
+    
+    
+    
+    // all of the below responses will ONLY run on a primary event bus! use this to only run a response once per system.
+    // if you want to run once per environment, put the response outside this block
+    // launch statsGen procs on master when eodLr is complete
+    if[.daas.events.isPrimaryBus[];
+        
+            if[(`eodLr=data`tag1) and (`complete=data`tag2);
+            info:data`info;
+            if[1b;
+                .daas.events.statsGenLaunch info];
+        ];
+            
+        
+        // launch hdbCopy processes on all slave envs when statsGen is complete
+        if[first value exec from .uc.getActiveParamValue[`.daas.cfg.autoHdbCopy;`DEFAULT];
+            if[(`statsGenComplete=data`tag1);
+                masterEnv:exec first env from .daas.cfg.masterSlaveInstances where isMaster;
+                slaveEnvs:(exec env from .daas.cfg.masterSlaveInstances) except masterEnv;
+                msgEnv:data[`info;`env];
+                $[masterEnv=msgEnv;
+                    [
+                        .daas.events.pubEventMessage[`trthEOD;`;`;`;1b];
+                        .daas.events.hdbCopyLaunch each @[data`info;`env;:;] each slaveEnvs;
+                        .daas.events.pubEventMessage[`hdbCopy;`start;`;`;] each @[(data`info),enlist[`sourceEnv]!enlist[masterEnv];`env;:;] each slaveEnvs;
+                    ];
+                    [
+                        .daas.events.pubEventMessage[`trthEOD;`;`;`;1b];
+                        .daas.events.pubEventMessage[`eodHdb;`complete;`;`;data;]
+                    ]
+                ];
+            ];
+        ];
+        if[(`fileUploadComplete=data`tag1);
+            masterEnv:exec first env from .daas.cfg.masterSlaveInstances where isMaster;
+            slaveEnvs:(exec env from .daas.cfg.masterSlaveInstances) except masterEnv;
+            msgEnv:data[`info;`env];
+            if[masterEnv=msgEnv;
+                .daas.events.secMasterCopyLaunch each @[data`info;`env;:;] each slaveEnvs;
+                ];
+            ];
+        
+        ];
+ }</code_text>
+	<description>triggered by a message to the event bus on the `adminInterface channel</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

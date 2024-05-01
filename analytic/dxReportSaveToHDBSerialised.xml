@@ -1,0 +1,81 @@
+<analytic>
+	<analytic>dxReportSaveToHDBSerialised</analytic>
+	<code_text>{[reportData;dictn;reportStats]
+    dxReportTableCheck[reportData;`dxReportSaveToHDBSerialised];	
+	/- Check all required dictionary keys are available
+    if[not ""~e:dxReportDictionaryCheck[dictn;`hdbpath`hdbtable];
+     .log.err[.z.h;e:"dxReportSaveToHDBSerialised : ",e;()];
+     'e];
+    if[not ""~e:dxReportDictionaryCheck[reportStats;`reportAnalytic`rptSchNameOrig`reportName`rptID];
+     .log.err[.z.h;e:"dxReportSaveToHDBSerialised reportStats : ",e;()];
+     'e];
+     
+	/- extract the relevatl values from the parameter dictionary
+    path:.utils.checkForEnvVar[dictn`hdbpath];
+	table:dictn[`hdbtable];
+	reportAnalytic:reportStats[`reportAnalytic];
+	reportName:reportStats[`reportName];
+	reportId:reportStats[`rptSchNameOrig];
+	runid:reportStats[`rptID];
+
+	/- Create the path to store the table to 	
+	tab:` sv (hsym path;table;`);
+	res:tab upsert .Q.en[hsym path] flip (`date`time`reportStartTime`reportName`reportId`runId`functionName`parameters`stats`reportData)!enlist each (.z.D;.z.P;reportStats[`StartTime];reportName;reportId;runid;reportAnalytic;-8!dictn;-8!reportStats;-8!reportData);
+    
+    /- apply parted attribute on date, sorted on time
+    @[tab;`date;`p#];
+    @[tab;`time;`s#];
+     
+	(res;`Action`hdbpath`hdbtable!(`dxReportSaveToHDBSerialised;path;table))
+ }</code_text>
+	<description>Report action analytic to save the report results table to a HDB (Historical Database) in Serialised form
+hdbpath: full filepath to the HDB you wish to save the report results to
+hdbtable: name for the table to be saved to the HDB</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description></description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>hdbpath</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>hdbtable</name>
+				<datatype>Symbol</datatype>
+				<default>dxReportData</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default>"c"$()</default>
+		<description>report statistics</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+	<analyticgroup>DxReportGenerator</analyticgroup>
+</analytic>

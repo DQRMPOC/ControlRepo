@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.daas.admin.getWatchlist</analytic>
+	<code_text>{[asset; assetRIC]
+
+	.daas.admin.dash.assetType:last .daas.admin.rfaAssetTypes where[(string asset) like/: ("*_",/:(string .daas.admin.rfaAssetTypes),\:"_*")];
+	.daas.admin.dash.rfaAsset:asset;
+
+	table:.uc.getActiveParamValue[`rfasubscription;`$((string asset),"_a")];
+ 	c:cols table;
+	$[assetRIC=`;
+    	:?[table;();0b;((`i,c)!(`i,c))];
+	/ else
+    	:?[table;enlist (like;c($[asset in `emea_rfavelocity_tr_marketData_eqL2_0`emea_rfavelocity_tr_marketData_futL2_0;1;0]);enlist string upper `$("*",(string assetRIC),"*"));0b;((`i,c)!(`i,c))]
+	];
+ }
+    </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>asset</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>assetRIC</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasWatchlistDashboard</analyticgroup>
+</analytic>

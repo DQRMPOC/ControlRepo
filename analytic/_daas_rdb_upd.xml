@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.rdb.upd</analytic>
+	<code_text>{[tabName;data]
+
+//update existing openClose values (ignore nulls) 
+$[tabName in `eqOpenClose`futOpenClose`fiOpenClose`fxOpenClose`idxOpenClose;
+    tabName upsert (value tabName) ^ `sym xkey data;
+    upsert[tabName;data]
+ ];
+
+/ Monitoring 2.0 - Real-time consumer UPD row metrics
+.rtc.updStatistics[tabName]+:count data;
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tabName</parameter>
+		<default></default>
+		<description>Table name</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>data</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+</analytic>

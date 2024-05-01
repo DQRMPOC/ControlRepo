@@ -1,0 +1,40 @@
+<schema>
+	<ucname>delta_install_default</ucname>
+	<table>tradingSummary</table>
+	<description></description>
+	<column>
+		<column>clientID</column>
+		<coltype>Symbol</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>ID of Client</description>
+	</column>
+	<column>
+		<column>pAndL</column>
+		<coltype>Float</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>Daily profit and loss</description>
+	</column>
+	<column>
+		<column>lastTrade</column>
+		<coltype>Date</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>Date last trade was done</description>
+	</column>
+	<column>
+		<column>netFunding</column>
+		<coltype>Float</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>Running total of all deposits and withdrawals</description>
+	</column>
+	<column>
+		<column>currency</column>
+		<coltype>Symbol</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>ISO Currency code</description>
+	</column>
+</schema>

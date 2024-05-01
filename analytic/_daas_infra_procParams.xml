@@ -1,0 +1,50 @@
+<analytic>
+	<analytic>.daas.infra.procParams</analytic>
+	<code_text>{[]
+ p:.uc.getActiveParamValue[`.daas.cfg.procNameParsing;`]; 
+ p:p[`procType]!value each p[`paramNames];
+
+ paramList:p$[sum(`$raze .fd.process) like '("daas_*";"*_ms_*");
+				`DAAS;
+			 sum(`$raze .fd.process) like '("*_gw_*";"*_udfEngine_*";"*_clientFileUpload*";"*_qm_*";"*_qr_*";"*_qp_*");
+				`QUERYNODE;
+			sum(`$raze .fd.process) like ("*_transactionData_*");
+				`TRANSACTIONDATANODE;
+			 sum(`$raze .fd.process) like '("*_rdb_*";"*_hdb_*";"*_tp_*";"*_rfavelocity_*";"*_lr_*";"*_ctp_*";"*_rte_*";"*_hdbcopy_*";"*_pdb_*");
+			 	`DATANODE;
+			 sum(`$raze .fd.process) like ("*_statsGen_*");
+			 	`STATSGENNODE;
+			 sum(`$raze .fd.process) like ("*_stats_*");
+			    `STATSDATANODE;
+				`ELSE];
+
+ params:(count[s]#paramList)!(`$(count[s]-1)#s),first `$"." vs last s:"_" vs raze .fd.process;
+
+ .daas.cfg.region::$[not null params[`REGION];params[`REGION];params[`DAAS]];
+ .daas.cfg.vendor::params[`SOURCE]; //This should be .daas.cfg.source which will involve updating all references off .daas.cfg.vendor too .daas.cfg.source. Run htis past the Arch team first!
+ .daas.cfg.dataClass::params[`DATACLASS];
+ .daas.cfg.asset::params[`SUBCLASS]; //This should be .daas.cfg.subClass which will involve updating all references off .daas.cfg.asset too .daas.cfg.subClass. Run htis past the Arch team first!
+ .daas.cfg.procType::params[`PROCTYPE];
+ .daas.cfg.dataType::params[`DATATYPE];
+ .daas.cfg.procNum::params[`PROCNUM];
+ .daas.cfg.env::params[`ENV];
+ 
+ procParamsDict:(`region`vendor`dataClass`asset`procType`dataType`procNum`env)!(.daas.cfg.region;.daas.cfg.vendor;.daas.cfg.dataClass;.daas.cfg.asset;.daas.cfg.procType;.daas.cfg.dataType;.daas.cfg.procNum;.daas.cfg.env);
+ // update processMap config with process parameters
+ .uc.editActiveSingleParamData[`.daas.cfg.processMap;`;] 0! (`processName xkey .uc.getActiveParamValue[`.daas.cfg.processMap;`]) upsert ((`$first .fd.process),value procParamsDict);
+ 
+ :procParamsDict
+}</code_text>
+	<description>Initial state function for RDB, HDB and iHDB.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

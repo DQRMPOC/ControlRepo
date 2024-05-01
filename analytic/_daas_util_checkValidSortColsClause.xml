@@ -1,0 +1,48 @@
+<analytic>
+	<analytic>.daas.util.checkValidSortColsClause</analytic>
+	<code_text>{[functionName;params]
+    if[not `sortCols in key params;
+    	:();
+    	];
+    	
+    if[not (.daas.util.applyAssetClassTableName[params]`dataType) in key `.;
+    	.tbl.gettable[.daas.util.applyAssetClassTableName[params]`dataType]];
+    
+    	
+    if[not all 2=count each sortCols:params`sortCols;
+    	sortCols:enlist sortCols; 
+    	];
+    	
+    out:.daas.util.checkSingleSortClause[functionName;;params] each sortCols;	
+    
+    if[count a:out where 10=type each out;
+    	:first a;
+    	];	
+    ()
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

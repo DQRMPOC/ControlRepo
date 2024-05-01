@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.stats.readPivotDataset</analytic>
+	<code_text>{[args;aggTab]
+    if[not `readSyms in key args;
+        :(aggTab;args);
+        ];
+    
+    //If they're not all there then we need to set it into the distributed data key and let the gateway take care of the agg.
+    args[`distributedDataPivot]:aggTab;
+    :(0#aggTab;args)
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>aggTab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasStats</analyticgroup>
+</analytic>

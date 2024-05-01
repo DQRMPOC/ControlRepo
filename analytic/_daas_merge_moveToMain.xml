@@ -1,0 +1,120 @@
+<analytic>
+	<analytic>.daas.merge.moveToMain</analytic>
+	<code_text>{[targetDir;sourceDir;dates]
+    .handles.blocked:0b;	
+    .log.out[.z.h;"### STARTING MOVE INTO MAIN HDB ###";()];	
+    
+    
+    /if we have symbol/filepath dirs, we want them as strings
+    .merge.targetDir:targetDir:{if[-11=type x;if[":"=first x:string x;:1_x]];x}targetDir;
+    .merge.sourceDir:sourceDir:{if[-11=type x;if[":"=first x:string x;:1_x]];x}sourceDir;
+    
+    	
+    /get list of all hdb processes that are mounted on target
+    	.daas.eod.asset:last a where `boolean$count each a:"/" vs targetDir; 
+    	assetClass:$["L2"~-2#.daas.eod.asset;
+        	lower[-2_.daas.eod.asset],(-2#.daas.eod.asset),"_";    
+            lower[.daas.eod.asset],"_"    
+            ];
+    	assetClass:"*",assetClass,"*";
+    	sideAB:"*_",string[.daas.cfg.env],"*";
+    	
+    	// lower the name col and compare to asset class to account for asset classes with capitalisation embedded
+    	// e.g. parsing hdb dir for LISOPT has no way to map to lisOpt without extra info 
+    	// could be moved into config in the future because it is used in other places too like .daas.processing.parseTRTHconfig
+    	portHDB:exec (`$":",/:string[host],'":",/:string[port]) from .ex.prh".pl.getRunningInformation[]" where  all lower[name] like/: lower ("*hdb*";assetClass;sideAB);
+    	.log.out[.z.h;"Begin opening handles";()];
+    	.handles.hdbs:@[hopen;;{.log.out[.z.h;"could not open handle";x];0}]each portHDB;
+    	.handles.hdbs: .handles.hdbs except 0;
+    	///DO SOMETHING IF CAN'T ESTABLISH CONNECTION TO ALL HDBS
+    	if[nohandles:not count .handles.hdbs;
+    		.log.out[.z.h;"no hdb handles. Skipping blocking";()];
+    		];
+    		
+    	.log.out[.z.h;"Opened handles";()];
+    	
+    /block them all
+    if[not nohandles;
+    	.log.out[.z.h;"Triggering block on all handles";()];
+    	.daas.processing.blockHDB[.handles.hdbs];
+    	.log.out[.z.h;"All hdbs blocked";()];
+    	.handles.blocked:1b;
+    	];
+    
+    /move out of main
+    .log.out[.z.h;raze"Attempting to move ",(" " sv string (),dates)," out of main hdb directory: ",targetDir;()];
+    
+    .merge.hdbGarbage:hdbGarbage:(getenv `DAAS_MERGE_HDBGARBAGE),"/";
+    
+    {   if[not count key `$ raze ":",.merge.targetDir,string[x];
+            .log.out[.z.h;"partition does not exist in target hdb";x];
+            :()
+            ];
+        @[system;raze "mv ",.merge.targetDir,string[x]," ",.merge.hdbGarbage;{.log.out[.z.h;"failed to move out date";x]}]
+        } each dates;
+        
+        
+    /move into main
+    .log.out[.z.h;"moving in new dates";()]
+    {@[system;raze"mv ",.merge.sourceDir,string[x]," ",.merge.targetDir;{.log.out[.z.h;"failed to move in date";x]}]} each dates;
+    
+    /unblock all with reload
+    if[not nohandles;             
+    	.log.out[.z.h;"Unblocking all hdbs and calling reload";()];	
+    	.daas.processing.unlockHDB[.handles.hdbs];
+    	.log.out[.z.h;"hdbs unblocked and reloaded";()];
+    	.handles.blocked:0b;
+    	hclose each .handles.hdbs;	
+    	];
+    /delete old
+    .log.out[.z.h;"Clearing hdb garbage";()];
+    
+    $[any null "D"$d:string key `$":",hdbGarbage;
+    	.log.out[.z.h;"no dates in garbage to delete";()];
+    	system each ("rm -rf ",hdbGarbage),/:d];
+    	
+    .log.out[.z.h;raze "completed merge into ",targetDir;()];
+    
+    
+    /Generate stats for new data
+    /this should happen pre merge, need to rejig slightly - like this for mvp for sandbox
+     .[.daas.merge.generateStats;(-2_1_assetClass;dates);{.log.out[.z.h;"failed running statsgen";()]}];
+    
+    
+    
+    
+    
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>targetDir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>sourceDir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>dates</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

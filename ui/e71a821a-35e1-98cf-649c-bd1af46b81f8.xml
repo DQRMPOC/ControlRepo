@@ -1,0 +1,1471 @@
+<ui>
+	<name>e71a821a-35e1-98cf-649c-bd1af46b81f8</name>
+	<displayName>Data Processing</displayName>
+	<description>{
+  "creationDate": "Tue, 02 Apr 2019 15:35:18 GMT",
+  "lastUpdateDate": "Fri, 28 Feb 2020 14:15:40 GMT",
+  "tags": [],
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "4e57b93d-d67f-7982-b33f-266e4e901ca5"
+    }
+  ],
+  "thumb": null
+}</description>
+	<data>{
+  "id": "e71a821a-35e1-98cf-649c-bd1af46b81f8",
+  "name": "Data Processing",
+  "creationDate": "Tue, 02 Apr 2019 15:35:18 GMT",
+  "lastUpdateDate": "Fri, 28 Feb 2020 14:15:40 GMT",
+  "thumb": null,
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "4e57b93d-d67f-7982-b33f-266e4e901ca5"
+    }
+  ],
+  "screens": [
+    {
+      "id": "4e57b93d-d67f-7982-b33f-266e4e901ca5",
+      "name": "Screen 1",
+      "thumb": null,
+      "widgets": [
+        {
+          "id": "ecc5ffdd-466-164a-5378-b109bc91ddc3",
+          "layout": {
+            "row": 0,
+            "column": 0,
+            "rowSpan": 34,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_537",
+            "key": "Tabs",
+            "options": {
+              "version": "4.2.0s2",
+              "dropdownPossibleValues": [
+                {
+                  "Id": 0,
+                  "Name": "A side"
+                },
+                {
+                  "Id": 1,
+                  "Name": "B side"
+                }
+              ],
+              "Selection": {
+                "target_tab": 0,
+                "unloadInactive": true,
+                "SetViewStateOnSelect": {
+                  "ViewState": "",
+                  "Value": ""
+                }
+              },
+              "Basics": {
+                "ComponentName": "tabs"
+              },
+              "Items": [
+                {
+                  "Id": "ba7e332c-b484-1085-c09b-608939fb0b1",
+                  "Name": "A side",
+                  "Tooltip": "",
+                  "HideTab": false
+                },
+                {
+                  "Id": "ca1966e4-8779-365d-e344-a5c8e61ca01",
+                  "Name": "B side",
+                  "Tooltip": "",
+                  "HideTab": {
+                    "_dashboardsType": "viewstate",
+                    "value": "isDR"
+                  }
+                }
+              ],
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "Alignment": {
+                "paddingLeft": 0,
+                "paddingRight": 0,
+                "paddingTop": 0,
+                "paddingBottom": 0,
+                "innerPaddingLeft": 0,
+                "innerPaddingRight": 0,
+                "innerPaddingTop": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "titlePaddingRight": 0,
+                "titlePaddingTop": 7,
+                "titlePaddingBottom": 7
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleFontBold": false,
+                "titleShadow": true,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              }
+            },
+            "containerId": null,
+            "components": [
+              {
+                "id": "component_561",
+                "key": "Panel",
+                "options": {
+                  "version": "4.4.0",
+                  "Basics": {
+                    "ComponentName": "panel",
+                    "RelativeHeight": false,
+                    "Advanced": false,
+                    "UserLayout": false,
+                    "ColCount": 12,
+                    "Floatable": false,
+                    "RowHeight": 25
+                  },
+                  "Style": {
+                    "advanced": "",
+                    "cssClasses": ""
+                  },
+                  "Alignment": {
+                    "paddingLeft": 0,
+                    "paddingRight": 0,
+                    "paddingTop": 0,
+                    "paddingBottom": 0,
+                    "innerPaddingLeft": 0,
+                    "innerPaddingRight": 0,
+                    "innerPaddingTop": 0,
+                    "innerPaddingBottom": 0,
+                    "titlePaddingLeft": 0,
+                    "titlePaddingRight": 0,
+                    "titlePaddingTop": 7,
+                    "titlePaddingBottom": 7
+                  },
+                  "format": {
+                    "titleFontSize": "16",
+                    "titleHorizontal": "Center",
+                    "titleShadow": true,
+                    "tileBorderWidth": 0,
+                    "tileBorderRounding": 0,
+                    "tileBorderColor": "#000000",
+                    "tileBackgroundColor": "#000000",
+                    "tileTransparentBackground": true,
+                    "tileShadow": false
+                  }
+                },
+                "containerId": "ba7e332c-b484-1085-c09b-608939fb0b1",
+                "components": [],
+                "widgets": [
+                  {
+                    "id": "8480abf0-5b10-9faf-9ab2-9dfe89b88de2",
+                    "layout": {
+                      "row": 0,
+                      "column": 0,
+                      "rowSpan": 1,
+                      "colSpan": 2
+                    },
+                    "component": {
+                      "id": "component_635",
+                      "key": "BasicComponents",
+                      "options": {
+                        "version": "4.3.1",
+                        "Basics": {
+                          "ComponentName": "label",
+                          "HtmlText": "&lt;font size=\"4\"&gt;&lt;b&gt;Data Processing Jobs&lt;/b&gt;&lt;/font&gt;&lt;br&gt;",
+                          "Data": "",
+                          "Template": "",
+                          "Theme": "Dark",
+                          "FontSize": 13,
+                          "horizontal": "Center",
+                          "vertical": "Middle",
+                          "tooltip": "",
+                          "AllowUnsafeContent": false,
+                          "version": "4.2.0s2"
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "Alignment": {
+                          "paddingLeft": 0,
+                          "paddingRight": 0,
+                          "paddingTop": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingLeft": 0,
+                          "innerPaddingRight": 0,
+                          "innerPaddingTop": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "titlePaddingRight": 0,
+                          "titlePaddingTop": 7,
+                          "titlePaddingBottom": 7
+                        },
+                        "format": {
+                          "titleFontSize": "16",
+                          "titleHorizontal": "Center",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        }
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 12,
+                      "optionsVersion": 12,
+                      "definitionId": "17",
+                      "hasOnSettingsChange": true
+                    }
+                  },
+                  {
+                    "id": "7bcbee1d-94ef-d962-a844-c82baf32d8e4",
+                    "layout": {
+                      "row": 1,
+                      "column": 0,
+                      "rowSpan": 15,
+                      "colSpan": 12
+                    },
+                    "component": {
+                      "id": "component_960",
+                      "key": "Datagrid",
+                      "options": {
+                        "version": "4.4.1",
+                        "highlightTargetPossibleValues": [
+                          "jobID",
+                          "status",
+                          "size",
+                          "file",
+                          "*"
+                        ],
+                        "sortingPossibleValues": [
+                          "",
+                          "jobID",
+                          "status",
+                          "size",
+                          "file"
+                        ],
+                        "Basics": {
+                          "Data": {
+                            "_dashboardsType": "data",
+                            "value": "New node 3"
+                          },
+                          "ShowPagingControl": false,
+                          "EnableGrouping": false
+                        },
+                        "ColumnsConfiguration": [
+                          {
+                            "Field": "*",
+                            "DisplayName": "*",
+                            "Format": "DateTime",
+                            "TimeFormat": "HH:mm:ss.SSSSSSSSS",
+                            "WidthWeight": 200,
+                            "MinWidthAbsolute": 200,
+                            "TextAlign": "right"
+                          }
+                        ],
+                        "Selection": {
+                          "RowSelectionColumn": "time",
+                          "SelectedValue": {
+                            "class": "1212",
+                            "i": 1554912612345,
+                            "n": 345000000
+                          }
+                        },
+                        "FileExport": {
+                          "ShowExportCsvButton": false,
+                          "ShowExportExcelButton": false
+                        },
+                        "Tooltip": {
+                          "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\n&lt;/div&gt;"
+                        },
+                        "SummaryRow_Groupings": [
+                          {}
+                        ],
+                        "HighlightRules": [
+                          {}
+                        ],
+                        "Style": {
+                          "DashboardTheme": ""
+                        },
+                        "Alignment": {
+                          "paddingLeft": 0,
+                          "paddingRight": 0,
+                          "paddingTop": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingLeft": 0,
+                          "innerPaddingRight": 0,
+                          "innerPaddingTop": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "titlePaddingRight": 0
+                        },
+                        "format": {
+                          "widgetTitle": "",
+                          "titleColor": "",
+                          "titleBottomBorderWidth": 0,
+                          "titleFontBold": false,
+                          "titleShadow": true,
+                          "titleBackgroundColor": "",
+                          "titleTransparentBackground": false,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "datagridPossibleColumns": [
+                          "jobID",
+                          "status",
+                          "size",
+                          "file"
+                        ],
+                        "selectedColumnPossibleValues": [
+                          "jobID",
+                          "status",
+                          "size",
+                          "file"
+                        ]
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 146,
+                      "optionsVersion": 150,
+                      "definitionId": "21",
+                      "hasOnSettingsChange": true
+                    }
+                  },
+                  {
+                    "id": "e2003cf-d8d5-6a4b-2af0-cc927d2a3ca",
+                    "layout": {
+                      "row": 16,
+                      "column": 0,
+                      "rowSpan": 1,
+                      "colSpan": 2
+                    },
+                    "component": {
+                      "id": "component_1061",
+                      "key": "BasicComponents",
+                      "options": {
+                        "version": "4.3.1",
+                        "Basics": {
+                          "ComponentName": "label",
+                          "HtmlText": "&lt;font size=\"4\"&gt;&lt;b&gt;Ready to merge&lt;/b&gt;&lt;/font&gt;&lt;br&gt;",
+                          "Data": "",
+                          "Template": "",
+                          "Theme": "Dark",
+                          "FontSize": 13,
+                          "horizontal": "Center",
+                          "vertical": "Middle",
+                          "tooltip": "",
+                          "AllowUnsafeContent": false,
+                          "version": "4.2.0s2"
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "Alignment": {
+                          "paddingLeft": 0,
+                          "paddingRight": 0,
+                          "paddingTop": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingLeft": 0,
+                          "innerPaddingRight": 0,
+                          "innerPaddingTop": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "titlePaddingRight": 0,
+                          "titlePaddingTop": 7,
+                          "titlePaddingBottom": 7
+                        },
+                        "format": {
+                          "titleFontSize": "16",
+                          "titleHorizontal": "Center",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        }
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 10,
+                      "optionsVersion": 12,
+                      "definitionId": "17",
+                      "hasOnSettingsChange": true
+                    }
+                  },
+                  {
+                    "id": "a91672c5-dec6-dc1e-adcd-d905a68588f",
+                    "layout": {
+                      "row": 17,
+                      "column": 0,
+                      "rowSpan": 15,
+                      "colSpan": 12
+                    },
+                    "component": {
+                      "id": "component_1175",
+                      "key": "Datagrid",
+                      "options": {
+                        "version": "4.4.1",
+                        "highlightTargetPossibleValues": [
+                          "target",
+                          "size",
+                          "targetDate",
+                          "merged",
+                          "*"
+                        ],
+                        "sortingPossibleValues": [
+                          "",
+                          "target",
+                          "size",
+                          "targetDate",
+                          "merged"
+                        ],
+                        "Basics": {
+                          "Data": {
+                            "_dashboardsType": "data",
+                            "value": "New node"
+                          },
+                          "ShowPagingControl": false
+                        },
+                        "ColumnsConfiguration": [
+                          {
+                            "Field": "*",
+                            "DisplayName": "*",
+                            "Format": "DateTime",
+                            "TimeFormat": "HH:mm:ss.SSSSSSSSS",
+                            "WidthWeight": 200,
+                            "MinWidthAbsolute": 200,
+                            "TextAlign": "right"
+                          }
+                        ],
+                        "Selection": {
+                          "RowSelectionColumn": "time",
+                          "SelectedValue": {
+                            "class": "1212",
+                            "i": 1554913702740,
+                            "n": 740947000
+                          }
+                        },
+                        "FileExport": {
+                          "ShowExportCsvButton": false,
+                          "ShowExportExcelButton": false
+                        },
+                        "Tooltip": {
+                          "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\r\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\r\n&lt;/div&gt;"
+                        },
+                        "SummaryRow_Groupings": [
+                          {}
+                        ],
+                        "HighlightRules": [
+                          {
+                            "Target": "merged",
+                            "ConditionSource": "merged",
+                            "Color": "#59ff00",
+                            "BackgroundColor": "#ff0000"
+                          }
+                        ],
+                        "Style": {
+                          "DashboardTheme": ""
+                        },
+                        "Alignment": {
+                          "paddingLeft": 0,
+                          "paddingRight": 0,
+                          "paddingTop": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingLeft": 0,
+                          "innerPaddingRight": 0,
+                          "innerPaddingTop": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "titlePaddingRight": 0
+                        },
+                        "format": {
+                          "widgetTitle": "",
+                          "titleColor": "",
+                          "titleBottomBorderWidth": 0,
+                          "titleFontBold": false,
+                          "titleShadow": true,
+                          "titleBackgroundColor": "",
+                          "titleTransparentBackground": false,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "datagridPossibleColumns": [
+                          "target",
+                          "size",
+                          "targetDate",
+                          "merged"
+                        ],
+                        "selectedColumnPossibleValues": [
+                          "target",
+                          "size",
+                          "targetDate",
+                          "merged"
+                        ]
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 110,
+                      "optionsVersion": 112,
+                      "definitionId": "21",
+                      "hasOnSettingsChange": true
+                    }
+                  }
+                ],
+                "prevVersion": 1,
+                "optionsVersion": 18,
+                "definitionId": "50",
+                "hasOnSettingsChange": true,
+                "rowCount": 32
+              },
+              {
+                "id": "component_2376",
+                "key": "Panel",
+                "options": {
+                  "version": "4.4.0",
+                  "Basics": {
+                    "ComponentName": "panel",
+                    "RelativeHeight": false,
+                    "Advanced": false,
+                    "UserLayout": false,
+                    "ColCount": 12,
+                    "Floatable": false,
+                    "RowHeight": 25
+                  },
+                  "Style": {
+                    "advanced": "",
+                    "cssClasses": ""
+                  },
+                  "Alignment": {
+                    "paddingLeft": 0,
+                    "paddingRight": 0,
+                    "paddingTop": 0,
+                    "paddingBottom": 0,
+                    "innerPaddingLeft": 0,
+                    "innerPaddingRight": 0,
+                    "innerPaddingTop": 0,
+                    "innerPaddingBottom": 0,
+                    "titlePaddingLeft": 0,
+                    "titlePaddingRight": 0,
+                    "titlePaddingTop": 7,
+                    "titlePaddingBottom": 7
+                  },
+                  "format": {
+                    "titleFontSize": "16",
+                    "titleHorizontal": "Center",
+                    "titleShadow": true,
+                    "tileBorderWidth": 0,
+                    "tileBorderRounding": 0,
+                    "tileBorderColor": "#000000",
+                    "tileBackgroundColor": "#000000",
+                    "tileTransparentBackground": true,
+                    "tileShadow": false
+                  }
+                },
+                "containerId": "ca1966e4-8779-365d-e344-a5c8e61ca01",
+                "components": [],
+                "widgets": [
+                  {
+                    "id": "85ee27b5-a2d9-17ed-a5a-d8ccedf9918a",
+                    "layout": {
+                      "row": 1,
+                      "column": 0,
+                      "rowSpan": 15,
+                      "colSpan": 12
+                    },
+                    "component": {
+                      "id": "component_2516",
+                      "key": "Datagrid",
+                      "options": {
+                        "version": "4.4.1",
+                        "datagridPossibleColumns": [
+                          "jobID",
+                          "status",
+                          "size",
+                          "file"
+                        ],
+                        "selectedColumnPossibleValues": [
+                          "jobID",
+                          "status",
+                          "size",
+                          "file"
+                        ],
+                        "highlightTargetPossibleValues": [
+                          "jobID",
+                          "status",
+                          "size",
+                          "file",
+                          "*"
+                        ],
+                        "sortingPossibleValues": [
+                          "",
+                          "jobID",
+                          "status",
+                          "size",
+                          "file"
+                        ],
+                        "Basics": {
+                          "Data": {
+                            "_dashboardsType": "data",
+                            "value": "New node 6"
+                          },
+                          "ShowPagingControl": false,
+                          "EnableGrouping": false
+                        },
+                        "ColumnsConfiguration": [
+                          {
+                            "Field": "*",
+                            "DisplayName": "*",
+                            "Format": "DateTime",
+                            "TimeFormat": "HH:mm:ss.SSSSSSSSS",
+                            "WidthWeight": 200,
+                            "MinWidthAbsolute": 200,
+                            "TextAlign": "right"
+                          }
+                        ],
+                        "Selection": {
+                          "RowSelectionColumn": "time",
+                          "SelectedValue": {
+                            "class": "1212",
+                            "i": 1554912612345,
+                            "n": 345000000
+                          }
+                        },
+                        "FileExport": {
+                          "ShowExportCsvButton": false,
+                          "ShowExportExcelButton": false
+                        },
+                        "Tooltip": {
+                          "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\n&lt;/div&gt;"
+                        },
+                        "SummaryRow_Groupings": [
+                          {}
+                        ],
+                        "HighlightRules": [
+                          {}
+                        ],
+                        "Style": {
+                          "DashboardTheme": ""
+                        },
+                        "Alignment": {
+                          "paddingLeft": 0,
+                          "paddingRight": 0,
+                          "paddingTop": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingLeft": 0,
+                          "innerPaddingRight": 0,
+                          "innerPaddingTop": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "titlePaddingRight": 0
+                        },
+                        "format": {
+                          "widgetTitle": "",
+                          "titleColor": "",
+                          "titleBottomBorderWidth": 0,
+                          "titleFontBold": false,
+                          "titleShadow": true,
+                          "titleBackgroundColor": "",
+                          "titleTransparentBackground": false,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        }
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 150,
+                      "optionsVersion": 154,
+                      "definitionId": "21",
+                      "hasOnSettingsChange": true
+                    }
+                  },
+                  {
+                    "id": "4057cbf2-bbcb-21c1-4f7c-5f142ad32304",
+                    "layout": {
+                      "row": 0,
+                      "column": 0,
+                      "rowSpan": 1,
+                      "colSpan": 2
+                    },
+                    "component": {
+                      "id": "component_2712",
+                      "key": "BasicComponents",
+                      "options": {
+                        "version": "4.3.1",
+                        "Basics": {
+                          "ComponentName": "label",
+                          "HtmlText": "&lt;font size=\"4\"&gt;&lt;b&gt;Data Processing Jobs&lt;/b&gt;&lt;/font&gt;&lt;br&gt;",
+                          "Data": "",
+                          "Template": "",
+                          "Theme": "Dark",
+                          "FontSize": 13,
+                          "horizontal": "Center",
+                          "vertical": "Middle",
+                          "tooltip": "",
+                          "AllowUnsafeContent": false,
+                          "version": "4.2.0s2"
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "Alignment": {
+                          "paddingLeft": 0,
+                          "paddingRight": 0,
+                          "paddingTop": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingLeft": 0,
+                          "innerPaddingRight": 0,
+                          "innerPaddingTop": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "titlePaddingRight": 0,
+                          "titlePaddingTop": 7,
+                          "titlePaddingBottom": 7
+                        },
+                        "format": {
+                          "titleFontSize": "16",
+                          "titleHorizontal": "Center",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        }
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 12,
+                      "optionsVersion": 12,
+                      "definitionId": "17",
+                      "hasOnSettingsChange": true
+                    }
+                  },
+                  {
+                    "id": "cd5bdbd6-e0fc-cc96-f68a-e80971a9b5f6",
+                    "layout": {
+                      "row": 16,
+                      "column": 0,
+                      "rowSpan": 1,
+                      "colSpan": 2
+                    },
+                    "component": {
+                      "id": "component_2903",
+                      "key": "BasicComponents",
+                      "options": {
+                        "version": "4.3.1",
+                        "Basics": {
+                          "ComponentName": "label",
+                          "HtmlText": "&lt;font size=\"4\"&gt;&lt;b&gt;Ready to merge&lt;/b&gt;&lt;/font&gt;&lt;br&gt;",
+                          "Data": "",
+                          "Template": "",
+                          "Theme": "Dark",
+                          "FontSize": 13,
+                          "horizontal": "Center",
+                          "vertical": "Middle",
+                          "tooltip": "",
+                          "AllowUnsafeContent": false,
+                          "version": "4.2.0s2"
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "Alignment": {
+                          "paddingLeft": 0,
+                          "paddingRight": 0,
+                          "paddingTop": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingLeft": 0,
+                          "innerPaddingRight": 0,
+                          "innerPaddingTop": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "titlePaddingRight": 0,
+                          "titlePaddingTop": 7,
+                          "titlePaddingBottom": 7
+                        },
+                        "format": {
+                          "titleFontSize": "16",
+                          "titleHorizontal": "Center",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        }
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 10,
+                      "optionsVersion": 12,
+                      "definitionId": "17",
+                      "hasOnSettingsChange": true
+                    }
+                  },
+                  {
+                    "id": "ff22e8d5-a65a-494e-501b-69a53bcf62c0",
+                    "layout": {
+                      "row": 17,
+                      "column": 0,
+                      "rowSpan": 15,
+                      "colSpan": 12
+                    },
+                    "component": {
+                      "id": "component_3287",
+                      "key": "Datagrid",
+                      "options": {
+                        "version": "4.4.1",
+                        "selectedColumnPossibleValues": [
+                          "target",
+                          "size",
+                          "targetDate",
+                          "merged"
+                        ],
+                        "highlightTargetPossibleValues": [
+                          "target",
+                          "size",
+                          "targetDate",
+                          "merged",
+                          "*"
+                        ],
+                        "sortingPossibleValues": [
+                          "",
+                          "target",
+                          "size",
+                          "targetDate",
+                          "merged"
+                        ],
+                        "Basics": {
+                          "Data": {
+                            "_dashboardsType": "data",
+                            "value": "New node 7"
+                          },
+                          "ShowPagingControl": false
+                        },
+                        "ColumnsConfiguration": [
+                          {
+                            "Field": "*",
+                            "DisplayName": "*",
+                            "Format": "DateTime",
+                            "TimeFormat": "HH:mm:ss.SSSSSSSSS",
+                            "WidthWeight": 200,
+                            "MinWidthAbsolute": 200,
+                            "TextAlign": "right"
+                          }
+                        ],
+                        "Selection": {
+                          "RowSelectionColumn": "time",
+                          "SelectedValue": {
+                            "class": "1212",
+                            "i": 1554913702740,
+                            "n": 740947000
+                          }
+                        },
+                        "FileExport": {
+                          "ShowExportCsvButton": false,
+                          "ShowExportExcelButton": false
+                        },
+                        "Tooltip": {
+                          "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\r\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\r\n&lt;/div&gt;"
+                        },
+                        "GroupingConfiguration": [
+                          {
+                            "ColumnProperty": "target"
+                          }
+                        ],
+                        "SummaryRow_Groupings": [
+                          {}
+                        ],
+                        "HighlightRules": [
+                          {
+                            "Target": "merged",
+                            "ConditionSource": "merged",
+                            "Color": "#59ff00",
+                            "BackgroundColor": "#ff0000"
+                          }
+                        ],
+                        "Style": {
+                          "DashboardTheme": ""
+                        },
+                        "Alignment": {
+                          "paddingLeft": 0,
+                          "paddingRight": 0,
+                          "paddingTop": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingLeft": 0,
+                          "innerPaddingRight": 0,
+                          "innerPaddingTop": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "titlePaddingRight": 0
+                        },
+                        "format": {
+                          "widgetTitle": "",
+                          "titleColor": "",
+                          "titleBottomBorderWidth": 0,
+                          "titleFontBold": false,
+                          "titleShadow": true,
+                          "titleBackgroundColor": "",
+                          "titleTransparentBackground": false,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "datagridPossibleColumns": [
+                          "target",
+                          "size",
+                          "targetDate",
+                          "merged"
+                        ]
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 112,
+                      "optionsVersion": 114,
+                      "definitionId": "21",
+                      "hasOnSettingsChange": true
+                    }
+                  }
+                ],
+                "prevVersion": 1,
+                "optionsVersion": 18,
+                "definitionId": "50",
+                "hasOnSettingsChange": true,
+                "rowCount": 32
+              }
+            ],
+            "widgets": [],
+            "prevVersion": 1,
+            "optionsVersion": 206,
+            "definitionId": "26",
+            "hasOnSettingsChange": true
+          }
+        }
+      ],
+      "relativeHeight": false,
+      "rowHeight": 25,
+      "colCount": 12,
+      "floatable": false,
+      "isDefault": true
+    }
+  ],
+  "popups": [],
+  "tags": [],
+  "dashboardTheme": "Dark",
+  "themeSwitchable": true,
+  "saveTimestamp": null,
+  "relativeHeight": false,
+  "rowHeight": 25,
+  "colCount": 12,
+  "floatable": false,
+  "viewState": {
+    "selected": {
+      "_viewType": true,
+      "_default": "0",
+      "value": "0",
+      "_type": "symbol",
+      "_rolling": false
+    },
+    ".settings": {
+      "component_537": {
+        "version": 0,
+        "Selection_target_tab": 0
+      },
+      "component_960": {
+        "version": 0,
+        "GroupingConfiguration": [],
+        "Grid.Basics.Filtering": {
+          "version": 1,
+          "type": "Quick Search",
+          "value": ""
+        }
+      },
+      "component_1175": {
+        "version": 0,
+        "GroupingConfiguration": [],
+        "Grid.Basics.Filtering": {
+          "version": 1,
+          "type": "Quick Search",
+          "value": ""
+        }
+      },
+      "component_2139": {
+        "version": 0,
+        "GroupingConfiguration": [],
+        "Grid.Basics.Filtering": {
+          "version": 1,
+          "type": "Quick Search",
+          "value": ""
+        }
+      },
+      "component_2516": {
+        "version": 0,
+        "GroupingConfiguration": [],
+        "Grid.Basics.Filtering": {
+          "version": 1,
+          "type": "Quick Search",
+          "value": ""
+        }
+      },
+      "component_3287": {
+        "version": 0,
+        "GroupingConfiguration": [
+          {
+            "ColumnProperty": "target"
+          }
+        ],
+        "Grid.Basics.Filtering": {
+          "version": 1,
+          "type": "Quick Search",
+          "value": ""
+        }
+      }
+    },
+    "isDR": {
+      "_viewType": true,
+      "_type": "boolean",
+      "_rolling": false,
+      "value": false,
+      "_default": false
+    }
+  },
+  "data": {
+    "New node": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "target",
+        "size",
+        "targetDate",
+        "merged"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "mergeDaemon_a",
+      "_mappings": {
+        "key": "target",
+        "mappings": {},
+        "value": "size"
+      },
+      "_maxRows": 2000,
+      "_forceReset": true,
+      "_subscriptionType": "polling",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "weight": 2,
+          "isExpanded": true
+        },
+        {
+          "weight": 1,
+          "isExpanded": false
+        },
+        {
+          "weight": 1,
+          "isExpanded": false
+        },
+        {
+          "weight": 0,
+          "isExpanded": true
+        },
+        {
+          "weight": 2,
+          "isExpanded": true
+        }
+      ],
+      "_queryString": ".daas.processing.getMerged[]",
+      "_queryParams": [],
+      "_subscriptionKey": "",
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_updateType": "query",
+      "_pageSize": 2000,
+      "_serverPaging": false
+    },
+    "New node 2": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "jobID",
+        "state",
+        "targetDir",
+        "sourceDir",
+        "date",
+        "jobAddTime",
+        "slaveID",
+        "mode",
+        "immediate"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "mergeDaemon_a",
+      "_maxRows": 2000,
+      "_forceReset": true,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "polling",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": ".daas.merge.mergeJobs",
+      "_queryParams": [],
+      "_subscriptionKey": "",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": ""
+    },
+    "New node 3": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "jobID",
+        "status",
+        "size",
+        "file"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "processingDaemon_a",
+      "_mappings": {
+        "key": "jobID",
+        "mappings": {},
+        "value": "status"
+      },
+      "_maxRows": 2000,
+      "_forceReset": true,
+      "_subscriptionType": "polling",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": false,
+          "weight": 2
+        }
+      ],
+      "_queryString": ".daas.processing.getCurrentJobs[]\n\t\t",
+      "_queryParams": [],
+      "_subscriptionKey": "",
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_updateType": "query",
+      "_pageSize": 2000,
+      "_serverPaging": false
+    },
+    "New node 4": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "list"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "mergeDaemon_a",
+      "_maxRows": 2000,
+      "_forceReset": true,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": ".daas.merge.eodMoveToMain[]",
+      "_queryParams": [],
+      "_subscriptionKey": "",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": ""
+    },
+    "New node 5": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "Property",
+        "Value"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "mergeDaemon_a",
+      "_maxRows": 2000,
+      "_forceReset": true,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": "enlist[`isDR]!enlist not 1&lt;count read0 `$\":\",getenv`$\"DELTACONTROL_FAILOVER\"",
+      "_queryParams": [],
+      "_subscriptionKey": "",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_mappings": {
+        "key": "Property",
+        "value": "Value",
+        "mappings": {
+          "isDR": {
+            "_dashboardsType": "viewstate",
+            "value": "isDR"
+          }
+        }
+      }
+    },
+    "New node 6": {
+      "_autoExec": true,
+      "_columns": [
+        "jobID",
+        "status",
+        "size",
+        "file"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "processingDaemon_b",
+      "_mappings": {
+        "key": "jobID",
+        "mappings": {},
+        "value": "status"
+      },
+      "_maxRows": 2000,
+      "_forceReset": true,
+      "_subscriptionType": "polling",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": false,
+          "weight": 2
+        }
+      ],
+      "_queryString": ".daas.processing.getCurrentJobs[]\r\n\t",
+      "_queryParams": [],
+      "_subscriptionKey": "",
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_updateType": "query",
+      "_pageSize": 2000,
+      "_serverPaging": false
+    },
+    "New node 7": {
+      "_autoExec": true,
+      "_columns": [
+        "target",
+        "size",
+        "targetDate",
+        "merged"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "mergeDaemon_b",
+      "_mappings": {
+        "key": "target",
+        "mappings": {},
+        "value": "size"
+      },
+      "_maxRows": 2000,
+      "_forceReset": true,
+      "_subscriptionType": "polling",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": false,
+          "weight": 2
+        }
+      ],
+      "_queryString": ".daas.processing.getMerged[]",
+      "_queryParams": [],
+      "_subscriptionKey": "",
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_updateType": "query",
+      "_pageSize": 2000,
+      "_serverPaging": false
+    }
+  },
+  "worksheetPadding": 10,
+  "widgetsSpacing": 0,
+  "borderColor": "000000",
+  "borderBackground": "000000",
+  "transparentBackground": true,
+  "borderWidth": 0,
+  "borderRounding": 0,
+  "borderSpacing": 0,
+  "borderShadow": false,
+  "enableShareDashboard": false,
+  "notifications": {
+    "Notifications": {
+      "_Version": "4.2.0s2",
+      "Enabled": true,
+      "InBrowserNotifications": false,
+      "Position": "Bottom Right",
+      "MaxVisibleCount": 3,
+      "FadeOut": 5,
+      "Icon": "bell-o",
+      "Sound": "beep",
+      "SoundVolume": 100,
+      "Grouping": false,
+      "GroupingInterval": 1,
+      "triggers": []
+    }
+  },
+  "showLoadingIndicators": true,
+  "unsavedViewerPrompt": false,
+  "advancedCss": "",
+  "cssClasses": "",
+  "viewStateBinding": false,
+  "wasChanged": false,
+  "version": "4.4.0p7"
+}</data>
+</ui>

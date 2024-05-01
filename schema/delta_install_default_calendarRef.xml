@@ -1,0 +1,55 @@
+<schema>
+	<ucname>delta_install_default</ucname>
+	<table>calendarRef</table>
+	<description>List of events occurring at different venues and the day/time of their occurrence</description>
+	<column>
+		<column>MIC</column>
+		<coltype>Symbol</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>Market identifier of venue</description>
+	</column>
+	<column>
+		<column>event</column>
+		<coltype>String</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>Name of event occurring at venue (eg. tradeOpen)</description>
+	</column>
+	<column>
+		<column>date</column>
+		<coltype>Date</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>Effective date for event parameters</description>
+	</column>
+	<column>
+		<column>holiday</column>
+		<coltype>Boolean</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>True if the event indicates a holiday</description>
+	</column>
+	<column>
+		<column>dayOfWeek</column>
+		<coltype>String</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>Sym list identifying on which days the event occurs</description>
+	</column>
+	<column>
+		<column>time</column>
+		<coltype>Time</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>Time of event</description>
+	</column>
+	<column>
+		<column>status</column>
+		<coltype>Symbol</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description>Symbol indicating whether the venue is open or closed during the given event</description>
+	</column>
+	<schemagroup>DAAS_REF_DATA</schemagroup>
+</schema>

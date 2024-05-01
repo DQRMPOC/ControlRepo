@@ -1,0 +1,78 @@
+<analytic>
+	<analytic>.daas.util.checkForNewConditionCodes</analytic>
+	<code_text>{[lookback;config;table;condColName;exchColName]
+// sample format - lookback:01:00:00.000; 
+
+.log.out[.z.h;"Checking for new condition codes in ", string table;()];
+// Take the current condition codes by exchange from the filter config
+codesConfig:?[.uc.getActiveParamValue[config;`];();(enlist`exch)!enlist`exch;(enlist`cond)!enlist`cond];
+
+// Functional form of 
+// lookbackTable:`exch xcol select distinct cond:`$condColName by exchColName from table where time within (.z.P - lookback; .z.P);
+lookbackTable:?[table;enlist (within;`time;(enlist;(-;`.z.P;lookback);`.z.P));(enlist`exch)!enlist exchColName; (enlist`cond)!enlist (distinct; condColName)];
+lookbackTable:update cond:`$cond from lookbackTable;
+results:{(raze y[x]) in raze z[x]}[; lookbackTable; codesConfig] each exchanges:exec exch from lookbackTable;
+
+$[all all each results;
+	[ // runs when there are no new condition codes
+ 	 .log.out[.z.h;"No new condition codes found in ",string table;()];  
+ 	 :()
+	];
+	[ // runs where there are new condition codes
+	 exchWithNewCodes:select from lookbackTable where exch in exchanges where not all each results;
+	 newCodeLocations:where each not results where not all each results;
+	 exchWithNewCodes:update cond:(exec cond from exchWithNewCodes)@'newCodeLocations from exchWithNewCodes;
+	 updates:`exch`cond xcols (,/){table:update exch:x from flip y x; table}[;exchWithNewCodes] each exec exch from exchWithNewCodes;
+	 .log.out[.z.h;string[count[updates]], " new condition codes found in ",string table;()]; 
+	 :updates
+	]
+];
+
+ }</code_text>
+	<description>Looks back a specified amount of time in an rdb for distinct condition codes, compares these to the current condition codes in the filter config files and then returns any new condition codes</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>lookback</parameter>
+		<default>00:00:00.000</default>
+		<description>lookback period in the rdb to check for new codes</description>
+		<required>1</required>
+		<datatype>Time</datatype>
+	</param>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>filter rule config to read current codes from</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>table</parameter>
+		<default></default>
+		<description>table to search for new codes in</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>condColName</parameter>
+		<default></default>
+		<description>Name of column to search for new codes in</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>exchColName</parameter>
+		<default></default>
+		<description>Name of exchange column to extract</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

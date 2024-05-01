@@ -1,0 +1,59 @@
+<analytic>
+	<analytic>.surv.report.saveToCache</analytic>
+	<code_text>{[reportData;dictn;reportStats]
+	
+    .log.out[.z.h;"Running .surv.report.saveToCache";()];
+    
+    .debug.savetocache:`reportData`dictn`reportStats!(reportData;dictn;reportStats);
+    if[0~@[value;`dxCacheInsert;0];.al.loadgroupfunctions`DxCache;dxCacheInit 70];
+    if[not `cache~dictn`ExportType;:()];
+    //only cache if not realtime query
+    //this just puts it in a cache so that gateway may retrieve it later
+    params:`reportname`filepath`filename`filetype`TagAugment`TagInclude`TagExclusions`TagOnly _ dictn;
+    //don't check whether realtime or not as we are using the cache infrastructure as a store for later retrieval *by id*
+    //nothing ever checks if the function has been run recently, automatically reruns it
+    dxCacheInsert[reportData;.z.P;`scheduledReport;(reportStats`reportName;params)];
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>reportname</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceReport</analyticgroup>
+</analytic>

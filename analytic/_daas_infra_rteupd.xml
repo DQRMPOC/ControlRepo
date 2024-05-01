@@ -1,0 +1,56 @@
+<analytic>
+	<analytic>.daas.infra.rteupd</analytic>
+	<code_text>{[tabName;data]
+/ Monitoring 2.0 - Real-time consumer UPD row metrics
+.rtc.updStatistics[tabName]+:count data;
+
+/if it comes from open close just straight upsert
+if[tabName in `eqOpenClose`futOpenClose`fiOpenClose`fxOpenClose`idxOpenClose`mnOpenClose`lisOptOpenClose;
+	.daas.summary.tableName upsert select from data where i=(last;i) fby sym;
+	:();
+	];
+	
+.daas.summary.tableName upsert {
+/lj the incoming ticks to records in summary
+tab:(`sym xcols update sym:a from (value .daas.summary.tableName) each a:distinct y`sym) lj ?[y;();(enlist`sym)!enlist`sym;(.daas.cfg.rtetableFunctionMap x)!.daas.cfg.rteAggregationFunctions .daas.cfg.rtetableFunctionMap x];
+/fill new sym records or mins and running sums so that later calcs work
+tab:![tab;();0b;(.daas.summary.minCols[x],.daas.summary.runningCols[x])!((^),/:(((.daas.summary.meta .daas.summary.minCols[x])$\:0W),'.daas.summary.minCols[x])),((^),/:((.daas.summary.meta .daas.summary.runningCols[x])$\:0),'.daas.summary.runningCols[x])];
+/update counts and max/mins
+tab:![tab;();0b;(.daas.cfg.rteCompositeTableFunctionMap x)!.daas.cfg.rteCompositeAggregationFunctions .daas.cfg.rteCompositeTableFunctionMap x];
+/update calculations
+tab:![tab;();0b;(.daas.cfg.rteCalculationTableFunctionMap x)!.daas.cfg.rteCalculationAggregationFunctions .daas.cfg.rteCalculationTableFunctionMap x];
+/delete tick rows
+delCols:a where (a:cols tab) like "tick*";
+0!$[count delCols;![tab;();0b;delCols];tab]
+}[tabName;data];
+
+// update streaming tables
+.daas.stream.upd[tabName;data];
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tabName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

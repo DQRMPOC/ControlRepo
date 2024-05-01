@@ -1,0 +1,37 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>global_pdb_monitoringCapture</override>
+	<parameter>.daas.cfg.pdbSettings</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>writeFreqTimeMS</element>
+		<elementType>Long</elementType>
+		<elementValue>600000</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>writeFreqRowCount</element>
+		<elementType>Long</elementType>
+		<elementValue>10000000</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>persistDir</element>
+		<elementType>String</elementType>
+		<elementValue>ENV=DAASDATA_PERSISTDIR_GLOBAL_MONITORING=</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>hdbDir</element>
+		<elementType>String</elementType>
+		<elementValue>ENV=DAASDATA_HDBLOGDIR_GLOBAL_MONITORING=</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>symBackupDir</element>
+		<elementType>String</elementType>
+		<elementValue>ENV=DAASDATA_SYMBACKUPDIR_GLOBAL_MONITORING=</elementValue>
+	</param>
+</configparam>

@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.validation.SURV_TIMEZONES</analytic>
+	<code_text>{[config]
+    
+	tzfile:hsym`$getenv[`DELTACONTROL_DATA_HOME],"/data/tzinfo.csv";
+    validTZs:exec timezoneID from ("s***";enlist csv) 0: tzfile;
+
+    if[any existing:config[`timezoneID] in validTZs;
+        '"The following timezoneIDs are already existing timezones: ",(", " sv string config[`timezoneID] where existing),". Please select a different name for your timezone."
+        ];
+
+
+    if[any notexisting:not config[`offsetTimezoneID] in validTZs;
+        '"offsetTimezoneID entries must be the ID of an existing timezone to offset from. The following offsetTimezoneIDs are not valid: ",(", " sv string config[`offsetTimezoneID] where notexisting),". See tzinfo.csv for list of valid timezones.";
+        ];
+    
+    if[not count[distinct config`timezoneID]=count config`timezoneID;
+        '"timezoneIDs in this config must be unique!"
+        ];
+    
+    1b
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

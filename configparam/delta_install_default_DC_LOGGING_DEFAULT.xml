@@ -1,0 +1,150 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>DC_LOGGING</parameter>
+	<description>Defines log file name and rolling convention for q processes, to disable rolling set rollMode to size and rollSize to zero.
+logFile can contain temporal values %Y for year, %m month, %d day, %H hour, %M minute, %S second, %U millisecond, %N nanosecond.
+rollMode can be size or daily.
+datePattern is appended to the log file when rolling and can contain the same temporal values as logFile.
+rollSize is used if rollMode equals size and is in megabytes.
+rollTime is used if rollMode equals daily and the log file is rolled at this time.
+rollBy is process for the process to roll the log file or DeltaControl for DeltaControl to roll the log file.
+logPrecision is used to set the decimal places for the time logged in the log file, it can be in the range 1-9.  An override named after a process instance can be created to enable different processes to have different log precisions.
+
+if out, warn or err are true for the process in DC_LOG_PUBLISH configparam then dxPubLogInit is called on start-up and dxPubLog is called by .log.out (if out is true), .log.warn (if warn is true) or .log.err are true (if err is true).
+dxPubLogInit connects to the consumerProcesses, dxPubLog publishes the log message to the consumerProcesses.</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>logFile</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>val</element>
+		<elementType>Symbol</elementType>
+		<elementValue>&lt;PROCESS&gt;.%Y%m%dT%H%M%S%U.out.log</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>rollMode</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>val</element>
+		<elementType>Symbol</elementType>
+		<elementValue>daily</elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>datePattern</elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>val</element>
+		<elementType>Symbol</elementType>
+		<elementValue>%Y%m%dT%H%M%S</elementValue>
+	</param>
+	<param>
+		<index>3</index>
+		<element>name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>rollSize</elementValue>
+	</param>
+	<param>
+		<index>3</index>
+		<element>val</element>
+		<elementType>Symbol</elementType>
+		<elementValue>0</elementValue>
+	</param>
+	<param>
+		<index>4</index>
+		<element>name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>rollTime</elementValue>
+	</param>
+	<param>
+		<index>4</index>
+		<element>val</element>
+		<elementType>Symbol</elementType>
+		<elementValue>00:00</elementValue>
+	</param>
+	<param>
+		<index>5</index>
+		<element>name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>rollBy</elementValue>
+	</param>
+	<param>
+		<index>5</index>
+		<element>val</element>
+		<elementType>Symbol</elementType>
+		<elementValue>process</elementValue>
+	</param>
+	<param>
+		<index>6</index>
+		<element>name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>logPrecision</elementValue>
+	</param>
+	<param>
+		<index>6</index>
+		<element>val</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>7</index>
+		<element>name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>consoleWidth</elementValue>
+	</param>
+	<param>
+		<index>7</index>
+		<element>val</element>
+		<elementType>Symbol</elementType>
+		<elementValue>1000 1000</elementValue>
+	</param>
+	<param>
+		<index>8</index>
+		<element>name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>publishInitAnalytic</elementValue>
+	</param>
+	<param>
+		<index>8</index>
+		<element>val</element>
+		<elementType>Symbol</elementType>
+		<elementValue>dxPubLogInit</elementValue>
+	</param>
+	<param>
+		<index>9</index>
+		<element>name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>publishAnalytic</elementValue>
+	</param>
+	<param>
+		<index>9</index>
+		<element>val</element>
+		<elementType>Symbol</elementType>
+		<elementValue>dxPubLog</elementValue>
+	</param>
+	<param>
+		<index>10</index>
+		<element>name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>consumerProcesses</elementValue>
+	</param>
+	<param>
+		<index>10</index>
+		<element>val</element>
+		<elementType>Symbol</elementType>
+		<elementValue>ds_tp_ops_a,ds_tp_ops_b</elementValue>
+	</param>
+	<configgroup>DC_LOGGING</configgroup>
+</configparam>

@@ -1,0 +1,77 @@
+<analytic>
+	<analytic>.daas.wc.default</analytic>
+	<code_text>{[tab;sts;ets;syms;wc;symcol;timecol]
+        w:();
+    
+        // partition column clause (e.g date clause if on hdb, () if on rdb)
+        w,:.daas.wc.partitionCol[tab;sts;ets;timecol];
+        
+        // `p# col clause (e.g sym clause in most cases but may by orderID or something else
+        w,:.daas.wc.symList[syms;symcol;tab];
+           
+        // time col continuous filter
+        w,:.daas.wc.time[tab;timecol;sts;ets];
+    
+        $[0&lt;count w;w,wc;w]
+ }</code_text>
+	<description>utility analytic for DxSelect analytics - Where clause build up function for rdb</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>1</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>table name</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>sts</parameter>
+		<default>1970.01.01D00:00:00</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Timestamp</datatype>
+	</param>
+	<param>
+		<parameter>ets</parameter>
+		<default>1970.01.01D00:00:00</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Timestamp</datatype>
+	</param>
+	<param>
+		<parameter>syms</parameter>
+		<default></default>
+		<description>sym list</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>wc</parameter>
+		<default></default>
+		<description>other where clause parse format</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>symcol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>timecol</parameter>
+		<default></default>
+		<description>time column</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasWhereClause</analyticgroup>
+</analytic>

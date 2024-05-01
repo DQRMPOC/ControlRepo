@@ -1,0 +1,118 @@
+<analytic>
+	<analytic>.daas.infra.dspLoader</analytic>
+	<code_text>{[dir;file]
+.log.out[.z.h;"Upload of file STARTING ",string[file],".";()];
+
+ // make the file path
+ .daas.events.pubEventMessage[`dspLoad;`started;file;`;()];
+ if[file like "*note*";
+ 	.log.out[.z.h;"Loading note file not currently supported"; file];
+ 	:()
+ 	];
+ cmd:"unzip -o ",1_string[` sv dir,file]," -d ",1_string[dir];
+ @[system;cmd;{[cmd;err]"Unable to execute command [ ",cmd," ]. Error was [ ",err," ]";'err}[cmd;]];
+ 
+ // now use the unzipped filename
+ zipfile:file;
+ file:`$-4_string[file];
+ filepath:` sv dir,file;
+ // get the header line as in DSP (first line is download info, second line is col names)
+ fileHeaders:system"head -2 ",1_string ` sv dir,file;
+ // get cols names as symbols
+ fileFields:`$"|" vs last fileHeaders;
+ loaderInfo:.uc.getActiveParamValue[`.daas.cfg.fileLoader;`DSP];
+ destinationInfo:flip .uc.getActiveParamValue[`.daas.cfg.fwTargetDB;`DSP];
+ 
+ // get dictionary of our field names and types
+ d:exec externalField,internalField,t from loaderInfo where externalField in fileFields,incl;
+ // check that all the cols in the file have a row in fileLoader config
+ if[not d[`externalField]~-1_fileFields;
+ 	.log.out[.z.h;"DSP report fields don't match expected fields - check .daas.cfg.fileLoader DSP"; file];
+ 	:()
+ 	];
+ typestring:raze d[`t];
+ fields:d[`internalField];
+ // separator is pipe for now
+ separator:destinationInfo`separator;
+ // import the file
+ import:(typestring;separator) 0: 1_read0 (filepath);
+ 
+ // update with our col names
+ import:fields xcol import;
+ .log.out[.z.h;"Read in file"; file];
+ .daas.events.pubEventMessage[`dspLoad;`finished;file;`;()];
+ 
+ // add extra fields not in source
+ 
+ typD:"S*"!(enlist`;(#;(count;`i);(enlist;"")));
+ addFields:exec externalField,internalField,t from loaderInfo where not incl;
+ addDict:addFields[`internalField]!typD raze addFields[`t];
+ addDict,:enlist[`source]!enlist[enlist `dsp];
+ 
+ .log.out[.z.h;"Added missing columns from DSP file"; file];
+ import:.tbl.gettabledetails[first destinationInfo`tab][`colnames] xcols ![import; (); 0b; addDict];
+ .log.out[.z.h;"Cast missing columns to correct types"; file];
+ /import:![import;();0b;c!($;"C"),/:c:exec c from meta[import] where t=" "];
+ 
+ // Save to disk
+ 
+  // get hdb directory (dsp always goes secmaster)
+ hdbdir:( `$":",getenv`DAASDATA_HDBLOGDIR_SECMASTER);
+ // get date (parse from DSP file?)
+ date:"D"$("." vs string[file])[3];
+ // get parted field (parted on sym)
+ p:value first destinationInfo`partedCol;
+ // get table to save to
+ tab:first destinationInfo`tab;
+ // create directory path from this
+ tabdir:` sv hdbdir,(`$string date),tab,`;
+ .log.out[.z.h;"Starting to add ",string[count import]," rows to ",string[tab]; file];
+ .log.out[.z.h;"Upload of file PROCESSING ",string[file],".";()];
+ // upsert the data
+ $[()~key tabdir; 
+ 		tabdir set .Q.en[hdbdir; import];
+ 		tabdir upsert .Q.en[hdbdir; import]
+ 	];
+ // sort
+ p xasc tabdir;
+ // apply parted
+ @[tabdir;p;`p#];
+ .log.out[.z.h;"Finished Adding ",string[count import]," rows to ",string[tab]; file];
+ .daas.events.pubEventMessage[`fileUpload;`complete;file;`;destinationInfo];
+ 
+ cmd:"mv ",1_string[filepath]," ",1_string[` sv dir,`success];
+ @[system;cmd;{[cmd;err]"Unable to execute command [ ",cmd," ]. Error was [ ",err," ]";'err}[cmd;]];
+ .log.out[.z.h;"Moved ",string[file]," to success folder"; file];
+ 
+ cmd:"rm ",1_string[` sv dir,zipfile];
+ @[system;cmd;{[cmd;err]"Unable to execute command [ ",cmd," ]. Error was [ ",err," ]";'err}[cmd;]];
+ .log.out[.z.h;"Removed ",string[zipfile]; zipfile];
+ /.daas.fw.timestampFile[dir;file];
+  .log.out[.z.h;"Upload of file COMPLETED ",string[file],".";()];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasFilewatcher</analyticgroup>
+</analytic>

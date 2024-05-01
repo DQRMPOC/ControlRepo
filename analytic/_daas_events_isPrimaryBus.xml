@@ -1,0 +1,45 @@
+<analytic>
+	<analytic>.daas.events.isPrimaryBus</analytic>
+	<code_text>{[sysRunningInfo]
+
+		currentBus:exec first process from .ch.cp where handle=0;
+		if[(::)~sysRunningInfo;
+			.log.warn[`eventBus;"Sending sync message to Control for running info";()];
+			sysRunningInfo:.ex.prh".pl.getRunningInformation[]"
+		];
+
+		runningEventBuses:exec name from sysRunningInfo where name like "*eventBus*", status=`opened;
+
+		/ NOTE: This check always will enforce _a side to be master if both are running
+		/ regardless of start up time
+        isPrimary:all currentBus &lt;= runningEventBuses;
+
+        / ~ as .daas.events.isPrimary is set to generic null on boot
+        if[not isPrimary ~ .daas.events.isPrimary;
+            .log.out[`eventBus;;()] "Primary state change [ Previous: ",string[.daas.events.isPrimary]," ] [ New: ",string[isPrimary]," ]";
+
+            .daas.cmon.eb.sendPrimaryState isPrimary;
+            .daas.events.isPrimary:isPrimary;
+        ];
+
+        :isPrimary;
+	}</code_text>
+	<description>determines which event bus is "primary" (used for originating EOD signal and procDown messages, amongst other things). determined by lexicographical ordering of instance names.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>sysRunningInfo</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

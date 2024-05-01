@@ -1,0 +1,52 @@
+<analytic>
+	<analytic>.daas.util.genByDict</analytic>
+	<code_text>{[timeRack;timeCol;symCol]
+    
+    // dictionary for byClause
+    (!) . flip (
+        enlist[(`time;(timeRack;(bin;timeRack;timeCol)))],
+        {x,'x}.surv.util.enl symCol
+        )
+   
+    }</code_text>
+	<description>Applies column aggregations for correct table when aggregating by interval.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>timeRack</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>timeCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>symCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

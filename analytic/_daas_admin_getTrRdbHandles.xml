@@ -1,0 +1,29 @@
+<analytic>
+	<analytic>.daas.admin.getTrRdbHandles</analytic>
+	<code_text>{[]
+    trRdbs:select from .daas.routingMetaData where vendor = `tr, procType = `rdb;
+    trRdbHandles:exec name!syncHandle from database where name in exec procName from trRdbs;
+
+    nullHandles:where null trRdbHandles;
+
+    if[0 &lt; count nullHandles;
+        .log.warn[`respStatus;;()] "One or more TR RDBs are not connected [ RDBs: ",(", " sv string nullHandles)," ]";
+        trRdbHandles:nullHandles _ trRdbHandles;
+    ];
+
+    :trRdbHandles;
+ }
+    </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+	<analyticgroup>daasWatchlistDashboard</analyticgroup>
+</analytic>

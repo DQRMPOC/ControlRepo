@@ -1,0 +1,45 @@
+<analytic>
+	<analytic>.daas.udf.deleteUDF</analytic>
+	<code_text>{[argDict]
+	
+    //argDict from CLI
+    //keys
+    //`funcName
+	
+	//Remove locally - func store
+    noExt:first "." vs raze string argDict`funcName;   
+    delete from `.daas.udf.udfFuncStore where funcName=`$noExt;
+    
+    //Remove from disk
+    udfs:(`$1_/:t)!key each `$string[.daas.udf.fileDir],/:t:("/realtime";"/static";"/trigger");
+
+    udfType:key[udfs]where (`$noExt,".q") in/: value udfs;
+    
+    if[not count udfType;
+        :`$"UDF does not exist";
+        ];
+        
+    .daas.udf.archiveUDF[argDict`funcName;udfType];
+    
+    :`$"UDF succesfully deleted"
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>argDict</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

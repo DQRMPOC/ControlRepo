@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.daas.util.applyNonAssetClassTableName</analytic>
+	<code_text>{[args]
+    
+    if[args[`API]~`getBars;
+        :args
+        ];
+    
+    / this is used to reverse any modification from applying .daas.meta.getSchemaFromDataType
+    / to modify the data type
+    / @see e.daas.util.applyAssetClassTableName
+    args[`dataType]:.daas.meta.getDataTypeFromSchema[args`dataType];
+    args
+    
+    }</code_text>
+	<description>changes the table name into the name defined for the asset class, eg trade to eqTrade for equities</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

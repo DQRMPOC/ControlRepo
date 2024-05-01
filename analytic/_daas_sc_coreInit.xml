@@ -1,0 +1,21 @@
+<analytic>
+	<analytic>.daas.sc.coreInit</analytic>
+	<code_text>{[]
+    //Boot conditional analytic engines
+    .al.callfunction[`.daas.cae.startup][];
+    
+    .log.out[`serviceClasses;"Service classes booted - shutting down";()];
+    exit 0
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+</analytic>

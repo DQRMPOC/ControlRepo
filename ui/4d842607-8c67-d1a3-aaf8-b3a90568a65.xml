@@ -1,0 +1,3395 @@
+<ui>
+	<name>4d842607-8c67-d1a3-aaf8-b3a90568a65</name>
+	<displayName>User Defined Functions</displayName>
+	<description>{
+  "creationDate": "Mon, 12 Jun 2017 13:02:38 GMT",
+  "lastUpdateDate": "Wed, 06 Feb 2019 16:50:04 GMT",
+  "tags": [],
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "2b389966-8023-1433-4f76-17262cfe01"
+    }
+  ],
+  "thumb": null
+}</description>
+	<data>{
+  "id": "4d842607-8c67-d1a3-aaf8-b3a90568a65",
+  "name": "User Defined Functions",
+  "creationDate": "Mon, 12 Jun 2017 13:02:38 GMT",
+  "lastUpdateDate": "Wed, 06 Feb 2019 16:50:04 GMT",
+  "thumb": null,
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "2b389966-8023-1433-4f76-17262cfe01"
+    }
+  ],
+  "screens": [
+    {
+      "id": "2b389966-8023-1433-4f76-17262cfe01",
+      "name": "Screen 1",
+      "thumb": null,
+      "widgets": [
+        {
+          "id": "67a9ad0a-d643-be3e-fbe-d0e731cfed1c",
+          "layout": {
+            "row": 2,
+            "column": 0,
+            "rowSpan": 20,
+            "colSpan": 3
+          },
+          "component": {
+            "id": "component_1010",
+            "key": "Datagrid",
+            "options": {
+              "sortingPossibleValues": [
+                "",
+                "funcName",
+                "funcExists",
+                "func",
+                "description"
+              ],
+              "highlightTargetPossibleValues": [
+                "funcName",
+                "funcExists",
+                "func",
+                "description",
+                "*"
+              ],
+              "Selection": {
+                "DefaultFallbackOnDeselect": false,
+                "SelectedObjectRouting": [
+                  {
+                    "ViewstateProperty": {
+                      "_dashboardsType": "viewstate",
+                      "value": "funcCode"
+                    },
+                    "ColumnProperty": "func",
+                    "IsSetOnDoubleClick": false
+                  },
+                  {
+                    "ViewstateProperty": {
+                      "_dashboardsType": "viewstate",
+                      "value": "funcDesc"
+                    },
+                    "ColumnProperty": "description",
+                    "IsSetOnDoubleClick": false
+                  },
+                  {
+                    "ViewstateProperty": {
+                      "_dashboardsType": "viewstate",
+                      "value": "funcName"
+                    },
+                    "ColumnProperty": "funcName",
+                    "IsSetOnDoubleClick": false
+                  }
+                ],
+                "FollowSelectedValue": true,
+                "RowSelectionColumn": "description",
+                "SelectedValue": {
+                  "_dashboardsType": "viewstate",
+                  "value": "funcDescription"
+                },
+                "Mode": "Multi Row",
+                "SelectedCellValue": "",
+                "SelectedField": "",
+                "CheckboxAlignment": "none"
+              },
+              "format": {
+                "widgetTitle": "User Defined Function Browser",
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleBottomBorderWidth": 0,
+                "titleFontBold": true,
+                "titleShadow": true,
+                "tileBorderWidth": 3,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#696969",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "ShowPagingControl": true,
+                "EnableGrouping": false,
+                "IsEditable": false,
+                "Filtering": "Quick Search",
+                "GroupingAutoCollapse": false,
+                "EnableCustomLayoutConfiguration": false,
+                "KeepNonExistentColumns": false,
+                "ShowSampleGridData": false,
+                "SortOrder": "ascending",
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "allUDFInfo"
+                },
+                "SortColumn": "",
+                "IsInsertable": false
+              },
+              "datagridPossibleColumns": [
+                "funcName",
+                "funcExists",
+                "func",
+                "description"
+              ],
+              "version": "4.1.1s2c",
+              "notificationEvent": [],
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "GroupingConfiguration": [],
+              "FileExport": {
+                "ShowExportCsvButton": true,
+                "FileName": [],
+                "ShowFullExportButton": false,
+                "ShowExportExcelButton": false,
+                "CsvExportDelimiter": ""
+              },
+              "HighlightRules": [],
+              "ColumnsConfiguration": [
+                {
+                  "HighlightChangeDuration": 200,
+                  "PercentageColorOverride": "",
+                  "IsReadonly": false,
+                  "Template": "",
+                  "HideTrailingZeroes": false,
+                  "Field": "funcName",
+                  "RangeHighlightColor": "",
+                  "Format": "General",
+                  "ShowArrowsOnChange": false,
+                  "Currency": "none",
+                  "TextAlign": "center",
+                  "DisplayName": "Function Name",
+                  "Hidden": false,
+                  "UserDefined": false,
+                  "MinWidthAbsolute": 100,
+                  "TimeFormat": "HH:mm:ss",
+                  "HighlightMinValueColor": "",
+                  "WidthWeight": 100,
+                  "Tooltip": "",
+                  "HighlightChanges": false,
+                  "Sortable": true,
+                  "Precision": 2,
+                  "HighlightMaxValueColor": "",
+                  "DateFormat": "YYYY-MM-DD",
+                  "HighlightNegativeColor": "",
+                  "IsSelectable": true
+                },
+                {
+                  "TimeFormat": "HH:mm:ss",
+                  "HighlightChangeDuration": 200,
+                  "HighlightMinValueColor": "",
+                  "WidthWeight": 100,
+                  "Tooltip": "",
+                  "IsReadonly": false,
+                  "HighlightChanges": false,
+                  "Template": "",
+                  "HideTrailingZeroes": false,
+                  "Field": "funcExists",
+                  "RangeHighlightColor": "",
+                  "Format": "General",
+                  "ShowArrowsOnChange": false,
+                  "Sortable": true,
+                  "Precision": 2,
+                  "HighlightMaxValueColor": "",
+                  "Currency": "none",
+                  "DateFormat": "YYYY-MM-DD",
+                  "HighlightNegativeColor": "",
+                  "TextAlign": "center",
+                  "DisplayName": "funcExists",
+                  "Hidden": false,
+                  "UserDefined": false,
+                  "MinWidthAbsolute": 100,
+                  "IsSelectable": true
+                },
+                {
+                  "TimeFormat": "HH:mm:ss",
+                  "HighlightChangeDuration": 200,
+                  "HighlightMinValueColor": "",
+                  "WidthWeight": 100,
+                  "Tooltip": "",
+                  "IsReadonly": false,
+                  "HighlightChanges": false,
+                  "Template": "",
+                  "HideTrailingZeroes": false,
+                  "Field": "func",
+                  "RangeHighlightColor": "",
+                  "Format": "General",
+                  "ShowArrowsOnChange": false,
+                  "Sortable": true,
+                  "Precision": 2,
+                  "HighlightMaxValueColor": "",
+                  "Currency": "none",
+                  "DateFormat": "YYYY-MM-DD",
+                  "HighlightNegativeColor": "",
+                  "TextAlign": "center",
+                  "DisplayName": "func",
+                  "Hidden": false,
+                  "UserDefined": false,
+                  "MinWidthAbsolute": 100,
+                  "IsSelectable": true
+                },
+                {
+                  "TimeFormat": "HH:mm:ss",
+                  "HighlightChangeDuration": 200,
+                  "HighlightMinValueColor": "",
+                  "WidthWeight": 100,
+                  "Tooltip": "",
+                  "IsReadonly": false,
+                  "HighlightChanges": false,
+                  "Template": "",
+                  "HideTrailingZeroes": false,
+                  "Field": "description",
+                  "RangeHighlightColor": "",
+                  "Format": "General",
+                  "ShowArrowsOnChange": false,
+                  "Sortable": true,
+                  "Precision": 2,
+                  "HighlightMaxValueColor": "",
+                  "Currency": "none",
+                  "DateFormat": "YYYY-MM-DD",
+                  "HighlightNegativeColor": "",
+                  "TextAlign": "center",
+                  "DisplayName": "description",
+                  "Hidden": false,
+                  "UserDefined": false,
+                  "MinWidthAbsolute": 100,
+                  "IsSelectable": true
+                }
+              ],
+              "SummaryRow_Groupings": [],
+              "Style": {
+                "SelectedRowBackgroundColor": "",
+                "RowHeight": 30,
+                "FontFamily": "",
+                "HeaderTextTransformation": "none",
+                "EvenRowBackgroundColorOverride": "#282828",
+                "FontSize": "",
+                "advanced": "",
+                "OddRowBackgroundColorOverride": "#303030",
+                "Theme": "Dark",
+                "HeaderFontWeight": "",
+                "HeaderRowHeight": 30
+              },
+              "selectedColumnPossibleValues": [
+                "funcName",
+                "funcExists",
+                "func",
+                "description"
+              ],
+              "CustomFilters": [],
+              "Tooltip": {
+                "Position": "none",
+                "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\r\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\r\n&lt;/div&gt;"
+              }
+            },
+            "prevVersion": 106,
+            "optionsVersion": 152,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "21"
+          }
+        },
+        {
+          "id": "ba146205-40e7-a952-5485-15098fb1ec6",
+          "layout": {
+            "row": 2,
+            "column": 3,
+            "rowSpan": 20,
+            "colSpan": 4
+          },
+          "component": {
+            "id": "component_7283",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "widgetTitle": "Function Description",
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleBottomBorderWidth": 0,
+                "titleFontBold": true,
+                "titleShadow": true,
+                "tileBorderWidth": 3,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#696969",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Left",
+                "FontSize": 13,
+                "tooltip": "",
+                "HtmlText": {
+                  "_dashboardsType": "viewstate",
+                  "value": "mappedDesc"
+                },
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Middle",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 86,
+            "optionsVersion": 90,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "5c4dcc24-b6a4-5dd7-7425-b85595e11f8d",
+          "layout": {
+            "row": 82,
+            "column": 0,
+            "rowSpan": 4,
+            "colSpan": 2
+          },
+          "component": {
+            "id": "component_7317",
+            "key": "QueryMapper",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "funcSelectionMapper"
+                },
+                "Mapping": [
+                  {
+                    "Viewstate": {
+                      "_dashboardsType": "viewstate",
+                      "value": "mappedFuncName"
+                    },
+                    "Key": "funcName"
+                  },
+                  {
+                    "Viewstate": {
+                      "_dashboardsType": "viewstate",
+                      "value": "mappedCode"
+                    },
+                    "Key": "code"
+                  },
+                  {
+                    "Viewstate": {
+                      "_dashboardsType": "viewstate",
+                      "value": "mappedDesc"
+                    },
+                    "Key": "description"
+                  },
+                  {
+                    "Viewstate": {
+                      "_dashboardsType": "viewstate",
+                      "value": "mappedDelFuncText"
+                    },
+                    "Key": "delFuncText"
+                  }
+                ]
+              },
+              "version": "3.1.1"
+            },
+            "prevVersion": 36,
+            "optionsVersion": 36,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "52",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "3b79684b-32af-24d5-9031-d54eb1e25e77",
+          "layout": {
+            "row": 2,
+            "column": 7,
+            "rowSpan": 20,
+            "colSpan": 5
+          },
+          "component": {
+            "id": "component_11111",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "widgetTitle": "Function Code",
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleBottomBorderWidth": 0,
+                "titleFontBold": true,
+                "titleShadow": true,
+                "tileBorderWidth": 3,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#696969",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Left",
+                "FontSize": 13,
+                "tooltip": "",
+                "HtmlText": {
+                  "_dashboardsType": "viewstate",
+                  "value": "funcCode"
+                },
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Middle",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 68,
+            "optionsVersion": 72,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "3a8c808-1242-64d4-e702-d46987dda8a",
+          "layout": {
+            "row": 22,
+            "column": 0,
+            "rowSpan": 3,
+            "colSpan": 3
+          },
+          "component": {
+            "id": "component_5402",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "horizontal": "Center",
+                "fixedWidth": false,
+                "FontSize": 13,
+                "isEnabled": true,
+                "Label": "Prepare selected function for deletion",
+                "tooltip": "",
+                "width": 100,
+                "ComponentName": "linkButton",
+                "vertical": "Middle",
+                "Icon": ""
+              },
+              "Style": {
+                "border": "",
+                "color": "",
+                "advanced": "",
+                "background": ""
+              },
+              "version": "4.2.0",
+              "Actions": [
+                {
+                  "_Type": "map",
+                  "Target": {
+                    "_dashboardsType": "viewstate",
+                    "value": "delFuncName"
+                  },
+                  "Current": {
+                    "_dashboardsType": "viewstate",
+                    "value": "mappedFuncName"
+                  }
+                },
+                {
+                  "_Type": "nav",
+                  "_dashboardsType": "navigation",
+                  "screen": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  },
+                  "dashboard": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  }
+                }
+              ]
+            },
+            "prevVersion": 36,
+            "optionsVersion": 48,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "25"
+          }
+        },
+        {
+          "id": "393319c8-bb29-fc84-6d17-24ecdd0da3cf",
+          "layout": {
+            "row": 22,
+            "column": 3,
+            "rowSpan": 9,
+            "colSpan": 3
+          },
+          "component": {
+            "id": "component_5493",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Center",
+                "FontSize": 18,
+                "tooltip": "",
+                "HtmlText": {
+                  "_dashboardsType": "viewstate",
+                  "value": "mappedDelFuncText"
+                },
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Bottom",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 94,
+            "optionsVersion": 98,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "23a6a321-6266-6130-5a5f-bf8eab50982",
+          "layout": {
+            "row": 22,
+            "column": 6,
+            "rowSpan": 3,
+            "colSpan": 3
+          },
+          "component": {
+            "id": "component_554",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "widgetTitle": "",
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleBottomBorderWidth": 0,
+                "titleFontBold": "",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#ed0e24",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "horizontal": "Center",
+                "fixedWidth": false,
+                "FontSize": 13,
+                "isEnabled": true,
+                "Label": "Confirm Deletion",
+                "tooltip": "",
+                "width": 100,
+                "ComponentName": "linkButton",
+                "vertical": "Middle",
+                "Icon": ""
+              },
+              "Style": {
+                "border": "",
+                "color": "",
+                "advanced": "",
+                "background": ""
+              },
+              "version": "4.2.0",
+              "Actions": [
+                {
+                  "_Type": "map",
+                  "Target": {
+                    "_dashboardsType": "viewstate",
+                    "value": "confirmedDelFuncName"
+                  },
+                  "Current": {
+                    "_dashboardsType": "viewstate",
+                    "value": "delFuncName"
+                  }
+                }
+              ]
+            },
+            "prevVersion": 50,
+            "optionsVersion": 62,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "25"
+          }
+        },
+        {
+          "id": "610791ce-1a2e-a981-5aa-6cb4dfb2476b",
+          "layout": {
+            "row": 25,
+            "column": 0,
+            "rowSpan": 2,
+            "colSpan": 3
+          },
+          "component": {
+            "id": "component_763",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "horizontal": "Center",
+                "fixedWidth": false,
+                "FontSize": 13,
+                "isEnabled": true,
+                "Label": "Remove function from deletion queue",
+                "tooltip": "",
+                "width": 100,
+                "ComponentName": "linkButton",
+                "vertical": "Middle",
+                "Icon": ""
+              },
+              "Style": {
+                "border": "",
+                "color": "",
+                "advanced": "",
+                "background": ""
+              },
+              "version": "4.2.0",
+              "Actions": [
+                {
+                  "_Type": "map",
+                  "Target": {
+                    "_dashboardsType": "viewstate",
+                    "value": "delFuncName"
+                  },
+                  "Current": {
+                    "_dashboardsType": "viewstate",
+                    "value": "nullSym"
+                  }
+                },
+                {
+                  "_Type": "nav",
+                  "_dashboardsType": "navigation",
+                  "screen": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  },
+                  "dashboard": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  }
+                }
+              ]
+            },
+            "prevVersion": 38,
+            "optionsVersion": 50,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "25"
+          }
+        },
+        {
+          "id": "45b5de1b-6ed8-cb94-ee6-3fe7b87f69e",
+          "layout": {
+            "row": 22,
+            "column": 9,
+            "rowSpan": 5,
+            "colSpan": 3
+          },
+          "component": {
+            "id": "component_985",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Center",
+                "FontSize": 13,
+                "tooltip": "",
+                "HtmlText": "insert text here",
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "delFunc"
+                },
+                "vertical": "Middle",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 56,
+            "optionsVersion": 60,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "6461ddb2-e28f-6e63-6253-1772f2dd12f7",
+          "layout": {
+            "row": 31,
+            "column": 0,
+            "rowSpan": 2,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_627",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "widgetTitle": "",
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleBottomBorderWidth": 0,
+                "titleFontBold": "",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#696969",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Center",
+                "FontSize": 14,
+                "tooltip": "",
+                "HtmlText": "&lt;div style=\"text-align: center;\"&gt;&lt;span style=\"font-size: x-large; background-color: transparent;\"&gt;&lt;b&gt;Import User Defined Functions&lt;/b&gt;&lt;/span&gt;&lt;/div&gt;",
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Middle",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 66,
+            "optionsVersion": 72,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "45bf111-11e1-e6db-81f8-40b1825ae8",
+          "layout": {
+            "row": 34,
+            "column": 0,
+            "rowSpan": 1,
+            "colSpan": 5
+          },
+          "component": {
+            "id": "component_757",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "Multiline": false,
+                "horizontal": "Center",
+                "fixedWidth": false,
+                "FontSize": 16,
+                "width": 100,
+                "Theme": "Dark",
+                "ComponentName": "textBox",
+                "Text": {
+                  "_dashboardsType": "viewstate",
+                  "value": "importDirInput"
+                },
+                "vertical": "Middle",
+                "fixedHeight": false,
+                "height": 100
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 20,
+            "optionsVersion": 24,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "33"
+          }
+        },
+        {
+          "id": "ad7fbc6a-a050-ee6f-763-87c6cb1757fd",
+          "layout": {
+            "row": 33,
+            "column": 0,
+            "rowSpan": 1,
+            "colSpan": 5
+          },
+          "component": {
+            "id": "component_775",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Center",
+                "FontSize": 13,
+                "tooltip": "",
+                "HtmlText": "&lt;font size=\"4\"&gt;Import Directory&lt;/font&gt;",
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Middle",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 52,
+            "optionsVersion": 58,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "5a4e323d-4414-2517-5d57-a78227101181",
+          "layout": {
+            "row": 35,
+            "column": 0,
+            "rowSpan": 3,
+            "colSpan": 5
+          },
+          "component": {
+            "id": "component_801",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "horizontal": "Center",
+                "fixedWidth": false,
+                "FontSize": 11,
+                "isEnabled": true,
+                "Label": "Display Directory Contents",
+                "tooltip": "",
+                "width": 100,
+                "ComponentName": "linkButton",
+                "vertical": "Middle",
+                "Icon": ""
+              },
+              "Style": {
+                "border": "",
+                "color": "",
+                "advanced": "",
+                "background": ""
+              },
+              "version": "4.2.0",
+              "Actions": [
+                {
+                  "_Type": "map",
+                  "Target": {
+                    "_dashboardsType": "viewstate",
+                    "value": "importDirCheck"
+                  },
+                  "Current": {
+                    "_dashboardsType": "viewstate",
+                    "value": "importDirInput"
+                  }
+                },
+                {
+                  "_Type": "nav",
+                  "_dashboardsType": "navigation",
+                  "screen": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  },
+                  "dashboard": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  }
+                }
+              ]
+            },
+            "prevVersion": 34,
+            "optionsVersion": 46,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "25"
+          }
+        },
+        {
+          "id": "e1cd15d8-d516-c3a2-4362-2b65a5d54b53",
+          "layout": {
+            "row": 38,
+            "column": 0,
+            "rowSpan": 3,
+            "colSpan": 5
+          },
+          "component": {
+            "id": "component_819",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "horizontal": "Center",
+                "fixedWidth": false,
+                "FontSize": 11,
+                "isEnabled": true,
+                "Label": "Import Directory",
+                "tooltip": "",
+                "width": 100,
+                "ComponentName": "linkButton",
+                "vertical": "Middle",
+                "Icon": ""
+              },
+              "Style": {
+                "border": "",
+                "color": "",
+                "advanced": "",
+                "background": ""
+              },
+              "version": "4.2.0",
+              "Actions": [
+                {
+                  "_Type": "map",
+                  "Target": {
+                    "_dashboardsType": "viewstate",
+                    "value": "importDirAction"
+                  },
+                  "Current": {
+                    "_dashboardsType": "viewstate",
+                    "value": "importDirInput"
+                  }
+                },
+                {
+                  "_Type": "nav",
+                  "_dashboardsType": "navigation",
+                  "screen": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  },
+                  "dashboard": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  }
+                }
+              ]
+            },
+            "prevVersion": 34,
+            "optionsVersion": 46,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "25"
+          }
+        },
+        {
+          "id": "efb2ee56-c82b-956b-dbd8-4e89c6352df9",
+          "layout": {
+            "row": 33,
+            "column": 5,
+            "rowSpan": 12,
+            "colSpan": 7
+          },
+          "component": {
+            "id": "component_898",
+            "key": "Datagrid",
+            "options": {
+              "sortingPossibleValues": [
+                ""
+              ],
+              "highlightTargetPossibleValues": [
+                "*"
+              ],
+              "Selection": {
+                "DefaultFallbackOnDeselect": true,
+                "SelectedObjectRouting": [],
+                "FollowSelectedValue": false,
+                "RowSelectionColumn": "",
+                "SelectedValue": "",
+                "Mode": "Area",
+                "SelectedCellValue": "",
+                "SelectedField": "",
+                "CheckboxAlignment": "none"
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "ShowPagingControl": true,
+                "EnableGrouping": false,
+                "IsEditable": false,
+                "Filtering": "Quick Search",
+                "GroupingAutoCollapse": false,
+                "EnableCustomLayoutConfiguration": false,
+                "KeepNonExistentColumns": false,
+                "ShowSampleGridData": false,
+                "SortOrder": "ascending",
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "importDirContents"
+                },
+                "SortColumn": "",
+                "IsInsertable": false
+              },
+              "datagridPossibleColumns": [],
+              "version": "4.1.1s2c",
+              "notificationEvent": [],
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "GroupingConfiguration": [],
+              "FileExport": {
+                "ShowExportCsvButton": false,
+                "FileName": [],
+                "ShowFullExportButton": false,
+                "ShowExportExcelButton": false,
+                "CsvExportDelimiter": ""
+              },
+              "HighlightRules": [],
+              "ColumnsConfiguration": [
+                {
+                  "HighlightChangeDuration": 200,
+                  "PercentageColorOverride": "",
+                  "IsReadonly": false,
+                  "Template": "",
+                  "HideTrailingZeroes": false,
+                  "Field": "files",
+                  "RangeHighlightColor": "",
+                  "Format": "General",
+                  "ShowArrowsOnChange": false,
+                  "Currency": "none",
+                  "TextAlign": "center",
+                  "DisplayName": "files",
+                  "Hidden": false,
+                  "UserDefined": false,
+                  "MinWidthAbsolute": 100,
+                  "TimeFormat": "HH:mm:ss",
+                  "HighlightMinValueColor": "",
+                  "WidthWeight": 1,
+                  "Tooltip": "",
+                  "HighlightChanges": false,
+                  "Sortable": true,
+                  "Precision": 2,
+                  "HighlightMaxValueColor": "",
+                  "DateFormat": "YYYY-MM-DD",
+                  "HighlightNegativeColor": "",
+                  "IsSelectable": true
+                }
+              ],
+              "SummaryRow_Groupings": [],
+              "Style": {
+                "SelectedRowBackgroundColor": "",
+                "RowHeight": 30,
+                "FontFamily": "",
+                "HeaderTextTransformation": "none",
+                "EvenRowBackgroundColorOverride": "#282828",
+                "FontSize": "",
+                "advanced": "",
+                "OddRowBackgroundColorOverride": "#303030",
+                "Theme": "Dark",
+                "HeaderFontWeight": "",
+                "HeaderRowHeight": 30
+              },
+              "selectedColumnPossibleValues": [],
+              "CustomFilters": [],
+              "Tooltip": {
+                "Position": "none",
+                "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\r\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\r\n&lt;/div&gt;"
+              }
+            },
+            "prevVersion": 72,
+            "optionsVersion": 102,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "21"
+          }
+        },
+        {
+          "id": "a151ea9f-ba38-228-d871-9813e830cce1",
+          "layout": {
+            "row": 82,
+            "column": 2,
+            "rowSpan": 4,
+            "colSpan": 2
+          },
+          "component": {
+            "id": "component_2663",
+            "key": "QueryMapper",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "New node"
+                },
+                "Mapping": [
+                  {}
+                ]
+              },
+              "version": "3.1.1"
+            },
+            "prevVersion": 8,
+            "optionsVersion": 10,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "52",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "c9e4de92-cbe9-7e3a-e985-a8a141722dfb",
+          "layout": {
+            "row": 78,
+            "column": 0,
+            "rowSpan": 4,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_2697",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Center",
+                "FontSize": 13,
+                "tooltip": "",
+                "HtmlText": "",
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Middle",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 52,
+            "optionsVersion": 56,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "25c0708f-49ae-f559-619e-5a6988c72795",
+          "layout": {
+            "row": 45,
+            "column": 0,
+            "rowSpan": 10,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_4800",
+            "key": "Datagrid",
+            "options": {
+              "sortingPossibleValues": [
+                ""
+              ],
+              "highlightTargetPossibleValues": [
+                "*"
+              ],
+              "Selection": {
+                "DefaultFallbackOnDeselect": true,
+                "SelectedObjectRouting": [],
+                "FollowSelectedValue": false,
+                "RowSelectionColumn": "",
+                "SelectedValue": "",
+                "Mode": "Area",
+                "SelectedCellValue": "",
+                "SelectedField": "",
+                "CheckboxAlignment": "none"
+              },
+              "format": {
+                "widgetTitle": "Import Results",
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleBottomBorderWidth": 0,
+                "titleFontBold": "",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "ShowPagingControl": true,
+                "EnableGrouping": false,
+                "IsEditable": false,
+                "Filtering": "Quick Search",
+                "GroupingAutoCollapse": false,
+                "EnableCustomLayoutConfiguration": false,
+                "KeepNonExistentColumns": false,
+                "ShowSampleGridData": false,
+                "SortOrder": "ascending",
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "importResults"
+                },
+                "SortColumn": "",
+                "IsInsertable": false
+              },
+              "datagridPossibleColumns": [],
+              "version": "4.1.1s2c",
+              "notificationEvent": [],
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "GroupingConfiguration": [],
+              "FileExport": {
+                "ShowExportCsvButton": false,
+                "FileName": [],
+                "ShowFullExportButton": false,
+                "ShowExportExcelButton": false,
+                "CsvExportDelimiter": ""
+              },
+              "HighlightRules": [],
+              "ColumnsConfiguration": [
+                {
+                  "HighlightChangeDuration": 200,
+                  "PercentageColorOverride": "",
+                  "IsReadonly": false,
+                  "Template": "",
+                  "HideTrailingZeroes": false,
+                  "Field": "funcName",
+                  "RangeHighlightColor": "",
+                  "Format": "General",
+                  "ShowArrowsOnChange": false,
+                  "Currency": "none",
+                  "TextAlign": "center",
+                  "DisplayName": "funcName",
+                  "Hidden": false,
+                  "UserDefined": false,
+                  "MinWidthAbsolute": 100,
+                  "TimeFormat": "HH:mm:ss",
+                  "HighlightMinValueColor": "",
+                  "WidthWeight": 1,
+                  "Tooltip": "",
+                  "HighlightChanges": false,
+                  "Sortable": true,
+                  "Precision": 2,
+                  "HighlightMaxValueColor": "",
+                  "DateFormat": "YYYY-MM-DD",
+                  "HighlightNegativeColor": "",
+                  "IsSelectable": true
+                },
+                {
+                  "HighlightChangeDuration": 200,
+                  "PercentageColorOverride": "",
+                  "IsReadonly": false,
+                  "Template": "",
+                  "HideTrailingZeroes": false,
+                  "Field": "hasDescription",
+                  "RangeHighlightColor": "",
+                  "Format": "Boolean",
+                  "ShowArrowsOnChange": false,
+                  "Currency": "none",
+                  "TextAlign": "center",
+                  "DisplayName": "hasDescription",
+                  "Hidden": false,
+                  "UserDefined": false,
+                  "MinWidthAbsolute": 60,
+                  "TimeFormat": "HH:mm:ss",
+                  "HighlightMinValueColor": "",
+                  "WidthWeight": 1,
+                  "Tooltip": "",
+                  "HighlightChanges": false,
+                  "Sortable": true,
+                  "Precision": 2,
+                  "HighlightMaxValueColor": "",
+                  "DateFormat": "YYYY-MM-DD",
+                  "HighlightNegativeColor": "",
+                  "IsSelectable": true
+                },
+                {
+                  "HighlightChangeDuration": 200,
+                  "PercentageColorOverride": "",
+                  "IsReadonly": false,
+                  "Template": "",
+                  "HideTrailingZeroes": false,
+                  "Field": "importSuccess",
+                  "RangeHighlightColor": "",
+                  "Format": "Boolean",
+                  "ShowArrowsOnChange": false,
+                  "Currency": "none",
+                  "TextAlign": "center",
+                  "DisplayName": "importSuccess",
+                  "Hidden": false,
+                  "UserDefined": false,
+                  "MinWidthAbsolute": 60,
+                  "TimeFormat": "HH:mm:ss",
+                  "HighlightMinValueColor": "",
+                  "WidthWeight": 1,
+                  "Tooltip": "",
+                  "HighlightChanges": false,
+                  "Sortable": true,
+                  "Precision": 2,
+                  "HighlightMaxValueColor": "",
+                  "DateFormat": "YYYY-MM-DD",
+                  "HighlightNegativeColor": "",
+                  "IsSelectable": true
+                },
+                {
+                  "HighlightChangeDuration": 200,
+                  "PercentageColorOverride": "",
+                  "IsReadonly": false,
+                  "Template": "",
+                  "HideTrailingZeroes": false,
+                  "Field": "errorReason",
+                  "RangeHighlightColor": "",
+                  "Format": "General",
+                  "ShowArrowsOnChange": false,
+                  "Currency": "none",
+                  "TextAlign": "center",
+                  "DisplayName": "errorReason",
+                  "Hidden": false,
+                  "UserDefined": false,
+                  "MinWidthAbsolute": 100,
+                  "TimeFormat": "HH:mm:ss",
+                  "HighlightMinValueColor": "",
+                  "WidthWeight": 1,
+                  "Tooltip": "",
+                  "HighlightChanges": false,
+                  "Sortable": true,
+                  "Precision": 2,
+                  "HighlightMaxValueColor": "",
+                  "DateFormat": "YYYY-MM-DD",
+                  "HighlightNegativeColor": "",
+                  "IsSelectable": true
+                }
+              ],
+              "SummaryRow_Groupings": [],
+              "Style": {
+                "SelectedRowBackgroundColor": "",
+                "RowHeight": 30,
+                "FontFamily": "",
+                "HeaderTextTransformation": "none",
+                "EvenRowBackgroundColorOverride": "#282828",
+                "FontSize": "",
+                "advanced": "",
+                "OddRowBackgroundColorOverride": "#303030",
+                "Theme": "Dark",
+                "HeaderFontWeight": "",
+                "HeaderRowHeight": 30
+              },
+              "selectedColumnPossibleValues": [],
+              "CustomFilters": [],
+              "Tooltip": {
+                "Position": "none",
+                "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\r\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\r\n&lt;/div&gt;"
+              }
+            },
+            "prevVersion": 50,
+            "optionsVersion": 80,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "21"
+          }
+        },
+        {
+          "id": "7994cfb1-caa3-366d-482d-a3a7fb5ad8c",
+          "layout": {
+            "row": 58,
+            "column": 0,
+            "rowSpan": 2,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_934",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Center",
+                "FontSize": "13",
+                "tooltip": "",
+                "HtmlText": "&lt;font size=\"5\"&gt;&lt;b&gt;Export User Defined Functions&lt;/b&gt;&lt;/font&gt;",
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Middle",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 52,
+            "optionsVersion": 58,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "3b7ca51a-f8e4-8877-5957-e6e618aa70e0",
+          "layout": {
+            "row": 55,
+            "column": 0,
+            "rowSpan": 3,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_961",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Center",
+                "FontSize": "13",
+                "tooltip": "",
+                "HtmlText": "",
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Middle",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 50,
+            "optionsVersion": 54,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "c64d646-c3aa-df3f-ad8f-dc23bc3bef20",
+          "layout": {
+            "row": 0,
+            "column": 0,
+            "rowSpan": 2,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_992",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Center",
+                "FontSize": "13",
+                "tooltip": "",
+                "HtmlText": "&lt;b&gt;&lt;font size=\"5\"&gt;Browse User Defined Functions&lt;/font&gt;&lt;/b&gt;",
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Middle",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 50,
+            "optionsVersion": 56,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "8fa310da-3876-65ef-a9b6-70da26a4b27",
+          "layout": {
+            "row": 60,
+            "column": 0,
+            "rowSpan": 1,
+            "colSpan": 5
+          },
+          "component": {
+            "id": "component_1723",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Center",
+                "FontSize": 13,
+                "tooltip": "",
+                "HtmlText": "&lt;font size=\"4\"&gt;Export Directory&lt;/font&gt;",
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Middle",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 54,
+            "optionsVersion": 60,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "a46f3009-a692-42a5-12ac-341e1d31c6ab",
+          "layout": {
+            "row": 61,
+            "column": 0,
+            "rowSpan": 1,
+            "colSpan": 5
+          },
+          "component": {
+            "id": "component_1777",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "Multiline": false,
+                "horizontal": "Center",
+                "fixedWidth": false,
+                "FontSize": 16,
+                "width": 100,
+                "Theme": "Dark",
+                "ComponentName": "textBox",
+                "Text": {
+                  "_dashboardsType": "viewstate",
+                  "value": "exportDirInput"
+                },
+                "vertical": "Middle",
+                "fixedHeight": false,
+                "height": 100
+              },
+              "Style": {
+                "advanced": ""
+              },
+              "version": "4.2.0"
+            },
+            "prevVersion": 22,
+            "optionsVersion": 26,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "33"
+          }
+        },
+        {
+          "id": "e7e4423-3a36-989a-6ae5-9dd0822e3da5",
+          "layout": {
+            "row": 62,
+            "column": 0,
+            "rowSpan": 3,
+            "colSpan": 5
+          },
+          "component": {
+            "id": "component_1869",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "horizontal": "Center",
+                "fixedWidth": false,
+                "FontSize": 11,
+                "isEnabled": true,
+                "Label": "Display Directory Contents",
+                "tooltip": "",
+                "width": 100,
+                "ComponentName": "linkButton",
+                "vertical": "Middle",
+                "Icon": ""
+              },
+              "Style": {
+                "border": "",
+                "color": "",
+                "advanced": "",
+                "background": ""
+              },
+              "version": "4.2.0",
+              "Actions": [
+                {
+                  "_Type": "map",
+                  "Target": {
+                    "_dashboardsType": "viewstate",
+                    "value": "exportDirCheck"
+                  },
+                  "Current": {
+                    "_dashboardsType": "viewstate",
+                    "value": "exportDirInput"
+                  }
+                },
+                {
+                  "_Type": "nav",
+                  "_dashboardsType": "navigation",
+                  "screen": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  },
+                  "dashboard": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  }
+                }
+              ]
+            },
+            "prevVersion": 38,
+            "optionsVersion": 50,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "25"
+          }
+        },
+        {
+          "id": "104fffbe-fc25-2c75-313e-fbadc5db6a7",
+          "layout": {
+            "row": 60,
+            "column": 5,
+            "rowSpan": 12,
+            "colSpan": 7
+          },
+          "component": {
+            "id": "component_2000",
+            "key": "Datagrid",
+            "options": {
+              "sortingPossibleValues": [
+                ""
+              ],
+              "highlightTargetPossibleValues": [
+                "*"
+              ],
+              "Selection": {
+                "DefaultFallbackOnDeselect": true,
+                "SelectedObjectRouting": {},
+                "FollowSelectedValue": false,
+                "RowSelectionColumn": "",
+                "SelectedValue": "",
+                "Mode": "Area",
+                "SelectedCellValue": "",
+                "SelectedField": "",
+                "CheckboxAlignment": "none"
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "ShowPagingControl": true,
+                "EnableGrouping": false,
+                "IsEditable": false,
+                "Filtering": "Quick Search",
+                "GroupingAutoCollapse": false,
+                "EnableCustomLayoutConfiguration": false,
+                "KeepNonExistentColumns": false,
+                "ShowSampleGridData": false,
+                "SortOrder": "ascending",
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "exportDirContents"
+                },
+                "SortColumn": "",
+                "IsInsertable": false
+              },
+              "datagridPossibleColumns": [],
+              "version": "4.1.1s2c",
+              "notificationEvent": [
+                {}
+              ],
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "GroupingConfiguration": [],
+              "FileExport": {
+                "ShowExportCsvButton": false,
+                "FileName": {},
+                "ShowFullExportButton": false,
+                "ShowExportExcelButton": false,
+                "CsvExportDelimiter": ""
+              },
+              "HighlightRules": [
+                {}
+              ],
+              "ColumnsConfiguration": [
+                {
+                  "HighlightChangeDuration": 200,
+                  "PercentageColorOverride": "",
+                  "IsReadonly": false,
+                  "Template": "",
+                  "HideTrailingZeroes": false,
+                  "Field": "files",
+                  "RangeHighlightColor": "",
+                  "Format": "General",
+                  "ShowArrowsOnChange": false,
+                  "Currency": "none",
+                  "TextAlign": "center",
+                  "DisplayName": "files",
+                  "Hidden": false,
+                  "UserDefined": false,
+                  "MinWidthAbsolute": 100,
+                  "TimeFormat": "HH:mm:ss",
+                  "HighlightMinValueColor": "",
+                  "WidthWeight": 1,
+                  "Tooltip": "",
+                  "HighlightChanges": false,
+                  "Sortable": true,
+                  "Precision": 2,
+                  "HighlightMaxValueColor": "",
+                  "DateFormat": "YYYY-MM-DD",
+                  "HighlightNegativeColor": "",
+                  "IsSelectable": true
+                }
+              ],
+              "SummaryRow_Groupings": [
+                {}
+              ],
+              "Style": {
+                "SelectedRowBackgroundColor": "",
+                "RowHeight": 30,
+                "FontFamily": "",
+                "HeaderTextTransformation": "none",
+                "EvenRowBackgroundColorOverride": "#282828",
+                "FontSize": "",
+                "advanced": "",
+                "OddRowBackgroundColorOverride": "#303030",
+                "Theme": "Dark",
+                "HeaderFontWeight": "",
+                "HeaderRowHeight": 30
+              },
+              "selectedColumnPossibleValues": [],
+              "CustomFilters": [],
+              "Tooltip": {
+                "Position": "none",
+                "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\r\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\r\n&lt;/div&gt;"
+              }
+            },
+            "prevVersion": 70,
+            "optionsVersion": 100,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "21"
+          }
+        },
+        {
+          "id": "57a0601c-a680-7ae9-2d46-6f52dcfd437",
+          "layout": {
+            "row": 65,
+            "column": 0,
+            "rowSpan": 3,
+            "colSpan": 5
+          },
+          "component": {
+            "id": "component_2190",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "horizontal": "Center",
+                "fixedWidth": false,
+                "FontSize": 11,
+                "isEnabled": true,
+                "Label": "Export to Directory",
+                "tooltip": "",
+                "width": 100,
+                "ComponentName": "linkButton",
+                "vertical": "Middle",
+                "Icon": ""
+              },
+              "Style": {
+                "border": "",
+                "color": "",
+                "advanced": "",
+                "background": ""
+              },
+              "version": "4.2.0",
+              "Actions": [
+                {
+                  "_Type": "map",
+                  "Target": {
+                    "_dashboardsType": "viewstate",
+                    "value": "exportDirAction"
+                  },
+                  "Current": {
+                    "_dashboardsType": "viewstate",
+                    "value": "exportDirInput"
+                  }
+                },
+                {
+                  "_Type": "nav",
+                  "_dashboardsType": "navigation",
+                  "screen": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  },
+                  "dashboard": {
+                    "id": "&lt;none&gt;",
+                    "title": "&lt;none&gt;"
+                  }
+                }
+              ]
+            },
+            "prevVersion": 40,
+            "optionsVersion": 52,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "25"
+          }
+        },
+        {
+          "id": "20ba251f-a12c-a4fd-d53c-2806d7e57c49",
+          "layout": {
+            "row": 72,
+            "column": 0,
+            "rowSpan": 6,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_2313",
+            "key": "Datagrid",
+            "options": {
+              "sortingPossibleValues": [
+                ""
+              ],
+              "highlightTargetPossibleValues": [
+                "*"
+              ],
+              "Selection": {
+                "DefaultFallbackOnDeselect": true,
+                "SelectedObjectRouting": [],
+                "FollowSelectedValue": false,
+                "RowSelectionColumn": "",
+                "SelectedValue": "",
+                "Mode": "Area",
+                "SelectedCellValue": "",
+                "SelectedField": "",
+                "CheckboxAlignment": "none"
+              },
+              "format": {
+                "widgetTitle": "Export Results",
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleBottomBorderWidth": 0,
+                "titleFontBold": "",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "ShowPagingControl": false,
+                "EnableGrouping": false,
+                "IsEditable": false,
+                "Filtering": "disabled",
+                "GroupingAutoCollapse": false,
+                "EnableCustomLayoutConfiguration": false,
+                "KeepNonExistentColumns": false,
+                "ShowSampleGridData": false,
+                "SortOrder": "ascending",
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "exportResults"
+                },
+                "SortColumn": "",
+                "IsInsertable": false
+              },
+              "datagridPossibleColumns": [],
+              "version": "4.1.1s2c",
+              "notificationEvent": [],
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "GroupingConfiguration": [],
+              "FileExport": {
+                "ShowExportCsvButton": false,
+                "FileName": [],
+                "ShowFullExportButton": false,
+                "ShowExportExcelButton": false,
+                "CsvExportDelimiter": ""
+              },
+              "HighlightRules": [],
+              "ColumnsConfiguration": [
+                {
+                  "HighlightChangeDuration": 200,
+                  "PercentageColorOverride": "",
+                  "IsReadonly": false,
+                  "Template": "",
+                  "HideTrailingZeroes": false,
+                  "Field": "results",
+                  "RangeHighlightColor": "",
+                  "Format": "General",
+                  "ShowArrowsOnChange": false,
+                  "Currency": "none",
+                  "TextAlign": "center",
+                  "DisplayName": "results",
+                  "Hidden": false,
+                  "UserDefined": false,
+                  "MinWidthAbsolute": 100,
+                  "TimeFormat": "HH:mm:ss",
+                  "HighlightMinValueColor": "",
+                  "WidthWeight": 1,
+                  "Tooltip": "",
+                  "HighlightChanges": false,
+                  "Sortable": true,
+                  "Precision": 2,
+                  "HighlightMaxValueColor": "",
+                  "DateFormat": "YYYY-MM-DD",
+                  "HighlightNegativeColor": "",
+                  "IsSelectable": true
+                }
+              ],
+              "SummaryRow_Groupings": [],
+              "Style": {
+                "SelectedRowBackgroundColor": "",
+                "RowHeight": 30,
+                "FontFamily": "",
+                "HeaderTextTransformation": "none",
+                "EvenRowBackgroundColorOverride": "#282828",
+                "FontSize": "",
+                "advanced": "",
+                "OddRowBackgroundColorOverride": "#303030",
+                "Theme": "Dark",
+                "HeaderFontWeight": "",
+                "HeaderRowHeight": 30
+              },
+              "selectedColumnPossibleValues": [],
+              "CustomFilters": [],
+              "Tooltip": {
+                "Position": "none",
+                "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\r\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\r\n&lt;/div&gt;"
+              }
+            },
+            "prevVersion": 44,
+            "optionsVersion": 74,
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "hasOnSettingsChange": true,
+            "definitionId": "21"
+          }
+        }
+      ],
+      "rowCount": 86,
+      "rowHeight": 25,
+      "colCount": 12,
+      "isDefault": true
+    }
+  ],
+  "tags": [],
+  "dashboardTheme": "Dark",
+  "saveTimestamp": null,
+  "rowCount": null,
+  "rowHeight": 25,
+  "colCount": 12,
+  "viewState": {
+    "mappedDelFuncText": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": "No function selected for deletion"
+    },
+    "importDirCheck": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "exportDirCheck": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "funcCode": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "dummyTime": {
+      "_default": "NOW",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "datetime",
+      "value": "NOW"
+    },
+    "confirmedDelFuncName": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "mappedFuncName": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "mappedCode": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "funcDesc": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "string",
+      "value": ""
+    },
+    "exportDirAction": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "mappedDesc": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "string",
+      "value": "No description text for selected function."
+    },
+    "funcDescription": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "string",
+      "value": ""
+    },
+    "funcName": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "exportDirInput": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "curTime": {
+      "_default": "NOW",
+      "_viewType": true,
+      "_rolling": true,
+      "_type": "timestamp",
+      "value": "2019-02-06T16:41:02.447000000Z"
+    },
+    "importDirAction": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "descriptionFixedOutput": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": "",
+      "_listtype": "symbol"
+    },
+    "nullSym": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "importDirInput": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "delFuncName": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "selected": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "dict",
+      "value": ""
+    },
+    ".settings": {
+      "component_4800": {
+        "UsersColumnsConfiguration": null,
+        "GroupingConfiguration": [],
+        "version": 16
+      },
+      "component_2313": {
+        "UsersColumnsConfiguration": null,
+        "GroupingConfiguration": [],
+        "version": 10
+      },
+      "component_1010": {
+        "UsersColumnsConfiguration": null,
+        "GroupingConfiguration": [],
+        "version": 45
+      },
+      "component_2000": {
+        "GroupingConfiguration": [],
+        "version": 10
+      },
+      "component_898": {
+        "UsersColumnsConfiguration": null,
+        "GroupingConfiguration": [],
+        "version": 20
+      }
+    }
+  },
+  "data": {
+    "exportResults": {
+      "_autoExec": true,
+      "_columns": [],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "emea_gw",
+      "_maxRows": 2000,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": "{[exportDir]\n\nbadDir:`=exportDir;\nif[badDir; :()];\n\n: ([]results: enlist .daas.udf.exportFuncs `funcNames`dir!(`;hsym exportDir) );\n\n\n}",
+      "_queryParams": [
+        {
+          "radio1Id": "radiobtn2400",
+          "radio2Id": "radiobtn2401",
+          "isViewState": true,
+          "name": "exportDir",
+          "IsKdbParam": true,
+          "index": 0,
+          "radioId": "radiogrp2399",
+          "i": 0,
+          "type": "symbol",
+          "value": "&lt;%exportDirAction%&gt;"
+        }
+      ],
+      "_subscriptionKey": "",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": ""
+    },
+    "descriptionBoxOutput": {
+      "_autoExec": true,
+      "_columns": [
+        "Property",
+        "Value"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "emea_gw",
+      "_maxRows": 2000,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": "{[inputString]\n: enlist[`out] ! enlist `$ $[count inputString;\n\tinputString;\n\t\"No description available for selected function.\"];\n\n}",
+      "_queryParams": [
+        {
+          "radio1Id": "radiobtn6597",
+          "radio2Id": "radiobtn6598",
+          "isViewState": true,
+          "name": "inputString",
+          "IsKdbParam": true,
+          "index": 0,
+          "radioId": "radiogrp6596",
+          "i": 0,
+          "type": "string",
+          "value": "&lt;%funcDescription%&gt;"
+        }
+      ],
+      "_subscriptionKey": "",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": ""
+    },
+    "delFunc": {
+      "_autoExec": true,
+      "_columns": [
+        "String"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "emea_gw",
+      "_maxRows": 2000,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": "{[delFunc]\nif[`=delFunc;\n\t:`$\"No function deleted\"];\n//: `$ -3! (`deleteUDF;enlist[`funcNames]!enlist delFunc);\nres:@[{ (deleteUDF x;1b)};enlist[`funcNames]!enlist delFunc;{(raze string x;0b)}];\nsuccess:last res;\nerror:first res;\nif[not success; :`$\"Error deleting function: \", error];\n: `$ \"Function \", string[delFunc], \" successfully deleted\";\n}",
+      "_queryParams": [
+        {
+          "radio1Id": "radiobtn6175",
+          "radio2Id": "radiobtn6176",
+          "isViewState": true,
+          "name": "delFunc",
+          "IsKdbParam": true,
+          "index": 0,
+          "radioId": "radiogrp6174",
+          "i": 0,
+          "type": "symbol",
+          "value": "&lt;%confirmedDelFuncName%&gt;"
+        }
+      ],
+      "_subscriptionKey": "",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": ""
+    },
+    "exportDirContents": {
+      "_autoExec": true,
+      "_columns": [],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "emea_gw",
+      "_maxRows": 2000,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": "{[dir]\nif[dir=`; :()];\n: ([] files:key hsym dir);\n}",
+      "_queryParams": [
+        {
+          "radio1Id": "radiobtn2116",
+          "radio2Id": "radiobtn2117",
+          "isViewState": true,
+          "name": "dir",
+          "IsKdbParam": true,
+          "index": 0,
+          "radioId": "radiogrp2115",
+          "type": "symbol",
+          "value": "&lt;%exportDirCheck%&gt;"
+        }
+      ],
+      "_subscriptionKey": "",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": ""
+    },
+    "importDirContents": {
+      "_autoExec": true,
+      "_columns": [],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "emea_gw",
+      "_maxRows": 2000,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": "{[dir]\nif[dir=`; :()];\n: ([] files:key hsym dir);\n}",
+      "_queryParams": [
+        {
+          "radio1Id": "radiobtn2407",
+          "radio2Id": "radiobtn2408",
+          "isViewState": true,
+          "name": "dir",
+          "IsKdbParam": true,
+          "index": 0,
+          "radioId": "radiogrp2406",
+          "i": 0,
+          "type": "symbol",
+          "value": "&lt;%importDirCheck%&gt;"
+        }
+      ],
+      "_subscriptionKey": "",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": ""
+    },
+    "funcSelectionMapper": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_maxRows": 2000,
+      "_serverPaging": false,
+      "_aggregateFns": [],
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_aggregateCols": [],
+      "_subscriptionInterval": 3,
+      "_dataType": "query",
+      "_hasUpdateQuery": false,
+      "_subscriptionKey": "",
+      "_dataSource": "kdb",
+      "_columns": [
+        "Property",
+        "Value"
+      ],
+      "_breakdownCols": [],
+      "_queryString": "{[funcName;code;description;delFuncName]\nif[not count description; description:\"No description text for selected function.\"];\ndelFuncText:$[`=delFuncName;\"No function selected for deletion\";\"Confirm deletion of function \",string[delFuncName], \" by clicking \\\"Confirm Deletion\\\"\" ];\n:`funcName`code`description`delFuncText!(funcName;code;`$description;`$delFuncText);\n}",
+      "_queryParams": [
+        {
+          "radio1Id": "radiobtn1580",
+          "radio2Id": "radiobtn1581",
+          "isViewState": true,
+          "name": "funcName",
+          "IsKdbParam": true,
+          "index": 0,
+          "radioId": "radiogrp1579",
+          "i": 0,
+          "type": "symbol",
+          "value": "&lt;%funcName%&gt;"
+        },
+        {
+          "radio1Id": "radiobtn1594",
+          "radio2Id": "radiobtn1595",
+          "isViewState": true,
+          "name": "code",
+          "IsKdbParam": true,
+          "index": 1,
+          "radioId": "radiogrp1593",
+          "i": 1,
+          "type": "string",
+          "value": ""
+        },
+        {
+          "radio1Id": "radiobtn1608",
+          "radio2Id": "radiobtn1609",
+          "isViewState": true,
+          "name": "description",
+          "IsKdbParam": true,
+          "index": 1,
+          "radioId": "radiogrp1607",
+          "i": 2,
+          "type": "string",
+          "value": "&lt;%funcDesc%&gt;"
+        },
+        {
+          "radio1Id": "radiobtn1622",
+          "radio2Id": "radiobtn1623",
+          "isViewState": true,
+          "name": "delFuncName",
+          "IsKdbParam": true,
+          "index": 3,
+          "radioId": "radiogrp1621",
+          "i": 3,
+          "type": "symbol",
+          "value": "&lt;%delFuncName%&gt;"
+        }
+      ],
+      "_updateQueryString": "",
+      "_subscriptionType": "static",
+      "_connection": "daas_adminGW"
+    },
+    "New node": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_maxRows": 2000,
+      "_serverPaging": false,
+      "_aggregateFns": [],
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_aggregateCols": [],
+      "_subscriptionInterval": 3,
+      "_dataType": "query",
+      "_hasUpdateQuery": false,
+      "_subscriptionKey": "",
+      "_dataSource": "kdb",
+      "_columns": [
+        ""
+      ],
+      "_breakdownCols": [],
+      "_queryString": "{[importDir]\n\n}",
+      "_queryParams": [
+        {
+          "radio1Id": "radiobtn4782",
+          "radio2Id": "radiobtn4783",
+          "isViewState": true,
+          "name": "importDir",
+          "IsKdbParam": true,
+          "index": 0,
+          "radioId": "radiogrp4781",
+          "i": 0,
+          "type": "symbol",
+          "value": "&lt;%importDirAction%&gt;"
+        }
+      ],
+      "_updateQueryString": "",
+      "_subscriptionType": "static",
+      "_connection": "daas_adminGW"
+    },
+    "importResults": {
+      "_autoExec": true,
+      "_columns": [],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "emea_gw",
+      "_maxRows": 2000,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": "{[importDir]\n\nbadDir:`=importDir;\nif[badDir; :()];\n\n: .daas.udf.importFuncs `funcNames`dir!(`;hsym importDir);\n\n\n}",
+      "_queryParams": [
+        {
+          "radio1Id": "radiobtn6418",
+          "radio2Id": "radiobtn6419",
+          "isViewState": true,
+          "name": "importDir",
+          "IsKdbParam": true,
+          "index": 0,
+          "radioId": "radiogrp6417",
+          "i": 0,
+          "type": "symbol",
+          "value": "&lt;%importDirAction%&gt;"
+        }
+      ],
+      "_subscriptionKey": "",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": ""
+    },
+    "allUDFInfo": {
+      "_autoExec": true,
+      "_columns": [
+        "funcName",
+        "funcExists",
+        "func",
+        "description"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "emea_gw",
+      "_maxRows": 2000,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "polling",
+      "_subscriptionInterval": "5",
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": "{[dummyTime]\ngetUDFInfo enlist[`funcNames]! enlist`\n}",
+      "_queryParams": [
+        {
+          "radio1Id": "radiobtn4356",
+          "radio2Id": "radiobtn4357",
+          "isViewState": true,
+          "name": "dummyTime",
+          "IsKdbParam": true,
+          "index": 0,
+          "radioId": "radiogrp4355",
+          "i": 0,
+          "type": "datetime",
+          "value": "&lt;%dummyTime%&gt;"
+        }
+      ],
+      "_subscriptionKey": "",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": ""
+    }
+  },
+  "widgetsSpacing": 0,
+  "borderColor": "000000",
+  "borderBackground": "000000",
+  "transparentBackground": true,
+  "borderWidth": 0,
+  "borderRounding": 0,
+  "borderSpacing": 0,
+  "borderShadow": false,
+  "enableShareDashboard": false,
+  "notifications": {
+    "Notifications": {
+      "_Version": "4.2.0s2",
+      "Enabled": true,
+      "InBrowserNotifications": false,
+      "Position": "Bottom Right",
+      "MaxVisibleCount": 3,
+      "FadeOut": 5,
+      "Icon": "bell-o",
+      "Sound": "beep",
+      "SoundVolume": 100,
+      "Grouping": false,
+      "GroupingInterval": 1
+    }
+  },
+  "relativeHeight": false,
+  "showLoadingIndicators": false,
+  "unsavedViewerPrompt": false,
+  "wasChanged": true
+}</data>
+</ui>

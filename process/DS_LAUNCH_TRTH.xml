@@ -1,0 +1,64 @@
+<process>
+	<process>DS_LAUNCH_TRTH</process>
+	<directory>/</directory>
+	<file>DS_LAUNCH_TRTH.q</file>
+	<description>External Process Launcher. Provides the ability to start external applications from Delta Control including applications that include the Delta Control API.</description>
+	<apps></apps>
+	<returnstat></returnstat>
+	<param>
+		<parameter>dc_port</parameter>
+		<description>Port</description>
+		<datatype>Integer</datatype>
+		<required>1</required>
+		<default>0</default>
+	</param>
+	<param>
+		<parameter>workingDirectory</parameter>
+		<description>directory to cd to before running the command</description>
+		<datatype>Symbol</datatype>
+		<required>0</required>
+		<default>.</default>
+	</param>
+	<param>
+		<parameter>command</parameter>
+		<description>command to run</description>
+		<datatype>Symbol</datatype>
+		<required>0</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>parameterText</parameter>
+		<description>additional command line parameters</description>
+		<datatype>Symbol</datatype>
+		<required>0</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>parameterConfig</parameter>
+		<description></description>
+		<datatype>Config</datatype>
+		<required>0</required>
+		<default>DS_LAUNCH_COMMANDLINE_PARAMS</default>
+	</param>
+	<param>
+		<parameter>blockOnCommand</parameter>
+		<description>If false then &amp; is added to the end of the command line</description>
+		<datatype>Boolean</datatype>
+		<required>0</required>
+		<default>false</default>
+	</param>
+	<param>
+		<parameter>runInBackground</parameter>
+		<description>If true then nohup is added to the start of the command</description>
+		<datatype>Boolean</datatype>
+		<required>0</required>
+		<default>true</default>
+	</param>
+	<param>
+		<parameter>proxyConfig</parameter>
+		<description></description>
+		<datatype>Config</datatype>
+		<required>0</required>
+		<default>DS_LAUNCH_COMMANDLINE_PARAMS</default>
+	</param>
+</process>

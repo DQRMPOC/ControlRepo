@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.daas.udfGw.coreInit</analytic>
+	<code_text>{[]
+
+    .daas.init.setMetaAndEventBusConn[];
+
+    .daas.udf.fileDir: hsym .utils.checkForEnvVar "ENV=DELTADATA_HOME=/DaaSData/udfdir";
+
+    .al.loadinstruction[`.daas.cfg.gwCfg];
+    .al.loadinstruction[`.daas.udf.udfRoutingGwInit];
+    .al.loadinstruction[`.daas.cfg.serverCfg];
+    .al.loadinstruction[`.daas.cfg.routingMetaServerInit];
+    
+    / Load table meta data
+    .al.loadinstruction[`.daas.meta.common];
+    .daas.meta.init[];
+    
+    .al.loadinstruction[`.daas.join.common];
+
+    / Monitoring 2.0 - GW metrics
+    .al.loadinstruction `.daas.cmon.gw;
+    .daas.cmon.gw.init[];
+
+    .al.loadinstruction[`.daas.udf.udfStartup];
+
+
+
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

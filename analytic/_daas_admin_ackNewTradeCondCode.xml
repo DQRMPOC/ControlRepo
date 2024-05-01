@@ -1,0 +1,48 @@
+<analytic>
+	<analytic>.daas.admin.ackNewTradeCondCode</analytic>
+	<code_text>{[exchange;code;clicked]
+
+  if[clicked;	
+	upd:select from `.daas.admin.newTradeConditionCodes where exch=exchange,cond=code;
+	newFilterConfig:`exch`cond xasc .daas.cfg.filterRuleConfig,upd;
+	.uc.editActiveSingleParamData[`.daas.cfg.filterRuleConfig; `; newFilterConfig];
+	delete from `.daas.admin.newTradeConditionCodes where exch=exchange,cond=code;
+	.log.out[.z.h; "Acknowledged: ",-3!upd;()];
+	];
+	/ update the viewstate
+	([] (`clicked`ts);(0b;.z.P))
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>exchange</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>code</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>clicked</parameter>
+		<default>false</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

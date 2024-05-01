@@ -1,0 +1,31 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.dssBarsHDBDirectories</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>assetClass</element>
+		<elementType>Symbol</elementType>
+		<elementValue>EQ</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>dir</element>
+		<elementType>Symbol</elementType>
+		<elementValue>DAASDATA_HDBLOGDIR_EMEA_stats_DSS_marketData_EQ_EXCH_NOFILTER</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>assetClass</element>
+		<elementType>Symbol</elementType>
+		<elementValue>FUT</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>dir</element>
+		<elementType>Symbol</elementType>
+		<elementValue>DAASDATA_HDBLOGDIR_EMEA_stats_DSS_marketData_FUT_EXCH_NOFILTER</elementValue>
+	</param>
+</configparam>

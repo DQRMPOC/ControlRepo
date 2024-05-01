@@ -1,0 +1,54 @@
+<analytic>
+	<analytic>.daas.trth.requestMultiAction</analytic>
+	<code_text>{[requestSym;startD;endD]
+
+//split the request back into components
+splitRequest:(";" vs string requestSym);
+
+//work out all dates between the start and end date
+startD:"D"$10#startD;
+endD:"D"$10#endD;
+startDs:string {x + til 1 + y-x}[startD;endD];
+
+//getting filename to add startdate to it
+fileName:splitRequest[8];
+
+//tab with new data
+tab:([]startDate:("-"sv/:("."vs/: startDs)),\:"T00:00:00.000";endDate:("-"sv/:("."vs/: startDs)),\:"T23:59:59.999";reportName:startDs ,\: fileName);
+
+/new list of requestSyms we can call for each startDate
+{`$raze string ";" sv@[x;5 6 8;:;y]}[splitRequest;]each value each tab
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>requestSym</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>startD</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>endD</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

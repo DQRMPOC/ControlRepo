@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.validation.SURV_ADDITIONAL_ALERT_PARAMS</analytic>
+	<code_text>{[config]
+	thisFunc:".validation.SURV_ADDITIONAL_ALERT_PARAMS";
+    
+    if[count missing:where not (params:`startTime`endTime`region`vendor`product`timeZone) in config`param;
+        '"The following params are missing: ",", " sv string params missing 
+        ];
+    
+    if[not (first exec values from config where param=`product) in valid:distinct `,`.uc.getActiveParamValue[`SURV_PRODUCT_MAPPING;`]`displayName;
+        '"Not a valid product entry. Valid product entries are  ",", " sv string valid 
+        ];
+
+    if[not (first exec values from config where param=`region) in valid:distinct `,.uc.getActiveParamValue[`.daas.cfg.tableMetaData;`]`region;
+        '"Not a valid region entry. Valid region entries are  ",", " sv string valid
+        ];
+
+    if[not (first exec values from config where param=`vendor) in valid:distinct `,.uc.getActiveParamValue[`.daas.cfg.tableMetaData;`]`source;
+        '"Not a valid vendor entry. Valid vendor entries are  ",", " sv string valid
+        ];
+    
+    1b
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

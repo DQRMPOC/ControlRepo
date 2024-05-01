@@ -1,0 +1,11 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>monitoringCapture_rdb</connection>
+	<host>ENV=global_rdb_monitoringCapture_HOST=</host>
+	<port>ENV=global_rdb_monitoringCapture_PORT=</port>
+	<user>Administrator</user>
+	<pass></pass>
+	<dbname></dbname>
+	<dbtype>q</dbtype>
+	<tls></tls>
+</connection>

@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.udf.rtctpInit</analytic>
+	<code_text>{[]
+   
+.daas.init.setMetaAndEventBusConn[];
+
+.al.loadinstruction[`.daas.cfg.routingMetaServerInit];
+
+/ Monitoring 2.0 - Real-Time Consumer metrics
+.al.loadinstruction `.daas.cmon.rtc;
+.daas.cmon.rtc.init[];
+
+.daas.init.streaming[];
+
+.daas.init.l2.setGenericGlobals[];
+
+
+.tbl.gettable each `$string[.daas.cfg.asset],/: string `Trade`Quote`OpenClose`Update`LastTrade`LastQuote`LastOpenClose;
+.tbl.gettable each `order`execution;
+.tbl.gettable`$@[string[.daas.cfg.asset],("CurrentSnapShot");where "L"=string[.daas.cfg.asset];:;"l"];
+
+.al.loadgroupfunctions each value "`",ssr[;",";"`"]"DeltaTools,DxAF,DxAFFunctions,DxGwAgg,DxHDB,DxSelect,DxSelectUtils,DxTZ,daasAsync,daasCanCor,daasPlatform,daasQS,daasUtil";
+
+ .daas.stream.lastTable:(`$string[.daas.cfg.asset],/:("Trade";"Quote";"OpenClose"))!`$string[.daas.cfg.asset],/:("LastTrade";"LastQuote";"LastOpenClose");
+ .daas.stream.L2booktab:(enlist`$string[.daas.cfg.asset],"Update")!enlist`$@[string[.daas.cfg.asset],("CurrentSnapShot");where "L"=string[.daas.cfg.asset];:;"l"];
+ }</code_text>
+	<description>Initial state function for RDB, HDB and iHDB.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

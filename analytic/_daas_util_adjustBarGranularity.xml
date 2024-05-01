@@ -1,0 +1,63 @@
+<analytic>
+	<analytic>.daas.util.adjustBarGranularity</analytic>
+	<code_text>{[functionName;args]
+    
+    if[functionName=`getBars;
+        
+        offset:value first .uc.getActiveParamValue[`.daas.cfg.weeklyBarStartDay;`];
+        
+        //Adjust weekly bars to be daily bars with a granularity of 7, and a startDate of the start of the week as defined in .daas.cfg.weeklyBarStartDay
+        if[args[`granularityUnit]=`week;
+            args[`granularityUnit]:`day;
+            args[`granularity]:7;
+            args[`startDate]:offset+args[`startDate]-(args[`startDate])mod 7; /2000.01.01 is a staurday so add on the offset
+            args[`endDate]:args[`startDate]+6;
+            ];
+
+        //Adjust monthly bars to be daily bars with a granularity of the number of days in the month, and a startDate of the 1st of the month
+        if[args[`granularityUnit]=`month;
+            args[`granularityUnit]:`day;
+            args[`startDate]:"d"$"m"$args[`startDate];
+            args[`endDate]:("d"$("m"$args[`startDate])+1)-1;
+            args[`granularity]:1+args[`endDate]-args[`startDate];
+            ];
+    
+        ];
+    
+    args
+ 
+    }</code_text>
+	<description>Adjust Monthly and weekly bars to correct format</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

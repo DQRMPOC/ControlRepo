@@ -1,0 +1,39 @@
+<analytic>
+	<analytic>.daas.util.stripAnalyticSyms</analytic>
+	<code_text>{[args]
+	//If we are pivoting data
+    if[not first exec pivotForAggregations from .daas.cfg.pivotSettings where tableName=args[`dataType];
+        :args;
+        ];
+
+    //If it is a parse tree analytic clause reduce it to symbols contained
+    //Get value out - could be dictionary or just parse tree
+    if[99=type ana:args`analytics;
+        ana:value ana;
+        ];
+    
+    //Flatten analytic and applyFilter clause. Ignore null symbol `
+    args[`readSyms]:(flat where -11=type each flat:(raze/) args[`applyFilter],ana) except `;
+    
+    args
+
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,11 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_TR_FUTL2</tablegroup>
+	<tablename>dacsUpdate</tablename>
+	<tablename>futL2Summary</tablename>
+	<tablename>futL2Update</tablename>
+	<tablename>futl2CurrentSnapShot</tablename>
+	<tablename>futl2intradaySnapShots</tablename>
+	<tablename>l2Legacy</tablename>
+	<tablename>respStatus</tablename>
+</schemagroup>

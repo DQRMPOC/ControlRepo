@@ -1,0 +1,11 @@
+<analyticgroup>
+	<name>daasQS</name>
+	<parameter>ignore</parameter>
+	<analytic>getBars</analytic>
+	<analytic>getInstrumentTaxonomy</analytic>
+	<analytic>getRef</analytic>
+	<analytic>getStats</analytic>
+	<analytic>getSummary</analytic>
+	<analytic>getTicks</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

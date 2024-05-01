@@ -1,0 +1,62 @@
+<analytic>
+	<analytic>.daas.trth.rawRequestSplit</analytic>
+	<code_text>{[requestSym;startD;endD]
+
+/startD:dictn[`startDateTime];
+/endD:dictn[`endDateTime];
+
+//split the request back into components
+splitRequest:(";" vs string requestSym);
+
+//work out all dates between the start and end date
+startDate:"D"$10#startD;
+endDate:"D"$10#endD;
+dates:{x + til 1 + y-x}[startDate;endDate];
+
+/cut on saturdays
+cutPoints:ct where (ct:dates where 0=dates mod 7) within (startDate;endDate);
+startPoints:ssr[;"D";"T"]each string(value (string"D"$10#startD),"D",11_startD),(cutPoints+00:00:00);
+endPoints:ssr[;"D";"T"]each string (-1+cutPoints+00:00:00),value (string"D"$10#endD),"D",11_endD;
+
+//getting filename to add startdate to it
+fileName:splitRequest[8];
+
+//tab with new data
+tab:([]startDate:@[;(4 7);:;"-"] each startPoints;endDate:@[;(4 7);:;"-"] each endPoints;reportName:{@[count each x;where 40&lt;count each x;:;40]#'x}(10#/:startPoints),\: ".",fileName);
+
+/new list of requestSyms we can call for each startDate
+{`$raze string ";" sv@[x;5 6 8;:;y]}[splitRequest;]each value each tab
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>requestSym</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>startD</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>endD</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

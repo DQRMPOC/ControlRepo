@@ -1,0 +1,31 @@
+<analyticgroup>
+	<name>DxReportAnalytics</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.trth.request</analytic>
+	<analytic>.surv.master.clearAlertLogicCalcsFromUI</analytic>
+	<analytic>.surv.master.clearAllUnrequiredAlertLogicCalcs</analytic>
+	<analytic>.surv.master.clearAllUnrequiredDailyAggregations</analytic>
+	<analytic>.surv.master.clearBenchmarkDailyAggregationsFromUI</analytic>
+	<analytic>.surv.master.crossValidationForModelsUI</analytic>
+	<analytic>.surv.master.ecm.runMSTeamsIngestionUI</analytic>
+	<analytic>.surv.master.resetAlertLogicCalcsSchemaFromUI</analytic>
+	<analytic>.surv.master.resetBenchmarkOrDailyAggregationsSchemaFromUI</analytic>
+	<analytic>.surv.master.runBatchFromUI</analytic>
+	<analytic>.surv.master.runBatchRealtimeFromUI</analytic>
+	<analytic>.surv.master.runDataSyncUI</analytic>
+	<analytic>.surv.master.runMetricsCollectionUI</analytic>
+	<analytic>.surv.master.scheduleBatchFromUI</analytic>
+	<analytic>.surv.master.trainModelsForAlertUI</analytic>
+	<analytic>.surv.master.trainModelsForBehaviourAnalysisUI</analytic>
+	<analytic>.surv.master.ui.generateBBOTable</analytic>
+	<analytic>.surv.master.ui.runAlertBatch</analytic>
+	<analytic>.surv.master.ui.sendEODBatchReport</analytic>
+	<analytic>.surv.replay.getTicksAndPublishRT</analytic>
+	<analytic>.surv.runReport_washTrades</analytic>
+	<analytic>.surv.ui.backtest.getBatchOverrides</analytic>
+	<analytic>dgwNegLogAlerting</analytic>
+	<analytic>dgwfxBucketTrade</analytic>
+	<analytic>dgwfxGetDailyData</analytic>
+	<analytic>dgwfxTestReportGetDailyData</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

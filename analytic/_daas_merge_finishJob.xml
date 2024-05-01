@@ -1,0 +1,22 @@
+<analytic>
+	<analytic>.daas.merge.finishJob</analytic>
+	<code_text>{[]
+	.log.out[.z.h;"merge job complete";()];
+	@[neg[.md.handle];"1+1";{.log.out[.z.h;"handle dropped to merge daemon, reopening...";()];.md.handle:.daas.merge.openMDhandle[]}];
+	
+	neg[.md.handle](`.daas.merge.jobComplete;.my.ID);
+	
+	.log.out[.z.h;"awaiting new job or shutdown message";()];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

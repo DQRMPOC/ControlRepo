@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.util.UTCToLocal</analytic>
+	<code_text>{[args;table]
+    .log.warn[`.daas.util.UTCToLocal; "This function is deprecated, please use .daas.util.convertBetweenTZ";()];
+    .daas.util.convertOnDiskTZtoOutboundTZ[args;table]
+
+    } </code_text>
+	<description>Converts a UTC time in a table to local time.
+If there is a timebar column it will be adjusted too</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>table</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+</analytic>

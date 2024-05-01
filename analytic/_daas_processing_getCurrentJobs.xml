@@ -1,0 +1,27 @@
+<analytic>
+	<analytic>.daas.processing.getCurrentJobs</analytic>
+	<code_text>{[]
+
+    asc `jobID`status`size`file xcols delete tempDir from update size:
+        {@[
+            {
+           if[not (last a) in system"ls ","/" sv -1_a:"/" vs 1_string[x];
+	    	    :"0K";
+	    	    ];
+	    	    -6_last system"du -sch ",1_string[x]
+		        };x;{"0K"}]
+	      }each tempDir from (select jobID,status,file,tempDir from 0!.daas.processing.pdInfo where not status=`complete,not null jobID)	
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

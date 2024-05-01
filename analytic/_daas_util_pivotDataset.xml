@@ -1,0 +1,78 @@
+<analytic>
+	<analytic>.daas.util.pivotDataset</analytic>
+	<code_text>{[res;args;forcePivot]
+    /Res  - result data
+    /args - argument dictionary
+    /forcePivot - stops attempt to combine at GW - (GW agg passes this flag)
+    
+    
+	//If I'm not interpolating or pivoting
+    if[(not 1b~args[`pivot]) and (not forcePivot) and not any (key .daas.cfg.interpolationfuncs)~\:args`fill ;
+        :(res;args);
+        ];
+    
+    
+    //If not all the requested symbols are in the res data set, we have to assume that the data is distributed, so we return to gw via arg dict
+    if[(not forcePivot) and not all args[`symList] in\: readSyms:exec distinct sym from res;
+        args[`distributedDataPivot]:res;
+        :(0#res;args);
+        ];
+
+    //If it's not in the config, then we cant pivot it.
+    if[not args[`dataType] in .daas.cfg.pivotSettings`tableName;
+        args[`pivot]:0b;
+        ];
+    
+    //If there is no rows we can only return the time column
+    if[not count res;
+        :(?[res;();0b;enlist[`time]!enlist`time];args);
+        ];
+     
+    
+    //If its true pivot it's a getTicks call. If it's in the config it's for a getStats call    
+    if[(1b~args[`pivot]) or first exec pivotForAggregations from .daas.cfg.pivotSettings where tableName=args`dataType;
+        //Need to resolve the enum if on hdb
+        if[.daas.cfg.procType~`hdb;
+            res:update value sym from res;
+            ];
+        pivCol:first exec pivotCol from .daas.cfg.pivotSettings where tableName=args`dataType;
+        res:asc 0!.daas.util.pivot[res;`sym;`time;pivCol];
+        ];
+    
+    :(res;args)
+    
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>forcePivot</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

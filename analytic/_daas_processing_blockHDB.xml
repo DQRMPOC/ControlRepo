@@ -1,0 +1,32 @@
+<analytic>
+	<analytic>.daas.processing.blockHDB</analytic>
+	<code_text>{[handles]
+/1 async message to the hdb telling it to run blocking command
+	{
+		neg[x]".daas.infra.hdbBlock[.z.w]";
+		.log.out[.z.h;"Sent block to HDB: ";x];
+	/2 eod blocks handle to hdb
+		x[];
+		.log.out[.z.h;"Blocking HDB: ";x]
+	} each handles
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>handles</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer[]</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

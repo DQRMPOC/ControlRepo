@@ -1,0 +1,7 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_FUT_RTE</tablegroup>
+	<tablename>futQuote</tablename>
+	<tablename>futSummary</tablename>
+	<tablename>futTrade</tablename>
+</schemagroup>

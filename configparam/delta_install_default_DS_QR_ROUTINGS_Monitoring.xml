@@ -1,0 +1,111 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>Monitoring</override>
+	<parameter>DS_QR_ROUTINGS</parameter>
+	<description>Specifies analytic routings in the QR.  When a request matching an analytic is found, the request can be routed to multiple databases.
+
+Two modes - static &amp; dynamic
+
+Static:  if 'targets' field is populated, static list of connection groups, connections and/or instances can be configured for the routing
+Dynamic:  otherwise category, class, subClass, tag1 &amp; tag2 values can be matched to dynamic database coverage information.  See Query Router documentation for more information on registering coverage.
+
+aggFunction - used to specify a custom collection analytic for analytic.  Analytic should have a valence of 1
+</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>analytic</element>
+		<elementType>Symbol</elementType>
+		<elementValue>dxGetFileHistory</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>aggFunction</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>targets</element>
+		<elementType>Symbol</elementType>
+		<elementValue>ds_rdb_ops;ds_hdb_ops</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>category</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>class</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>subClass</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>tag1</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>tag2</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>analytic</element>
+		<elementType>Symbol</elementType>
+		<elementValue>dxGetUserDashHistory</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>aggFunction</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>targets</element>
+		<elementType>Symbol</elementType>
+		<elementValue>ds_rdb_ops;ds_hdb_ops</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>category</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>class</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>subClass</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>tag1</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>tag2</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+</configparam>

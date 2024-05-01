@@ -1,0 +1,56 @@
+<analytic>
+	<analytic>getTicksAsync</analytic>
+	<code_text>{[params] 
+.daas.util.checkParams[`getTicks;params];
+
+queryParams: `handle`user`analytic`input`API`clientMode!(.z.w;.z.u;`getTicks;params;`getTicks;`sync);
+:.daas.async.run[queryParams]
+}</code_text>
+	<description>Extract data from a table</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>sts</name>
+				<datatype>Timestamp</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>ets</name>
+				<datatype>Timestamp</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>symbols</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>filterRule</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>data to aggregate</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasGateway</analyticgroup>
+</analytic>

@@ -1,0 +1,346 @@
+<analytic>
+	<analytic>.daas.pdb.functionDefinitions</analytic>
+	<code_text>//Table definitions	   
+
+//Table of process type, name, handle reload func, complete status for managing processes on reload
+.daas.rollover.procs:([]procType:`$();procName:`$();handle:`int$();reloadFunc:`$();args:();status:`boolean$());	   
+	   
+//Function Definitions 
+
+//Create backup of sym file
+.daas.pdb.backupSymFile:{[]
+	if[not .daas.cfg.hdbSym~key .daas.cfg.hdbSym;
+		.log.warn[`pdb;"No sym file found to back up";()];
+		:()
+	 ];
+	//Make sym backup dir for Stack
+	if[null .daas.cfg.symBackupDir:hsym .utils.checkForEnvVar first exec symBackupDir from .daas.cfg.pdbSettings;
+		.log.err[`pdb;"No Env variable for sym backup directory";()];
+		:()
+	];
+	.daas.pdb.createDir .daas.cfg.symBackupDir;
+	if[not (.daas.cfg.symBackup:`$"sym_",string .z.D) in key .daas.cfg.symBackupDir;
+		//If a backup for today doesnt exist, back up
+		@[system;"cp ",(1_string[.daas.cfg.hdbSym])," ",(1_string ` sv (.daas.cfg.symBackupDir;.daas.cfg.symBackup));{.log.err[`pdb;"Failed to backup sym file";x]}]
+	 ];
+ }
+
+//Create directory func, should be moved out
+.daas.pdb.createDir:{[dir]
+	@[.utils.mkdir; 1_string dir; .log.err[`pdb; "Failed to create ",1_string dir; ]]
+ }
+
+//Function to start write intraday based on settings
+.daas.pdb.writeTables:{[]
+	if[0=.daas.pdb.rowCount;
+		.log.debug[`pdb;"No data to write";()];
+		:()
+	 ];
+		
+	.log.out[`pdb;"Starting intraday write down";()];
+	//Iterate through tables, applying required function
+	.daas.pdb.applyIntradayWrite each .daas.pdb.intradayTableSettings;
+	.log.out[`pdb;"Completed intraday write down";()];
+	.daas.pdb.rowCount:0;
+ }
+
+//Function to apply specified func to each table
+.daas.pdb.applyIntradayWrite:{[dict]
+	intradayRes:.[.daas.pdb.intradayTableFuncs dict`intradayPersistType;dict`tableName`directory`partedCol;{ (`INTRADAY_WRITE_FAIL;x) }];
+	
+	if[`INTRADAY_WRITE_FAIL ~ first intradayRes;
+		.log.err[`pdb;;()] "Writedown failed for table: ",string[dict`tableName],". Error - ",last intradayRes
+	 ];
+ }	
+
+//Write down splayed table
+.daas.pdb.writeSplay:{[t;directory;partedCol]
+	//If table is empty do not write
+	if[0=count d:value t;
+		.log.debug[`pdb;"No data to write for ";t];
+		:()
+	 ];
+	dir:` sv (directory;t;`);
+	//If table does not exist in directory, set empty table
+	if[()~key dir;
+		dir set .Q.en[.daas.cfg.hdbDirectory;0#0!d]
+	 ];
+	//Upsert data and flush
+	dir upsert .Q.en[.daas.cfg.hdbDirectory;0!value t];
+	.[t;();0#];
+	.log.out[`pdb;"Upserted ",string[count d]," rows for ",string[t];()];
+ }
+ 
+//Write down table splayed by sym
+.daas.pdb.writeSplayByPart:{[t;directory;partedCol]
+	if[0=count d:value t;
+		.log.debug[`pdb;"No data to write for ";t];
+		:()
+	 ];
+	{[directory;t;data;partedCol;colValue]
+		dir:` sv (directory;t;`$string colValue;`);
+		if[()~key dir; 
+			dir set .Q.en[.daas.cfg.hdbDirectory;0#0!data]
+		 ];
+		dir upsert .Q.en[.daas.cfg.hdbDirectory;0!?[data;enlist(=;partedCol;`colValue);0b;()]]
+	 }[directory;t;d;partedCol;] each ?[t;();();(distinct;partedCol)];
+
+	.[t;();0#];
+	.log.out[`pdb;"Upserted ",string[count d]," rows for ",string[t];()];
+ }
+
+//Function to sort table on disk
+.daas.pdb.sort:{[directory;partedCol;sort]
+	if[sort;
+		//If there is any time columns in the table, sort by the first, otherwise sort by parted column
+		$[any l:(upper c:cols directory)like "*TIME*";
+			(partedCol,first c where l) xasc directory;
+			partedCol xasc directory
+		 ];
+	 ];
+	@[directory;partedCol;`p#];
+ }
+
+//Function to write intraday tables to hdb and apply sort
+.daas.pdb.eodWriteAndSort:{[dict]
+	t:dict`tableName;
+	.log.out[`pdb;"Starting EOD writedown for :";t];
+	eodStatus:.[value .daas.pdb.eodFunctions dict`intradayPersistType`eodPersistType;(t;dict);{(`EODWRITEFAIL;x)}];
+	if[first[eodStatus] ~ `EODWRITEFAIL;
+		.log.err[`pdb;;()] "EOD writedown failed for table: ",string[t],". Error - ",last eodStatus;
+		:(::)
+	 ];
+	.log.out[`pdb;"Writedown complete for ";t]
+ }
+
+//Function to write splayed tables into data partitioned database
+.daas.pdb.writeSplayToHDB:{[t;dict]
+	.log.out[`pdb;"Writing from splayed to partitioned";()];
+ 	//No sort done
+ 	//Get HDB Dir, create table if it doesnt exist
+ 	hdbTableDir:` sv (.daas.cfg.hdbDateDir;t;`);
+ 	if[not t in key .daas.cfg.persistDateDir;
+ 		hdbTableDir set .Q.en[.daas.cfg.hdbDirectory;0#0!value t];
+ 		.log.out[`pdb;"No data to write for ";t];
+ 		:(::)
+  	 ];
+ 	tableDir:` sv (.daas.cfg.persistDateDir;t;`);
+ 	.log.out[`pdb;"Moving/Upserting table on disk to ";hdbTableDir];
+ 	//If table already written for date, upsert. Otherwise mv
+ 	$[t in key .daas.cfg.hdbDateDir;
+ 		upsert[hdbTableDir;select from tableDir];
+ 		@[system;"mv ",(1_string tableDir)," ",1_string .daas.cfg.hdbDateDir;{.log.err[`pdb;"Failed to move splayed table to HDB";x]}]
+  	 ];
+ 	.log.out[`pdb;"Move complete, sorting next";()];
+ 	//Sort table
+ 	.daas.pdb.sort[hdbTableDir;dict`partedCol;1b];
+ 	.log.out[`pdb;"Completed sort. Removing table from persist directory";()];
+	@[system;"rm -rf ",1_string tableDir;{.log.err[`pdb;"Failed to remove table from persist directory";x];'x}]
+ }
+
+//Function to write tables splayed by some column to date partitioned table
+.daas.pdb.writeSplayBySymToHDB:{[t;dict]
+	.log.out[`pdb;"Writing from splayed by sym to partitioned";()];
+	//Sort already done
+	//Get HDB dir, create for table if doesnt exist
+	hdbTableDir:` sv (.daas.cfg.hdbDateDir;t;`);
+	if[()~key hdbTableDir; 
+		hdbTableDir set .Q.en[.daas.cfg.hdbDirectory;0#0!value t]
+	 ];
+	//Get parts of table if there are any
+	if[()~tableParts:key tableDir:` sv (.daas.cfg.persistDateDir;t;`);
+		:()
+	 ];
+	.log.out[`pdb;"Writing to disk in";hdbTableDir];
+	{[hdbTableDir;tableDir;symbol]upsert[hdbTableDir;get ` sv (tableDir,symbol)]}[hdbTableDir;tableDir;] each tableParts;
+	.log.out[`pdb;"Write complete, sorting next";()];
+	//Sort table
+	.[.daas.pdb.sort;(hdbTableDir;dict`partedCol;0b);.daas.pdb.sort[hdbTableDir;dict`partedCol;1b]];
+	.log.out[`pdb;"Completed sort. Removing table from persist directory";()];
+	@[system;"rm -rf ",1_string tableDir;{.log.err[`pdb;"Failed to remove table from persist directory";x];'x}]
+ }
+
+//Function to write in memory tables to date partitioned database
+.daas.pdb.writeInMemoryToHDB:{[t;dict]
+	.log.out[`pdb;"Writing from memory to partitioned";()];
+	//Table in memory
+	hdbTableDir:` sv (.daas.cfg.hdbDateDir;t;`);
+	.log.out[`pdb;"Writing to disk in";hdbTableDir];
+	//If table already written for date upsert, otherwise set
+	$[t in key .daas.cfg.hdbDateDir;
+		upsert[hdbTableDir;.Q.en[.daas.cfg.hdbDirectory;0!value t]];
+		hdbTableDir set .Q.en[.daas.cfg.hdbDirectory;0!value t]
+	 ];
+	.log.out[`pdb;"Write complete, sorting next";()];
+	//Sort table
+	.daas.pdb.sort[hdbTableDir;dict`partedCol;1b];
+	.log.out[`pdb;"Completed sort";()];
+
+	delete from t;
+	.log.out[`pdb;"Cleared in-memory table [ ",string[t]," ]";()];
+
+ }
+ 
+//Creates handle to process
+.ds.cfg.getHandle:.daas.pdb.getHandle:{[instance]
+	//instance variable is usually dictionary of process details - therefore can extract hostport
+    
+    instanceName:$[-11h=type instance;
+		instance; 
+		instance`instancename
+	 ];
+
+    
+	hp:$[-11h=type instance;
+		.pl.gethostport instance;
+		instance`dc_hostport
+	 ];
+    
+	.log.out[`pdb;"Connecting to ",string[instanceName]," at ",string hp;()];
+	
+    h:.utils.dcc[hp;60000;.log.warn[`pdb;"Unable to connect to ",string[instanceName]," at ",string hp]];
+    if[not -6h=type h; 
+    	:0Ni
+     ];
+
+    :h;
+    }
+        
+//Functions to establish handles to associated rdb/hdbs
+.daas.rollover.hdbHandles:{[hdb]
+	h:.daas.pdb.getHandle[hdb];
+	if[null h; 
+		:`processUnavailableOrOffline
+	 ];
+	`.daas.rollover.procs upsert (`hdb;hdb`instancename;h;`.ds.hdb.reloadDB;::;0b);
+    };
+			
+.daas.rollover.rdbHandles:{[rdb;tbls]
+	h:.daas.pdb.getHandle[rdb];
+	if[null h;
+		:`processUnavailableOrOffline
+	 ];
+	`.daas.rollover.procs upsert (`rdb;rdb`instancename;h;`.daas.infra.rdbFlush;tbls;0b);
+    };
+    
+//Synchronised end of day flush and reload function
+.daas.pdb.flushAndReload:{[]
+    //Check that there are no pending rollovers from last time it was run 
+    //If there are, report error and close handle to avoid opening multiple handles to same process.
+    if[count .daas.rollover.procs;
+        .log.error[`rollover;"Not all processes reported successful previous rollover";.daas.rollover.procs`procName];
+        .log.warn[`rollover;"Closing handles to last rollover attempts processes";.daas.rollover.procs`procName];
+        @[hclose;;{}] each .daas.rollover.procs`handle;
+        ];
+    
+    /Create fresh table of process type, name, handle reload func, complete status
+ 	.daas.rollover.procs:([]procType:`$();procName:`$();handle:`int$();reloadFunc:`$();args:();status:`boolean$());
+
+    //Set up handles for rdb + set up tables to flush
+    delTables:.daas.pdb.subscriptionTables;
+   	.daas.rollover.rdbHandles[;delTables] each .ds.cfg.rdbProcessList;
+
+   	//Set up handles for hdb
+   	.daas.rollover.hdbHandles each .ds.cfg.hdbProcessList;
+
+
+   	//Simultaneous flush and reload
+    {.log.out[`pdb;"Turning off timout for process ";x]} each  .daas.rollover.procs`procName;
+    neg[.daas.rollover.procs`handle]@\:(`.daas.util.timeoutOff;(::));
+
+    {.log.out[`pdb;"Triggering .Q.chk for processes ";x]} each  .daas.rollover.procs`procName;
+    neg[.daas.rollover.procs`handle]@' count[.daas.rollover.procs]#enlist (`.Q.chk;`:.);
+    
+    {.log.out[`pdb;"Triggering EOD for processes ";x]} each  .daas.rollover.procs`procName;
+    neg[.daas.rollover.procs`handle]@' flip .daas.rollover.procs`reloadFunc`args;
+
+    {.log.out[`pdb;"Turning timeout back on for processes ";x]} each  .daas.rollover.procs`procName;
+    neg[.daas.rollover.procs`handle]@\:(`.daas.util.timeoutOn;(::));
+
+    /Flush handles
+    neg[.daas.rollover.procs`handle]'[];
+
+    };
+ 
+.daas.pdb.refreshTables:{[]
+	//Backup sym func, should be made a function definition and moved out
+	.daas.pdb.backupSymFile[];
+	
+	//Create Date directory
+	.daas.cfg.currentDate:.z.D;
+	.daas.pdb.createDir .daas.cfg.persistDateDir:` sv (.daas.cfg.persistDirectory; `$string .daas.cfg.currentDate; `);
+	.daas.cfg.hdbDateDir:` sv (.daas.cfg.hdbDirectory; `$string .daas.cfg.currentDate);
+	update directory:.daas.cfg.persistDateDir from `.daas.pdb.tableSettings;
+	.daas.pdb.intradayTableSettings:select from .daas.pdb.tableSettings where not intradayPersistType=`none;
+
+ }
+ 
+.daas.pdb.validateTableSettings:{[]
+	.daas.pdb.validationErrorList:();
+	//Check that there are no null rows
+	if[any null exec tableName from .daas.pdb.tableSettings;
+		.daas.pdb.validationErrorList,:`nullTablesInSettings
+	 ];
+	//Check that all listed tables are loaded in the PDB
+	if[not all (exec tableName from .daas.pdb.tableSettings) in tables[];
+		.daas.pdb.validationErrorList,:`tableNotDefinedInProcess
+	];
+	//Check that each of the parted columns are in the tables
+	if[not all exec partedCol in ' cols each tableName from .daas.pdb.tableSettings where not null tableName;
+		.daas.pdb.validationErrorList,:`partedColumnNotInTable
+	];
+	//Check that settings in table are all acceptable values
+	if[0&lt;count select from .daas.pdb.tableSettings where (not intradayPersistType in `splay`parted`none) or not eodPersistType in `datePartition`rootSplay;
+		.daas.pdb.validationErrorList,:`InvalidTableSetting
+	];
+	//Check that settings are valid together(only invalid is parted and rootsplay)
+	if[0&lt;count select from .daas.pdb.tableSettings where intradayPersistType=`parted, eodPersistType=`rootSplay;
+		.daas.pdb.validationErrorList,:`InvalidSettingCombination
+	];
+	//Check that all keyed tables are held in memory and not written to splays intraday
+	if[count a:exec tableName from .daas.pdb.tableSettings where tableName in(tables[] where 99h~'type each value each tables[]), not intradayPersistType =`none;
+		.log.err[`pdb;"Keyed tables listed to save intraday:";a];
+		.daas.pdb.validationErrorList,:`keyedTableNotHeldInMemoryIntraday
+	 ];
+	
+	if[0&lt;count .daas.pdb.validationErrorList;
+		.log.err[`pdb;"The following errors were found when validating the pdb table settings:";.daas.pdb.validationErrorList];
+	 ];
+	:.daas.pdb.validationErrorList
+ }
+ 
+.daas.pdb.validateStartupSettings:{[]
+	//If write row count is null send warning that it will be set to zero and write every time 
+	.daas.cfg.writeFreqRowCount:first .daas.cfg.pdbSettings`writeFreqRowCount;
+	if[null .daas.cfg.writeFreqRowCount;
+		.daas.cfg.writeFreqRowCount:0^.daas.cfg.writeFreqRowCount;
+		.log.err[`pdb;"Row count null, so will write on every update";()]
+	 ];
+	//If write timer count is null send warning that it will only write by the rowcount
+	.daas.cfg.writeFreqTime:first .daas.cfg.pdbSettings`writeFreqTimeMS;
+	if[null .daas.cfg.writeFreqTime;
+		.daas.cfg.writeFreqTime:0^.daas.cfg.writeFreqTime;
+		.log.warn[`pdb;"Write freq time set to 0 so pdb will write by rowcount only";()]
+	 ];
+	.daas.cfg.writeFreqTimeSeconds:"t"$.daas.cfg.writeFreqTime;
+	//if pdb channel is null err and exit
+	if[null  .fd.subscriptionChannel;
+		.pl.report_error_and_terminate["Error found with subscriptionChannel";"pdb channel is null"]
+	 ];
+	//if any of the hdbDir, persist dir, symbackupDir are null, err and exit
+	if[count a:where null .utils.checkForEnvVar each first each .daas.cfg.pdbSettings`persistDir`hdbDir`symBackupDir;
+		.pl.report_error_and_terminate["Error found during env var validation";`persistDir`hdbDir`symBackupDir a]
+	 ];
+	.log.out[`pdb;"Startup settings validated";()]
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

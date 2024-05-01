@@ -1,0 +1,45 @@
+<analytic>
+	<analytic>.surv.master.resetAlertLogicCalcsSchemaFromUI</analytic>
+	<code_text>{[alert;tableNames]
+
+    .debug.resetAlertLogicCalcsSchemaFromUI:(`time`alert`tableNames)!(.z.p;alert;tableNames);
+    thisFunc:".surv.master.resetAlertLogicCalcsSchemaFromUI";
+    .log.out[.z.h;thisFunc;"started"];
+    
+    if[0=count string alert;
+        '"insert single alertName or ,-seperated list or word all"
+    ];        
+    
+    cid:first exec cloneID from masterServiceStatus where instanceType=`gatekeeping;
+    extraArgs:`resetAlertLogicCalcsSchemaAlert`resetAlertLogicCalcsSchemaTableNames`resetAlertLogicCalcsSchemaMasterSide!(alert;tableNames;.surv.side);
+    batchJobs:.uc.getActiveParamValue[`SURV_BATCH_JOBS;`resetAlertLogicCalcsSchema];
+    .surv.master.runBatchOnClone (`dt`batchName`batchJobs`instanceType`cloneID!(.z.D;`$"resetAlertLogicCalcsSchema",string .z.P;batchJobs;`gatekeeping;cid)),extraArgs;    
+  
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>alert</parameter>
+		<default></default>
+		<description>job details for batch</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tableNames</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatchUI</analyticgroup>
+</analytic>

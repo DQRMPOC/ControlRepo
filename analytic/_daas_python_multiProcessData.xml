@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.daas.python.multiProcessData</analytic>
+	<code_text>{[funcs;data]
+	.p.set[`data;data];
+    resNames:string[funcs],\:"Res";
+    exStrings:.daas.python.constructExString each funcs;
+
+    .python.results:update result:(),completed:0b,success:0b from ([resultName:`$resNames]funcName:funcs);
+    /send all python calls to pool of threads, let python/os distribute as needed
+    .p.e each exStrings;
+    while[any not exec completed from .python.results;
+        system"sleep 0.01";
+        .daas.python.retrievePool each exec resultName from .python.results where not completed
+        ];
+    .python.results
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>funcs</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPython</analyticgroup>
+</analytic>

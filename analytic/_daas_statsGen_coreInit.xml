@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.statsGen.coreInit</analytic>
+	<code_text>{[]
+
+    .daas.init.setMetaAndEventBusConn[];
+
+    .al.loadinstruction[`.daas.cfg.serverCfg];
+    
+    / Load table meta data
+    .al.loadinstruction[`.daas.meta.common];
+    .daas.meta.init[];
+    
+    .daas.Rules:?[.daas.cfg.statsHDB;enlist(=;`assetClass;enlist(.daas.cfg.assetPrefixes ? .daas.cfg.asset));0b;()];
+    {.daas.maint.historicalStatsGeneration[.z.D-1;x;`$first "_" vs string .ex.getInstanceName[]]} each .daas.Rules;
+
+
+
+    // need to wait until statsGen is connected to event bus before exiting
+    `statsGenFinalFunct set 
+    {[]
+     .daas.events.pubEventMessage[`statsWriteDown;`complete;.daas.cfg.asset;`;.daas.Rules];
+     .daas.events.pubEventMessage[`eodHdb;`complete;`;`;`env`asset!(.daas.cfg.env;.daas.cfg.asset)];
+     .daas.events.pubAdminMessage[`statsGenComplete;`;`;`date`region`vendor`asset`env ! (.z.D-1), value each`.daas.cfg.region`.daas.cfg.vendor`.daas.cfg.asset`.daas.cfg.env];
+     .pl.return_exit[`];
+     };
+
+    .daas.events.runOnInitialBusCon`statsGenFinalFunct;
+
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

@@ -1,0 +1,32 @@
+<analytic>
+	<analytic>.daas.routing.subToMetaTables</analytic>
+	<code_text>{[]
+    // Pull schemas from Control
+    .tbl.gettable`.daas.routingMetaData;
+    .tbl.gettable`.daas.routingSysProcs;
+    .tbl.gettable`.daas.routingGatewayProcs;
+    .tbl.gettable`.daas.routingQPs;
+
+    // Set event bus response functions
+    .daas.events.resp.sysProcsTableUpdate:.daas.routing.sysProcsTableUpdate;
+    .daas.events.resp.routingTableUpdate:.daas.routing.routingTableUpdate;
+    .daas.events.resp.GWProcsTableUpdate:.daas.routing.gatewayTableUpdate;
+
+    // Request tables when connected to the event bus
+    .daas.events.runOnInitialBusCon[`.daas.routing.requestRoutingTable];
+    .daas.events.runOnInitialBusCon[`.daas.routing.requestSysProcsTable];
+    .daas.events.runOnInitialBusCon[`.daas.routing.requestGatewayProcsTable];
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

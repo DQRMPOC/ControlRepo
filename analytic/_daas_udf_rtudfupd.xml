@@ -1,0 +1,98 @@
+<analytic>
+	<analytic>.daas.udf.rtudfupd</analytic>
+	<code_text>{[tabName;data]
+
+    //upsert[tabName;data];
+    if[debug:1b;
+        show "___________________";
+        show tabName;
+        show count data;
+        show "tabtime:";
+        show first exec time from tabName;
+        show "current time:";
+        show .z.p;
+        show .daas.udf.dataRequirements;
+        show "___________________";
+        ];
+    //Check if table is a trigger
+   if[count trigudfs:update active:0b from select from .daas.udf.rtConfig where mappedTrig=tabName;
+        //if it is, check the condition against it
+            /checking conds - err trap
+            ind:exec null trigFunc from trigudfs;
+            if[any ind;
+                trigudfs:update active:{0&lt;count .[{?[x;y;0b;()]};(x;y);{.log.warn[`udfTrigger;"malformed trigger conditional";y];0}]}(.)/: flip (mappedTrig;trigCond) from trigudfs where ind;
+                ];
+            if[any not ind;
+            /also check trigFuncs -err trap
+                trigList:{@[x;y;{.log.warn[`rtudfupd;"triggerFunc ",string[x],"execution failed";y]}[x;]]}./: flip ({.daas.udf.udfFuncStore[x]`func} each trigudfs`trigFunc;trigudfs`mappedTrig)@\:where not ind;
+                if[any err:not -1=type each trigList;
+                    .log.warn[`rtudfupd;"trigger function did not return boolean output";] each ((trigudfs where not ind) where err)`trigFunc;
+                    ];
+                trigudfs:update active:@[trigList;where err;:;0b] from trigudfs where not ind;
+                ];
+            ];
+
+    //for udfs that are not triggered, but happen every tick
+    onTick:select from .daas.udf.rtConfig where not triggered, tabName in/: mappedTab;
+    
+    /funcs to be run
+    exFuncs:exec UDF from trigudfs where active;
+    exFuncs,:exec UDF from onTick;
+    
+    pyOut:();
+    if[count pyFuncs:exFuncs where `python=(.daas.udf.udfFuncStore each exFuncs)`funcLang;
+        pyOut:.daas.udf.runPythonUDFs[pyFuncs];
+        ];
+    
+    qPub:();
+    if[count exFuncs except pyFuncs;
+        /execute udfs, capture output
+        qOut:.daas.udf.executeRTUDF[;tabName;data] each qFuncs:exFuncs except pyFuncs;
+        /map any non table format outputs
+        qOut:@[qOut;where not any (type each qOut)=/:98 99;{([]result:x)}];
+        qPub:flip `time`udfName`result!(count[qFuncs]#.z.P;qFuncs;qOut);
+        ];
+    
+    pub:pyOut,qPub;
+    pub:update formatted:{ ([]result:enlist x)} each result from pub where not any (type each result)=/:98 99;
+    pub:update formatted:result from pub where any (type each result)=/:98 99;
+    pub:`time`udfName`result xcol delete result from pub;
+    
+    
+    if[debug;
+        show pub;
+        ];
+
+    
+    /clear data usedo
+    /.daas.udf.flushDataOnComplete each exFuncs;
+    
+    /publish output to results cache
+    /.dm.pubflushc[`region_udf_udf_a;`rtudfres;pub];
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tabName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

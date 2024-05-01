@@ -1,0 +1,2021 @@
+<ui>
+	<name>57d88863-9c51-a354-a398-690618691f3b</name>
+	<displayName>Server Monitoring</displayName>
+	<description>{
+  "creationDate": "Tue, 18 Feb 2020 14:18:21 GMT",
+  "lastUpdateDate": "Fri, 28 Feb 2020 12:12:24 GMT",
+  "tags": [],
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "8581f9a3-e9f9-6efd-51ad-855bfe2abe8d"
+    }
+  ],
+  "thumb": null
+}</description>
+	<data>{
+  "id": "57d88863-9c51-a354-a398-690618691f3b",
+  "name": "Server Monitoring",
+  "creationDate": "Tue, 18 Feb 2020 14:18:21 GMT",
+  "lastUpdateDate": "Fri, 28 Feb 2020 12:12:24 GMT",
+  "thumb": null,
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "8581f9a3-e9f9-6efd-51ad-855bfe2abe8d"
+    }
+  ],
+  "screens": [
+    {
+      "id": "8581f9a3-e9f9-6efd-51ad-855bfe2abe8d",
+      "name": "Screen 1",
+      "thumb": null,
+      "widgets": [
+        {
+          "id": "d37033d9-2381-22b8-9938-f21665ba61ee",
+          "layout": {
+            "row": 5,
+            "column": 0,
+            "rowSpan": 8,
+            "colSpan": 16
+          },
+          "component": {
+            "id": "component_428",
+            "key": "ChartJS",
+            "options": {
+              "Overlay": {
+                "customTooltip": "&lt;table style='{{fontSize}}'&gt;&lt;thead&gt;&lt;tr style='padding-right: 10px;'&gt; &lt;th&gt;{{ xLabel }} &lt;/th&gt;&lt;th&gt; &lt;/th &gt; &lt;/tr&gt;&lt;/thead &gt; {{#each points }}&lt;tr&gt;&lt;td&gt;{{{svg}}} {{ layerName }}: &lt;/td&gt;&lt;td style='padding-right: 10px; text-align: left;'&gt;{{layerData}}&lt;/td &gt; &lt;/tr&gt;{{/each}}&lt;/table&gt;"
+              },
+              "Layers": [
+                {
+                  "_Hidden": {
+                    "_Type": "Bar",
+                    "_Index": 0,
+                    "_LayerId": "layer_485",
+                    "_PossibleColumns": [
+                      "source",
+                      "used"
+                    ],
+                    "_PossibleRadius": [
+                      "Fixed Size",
+                      "source",
+                      "used"
+                    ],
+                    "_PossibleXAxes": [
+                      "XAxis 1"
+                    ],
+                    "_PossibleYAxes": [
+                      "YAxis 1"
+                    ],
+                    "_PossibleColumnsWithXYKey": [
+                      "&lt;thisX&gt;",
+                      "&lt;thisY&gt;",
+                      "&lt;thisName&gt;",
+                      "source",
+                      "used"
+                    ],
+                    "_PossibleColumnsWithItself": [
+                      "&lt;this&gt;",
+                      "source",
+                      "used"
+                    ]
+                  },
+                  "Basics": {
+                    "Name": "Used",
+                    "LegendEnabled": false,
+                    "Data": {
+                      "_dashboardsType": "data",
+                      "value": "RefineryMonitoring/cpuStats"
+                    }
+                  },
+                  "Axes": {
+                    "XAxisData": "source",
+                    "YAxisData": "used",
+                    "XAxisID": "XAxis 1",
+                    "YAxisID": "YAxis 1"
+                  },
+                  "Labels": {
+                    "Font": {
+                      "Bold": false,
+                      "Size": 12
+                    }
+                  }
+                }
+              ],
+              "XAxes": [
+                {
+                  "_Hidden": {
+                    "_Type": "category",
+                    "_Index": 0,
+                    "_Label": "XAxis 1",
+                    "_AxisId": "axis_499"
+                  },
+                  "Title": {
+                    "Display": true,
+                    "LabelString": "Core",
+                    "FontFamily": "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                    "FontSize": 12,
+                    "FontStyle": "normal",
+                    "FontColor": "#FFFFFF",
+                    "FontOpacity": 100
+                  },
+                  "Labels": {
+                    "FontColor": "#F8F8F8",
+                    "MaxWidth": 0,
+                    "_ReverseCache": false,
+                    "BeginAtZero": true,
+                    "DateFormat": "YYYY-MM-DD"
+                  }
+                }
+              ],
+              "YAxes": [
+                {
+                  "_Hidden": {
+                    "_Type": "linear",
+                    "_Index": 0,
+                    "_Label": "YAxis 1",
+                    "_AxisId": "axis_470"
+                  },
+                  "Labels": {
+                    "MaxWidth": 0,
+                    "_ReverseCache": false,
+                    "DateFormat": "YYYY-MM-DD"
+                  },
+                  "Range": {
+                    "UseMinMax": true,
+                    "SoftRange": false,
+                    "UseDataRange": false,
+                    "SuggestedMax": 0,
+                    "SuggestedMin": 0,
+                    "Max": 100,
+                    "Min": 0
+                  }
+                }
+              ],
+              "format": {
+                "widgetTitle": "CPU Usage (%)",
+                "titleFontBold": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 10,
+                "tileBorderColor": ""
+              },
+              "version": "4.3.1",
+              "Basics": {
+                "Transpose": true
+              }
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "1007",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "868d2769-1e10-6b42-6c3a-46403519bccd",
+          "layout": {
+            "row": 0,
+            "column": 0,
+            "rowSpan": 4,
+            "colSpan": 11
+          },
+          "component": {
+            "id": "component_495",
+            "key": "Dataform",
+            "options": {
+              "version": "4.3.1",
+              "isDataform": true,
+              "Basics": {
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "RefineryMonitoring/dataForm"
+                },
+                "SubmitButtonText": "Submit",
+                "ValidationAnalytic": "",
+                "ExpandDictParameters": true,
+                "ForceExecute": false,
+                "ShowReset": false,
+                "ShowSubmit": false,
+                "FloatSubmit": false,
+                "FloatReset": false,
+                "ViewStates": [
+                  {
+                    "PathEnc": "selectedServer",
+                    "DisplayName": "Selected Server",
+                    "HideParameter": false,
+                    "Tooltip": "",
+                    "FieldType": {
+                      "_Type": "Dropdown",
+                      "DropdownPossibleValues": [
+                        "",
+                        "processName"
+                      ],
+                      "Data": {
+                        "_dashboardsType": "data",
+                        "value": "RefineryMonitoring/serverSelection"
+                      },
+                      "UseDataSource": true,
+                      "AcceptEmptyValues": true,
+                      "ForceSelect": false,
+                      "MultiSelect": false,
+                      "ShowSearch": false,
+                      "FieldSummaryThreshold": 1,
+                      "TooltipSummaryThreshold": 1,
+                      "SelectAllValue": "all",
+                      "DataSourceMapping": {
+                        "Value": "processName",
+                        "Text": "processName",
+                        "DropdownPossibleValues": []
+                      },
+                      "Items": []
+                    }
+                  }
+                ],
+                "Actions": []
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": "",
+                "minWidth": "300px",
+                "display": "Row",
+                "inline": "Top",
+                "labelWidth": "",
+                "labelPadding": "",
+                "labelAlign": "Left",
+                "padding": "",
+                "verticalSpacing": "",
+                "submitOffset": "",
+                "resetOffset": "",
+                "formMargin": ""
+              },
+              "Alignment": {
+                "paddingLeft": 0,
+                "paddingRight": 0,
+                "paddingTop": 0,
+                "paddingBottom": 0,
+                "innerPaddingLeft": 0,
+                "innerPaddingRight": 0,
+                "innerPaddingTop": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "titlePaddingRight": 0,
+                "titlePaddingTop": 7,
+                "titlePaddingBottom": 7
+              },
+              "format": {
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleFontBold": false,
+                "titleShadow": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              }
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "27",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "4d15d6ff-cd1a-3745-2394-d90d87e632e9",
+          "layout": {
+            "row": 0,
+            "column": 11,
+            "rowSpan": 2,
+            "colSpan": 15
+          },
+          "component": {
+            "id": "component_539",
+            "key": "BasicComponents",
+            "options": {
+              "version": "4.3.1",
+              "Basics": {
+                "ComponentName": "label",
+                "HtmlText": "Refinery Monitoring",
+                "Data": "",
+                "Template": "",
+                "Theme": "Dark",
+                "FontSize": 42,
+                "horizontal": "Center",
+                "vertical": "Middle",
+                "tooltip": "",
+                "AllowUnsafeContent": false,
+                "version": "4.2.0s2"
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "Alignment": {
+                "paddingLeft": 0,
+                "paddingRight": 0,
+                "paddingTop": 0,
+                "paddingBottom": 0,
+                "innerPaddingLeft": 0,
+                "innerPaddingRight": 0,
+                "innerPaddingTop": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "titlePaddingRight": 0,
+                "titlePaddingTop": 7,
+                "titlePaddingBottom": 7
+              },
+              "format": {
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleFontBold": false,
+                "titleShadow": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              }
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "17",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "6c3c9d1d-fbb2-778a-db8a-bf2711d3a7c4",
+          "layout": {
+            "row": 2,
+            "column": 11,
+            "rowSpan": 3,
+            "colSpan": 15
+          },
+          "component": {
+            "id": "component_597",
+            "key": "BasicComponents",
+            "options": {
+              "version": "4.3.1",
+              "Basics": {
+                "ComponentName": "label",
+                "HtmlText": "Live Server State",
+                "Data": "",
+                "Template": "",
+                "Theme": "Dark",
+                "FontSize": 24,
+                "horizontal": "Center",
+                "vertical": "Middle",
+                "tooltip": "",
+                "AllowUnsafeContent": false,
+                "version": "4.2.0s2"
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "Alignment": {
+                "paddingLeft": 0,
+                "paddingRight": 0,
+                "paddingTop": 0,
+                "paddingBottom": 0,
+                "innerPaddingLeft": 0,
+                "innerPaddingRight": 0,
+                "innerPaddingTop": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "titlePaddingRight": 0,
+                "titlePaddingTop": 7,
+                "titlePaddingBottom": 7
+              },
+              "format": {
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleFontBold": false,
+                "titleShadow": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              }
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "17",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "49836743-5c73-bb1f-717f-3edbbec65689",
+          "layout": {
+            "row": 5,
+            "column": 20,
+            "rowSpan": 8,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_599",
+            "key": "PieJS",
+            "options": {
+              "version": "4.3.1",
+              "Basics": {
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "RefineryMonitoring/memoryStats"
+                },
+                "Theme": "Dark",
+                "Focus": {},
+                "Selected": "",
+                "SelectedAttr": "a",
+                "PopoutSelected": false,
+                "PopoutSelectedSize": 0,
+                "Actions": []
+              },
+              "DataSet": {
+                "Label": "field",
+                "DonutRatio": 30,
+                "Rotation": 100,
+                "Circumference": 100,
+                "BorderWidth": 1,
+                "Layers": [
+                  {
+                    "Segment": "fieldValue",
+                    "Display": "",
+                    "UseColor": true,
+                    "Color": "#e612d8",
+                    "BorderColor": "",
+                    "ColorOpacity": 98,
+                    "HighlightRules": [
+                      {
+                        "RuleName": "",
+                        "RuleSource": "field",
+                        "RuleOperation": "",
+                        "RuleValue": "",
+                        "RuleColor": "#ffffff",
+                        "RuleBorderColor": "#ffffff",
+                        "Show": false
+                      }
+                    ]
+                  }
+                ]
+              },
+              "Legend": {
+                "Display": true,
+                "FullWidth": true,
+                "Reverse": false,
+                "Position": "bottom",
+                "LabelColor": "#ffffff",
+                "LabelFontFamily": "Helvetica",
+                "LabelFontSize": 12,
+                "BoxWidth": 40,
+                "Padding": 10,
+                "UsePointStyle": false,
+                "Mode": "Toogle Hidden",
+                "LegendScroll": false
+              },
+              "InnerLabel": {
+                "Innertitle": "",
+                "InnertitleColor": "#c91ac9",
+                "InnertitleFont": "Verdana",
+                "InnertitleSize": 12,
+                "ShowPieceLabel": false,
+                "ShowZero": false,
+                "PieceLabelArc": false,
+                "PieceLabelOverlap": false,
+                "PieceLabelRender": "label",
+                "PieceLabelPosition": "default",
+                "PieceLabelColor": "#ffffff",
+                "FontSize": 20,
+                "Format": "General",
+                "Precision": 2,
+                "HideTrailingZeroes": false,
+                "Prefix": "",
+                "Suffix": "",
+                "DateFormat": "YYYY-MM-DD"
+              },
+              "Padding": {
+                "Top": 2,
+                "Bottom": 2,
+                "Left": 2,
+                "Right": 2
+              },
+              "Animations": {
+                "Enabled": false
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": "",
+                "chartBarColors": [
+                  {
+                    "type": "#1ad927"
+                  },
+                  {
+                    "type": "#db1b1b"
+                  },
+                  {
+                    "type": "#808387"
+                  },
+                  {
+                    "type": "#a69775"
+                  },
+                  {
+                    "type": "#749450"
+                  },
+                  {
+                    "type": "#51966a"
+                  },
+                  {
+                    "type": "#e2c7c0"
+                  },
+                  {
+                    "type": "#9acad6"
+                  },
+                  {
+                    "type": "#1995a3"
+                  },
+                  {
+                    "type": "#484d6e"
+                  }
+                ],
+                "advancedTooltip": "&lt;div&gt;&lt;span&gt;{{dataSet.0.label}}&lt;/span&gt;&lt;br/&gt;&lt;table&gt;{{#each dataSet}}&lt;tr&gt;&lt;td&gt;{{xaxis}}&lt;/td&gt;&lt;td&gt;&lt;svg style=\"width:20px;height:20px\"&gt;&lt;circle cx=\"10\" cy= \"10\" r=\"8\" stroke=\"white\" stroke-width=\"2\" fill= \"{{color}}\" &gt; &lt;/circle&gt;&lt;/svg&gt; &lt;/td&gt;&lt;td&gt;{{layerData}} :&lt;/td&gt;&lt;td&gt;{{toFixed value 2}} ({{toFixed percent 2}}%)&lt;/td&gt; &lt;/tr&gt;{{/each}} &lt;/table&gt;&lt;/div&gt;"
+              },
+              "FileExport": {
+                "ShowScreenshot": false,
+                "ShowExportCsvButton": false,
+                "ShowExportExcelButton": false,
+                "FileName": []
+              },
+              "possibleColumns": [
+                "field",
+                "fieldValue"
+              ],
+              "possibleLabels": [
+                "field",
+                "fieldValue"
+              ],
+              "Alignment": {
+                "paddingLeft": 0,
+                "paddingRight": 0,
+                "paddingTop": 0,
+                "paddingBottom": 0,
+                "innerPaddingLeft": 0,
+                "innerPaddingRight": 0,
+                "innerPaddingTop": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "titlePaddingRight": 0,
+                "titlePaddingTop": 7,
+                "titlePaddingBottom": 7
+              },
+              "format": {
+                "widgetTitle": "RAM Usage",
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleFontBold": false,
+                "titleShadow": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 10,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "possibleRules": [
+                "field",
+                "fieldValue"
+              ]
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "1009",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "60b1ea03-65df-7e28-e51f-9a71f5ed78",
+          "layout": {
+            "row": 13,
+            "column": 0,
+            "rowSpan": 9,
+            "colSpan": 16
+          },
+          "component": {
+            "id": "component_10637",
+            "key": "ChartJS",
+            "options": {
+              "Overlay": {
+                "customTooltip": "&lt;table style='{{fontSize}}'&gt;&lt;thead&gt;&lt;tr style='padding-right: 10px;'&gt; &lt;th&gt;{{ xLabel }} &lt;/th&gt;&lt;th&gt; &lt;/th &gt; &lt;/tr&gt;&lt;/thead &gt; {{#each points }}&lt;tr&gt;&lt;td&gt;{{{svg}}} {{ layerName }}: &lt;/td&gt;&lt;td style='padding-right: 10px; text-align: left;'&gt;{{layerData}}&lt;/td &gt; &lt;/tr&gt;{{/each}}&lt;/table&gt;"
+              },
+              "Legend": {
+                "Position": "left"
+              },
+              "Layers": [
+                {
+                  "_Hidden": {
+                    "_Type": "Bar",
+                    "_Index": 0,
+                    "_LayerId": "layer_12174",
+                    "_PossibleColumns": [
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleRadius": [
+                      "Fixed Size",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleXAxes": [
+                      "XAxis 1"
+                    ],
+                    "_PossibleYAxes": [
+                      "YAxis 1"
+                    ],
+                    "_PossibleColumnsWithXYKey": [
+                      "&lt;thisX&gt;",
+                      "&lt;thisY&gt;",
+                      "&lt;thisName&gt;",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleColumnsWithItself": [
+                      "&lt;this&gt;",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleLayers": []
+                  },
+                  "Basics": {
+                    "Name": "Transmit Errs",
+                    "BackgroundColor": "#a69775",
+                    "BorderColor": "#a69775",
+                    "Data": {
+                      "_dashboardsType": "data",
+                      "value": "RefineryMonitoring/networkStats"
+                    }
+                  },
+                  "Axes": {
+                    "XAxisData": "interface",
+                    "YAxisData": "transmitErrs",
+                    "XAxisID": "XAxis 1",
+                    "YAxisID": "YAxis 1"
+                  },
+                  "Labels": {
+                    "Font": {
+                      "Bold": false,
+                      "Size": 12
+                    }
+                  }
+                },
+                {
+                  "_Hidden": {
+                    "_Type": "Bar",
+                    "_Index": 1,
+                    "_LayerId": "layer_12164",
+                    "_PossibleColumns": [
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleRadius": [
+                      "Fixed Size",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleXAxes": [
+                      "XAxis 1"
+                    ],
+                    "_PossibleYAxes": [
+                      "YAxis 1"
+                    ],
+                    "_PossibleColumnsWithXYKey": [
+                      "&lt;thisX&gt;",
+                      "&lt;thisY&gt;",
+                      "&lt;thisName&gt;",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleColumnsWithItself": [
+                      "&lt;this&gt;",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleLayers": []
+                  },
+                  "Basics": {
+                    "Name": "Recv Errs",
+                    "BackgroundColor": "#7995b8",
+                    "BorderColor": "#7995b8",
+                    "Data": {
+                      "_dashboardsType": "data",
+                      "value": "RefineryMonitoring/networkStats"
+                    }
+                  },
+                  "Axes": {
+                    "XAxisData": "interface",
+                    "YAxisData": "receiveErrs",
+                    "XAxisID": "XAxis 1",
+                    "YAxisID": "YAxis 1"
+                  },
+                  "Labels": {
+                    "Font": {
+                      "Bold": false,
+                      "Size": 12
+                    }
+                  }
+                },
+                {
+                  "_Hidden": {
+                    "_Type": "Bar",
+                    "_Index": 2,
+                    "_LayerId": "layer_12169",
+                    "_PossibleColumns": [
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleRadius": [
+                      "Fixed Size",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleXAxes": [
+                      "XAxis 1"
+                    ],
+                    "_PossibleYAxes": [
+                      "YAxis 1"
+                    ],
+                    "_PossibleColumnsWithXYKey": [
+                      "&lt;thisX&gt;",
+                      "&lt;thisY&gt;",
+                      "&lt;thisName&gt;",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleColumnsWithItself": [
+                      "&lt;this&gt;",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleLayers": []
+                  },
+                  "Basics": {
+                    "Name": "PKTS Sent",
+                    "BackgroundColor": "#808387",
+                    "BorderColor": "#808387",
+                    "Data": {
+                      "_dashboardsType": "data",
+                      "value": "RefineryMonitoring/networkStats"
+                    }
+                  },
+                  "Axes": {
+                    "XAxisData": "interface",
+                    "YAxisData": "transmitPackets",
+                    "XAxisID": "XAxis 1",
+                    "YAxisID": "YAxis 1"
+                  },
+                  "Labels": {
+                    "Font": {
+                      "Bold": false,
+                      "Size": 12
+                    }
+                  }
+                },
+                {
+                  "_Hidden": {
+                    "_Type": "Bar",
+                    "_Index": 3,
+                    "_LayerId": "layer_10696",
+                    "_PossibleColumns": [
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleRadius": [
+                      "Fixed Size",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleXAxes": [
+                      "XAxis 1"
+                    ],
+                    "_PossibleYAxes": [
+                      "YAxis 1"
+                    ],
+                    "_PossibleColumnsWithXYKey": [
+                      "&lt;thisX&gt;",
+                      "&lt;thisY&gt;",
+                      "&lt;thisName&gt;",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ],
+                    "_PossibleColumnsWithItself": [
+                      "&lt;this&gt;",
+                      "processName",
+                      "interface",
+                      "receivePackets",
+                      "receiveErrs",
+                      "transmitPackets",
+                      "transmitErrs"
+                    ]
+                  },
+                  "Basics": {
+                    "Name": "PKTS Recv",
+                    "Data": {
+                      "_dashboardsType": "data",
+                      "value": "RefineryMonitoring/networkStats"
+                    }
+                  },
+                  "Axes": {
+                    "XAxisData": "interface",
+                    "YAxisData": "receivePackets",
+                    "XAxisID": "XAxis 1",
+                    "YAxisID": "YAxis 1"
+                  },
+                  "Labels": {
+                    "Font": {
+                      "Bold": false,
+                      "Size": 12
+                    }
+                  }
+                }
+              ],
+              "XAxes": [
+                {
+                  "_Hidden": {
+                    "_Type": "category",
+                    "_Index": 0,
+                    "_Label": "XAxis 1",
+                    "_AxisId": "axis_10675"
+                  },
+                  "Title": {
+                    "Display": true,
+                    "LabelString": "Interface",
+                    "FontFamily": "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                    "FontSize": 12,
+                    "FontStyle": "normal",
+                    "FontColor": "#FFFFFF",
+                    "FontOpacity": 100
+                  },
+                  "Labels": {
+                    "HideTrailingZeroes": true,
+                    "MaxWidth": 0,
+                    "_ReverseCache": false,
+                    "BeginAtZero": true,
+                    "DateFormat": "YYYY-MM-DD"
+                  }
+                }
+              ],
+              "YAxes": [
+                {
+                  "_Hidden": {
+                    "_Type": "linear",
+                    "_Index": 0,
+                    "_Label": "YAxis 1",
+                    "_AxisId": "axis_10679"
+                  },
+                  "Labels": {
+                    "MaxWidth": 0,
+                    "_ReverseCache": false,
+                    "DateFormat": "YYYY-MM-DD"
+                  },
+                  "Range": {
+                    "SoftRange": false,
+                    "UseDataRange": false,
+                    "SuggestedMax": 0,
+                    "SuggestedMin": 0,
+                    "Max": 0,
+                    "Min": 0
+                  }
+                }
+              ],
+              "format": {
+                "widgetTitle": "Network Usage",
+                "titleFontBold": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 10,
+                "tileBorderColor": ""
+              },
+              "version": "4.3.1",
+              "Basics": {
+                "Transpose": true
+              },
+              "Animations": {
+                "Enabled": true,
+                "Duration": 0,
+                "Easing": "easeOutQuart"
+              }
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "1007",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "46a74e9-f06d-d094-fb08-7bbdbc25e408",
+          "layout": {
+            "row": 13,
+            "column": 19,
+            "rowSpan": 10,
+            "colSpan": 17
+          },
+          "component": {
+            "id": "component_16425",
+            "key": "ChartJS",
+            "options": {
+              "Overlay": {
+                "customTooltip": "&lt;table style='{{fontSize}}'&gt;&lt;thead&gt;&lt;tr style='padding-right: 10px;'&gt; &lt;th&gt;{{ xLabel }} &lt;/th&gt;&lt;th&gt; &lt;/th &gt; &lt;/tr&gt;&lt;/thead &gt; {{#each points }}&lt;tr&gt;&lt;td&gt;{{{svg}}} {{ layerName }}: &lt;/td&gt;&lt;td style='padding-right: 10px; text-align: left;'&gt;{{layerData}}&lt;/td &gt; &lt;/tr&gt;{{/each}}&lt;/table&gt;"
+              },
+              "Layers": [
+                {
+                  "_Hidden": {
+                    "_Type": "Bar",
+                    "_Index": 0,
+                    "_LayerId": "layer_16475",
+                    "_PossibleColumns": [
+                      "filesystem",
+                      "totalBytes"
+                    ],
+                    "_PossibleRadius": [
+                      "Fixed Size",
+                      "filesystem",
+                      "totalBytes"
+                    ],
+                    "_PossibleXAxes": [
+                      "XAxis 1"
+                    ],
+                    "_PossibleYAxes": [
+                      "YAxis 1"
+                    ],
+                    "_PossibleColumnsWithXYKey": [
+                      "&lt;thisX&gt;",
+                      "&lt;thisY&gt;",
+                      "&lt;thisName&gt;",
+                      "filesystem",
+                      "totalBytes"
+                    ],
+                    "_PossibleColumnsWithItself": [
+                      "&lt;this&gt;",
+                      "filesystem",
+                      "totalBytes"
+                    ]
+                  },
+                  "Basics": {
+                    "Name": "Layer 1",
+                    "LegendEnabled": false,
+                    "Data": {
+                      "_dashboardsType": "data",
+                      "value": "RefineryMonitoring/fileSystemStats"
+                    }
+                  },
+                  "Axes": {
+                    "XAxisData": "filesystem",
+                    "YAxisData": "totalBytes",
+                    "XAxisID": "XAxis 1",
+                    "YAxisID": "YAxis 1"
+                  },
+                  "Labels": {
+                    "Font": {
+                      "Bold": false,
+                      "Size": 12
+                    }
+                  }
+                }
+              ],
+              "XAxes": [
+                {
+                  "_Hidden": {
+                    "_Type": "category",
+                    "_Index": 0,
+                    "_Label": "XAxis 1",
+                    "_AxisId": "axis_16463"
+                  },
+                  "Labels": {
+                    "MaxWidth": 0,
+                    "_ReverseCache": false,
+                    "BeginAtZero": true,
+                    "DateFormat": "YYYY-MM-DD"
+                  }
+                }
+              ],
+              "YAxes": [
+                {
+                  "_Hidden": {
+                    "_Type": "linear",
+                    "_Index": 0,
+                    "_Label": "YAxis 1",
+                    "_AxisId": "axis_16467"
+                  },
+                  "Title": {
+                    "Display": true,
+                    "LabelString": "",
+                    "FontFamily": "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+                    "FontSize": 12,
+                    "FontStyle": "normal",
+                    "FontColor": "#FFFFFF",
+                    "FontOpacity": 100
+                  },
+                  "Labels": {
+                    "MaxWidth": 0,
+                    "_ReverseCache": false,
+                    "DateFormat": "YYYY-MM-DD"
+                  },
+                  "Range": {
+                    "UseMinMax": true,
+                    "UseMinMaxReset": false,
+                    "SoftRange": false,
+                    "UseDataRange": false,
+                    "SuggestedMax": 0,
+                    "SuggestedMin": 0,
+                    "Max": 100,
+                    "Min": 0
+                  }
+                }
+              ],
+              "format": {
+                "widgetTitle": {
+                  "_dashboardsType": "viewstate",
+                  "value": "diskSize"
+                },
+                "titleFontBold": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 10,
+                "tileBorderColor": ""
+              },
+              "version": "4.3.1"
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "1007",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "6529837b-814c-ff7c-5536-15355fad1628",
+          "layout": {
+            "row": 5,
+            "column": 16,
+            "rowSpan": 17,
+            "colSpan": 3
+          },
+          "component": {
+            "id": "component_20787",
+            "key": "BasicComponents",
+            "options": {
+              "version": "4.3.1",
+              "Basics": {
+                "ComponentName": "label",
+                "HtmlText": "",
+                "Data": "",
+                "Template": "",
+                "Theme": "Dark",
+                "FontSize": "13",
+                "horizontal": "Center",
+                "vertical": "Middle",
+                "tooltip": "",
+                "AllowUnsafeContent": false,
+                "version": "4.2.0s2"
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "Alignment": {
+                "paddingLeft": 0,
+                "paddingRight": 0,
+                "paddingTop": 0,
+                "paddingBottom": 0,
+                "innerPaddingLeft": 0,
+                "innerPaddingRight": 0,
+                "innerPaddingTop": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "titlePaddingRight": 0,
+                "titlePaddingTop": 7,
+                "titlePaddingBottom": 7
+              },
+              "format": {
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleFontBold": false,
+                "titleShadow": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              }
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "17",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "e996ff92-b195-7c59-35e4-72e937af7c7",
+          "layout": {
+            "row": 5,
+            "column": 32,
+            "rowSpan": 4,
+            "colSpan": 4
+          },
+          "component": {
+            "id": "component_62948",
+            "key": "BasicComponents",
+            "options": {
+              "version": "4.3.1",
+              "Basics": {
+                "ComponentName": "label",
+                "HtmlText": {
+                  "_dashboardsType": "viewstate",
+                  "value": "totalMemory"
+                },
+                "Data": "",
+                "Template": "",
+                "Theme": "Dark",
+                "FontSize": "13",
+                "horizontal": "Center",
+                "vertical": "Middle",
+                "tooltip": "",
+                "AllowUnsafeContent": false,
+                "version": "4.2.0s2"
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "Alignment": {
+                "paddingLeft": 0,
+                "paddingRight": 0,
+                "paddingTop": 0,
+                "paddingBottom": 0,
+                "innerPaddingLeft": 0,
+                "innerPaddingRight": 0,
+                "innerPaddingTop": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "titlePaddingRight": 0,
+                "titlePaddingTop": 17,
+                "titlePaddingBottom": 7
+              },
+              "format": {
+                "widgetTitle": "Total Memory (GB)",
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleFontBold": false,
+                "titleShadow": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              }
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "17",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "eaa4e993-f638-d9d1-49ea-5ed6510e2e91",
+          "layout": {
+            "row": 0,
+            "column": 30,
+            "rowSpan": 2,
+            "colSpan": 6
+          },
+          "component": {
+            "id": "component_916",
+            "key": "BasicComponents",
+            "options": {
+              "version": "4.3.1",
+              "Basics": {
+                "ComponentName": "label",
+                "HtmlText": "",
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "RefineryMonitoring/serverTime"
+                },
+                "Template": "{{this.0.now}}",
+                "Theme": "Dark",
+                "FontSize": "13",
+                "horizontal": "Center",
+                "vertical": "Middle",
+                "tooltip": "",
+                "AllowUnsafeContent": false,
+                "version": "4.2.0s2"
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "Alignment": {
+                "paddingLeft": 0,
+                "paddingRight": 0,
+                "paddingTop": 0,
+                "paddingBottom": 0,
+                "innerPaddingLeft": 0,
+                "innerPaddingRight": 0,
+                "innerPaddingTop": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "titlePaddingRight": 0,
+                "titlePaddingTop": 7,
+                "titlePaddingBottom": 7
+              },
+              "format": {
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleFontBold": false,
+                "titleShadow": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              }
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "17",
+            "hasOnSettingsChange": true
+          }
+        },
+        {
+          "id": "b2414938-d9c5-9a04-3578-203e64e06c75",
+          "layout": {
+            "row": 2,
+            "column": 26,
+            "rowSpan": 3,
+            "colSpan": 10
+          },
+          "component": {
+            "id": "component_4369",
+            "key": "BasicComponents",
+            "options": {
+              "version": "4.3.1",
+              "Basics": {
+                "ComponentName": "label",
+                "HtmlText": "",
+                "Data": "",
+                "Template": "",
+                "Theme": "Dark",
+                "FontSize": "13",
+                "horizontal": "Center",
+                "vertical": "Middle",
+                "tooltip": "",
+                "AllowUnsafeContent": false,
+                "version": "4.2.0s2"
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "Alignment": {
+                "paddingLeft": 0,
+                "paddingRight": 0,
+                "paddingTop": 0,
+                "paddingBottom": 0,
+                "innerPaddingLeft": 0,
+                "innerPaddingRight": 0,
+                "innerPaddingTop": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "titlePaddingRight": 0,
+                "titlePaddingTop": 7,
+                "titlePaddingBottom": 7
+              },
+              "format": {
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleFontBold": false,
+                "titleShadow": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              }
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "definitionId": "17",
+            "hasOnSettingsChange": true
+          }
+        }
+      ],
+      "relativeHeight": true,
+      "rowCount": 24,
+      "colCount": 36,
+      "floatable": false,
+      "isDefault": true
+    }
+  ],
+  "popups": [],
+  "tags": [],
+  "dashboardTheme": "Dark",
+  "themeSwitchable": true,
+  "saveTimestamp": null,
+  "relativeHeight": true,
+  "rowCount": 24,
+  "colCount": 36,
+  "floatable": false,
+  "viewState": {
+    ".settings": {
+      "component_1998": {
+        "version": 0,
+        "GroupingConfiguration": []
+      },
+      "component_3358": {
+        "version": 0,
+        "GroupingConfiguration": []
+      },
+      "component_3422": {
+        "version": 0,
+        "GroupingConfiguration": []
+      },
+      "component_3506": {
+        "version": 0,
+        "GroupingConfiguration": []
+      },
+      "component_3588": {
+        "version": 0,
+        "GroupingConfiguration": []
+      }
+    },
+    "selectedServer": {
+      "_viewType": true,
+      "_type": "symbol",
+      "_listtype": "symbol",
+      "value": "refinery-training",
+      "_default": ""
+    },
+    "diskSize": {
+      "_viewType": true,
+      "_type": "string",
+      "value": "File System Usage(%) Total Available : 16.99GB",
+      "_default": ""
+    },
+    "serverTime": {
+      "_viewType": true,
+      "_type": "timestamp",
+      "value": "2020-02-20T14:05:07.484000000Z",
+      "_default": "2020-02-20T14:05:07.484000000Z"
+    },
+    "totalMemory": {
+      "_viewType": true,
+      "_type": "float",
+      "value": "3.68",
+      "_default": ""
+    },
+    "New node": {
+      "_viewType": true,
+      "_type": "datetime",
+      "value": "NOW",
+      "_default": "NOW",
+      "_rolling": false
+    }
+  },
+  "data": {
+    "RefineryMonitoring": {
+      "serverSelection": {
+        "_pagingType": "NONE",
+        "_autoExec": true,
+        "_columns": [
+          "processName"
+        ],
+        "_dataType": "analytic",
+        "_dataSource": "kdb",
+        "_connection": "refineryMonitoring",
+        "_mappings": {
+          "key": "processName",
+          "mappings": {},
+          "value": ""
+        },
+        "_maxRows": 2000,
+        "_subscriptionType": "static",
+        "_subscriptionInterval": 3,
+        "_layout": [
+          {
+            "isExpanded": true,
+            "weight": 2
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": true,
+            "weight": 0
+          },
+          {
+            "isExpanded": true,
+            "weight": 2
+          }
+        ],
+        "_selectedAnalytic": ".daas.cmon.dash.serverSelection",
+        "_analyticParams": [],
+        "_subscriptionKey": "",
+        "_isStreamingSubscription": false,
+        "_hasUpdateQuery": false,
+        "_updateQueryString": "",
+        "_updateType": "query",
+        "_pageSize": 2000,
+        "_serverPaging": false
+      },
+      "cpuStats": {
+        "_pagingType": "NONE",
+        "_autoExec": true,
+        "_columns": [
+          "source",
+          "used"
+        ],
+        "_dataType": "analytic",
+        "_dataSource": "kdb",
+        "_connection": "refineryMonitoring",
+        "_mappings": {
+          "key": "source",
+          "mappings": {},
+          "value": "used"
+        },
+        "_maxRows": 2000,
+        "_subscriptionType": "polling",
+        "_subscriptionInterval": 5,
+        "_layout": [
+          {
+            "isExpanded": true,
+            "weight": 2
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": true,
+            "weight": 0
+          },
+          {
+            "isExpanded": true,
+            "weight": 2
+          }
+        ],
+        "_selectedAnalytic": ".daas.cmon.dash.serverCpuStats",
+        "_analyticParams": [
+          {
+            "id": "serverName",
+            "name": "serverName",
+            "type": "symbol",
+            "description": "default parameter",
+            "required": true,
+            "value": "&lt;%selectedServer%&gt;",
+            "isViewState": true
+          }
+        ],
+        "_subscriptionKey": "",
+        "_isStreamingSubscription": false,
+        "_hasUpdateQuery": false,
+        "_updateQueryString": "",
+        "_updateType": "query",
+        "_pageSize": 2000,
+        "_serverPaging": false
+      },
+      "dataForm": {
+        "_pagingType": "NONE",
+        "_autoExec": true,
+        "_columns": [
+          "unknown0"
+        ],
+        "_dataType": "query",
+        "_dataSource": "kdb",
+        "_connection": "refineryMonitoring",
+        "_mappings": {
+          "key": "unknown0",
+          "mappings": {},
+          "value": ""
+        },
+        "_maxRows": 2000,
+        "_subscriptionType": "static",
+        "_subscriptionInterval": 3,
+        "_layout": [
+          {
+            "isExpanded": true,
+            "weight": 2
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": true,
+            "weight": 0
+          },
+          {
+            "isExpanded": false,
+            "weight": 2
+          }
+        ],
+        "_queryString": "{[a]}",
+        "_queryParams": [
+          {
+            "name": "a",
+            "index": 0,
+            "type": "symbol",
+            "value": "&lt;%selectedServer%&gt;",
+            "IsKdbParam": true,
+            "isViewState": true
+          }
+        ],
+        "_subscriptionKey": "",
+        "_hasUpdateQuery": false,
+        "_updateQueryString": "",
+        "_updateType": "query",
+        "_pageSize": 2000,
+        "_serverPaging": false
+      },
+      "memoryStats": {
+        "_pagingType": "NONE",
+        "_autoExec": true,
+        "_columns": [
+          "field",
+          "fieldValue"
+        ],
+        "_dataType": "analytic",
+        "_dataSource": "kdb",
+        "_connection": "refineryMonitoring",
+        "_mappings": {
+          "key": "field",
+          "mappings": {},
+          "value": "fieldValue"
+        },
+        "_maxRows": 2000,
+        "_subscriptionType": "polling",
+        "_subscriptionInterval": 5,
+        "_layout": [
+          {
+            "isExpanded": true,
+            "weight": 2
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": true,
+            "weight": 0
+          },
+          {
+            "isExpanded": true,
+            "weight": 2
+          }
+        ],
+        "_selectedAnalytic": ".daas.cmon.dash.serverMemoryStats",
+        "_analyticParams": [
+          {
+            "id": "serverName",
+            "name": "serverName",
+            "type": "symbol",
+            "description": "default parameter",
+            "required": true,
+            "value": "&lt;%selectedServer%&gt;",
+            "isViewState": true
+          }
+        ],
+        "_subscriptionKey": "",
+        "_isStreamingSubscription": false,
+        "_hasUpdateQuery": false,
+        "_updateQueryString": "",
+        "_updateType": "query",
+        "_pageSize": 2000,
+        "_serverPaging": false
+      },
+      "networkStats": {
+        "_pagingType": "NONE",
+        "_autoExec": true,
+        "_columns": [
+          "processName",
+          "interface",
+          "receivePackets",
+          "receiveErrs",
+          "transmitPackets",
+          "transmitErrs"
+        ],
+        "_dataType": "analytic",
+        "_dataSource": "kdb",
+        "_connection": "refineryMonitoring",
+        "_mappings": {
+          "key": "processName",
+          "mappings": {},
+          "value": "interface"
+        },
+        "_maxRows": 2000,
+        "_subscriptionType": "polling",
+        "_subscriptionInterval": 5,
+        "_layout": [
+          {
+            "isExpanded": true,
+            "weight": 2
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": true,
+            "weight": 0
+          },
+          {
+            "isExpanded": true,
+            "weight": 2
+          }
+        ],
+        "_selectedAnalytic": ".daas.cmon.dash.serverNetworkStats",
+        "_analyticParams": [
+          {
+            "id": "serverName",
+            "name": "serverName",
+            "type": "symbol",
+            "description": "default parameter",
+            "required": true,
+            "value": "&lt;%selectedServer%&gt;",
+            "isViewState": true
+          }
+        ],
+        "_subscriptionKey": "",
+        "_isStreamingSubscription": false,
+        "_hasUpdateQuery": false,
+        "_updateQueryString": "",
+        "_updateType": "query",
+        "_pageSize": 2000,
+        "_serverPaging": false
+      },
+      "fileSystemStats": {
+        "_pagingType": "NONE",
+        "_autoExec": true,
+        "_columns": [
+          "filesystem",
+          "totalBytes"
+        ],
+        "_dataType": "analytic",
+        "_dataSource": "kdb",
+        "_connection": "refineryMonitoring",
+        "_mappings": {
+          "key": "filesystem",
+          "mappings": {},
+          "value": "totalBytes"
+        },
+        "_maxRows": 2000,
+        "_subscriptionType": "polling",
+        "_subscriptionInterval": 5,
+        "_layout": [
+          {
+            "isExpanded": true,
+            "weight": 2
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": true,
+            "weight": 0
+          },
+          {
+            "isExpanded": true,
+            "weight": 2
+          }
+        ],
+        "_selectedAnalytic": ".daas.cmon.dash.serverFilesystemStats",
+        "_analyticParams": [
+          {
+            "id": "serverName",
+            "name": "serverName",
+            "type": "symbol",
+            "description": "default parameter",
+            "required": true,
+            "value": "&lt;%selectedServer%&gt;",
+            "isViewState": true
+          }
+        ],
+        "_subscriptionKey": "",
+        "_isStreamingSubscription": false,
+        "_hasUpdateQuery": false,
+        "_updateQueryString": "",
+        "_updateType": "query",
+        "_pageSize": 2000,
+        "_serverPaging": false
+      },
+      "fileSystemSize": {
+        "_pagingType": "NONE",
+        "_autoExec": true,
+        "_columns": [
+          "Property",
+          "Value"
+        ],
+        "_dataType": "analytic",
+        "_dataSource": "kdb",
+        "_connection": "refineryMonitoring",
+        "_mappings": {
+          "key": "Property",
+          "mappings": {
+            "V": {
+              "_dashboardsType": "viewstate",
+              "value": "diskSize"
+            }
+          },
+          "value": "Value"
+        },
+        "_maxRows": 2000,
+        "_subscriptionType": "polling",
+        "_subscriptionInterval": 3,
+        "_layout": [
+          {
+            "isExpanded": true,
+            "weight": 2
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": true,
+            "weight": 0
+          },
+          {
+            "isExpanded": true,
+            "weight": 2
+          }
+        ],
+        "_selectedAnalytic": ".daas.cmon.dash.fileSystemSize",
+        "_analyticParams": [
+          {
+            "id": "serverName",
+            "name": "serverName",
+            "type": "symbol",
+            "description": "default parameter",
+            "required": true,
+            "value": "&lt;%selectedServer%&gt;",
+            "isViewState": true
+          }
+        ],
+        "_subscriptionKey": "",
+        "_isStreamingSubscription": false,
+        "_hasUpdateQuery": false,
+        "_updateQueryString": "",
+        "_updateType": "query",
+        "_pageSize": 2000,
+        "_serverPaging": false
+      },
+      "serverTime": {
+        "_pagingType": "NONE",
+        "_autoExec": true,
+        "_columns": [
+          "now"
+        ],
+        "_dataType": "virtual",
+        "_dataSource": "kdb",
+        "_connection": "ds_action_tracker",
+        "_mappings": {
+          "key": "K",
+          "mappings": {
+            "time": {
+              "_dashboardsType": "viewstate",
+              "value": "serverTime"
+            }
+          },
+          "value": "V"
+        },
+        "_maxRows": 2000,
+        "_subscriptionType": "polling",
+        "_subscriptionInterval": 5,
+        "_layout": [
+          {
+            "isExpanded": true,
+            "weight": 2
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": true,
+            "weight": 0
+          },
+          {
+            "isExpanded": true,
+            "weight": 2
+          }
+        ],
+        "_subscriptionKey": "_rowIndex",
+        "_virtualParams": [
+          {
+            "name": "dummy",
+            "index": 0,
+            "type": "datasource",
+            "value": "",
+            "isVirtual": true
+          }
+        ],
+        "_virtualQueryString": "function (dummy , callback) {\n    var today = new Date();\n    \n    var toReturn = {\n        meta: { \"now\": 11 },\n        columns: [\"now\"],\n        rows: [{\n            \"now\": today.getFullYear() + \"-\" + (today.getMonth() + 1) + \"-\" + today.getDate() + \" \" + today.toLocaleTimeString() \n        }]\n    };\n\n    callback(toReturn);\n}"
+      },
+      "memoryAvailable": {
+        "_pagingType": "NONE",
+        "_autoExec": true,
+        "_columns": [
+          "Property",
+          "Value"
+        ],
+        "_dataType": "analytic",
+        "_dataSource": "kdb",
+        "_connection": "refineryMonitoring",
+        "_mappings": {
+          "key": "Property",
+          "mappings": {
+            "V": {
+              "_dashboardsType": "viewstate",
+              "value": "totalMemory"
+            }
+          },
+          "value": "Value"
+        },
+        "_maxRows": 2000,
+        "_subscriptionType": "polling",
+        "_subscriptionInterval": 30,
+        "_layout": [
+          {
+            "isExpanded": true,
+            "weight": 2
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": false,
+            "weight": 1
+          },
+          {
+            "isExpanded": true,
+            "weight": 0
+          },
+          {
+            "isExpanded": true,
+            "weight": 2
+          }
+        ],
+        "_selectedAnalytic": ".daas.cmon.dash.availableMemory",
+        "_analyticParams": [
+          {
+            "id": "serverName",
+            "name": "serverName",
+            "type": "symbol",
+            "description": "default parameter",
+            "required": true,
+            "value": "&lt;%selectedServer%&gt;",
+            "isViewState": true
+          }
+        ],
+        "_subscriptionKey": "_rowIndex",
+        "_isStreamingSubscription": false,
+        "_hasUpdateQuery": false,
+        "_updateQueryString": "",
+        "_updateType": "query",
+        "_pageSize": 2000,
+        "_serverPaging": false
+      }
+    }
+  },
+  "worksheetPadding": 10,
+  "widgetsSpacing": 0,
+  "borderColor": "000000",
+  "borderBackground": "000000",
+  "transparentBackground": true,
+  "borderWidth": 0,
+  "borderRounding": 0,
+  "borderSpacing": 0,
+  "borderShadow": false,
+  "enableShareDashboard": false,
+  "notifications": null,
+  "showLoadingIndicators": true,
+  "unsavedViewerPrompt": false,
+  "advancedCss": "",
+  "cssClasses": "",
+  "viewStateBinding": false,
+  "wasChanged": true,
+  "version": "4.4.0p7"
+}</data>
+</ui>

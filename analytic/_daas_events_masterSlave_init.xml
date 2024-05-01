@@ -1,0 +1,19 @@
+<analytic>
+	<analytic>.daas.events.masterSlave.init</analytic>
+	<code_text>{[]
+$[.ex.getInstanceName[] like "*eventBus*";
+	.uc.getAndSaveActiveParamValue[`.daas.cfg.masterSlaveInstances;`;`.daas.cfg.masterSlaveInstances;enlist[`action]!enlist".daas.events.pubAdminMessage[`masterChange;`complete;exec first host from .daas.cfg.masterSlaveInstances where isMaster;.daas.cfg.masterSlaveInstances]"];
+	.uc.getAndSaveActiveParamValue[`.daas.cfg.masterSlaveInstances;`;`.daas.cfg.masterSlaveInstances;()!()] ];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

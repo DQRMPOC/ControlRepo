@@ -1,0 +1,43 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.masterSlaveInstances</parameter>
+	<description>a list of delta installations and their status as "masterable" processes (can act as a data source during data migration) or others (always receive data during migration).</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>env</element>
+		<elementType>Symbol</elementType>
+		<elementValue>a</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>canMaster</element>
+		<elementType>Boolean</elementType>
+		<elementValue>true</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>isMaster</element>
+		<elementType>Boolean</elementType>
+		<elementValue>true</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>env</element>
+		<elementType>Symbol</elementType>
+		<elementValue>b</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>canMaster</element>
+		<elementType>Boolean</elementType>
+		<elementValue>true</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>isMaster</element>
+		<elementType>Boolean</elementType>
+		<elementValue>false</elementValue>
+	</param>
+</configparam>

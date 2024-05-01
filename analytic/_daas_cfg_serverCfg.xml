@@ -1,0 +1,50 @@
+<analytic>
+	<analytic>.daas.cfg.serverCfg</analytic>
+	<code_text>/ Load core configuration 
+.al.loadinstruction `.daas.cfg.coreFeatures
+
+/ Load data node specific configuration
+
+/ getBars table generation
+// @see .daas.util.quoteStatsWriteDown, .daas.util.tradeStatsWriteDown
+// @see .daas.util.genBarColClause
+// @see .daas.util.registerProcess
+.daas.cfg.writedownAggregationFunctions:value each (!). .uc.getActiveParamValue[`.daas.cfg.writedownAggregationFunctions;`]`colName`agg;
+.daas.cfg.statsHDB:.uc.getActiveParamValue[`.daas.cfg.statsHDB;`];
+.daas.cfg.dssStatsHDB:.uc.getActiveParamValue[`.daas.cfg.dssStatsHDB;`];
+.daas.cfg.hdbDir:(!). .uc.getActiveParamValue[`.daas.cfg.hdbDir;`]`asset`directory;
+
+/ filtering - symbol to exchange mapping
+/ @see .daas.util.isValidRecord
+.uc.getAndSaveActiveParamValue[`.daas.cfg.symExchangeMapConfig;`;`.daas.cfg.symExchangeMap;(enlist `action)!enlist ".daas.cfg.symExMapDict:(!). .daas.cfg.symExchangeMap `sym`exch"];
+.daas.cfg.symExMapDict:(!). .daas.cfg.symExchangeMap `sym`exch;
+
+
+/ corporate action adjustments
+// @see .daas.util.adjustStockSplit 
+.daas.cfg.preCorAxDict:(!). flip (::; {1!select from .uc.getActiveParamValue[`.daas.cfg.preAggCorAxAdjustments;`] where tableNames = x}) @\:/: distinct .uc.getActiveParamValue[`.daas.cfg.preAggCorAxAdjustments;`]`tableNames;
+.daas.cfg.postCorAxDict:(!). flip (::; {1!select from .uc.getActiveParamValue[`.daas.cfg.postAggCorAxAdjustments;`] where tableNames = x}) @\:/: distinct .uc.getActiveParamValue[`.daas.cfg.postAggCorAxAdjustments;`]`tableNames;
+
+
+/ cancellation and corrections logc
+// @see getTicks
+// @see .daas.stats.getUnderlyingStatsTab
+.daas.cfg.canCorTargets:(!). .uc.getActiveParamValue[`.daas.cfg.canCorTargets;`]`baseTable`canCorTable;
+
+
+/ query sort checking for time based queries
+// @see .daas.util.select
+.daas.cfg.schemaInfo:select table,keycols,colnames,colattr from .tbl.gettabledetails each .tbl.getLoadedSchemas[];
+.daas.cfg.schemaSortCol:select table,sortedCol:(first each colnames@'where each `s=/:colattr) from .daas.cfg.schemaInfo;</code_text>
+	<description>Parameters that are defined on startup of a qs process</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>DataLoaderWorker</analyticgroup>
+</analytic>

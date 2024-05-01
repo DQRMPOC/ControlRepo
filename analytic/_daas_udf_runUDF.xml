@@ -1,0 +1,44 @@
+<analytic>
+	<analytic>.daas.udf.runUDF</analytic>
+	<code_text>{[funcName;params]
+	func: .daas.udf.udfFuncStore[funcName;`func];
+	trapRes:.daas.util.trap[func; enlist params]; 
+	if[trapRes`error;
+		.log.error[.z.h;errorString:raze "Error executing user-defined function \"", string[funcName], "\": ", string trapRes`result; params];
+		' errorString];
+	:trapRes`result;
+ }</code_text>
+	<description>execute a user-defined function. at this point, permissions have already been checked and the function has been loaded into memory.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>funcName</parameter>
+		<default></default>
+		<description>function name (symbol)</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>function parameter dictionary</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

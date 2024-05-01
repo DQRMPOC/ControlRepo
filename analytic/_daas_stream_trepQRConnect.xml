@@ -1,0 +1,77 @@
+<analytic>
+	<analytic>.daas.stream.trepQRConnect</analytic>
+	<code_text>{[]
+  // connect to QR
+  .qr.connect:{[]
+    .qr.log.normal[`QueryRouter; "Connecting to QR"; ()];
+    neg[.qr.handle](`registerClient; string[`streamClient]; .qr.clientID; .qr.heartbeatF; 1b; string[first -1?0Ng]; `Administrator; "password");
+  };
+
+
+  // define function to receive GW details
+  .qr.gateway:{[myID; success; msg; gws; runID; master]
+    if[not success;
+      .qr.log.error[`QueryRouter; "Failed to register with QR"; (myID; msg; gws; runID)];
+      :()
+    ];
+    .qr.log.normal[`QueryRouter; "Received status message from QR"; (myID; msg; gws; runID)];
+    if[null .qr.clientID;
+      .qr.clientID:myID;
+      .qr.requestOk:1b;
+    ];
+    `.qr.gateways upsert gws;
+    };
+
+  // GW registration callback
+  .qr.gwRegistered:{[gw; success; runID]
+    `.qr.gateways upsert `process`validated!(gw; success);
+  };
+  // define function to receive status messages
+  .qr.status:{[myID; msg; reqID; status]
+    .qr.log.normal[`QueryRouter; "Received status message from QR"; (myID; msg; reqID; status)];
+  };
+  .qr.sendRequest:{[request; target; opts]
+    opts,:enlist[`timeout]!enlist 1200;
+    @[neg[.qr.handle];(`runRequest; request; target; string .qr.runCounter+:1; opts);{0N!"lost connection, connecting to alternate QR";.qr.connectDR[]}];
+  };
+  .qr.request:{[myID; status; msg; reqID; gw; runID; master]
+    .qr.log.normal[`QueryRouter; "Request status received"; (myID; status; msg; reqID; gw; runID)];
+    `.qr.results upsert `requestID`msg`status!(reqID; msg; $[status; `initialised; `failed]);
+  };
+
+  .qr.result:{[myID; rID; runID; status; msg; res]
+    if[(status=`failed) | 10h=type res;
+      .qr.log.error[`QueryRouter; "Request ID ",string[rID]," failed: ",-3!res; msg];
+      `.qr.results upsert `requestID`msg`status!(rID; msg; `failed);
+      :()
+    ];
+    .qr.log.normal[`QueryRouter; "Request ID ",string[rID]," successful: ",-3!res; msg];
+    show res;
+    .daas.stream.trepQRCallback[(get runID);res];
+ };
+
+
+  // send heartbeat to QR &amp; GWs
+  .qr.sendHeartbeats:{[]
+    if[not null .qr.handle;
+      neg[.qr.handle](`.ch.heartbeat; `);
+    ];
+    {[h] neg[h](`.ch.heartbeat; `) } each exec handle from .qr.gateways where not null handle;
+  };
+
+// Define getTicks function in a standard way so that they can be called as if on the gateway
+getRef::{.qr.sendRequest[(`getRef;x);(); ()];};
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

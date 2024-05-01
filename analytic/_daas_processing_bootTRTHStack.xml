@@ -1,0 +1,117 @@
+<analytic>
+	<analytic>.daas.processing.bootTRTHStack</analytic>
+	<code_text>{[jobID;procType]
+
+	job:string[jobID];
+	p:(enlist[::]!enlist[::]);
+	senv:string[.daas.cfg.env];
+	//Create dict of process param values
+	
+	//TODO: Define process instance templates w/ parameters that match the following updates to existing process instance details (makes this anayltic much shorter)
+	//FW could stand to be replaced with something lighter - LS or similar
+	$[procType~`daas_processing_fm;
+		[
+		//Load template
+		p,:(((key l)except r)!first each l ((key l)except r)),(r!l r:where (type each l:.ex.getdetails[`$raze "daas_processing_fm_template"]`paramvalues)&lt;&gt;99);
+		
+		//Update name and process-specific parameters
+		p[`procName]:`$raze "daas_processing_fm_",job,"_",senv;
+		p[`initialStateFunct]:`.daas.processing.fmInit;
+		p:(enlist[::]!enlist[::]),(`consumerProcesses`fileListConfigName _ 1_p);
+		/p[`dc_algroups]:`daasFilewatcher`DxReportActionAnalytics;
+		];
+	
+	procType~`DS_TP;
+		[
+		//Load template
+		p,:(((key l)except r)!first each l ((key l)except r)),(r!l r:where (type each l:.ex.getdetails[`$raze "daas_processing_tp_template"]`paramvalues)&lt;&gt;99);
+
+		//Update name and process-specific parameters
+		p[`procName]:`$raze "daas_processing_tp_",job,"_",senv;
+		p[`subscriptionChannel]:`$-2_string p[`publishChannel]:`$raze "daas_processing_pe_",job,"_",senv;
+		p[`initialStateFunct]:`.daas.processing.tpInit;
+		p[`logDirectory]:`NO_DIR;
+		p:p _ `dsLsInstance
+		];
+		
+	procType~`DS_RTE;
+		[
+		//Load template
+		p,:(((key l)except r)!first each l ((key l)except r)),(r!l r:where (type each l:.ex.getdetails[`$raze "daas_processing_pe_template"]`paramvalues)&lt;&gt;99);
+		
+		//Update name and process-specific parameters
+		p[`procName]:p[`subscriptionChannel]:`$raze "daas_processing_pe_",job,"_",senv;
+		p[`initialStateFunct]:`.daas.processing.peInit;
+		p[`dc_algroups]:`.daas.trth`daasLog`daasQR`daasQS`daasUtil;
+		p[`realTimeMsgFunct]:`.daas.processing.peUpd;
+		p:p _ `subscriptionSource;
+		];
+	];
+	
+	//Adjust remaining parameters (common to all three)
+	p[`procType]:procType;
+	p[`messagingServer]:((.ex.getdetails[`$-2_first .fd.process])[`paramvalues]`messagingServer)`configname;
+	p[`dc_algroups]:l where not null l:(distinct p[`dc_algroups],`daasProcessing`daasPlatform);
+	/if[not `dc_host in key p;
+		p[`dc_host]:`$getenv `$string[.ex.getInstanceName[]],"_HOST";
+	/];
+	
+		//Pre-defined port range
+	ports:value getenv`TRTH_PROCESSING_PORTSTART;
+	ports+:til 3*lim:value getenv`TRTH_PROCESSING_STACKLIMIT;
+
+	portsInUse:{
+		pcmd:"lsof -i -P -n | grep LISTEN | awk '{print $9}'";
+		/.log.out[.z.h;"checking ports in use ";pcmd];
+		p:@[{$[count;p:system"sudo ",x;p;'`noSudo]};pcmd;{y;system x}[pcmd;]];
+		value each(":" vs/: p)[;1]
+		};
+		
+	//Select port as offset from min port
+	procOffset:(`daas_processing_fm`DS_TP`DS_RTE)!(2;1;0);
+	stackOffset:exec first stackNum from `.daas.processing.pdInfo where jobID=value job;
+
+	if[procType~`DS_RTE;
+		/if there is a port in use in my range
+		if[any (inUse:@[portsInUse;::;{0N}]) in (rng:(til 3)+((min ports)+(3*stackOffset)));		
+			.log.warn[.z.h;"ports for spawn in use. returning job to queue.";job];
+			update stackNum:0N,status:`pending from `.daas.processing.pdInfo where jobID=value job;
+			:();
+			];
+		];
+	p[`dc_port]:(min ports)+(3*stackOffset)+procOffset[procType];
+
+		
+		
+		
+	//create and run processes
+	@[.daas.infra.processCreation;1_p;{$[x~"nameexists";.log.warn[.z.h;"Process instance already exists";()];.log.error[.z.h;raze string x;()]]}];
+	{.ex.prh(".ts.runinstance";x;("s"$())!())} p[`procName];
+		
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>jobID</parameter>
+		<default></default>
+		<description>ID Number of TRTH Request</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<param>
+		<parameter>procType</parameter>
+		<default></default>
+		<description>Proccess of TRTH stack to boot</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

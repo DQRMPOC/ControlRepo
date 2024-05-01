@@ -1,0 +1,55 @@
+<analytic>
+	<analytic>.daas.util.genTicksColClause</analytic>
+	<code_text>{[params]
+
+// Below is required to generalise first columns in select statement, should always be Primary Timestamp Column, Parted Sym column, then the rest defined by the API call.
+M:update s:`$(string each t) from 0!(meta params[`dataType]);
+tCol:params[`time];
+
+$[params[`dataType] in `order`execution;
+	sCol:params[`idType];
+	sCol:first exec c from M where s = `s
+	];
+
+$[`~params`columns;
+	colClause:();
+	params[`dataType] in `order`execution;
+        [
+            if[1=count params[`columns];
+                params[`columns]:enlist params[`columns]
+            ];
+		    colClause:distinct tCol,sCol,params[`columns] where  params[`columns] in (`i,cols params[`dataType])
+        ];
+		colClause:distinct tCol,sCol,params[`columns]
+	];
+
+colClause
+
+ }</code_text>
+	<description>Applies column aggregations for correct table when aggregating by interval.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

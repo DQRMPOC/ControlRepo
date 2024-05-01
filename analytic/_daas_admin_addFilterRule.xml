@@ -1,0 +1,51 @@
+<analytic>
+	<analytic>.daas.admin.addFilterRule</analytic>
+	<code_text>{[filterName;exchList;condList]
+	/load in table to add filter to
+	tab:.uc.getActiveParamValue[`.daas.cfg.filterRuleConfig;`];
+	
+	/reject addition if a filter of that name exists
+	if[filterName in cols tab;'"There already exists a filter by that name"];
+	
+	/create list of rows where value will be true 
+	a:raze {[x;dict;tab]where ((tab`exch) = x) and ((tab`cond) in dict x)}[;dict;tab] each key dict:((exchList)!(((1b;0b)!({enlist `$ x};{raze each`$enlist each x})) 1 = count exchList)condList);
+
+	/add new filter to table 
+	tab:((cols tab),filterName) xcol update condList:(@[(count tab)#0b;(a);:;(count a)#1b]) from tab;
+	
+	/load new table into config
+	.daas.admin.editFilterConfigParam[tab;`.daas.cfg.filterRuleConfig;`]
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>filterName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>exchList</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<param>
+		<parameter>condList</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

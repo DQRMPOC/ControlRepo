@@ -1,0 +1,37 @@
+<analytic>
+	<analytic>.daas.infra.regMatch</analytic>
+	<code_text>{[dir;file]
+//gets the regexs
+listOfRegexs1:exec fileregex from .uc.getActiveParamValue[`DS_FILEWATCHER_MATCHTABLE;`$-2_string .ex.getInstanceName[]];
+//removes the * regex
+listOfRegexs2:asc listOfRegexs1;
+listOfRegexs3:string 1_listOfRegexs2;
+//checks if the file matches the regex or not
+$[any file like/: listOfRegexs3;.log.out[.z.h;"Filename Matches Regex ";file];.log.err[.z.h;"ERROR: Filename Doesn't Match Regex ";file]]
+}</code_text>
+	<description>Checks the regex matches up with the matchtable.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasFilewatcher</analyticgroup>
+</analytic>

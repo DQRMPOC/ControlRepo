@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.admin.getRfaAssetTypes</analytic>
+	<code_text>{[]
+    rfaList:.ex.prh(`.uc.getActiveParamOverrides;`rfasubscription);
+
+    / modify the list to cut out pre and post fixes
+    rfaList:16_/:string rfaList;
+    rfaList:-2_/:rfaList;
+
+    / get active feeds from log directory
+    dir:hsym `$((last(last .fd.logfile) ss "/")#(last .fd.logfile));
+    feeds:key[dir] where key[dir] like "*rfavelocity*";
+    feeds:distinct rfaList where any each feeds like/: (rfaList,\:"*");
+    
+    :([] Property:feeds; Value:feeds; Name:feeds);
+ }
+    </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+	<analyticgroup>daasWatchlistDashboard</analyticgroup>
+</analytic>

@@ -1,0 +1,22 @@
+<process>
+	<process>refinery_mon_fh</process>
+	<directory>/</directory>
+	<file>refinery-mon-fh.q</file>
+	<description>Refinery Monitoring Daemon - FeedHandler</description>
+	<apps></apps>
+	<returnstat></returnstat>
+	<param>
+		<parameter>messagingServer</parameter>
+		<description>Delta Messaging Server</description>
+		<datatype>Config</datatype>
+		<required>1</required>
+		<default>DS_MESSAGING_SERVER:emea_tr_a</default>
+	</param>
+	<param>
+		<parameter>publishChannel</parameter>
+		<description>Monitoring DMS publish channel</description>
+		<datatype>Symbol</datatype>
+		<required>1</required>
+		<default>monitoring_fh_output</default>
+	</param>
+</process>

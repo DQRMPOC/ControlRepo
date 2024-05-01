@@ -1,0 +1,49 @@
+<analytic>
+	<analytic>.daas.util.adjustL2</analytic>
+	<code_text>{[functionName;params]
+if[`temporality in key params;
+	if[`snapshot=params`temporality;
+		if[`startTime in key params;
+			params[`l2flag]:`snapshotFollowing;
+			];
+		if[`endTime in key params;
+			params[`l2flag]:`snapshotPreceding;
+			];
+		];
+	];
+params
+ }</code_text>
+	<description>Apply default parameters for any parameters not already present in the dictionary passed in.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

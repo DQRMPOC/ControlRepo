@@ -1,0 +1,13 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_TR_FX</tablegroup>
+	<tablename>ConditionalAnalytics</tablename>
+	<tablename>auction</tablename>
+	<tablename>dacsUpdate</tablename>
+	<tablename>fxCanCor</tablename>
+	<tablename>fxOpenClose</tablename>
+	<tablename>fxQuote</tablename>
+	<tablename>fxTrade</tablename>
+	<tablename>respStatus</tablename>
+	<tablename>ricInfo</tablename>
+</schemagroup>

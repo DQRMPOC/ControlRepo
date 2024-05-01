@@ -1,0 +1,26 @@
+<analytic>
+	<analytic>.daas.pdb.checkTPSubActive</analytic>
+	<code_text>{[]
+	//Check if all pdb subscriptions are in .dm.filters
+	if[all .daas.cfg.pdbSubs in flip .dm.filters`channel`topic;
+		.log.out[`pdb;"Connected to PDB, subscribing to feed";()];
+		//Allow non-persisted tabs
+		fhSubs:.fd.subscriptionChannel cross .daas.cfg.pdbTables;
+		//Register as subscriber to feed
+		.dm.regsubc ./: fhSubs;
+		.d.prcl.removeFuncFromTimer[`.daas.pdb.checkTPSubActive;0b];
+		.log.out[`pdb;"All subscriptions started";()]
+	 ]
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPDB</analyticgroup>
+</analytic>

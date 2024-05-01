@@ -1,0 +1,69 @@
+<analytic>
+	<analytic>dgwfxBucketTrade</analytic>
+	<code_text>{[dict]
+  //if[10h=type startDateTime;
+  //  st:first "Z"$startDateTime;
+  //  startDateTime:$[null st; "z"$.al.callfunction[`dxParseDateParam][startDateTime]; st];
+  //];
+  //if[10h=type endDateTime;
+  //  end:first "Z"$endDateTime;
+  //  endDateTime:$[null end; "z"$.al.callfunction[`dxParseDateParam][endDateTime]; end];
+  //];
+  :.ds.gw.query[(),dict`queryType;(`dfxBucketTrade;((),dict`symList;dict`startDateTime;dict`endDateTime;dict`tmBucket;()))];
+ }</code_text>
+	<description>Gateway query to dfxBucketTrade</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dict</parameter>
+		<default>
+			<dictkey>
+				<name>symList</name>
+				<datatype>Symbol[]</datatype>
+				<default>EUR/USD</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>startDateTime</name>
+				<datatype>Datetime</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>endDateTime</name>
+				<datatype>Datetime</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>tmBucket</name>
+				<datatype>Integer</datatype>
+				<default>60</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>queryType</name>
+				<datatype>Symbol[]</datatype>
+				<default>rdb,hdb</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>DfxGwDataAccess</analyticgroup>
+</analytic>

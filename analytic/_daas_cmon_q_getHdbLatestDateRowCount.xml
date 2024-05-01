@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.cmon.q.getHdbLatestDateRowCount</analytic>
+	<code_text>{[]
+    hdbs:select from .daas.cmon.q.i.getProcesses[0b] where processName like "*hdb_*";
+
+    rowCounts:.daas.cmon.q.i.getGenericMetricData[`process; `hdb.latestDateRowCounts; `rowCounts; `rowCount; 1b];
+    latestDates:.daas.cmon.q.i.getGenericMetricData[`process; `hdb.latestDateRowCounts; `latest; `latestDate;1b];
+
+    lDateRowCounts:(lj/) (hdbs; 1!rowCounts; 1!latestDates);
+
+    / Fix output if no HDB data present
+    badRowCounts:()~/:lDateRowCounts`rowCount;
+    lDateRowCounts:update rowCount:count[where badRowCounts]#enlist enlist[`NO_TABLES]!enlist 0Nj from lDateRowCounts where badRowCounts;
+    lDateRowCounts:update latestDate:0Nd from lDateRowCounts where latestDate~\:();
+
+    lDateRowCounts:ungroup update tableName:key each rowCount, rowCount:value each rowCount from lDateRowCounts;
+
+    lDateRowCounts:update status:`NOT_OK from lDateRowCounts where (0 = rowCount) | null rowCount;
+    lDateRowCounts:update status:`OK from lDateRowCounts where null status;
+
+    :`connected`registered`metricStale _ lDateRowCounts;
+}
+    </code_text>
+	<description>Refinery Monitoring - HDB Latest Date Row Count</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

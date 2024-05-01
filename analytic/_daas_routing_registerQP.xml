@@ -1,0 +1,21 @@
+<analytic>
+	<analytic>.daas.routing.registerQP</analytic>
+	<code_text>{[]
+
+QPDict:`procName`region`procNum`env!(.ex.getInstanceName[];.daas.cfg.region;.daas.cfg.procNum;.daas.cfg.env);
+
+.daas.events.pubEventMessage[`QPProcDataResponse;`;`;`;QPDict]; 
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

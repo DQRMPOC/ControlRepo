@@ -1,0 +1,26 @@
+<schema>
+	<ucname>delta_install_default</ucname>
+	<table>rtudfres</table>
+	<description></description>
+	<column>
+		<column>time</column>
+		<coltype>Timestamp</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>udfName</column>
+		<coltype>Symbol</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>result</column>
+		<coltype>NullType</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+</schema>

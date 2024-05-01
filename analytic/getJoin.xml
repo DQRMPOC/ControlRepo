@@ -1,0 +1,67 @@
+<analytic>
+	<analytic>getJoin</analytic>
+	<code_text>{[resultSet]
+     
+    //-- Get data and argument sets --
+    resultSet:.daas.join.normaliseResultSet[resultSet];
+    args:.daas.join.extractArgs[resultSet];
+    data:.daas.join.extractData[resultSet];
+    
+    
+    //-- Short circuit cases for immediate aggregations and returns --
+    if[(`getStats~args`API) and .daas.join.checkIfDistributedPivot[resultSet];
+        :.daas.join.distributedDataPivot[resultSet;args;`getStats];
+        ];
+    
+    
+    if[(`getStats~args`API) and 1b~null args[`granularityUnit];
+        :.daas.join.statInterval[data;args;resultSet];
+        ];
+    
+    if[`getUDF~args`API;
+        :.daas.join.udf[data];
+        ];
+
+    
+    //-- Data additions --
+    if[`spanBucket in key args;
+        data,:.daas.join.boundaryBucket[args;resultSet];
+        ];
+	
+    if[.daas.join.checkIfDistributedPivot[resultSet];
+        data:.daas.join.distributedDataPivot[resultSet;args;`getTicks];
+        ];
+
+    //-- Combine data --
+    data:.daas.join.order[data];
+    
+    
+    //-- Post join adjustments --
+    /pick out aggregation column for fills
+    aggCol:args`symCol;
+    data:.daas.util.joinFills[data;args`fill;aggCol];
+    data:.daas.join.postPivotFilter[data;args];
+    data:.daas.util.sortCols[data;args];
+    data:.daas.util.joinL2Snapshots[data;args];
+    
+    data
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>resultSet</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasGateway</analyticgroup>
+</analytic>

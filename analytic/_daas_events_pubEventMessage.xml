@@ -1,0 +1,53 @@
+<analytic>
+	<analytic>.daas.events.pubEventMessage</analytic>
+	<code_text>{[topic;tag1;tag2;tag3;info]
+	.log.debug[`pubEventMessage;"Publishing event message: "; (topic;tag1;tag2;tag3)];
+	.daas.events.pubdata[`eventReporting;`topic`tag1`tag2`tag3`time`process`procType`host`port`info!(topic;tag1;tag2;tag3;.z.P;.ex.getInstanceName[];.ex.getProcessName[];.utils.gethost[];system"p";info)];
+ }</code_text>
+	<description>sends an event report to the event bus to be redistributed</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>topic</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tag1</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tag2</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tag3</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>info</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

@@ -1,0 +1,67 @@
+<analytic>
+	<analytic>.daas.python.loadUDFFuncs</analytic>
+	<code_text>{[funcList]
+    .udf.embedPyLoadSuccess:1b;
+    @[system;"l ",getenv[`KXEMBEDPY_HOME],"/latest/p.q";{.udf.embedPyErr:x;.udf.embedPyLoadSuccess:0b}];
+	funcList,:();
+	
+    .daas.udf.funcStores:` sv/: .daas.udf.fileDir,/: udftypes:`realtime`static`trigger;
+
+	partialUDFPaths: $[any ` in funcList;
+        a @' where each (a:key each .daas.udf.funcStores) like\: "*.p*";
+		(` sv' funcList,'`p ) inter/: a @' where each (a:key each .daas.udf.funcStores) like\: "*.p*"
+		];
+
+    //if we dont have any udfs, just exit func
+    if[not any count each partialUDFPaths;
+        :();
+        ];
+
+    //if embedpy didnt load but we have python udfs, exit
+    if[(not .udf.embedPyLoadSuccess) and any count each partialUDFPaths;
+        .log.err[`embedpy;"failed to load embed py with error";.udf.embedPyErr];
+        .log.err[`embedpy;"python UDFs exist - terminating process";()];
+        exit 0;
+        ];
+    
+    
+	UDFPaths:udftypes! ` sv'' .daas.udf.funcStores,'' partialUDFPaths;
+	
+	$[any count each partialUDFPaths;	
+		.log.out[.z.h; "Loading ", string[sum count each UDFPaths]," User Defined Function Files from directory ",string .daas.udf.fileDir;()];
+		.log.out[.z.h;"No User Defined Function files found in directory; load finished ", (1 _ string .daas.udf.fileDir);()]
+		]; 
+		
+	loads: @[.daas.python.loadUDFFile;;{`error}] each raze value UDFPaths;
+	badLoads:(raze partialUDFPaths) where loads=`error;
+	.log.out[.z.h;string[count[loads] - count badLoads], " User Defined Functions successfully loaded" ; () ];
+	.log.error[.z.h;string[count badLoads], " errors loading User Defined Functions (improper script format)"; ", " sv string badLoads ];
+	
+	
+	//define our APIs as python funcs
+    .p.set[`getTicks;{getTicks .daas.python.parseRefineryDict x}];
+    .p.set[`getStats;{getStats .daas.python.parseRefineryDict x}];
+    .p.set[`getRef;{getRef .daas.python.parseRefineryDict x}];
+ }</code_text>
+	<description>loads in UDFs from the UDF directory set in .daas.udf.fileDir on process start
+
+the sole argument should be a list of names of UDF functions to load from the directory (atoms are also accepted). use an empty tick to load in all UDFs</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>funcList</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<analyticgroup>daasPython</analyticgroup>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

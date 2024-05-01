@@ -1,0 +1,33 @@
+<analytic>
+	<analytic>.surv.master.clearAllUnrequiredDailyAggregations</analytic>
+	<code_text>{[onlyKeepFromXDaysAgo]
+
+    .debug.clearBenchmarkDailyAggregationsFromUI:(`time`onlyKeepFromXDaysAgo)!(.z.p;onlyKeepFromXDaysAgo);
+    thisFunc:".surv.master.clearAllUnrequiredDailyAggregations";
+    .log.out[.z.h;thisFunc;"started"];
+
+    dateString:"1900.01.01-",string[.z.d-(onlyKeepFromXDaysAgo+1)];
+    
+    .surv.master.clearBenchmarkDailyAggregationsFromUI[`all;dateString];
+   
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>onlyKeepFromXDaysAgo</parameter>
+		<default></default>
+		<description>job details for batch</description>
+		<required>1</required>
+		<datatype>Long</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatchUI</analyticgroup>
+</analytic>

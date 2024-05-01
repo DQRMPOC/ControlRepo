@@ -1,0 +1,50 @@
+<analytic>
+	<analytic>.validation.SURV_SERVICE_CLASSES</analytic>
+	<code_text>{[config]
+	 
+    if[count rs:select from config where active,scale,(minNoOfServices&gt;defaultNoOfServices) | maxNoOfServices&lt;defaultNoOfServices;
+        '"config contains active entries where scale=true but defaultNoOfServices not within the max/min noOfServices range"    
+        ];
+    
+    if[count rs:select from config where active,scale,minNoOfServices&gt;maxNoOfServices;
+        '"config contains active entries where scale=true but minNoOfService is greater than maxNoOfServices"
+        ];
+    
+    if[count rs:select from config where active,defaultNoOfServices&lt;=0;
+        '"config contains active entries where defaultNoOfServices &lt;= 0"
+        ];
+    
+    if[any not 1=exec defaultNoOfServices from config where active,service=`surv_manager;
+        '"Any active entries for service surv_manager must have defaultNoOfServices = 1"
+        ];
+    
+    if[count a:distinct exec instanceType from config where 1&lt;(count;i) fby ([]instanceType:instanceType;service:service);
+        '"The following instanceTypes/workflows have multiple entries of the same service: ",", " sv string a
+        ];
+    
+    if[any "_" in/: string exec instanceType from config where active;
+        '"There can be no '_' in the instanceType entries"
+        ];
+    
+    1b
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>SURV_SERVICE_CLASSES config</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceMaster</analyticgroup>
+</analytic>

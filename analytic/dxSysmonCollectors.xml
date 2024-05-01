@@ -1,0 +1,39 @@
+<analytic>
+	<analytic>dxSysmonCollectors</analytic>
+	<code_text>{[data;dict]
+permitted:(`CPUCollector`FileSizeCollector`FileSystemCollector`LogScraperCollector`NetstatCollector`NICCollector`ProcCollector`ServerCollector);
+if[count where null (data`collector);'"Collector can not be null";0b];
+if[(count distinct data`collector)&lt;(count data`collector);
+            checkData:exec from (?[data;();(enlist `collector)!(enlist`collector);(enlist `num)!enlist (#:;`i)]) where num&gt;1;
+            '"Cannot contain duplicate collectors. ",string[checkData`num]," entries for ",string[checkData`collector],"";
+            :0b];
+if[count c:where not (data`collector) in permitted;
+'"Non-permitted collectors detected. ",$[1&lt;count c;(", " sv string(data`collector)[c])," are ";raze string[(data`collector)[c]]," is "], "not one of the permitted collector names.";:0b];   
+ :1b;
+ }</code_text>
+	<description>validation analytic for SAMLAuthentication config param</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>config param table</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dict</parameter>
+		<default>"c"$()</default>
+		<description>profile, param, override name</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

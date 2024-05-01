@@ -1,0 +1,154 @@
+<analytic>
+	<analytic>.daas.trth.validateRequest</analytic>
+	<code_text>{[dictn;reportStats]
+/ PARAM: requestType
+cfg:.uc.getActiveParamValue[`.daas.cfg.trth.credentials;`];
+
+/get credentials based on requestType - raze 1 row to dict
+credentialsDict: raze select from cfg where requestTypes like ("*",(dictn`requestType),"*");
+
+/ logging needs added to return error if the request type is not in the dict
+if[()~credentialsDict;
+	.daas.trth.requestFailed[reportStats;"Invalid requestType: Unable to retrieve credentials - ensure the requestType is in the TRTH/DSS Credentials Cfg."];
+	];
+	
+trthVersion:credentialsDict`trthVersion;
+username:credentialsDict`username;
+password:credentialsDict`password;
+
+.daas.trth.logReportUpdate[reportStats;"requestType Validated"];
+
+/ PARAM: exchangeVBD: default="" - not currently supported!
+exchangeVBD:"*NoExchangeSpecified*";
+//exchangeVBD:"LSE";
+exchangeVBD:"";
+/ if requestType=VenueByDay then exchangeVBD must be specified else return error! 
+if[("VenueByDay"~dictn`requestType) and ""~exchangeVBD;
+	.daas.trth.requestFailed[reportStats;"An exchange must be specified for requestType: VenueByDay"];
+	];
+
+/.daas.trth.logReportUpdate[reportStats;"exchangeVBD Validated"];
+
+/ PARAMS: start and end datetimes
+if[((0=count dictn`startDateTime)or(0=count dictn`endDateTime))and("Composite"~dictn`requestType);
+ 	.daas.trth.requestFailed[reportStats;"Start and End datetimes must be specified!"];
+ 	];
+
+if[sum(`$raze dictn`startDateTime) like '("*.z.D*";"*.z.d*");
+	$["+" in dictn`startDateTime;
+		dictn[`startDateTime]: string(`datetime$(value ssr[dictn`startDateTime;" ";""]));
+		dictn[`startDateTime]: string(`datetime$(value ssr[dictn`startDateTime;" ";""]))+00:00:00.000
+		];
+	];
+
+if[sum(`$raze dictn`endDateTime) like '("*.z.D*";"*.z.d*");
+	$["+" in dictn`endDateTime;
+		dictn[`endDateTime]: string(`datetime$(value ssr[dictn`endDateTime;" ";""]));
+		dictn[`endDateTime]: string(`datetime$(value ssr[dictn`endDateTime;" ";""]))+23:59:59.999
+		];
+	];
+
+if[(dictn`requestType)~"Composite";  
+	dictn[`startDateTime]: string`datetime$1996.01.01+00:00:00.000; 
+	dictn[`endDateTime]: string`datetime$(.z.D)+00:00:00.000;
+];
+
+/set start,end datetimes to correct ISO format for API - dates will be datetime (-15h)
+startDateTime:(ssr[dictn`startDateTime;".";"-"]); startDateTime[19]:".";
+endDateTime:(ssr[dictn`endDateTime;".";"-"]); endDateTime[19]:".";
+.daas.trth.logReportUpdate[reportStats;raze/["dateTimes Validated - startDateTime:",startDateTime," endDateTime:",endDateTime]];
+
+
+.ric.types:exec types from .uc.getActiveParamValue[`.daas.cfg.ricTypes;`];
+//to ensure all rfasubscription A watchlist with the specified asset call are selected 
+
+/if rics parameter is ` or empty
+ricList:();
+ricChain: "false";
+
+if[not `~dictn`ricType;
+	/allRics is accepted as an input and will return all assetclass watchlists
+	//ricList:$[`allRics~dictn`ricType; raze .daas.trth.getWatchList each .daas.util.allFeeds[]; .daas.trth.getWatchList[dictn`ricType]];
+
+	///to generate the report using the correct asset class, can use items in .ric.types or type out full rfasubscription name to generate report 
+	ricList:$[`allRics~dictn`ricType; raze .daas.trth.getWatchList each .daas.util.allFeeds[];raze .daas.trth.getWatchList each .daas.trth.assetTypes[dictn`ricType]];
+
+	//ricChain is accepted as an input and use either the ricChains from the manualRicInput or .csv
+	ricChain: $[`ricChain~dictn`ricType;"true";"false"];
+	];
+
+if[not `~(dictn`manualRicInput);
+	ricList: dictn`manualRicInput;
+	];
+
+if[not `~(dictn`csvUpload);
+	fileListName:string dictn`csvUpload;
+	fileList:("SS";enlist ",") 0: hsym `$string[.utils.checkForEnvVar["ENV=DELTASTREAM_BASE_MNT="]],"/trth/",fileListName;
+	ricList:exec sym from fileList;
+	.daas.trth.logReportUpdate[reportStats;raze "RicList retrieved from .csv: ", {(string x),", "} each ricList];
+	];
+
+if[`ricTypeNotInTypesList~ricList;
+	.daas.trth.requestFailed[reportStats;"ricType specified is not contained in the valid types list!"];
+	];		
+
+/ if ricList has one value then it will throw a type error when trying to (raze string "," sv string x)
+/ adding code here as both watchlist or manualRicInput could only contain one ric
+$[1~count ricList; 
+	ricList:string ricList;
+	ricList:raze "`",string "`" sv string ricList];
+.daas.trth.logReportUpdate[reportStats;"RicList Validated"];
+
+
+reportID: string reportStats`rptID;
+requestType: dictn`requestType;
+reportName: string reportStats[`rptSchNameOrig];
+reportAction: ".daas.trth.requestAction";
+applyValidation: $[dictn`applyValidation;"true";"false"];
+assetClass: dictn`assetClass;
+.daas.trth.logReportUpdate[reportStats;"Validation being applied to request: ", applyValidation];
+
+marketView:{[requestType;dictn;reportStats]
+	marketView:"L1";
+	if[requestType~"TickHistoryRaw"; $[(dictn`marketView)in(`L1`);marketView:"L1";marketView:.daas.trth.requestFailed[reportStats;"Market View must be L1 for TickHistoryRaw"]];];
+	if[requestType~"TickHistoryMarketDepth";$[(dictn`marketView) in (`mbpL2`legacyL2`NLL2);[marketView: (`mbpL2`legacyL2`NLL2!("RawMarketByPrice";"LegacyLevel2";"NormalizedLL2"))[dictn`marketView]];.daas.trth.requestFailed[reportStats;"Market View must be mbpL2 or legacyL2 for TickHistoryMarketDepth"]];];
+	:marketView
+}[requestType;dictn;reportStats];
+.daas.trth.logReportUpdate[reportStats;"Market View Validated:", marketView];
+
+//add market level if in dict else fill with null (this is required to run with the NLL2 flag for marketDepth)
+marketLevel:$[`marketLevel in (key dictn);
+				dictn[`marketLevel];
+				""];
+
+/ build up the request string of cmd line args
+requestSym: `$ raze string ";" sv (trthVersion;username;password;reportID;requestType;startDateTime;endDateTime;ricList;reportName;reportAction;reportID;exchangeVBD;applyValidation;assetClass;ricChain;marketView;marketLevel);
+
+(requestSym;dictn)
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dictn</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

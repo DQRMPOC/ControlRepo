@@ -1,0 +1,15 @@
+<analyticgroup>
+	<name>daasPython</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.python.constructExString</analytic>
+	<analytic>.daas.python.executeRTUDF</analytic>
+	<analytic>.daas.python.initialiseMultiProcessing</analytic>
+	<analytic>.daas.python.loadUDFFile</analytic>
+	<analytic>.daas.python.loadUDFFuncs</analytic>
+	<analytic>.daas.python.multiProcessData</analytic>
+	<analytic>.daas.python.parseRefineryDict</analytic>
+	<analytic>.daas.python.reExecuteNoArgs</analytic>
+	<analytic>.daas.python.retrievePool</analytic>
+	<analytic>.daas.udf.runPythonUDFs</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

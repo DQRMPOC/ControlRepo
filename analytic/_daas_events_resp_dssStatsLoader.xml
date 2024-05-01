@@ -1,0 +1,26 @@
+<analytic>
+	<analytic>.daas.events.resp.dssStatsLoader</analytic>
+	<code_text>{[data]
+	if[(data[`tag1]=`complete) and (.daas.cfg.vendor=`dss);
+        .ds.hdb.reloadDBOnly[]
+    ];
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>0</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

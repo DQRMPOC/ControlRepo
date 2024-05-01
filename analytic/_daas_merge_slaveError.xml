@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.merge.slaveError</analytic>
+	<code_text>{[err]
+	.log.out[.z.h;"error encountered. Logging and asking for new job.";err];
+	
+	@[neg[.md.handle];"1+1";{.log.out[.z.h;"handle dropped to merge daemon, reopening...";()];.md.handle:.daas.merge.openMDhandle[]}];
+	
+	neg[.md.handle](`.daas.merge.reportSlaveError;err;.my.ID);
+	
+	.log.out[.z.h;"awaiting new job or shutdown message";()];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>err</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

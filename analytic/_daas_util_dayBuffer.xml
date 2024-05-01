@@ -1,0 +1,51 @@
+<analytic>
+	<analytic>.daas.util.dayBuffer</analytic>
+	<code_text>{[tab;timecol]
+	extraDays:0;
+    
+    if[(not .ex.getName[] like "*ds_*") and dxSelectIsHdb[];
+            $[-11h=type tab;
+                [ // check config to see if we're sorted by the time col
+                    if[not timecol~first exec sortedCol from .daas.cfg.schemaSortCol where table=tab;
+                        extraDays:1
+                        ];
+                ];
+             98h=type tab;
+                [  // try to apply sorted attr and catch failure if tab is not a sym
+                    if[`FAILED~.[#;(`s;tab timecol);{`FAILED}];
+                        extraDays:1
+                        ];
+                ];
+                (::)
+            ];
+        ];
+    
+    extraDays
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>timecol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

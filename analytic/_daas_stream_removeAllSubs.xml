@@ -1,0 +1,20 @@
+<analytic>
+	<analytic>.daas.stream.removeAllSubs</analytic>
+	<code_text>{[]
+
+ .log.out[.z.h;"deleting subscription data";()];
+ ids:exec id from .daas.stream.streamSubs;
+ .daas.stream.removeSub each ids;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

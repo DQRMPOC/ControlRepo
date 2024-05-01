@@ -1,0 +1,56 @@
+<analytic>
+	<analytic>.daas.trth.javaRequest</analytic>
+	<code_text>{[requestSyms;reportStats]
+/ check if java handle is set
+if[.daas.trth.javaHandle~();
+	.daas.trth.requestFailed[reportStats;"Cannot process request - TRTH Java Client not started! - request will be queued until client started"];
+	];
+	
+/ check if the java handle has been removed from .z.W meaning the java process has fallen over or been killed
+if[not .daas.trth.javaHandle in key .z.W;
+	.daas.trth.requestFailed[reportStats;"Cannot process request - Check if the TRTH Java Client is running!"]
+	];
+	
+
+.daas.trth.logReportUpdate[reportStats;"Success -&gt; Sending request to TRTH Java Client"];
+
+/async call to java process - the handle will be the java handle set once the java client starts up
+(neg .daas.trth.javaHandle) each requestSyms;
+		
+/add that they've been sent to the queue.
+update javaTime:.z.p from `.daas.trth.javaQueue where requestSym in requestSyms;
+		
+  reportName:reportStats`rptSchNameOrig;
+  reportID:reportStats`rptID;
+ .r.rexe[(`updRT;`dxLog;(.ex.getName[];.z.P;reportName;`COMPLETE;`INFO;"Request decomposed";raze string reportID;`;0N))];
+
+/the action then needs to return pending - the filename and fullpath can be null/empty
+:(`;`a`b!1 2);
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>requestSyms</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

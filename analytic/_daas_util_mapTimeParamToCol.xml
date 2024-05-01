@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.util.mapTimeParamToCol</analytic>
+	<code_text>{[timeParam]
+    
+    if[timeParam in key .daas.meta.cfg.timeParamMap;
+        :.daas.meta.cfg.timeParamMap[timeParam];
+        ];
+    
+    timeParam
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>timeParam</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

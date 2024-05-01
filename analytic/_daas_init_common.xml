@@ -1,0 +1,697 @@
+<analytic>
+	<analytic>.daas.init.common</analytic>
+	<code_text>/ configuration
+.uc.getAndSaveActiveParamValue[`.daas.cfg.procNameParsing;`;`.daas.cfg.procNameParsing;()!()]; 
+
+/ These are exceptions to how parsing from name fails
+/ This exists to prevent multiple init functions with explicit overrides existing
+/ TODO: These exceptions need to be normalised
+.daas.init.metaExceptions:(
+    (`daas_hdbcopy_a.1;             (`region;`emea);    (`vendor;`tr);(`asset;`);(`procType;`hdbCopy);(`env;`a));
+    (`daas_hdbcopy_b.1;             (`region;`emea);    (`vendor;`tr);(`asset;`);(`procType;`hdbCopy);(`env;`b));    
+    (`daas_secMaster_a.1;           (`region;`);        (`dataClass;`referenceData);(`procType;`secMaster);(`env;`a));
+    (`daas_secMaster_b.1;           (`region;`);        (`dataClass;`referenceData);(`procType;`secMaster);(`env;`b));
+    (`daas_dataMergeDaemon_a.1;     (`region;`emea);    (`vendor;`tr);(`env;`a);(`procType;`mergeDaemon));
+    (`daas_dataMergeDaemon_b.1;     (`region;`emea);    (`vendor;`tr);(`env;`b);(`procType;`mergeDaemon));
+    (`daas_processingDaemon_a.1;    (`region;`emea);    (`vendor;`tr);(`env;`a);(`procType;`processingDaemon));
+    (`daas_processingDaemon_b.1;    (`region;`emea);    (`vendor;`tr);(`env;`b);(`procType;`processingDaemon));
+    (`daas_udfDaemon_a.1;           (`region;`emea);    (`vendor;`tr);(`asset;`udf);(`procType;`udfDaemon);(`env;`a));
+    (`daas_udfDaemon_b.1;           (`region;`emea);    (`vendor;`tr);(`asset;`udf);(`procType;`udfDaemon);(`env;`b));
+    (`emea_udf_0_a.1;               (`region;`emea);    (`vendor;`tr);(`asset;`udf);(`procType;`udf_gw);(`procNum;`$"0");(`env;`a));
+    (`emea_udf_0_b.1;               (`region;`emea);    (`vendor;`tr);(`asset;`udf);(`procType;`udf_gw);(`procNum;`$"0");(`env;`b));
+    (`global_tp_udf_0_a.1;          (`region;`global);  (`vendor;`udf);(`asset;`udf);(`procType;`tp);(`procNum;`$"0");(`env;`a);(`dataClass;`udf));
+    (`global_tp_udf_0_b.1;          (`region;`global);  (`vendor;`udf);(`asset;`udf);(`procType;`tp);(`procNum;`$"0");(`env;`b);(`dataClass;`udf));
+    (`global_ctp_udf_0_a.1;         (`region;`global);  (`vendor;`udf);(`asset;`udf);(`procType;`ctp);(`procNum;`$"0");(`env;`a);(`dataClass;`udf));
+    (`global_ctp_udf_0_b.1;         (`region;`global);  (`vendor;`udf);(`asset;`udf);(`procType;`ctp);(`procNum;`$"0");(`env;`b);(`dataClass;`udf));
+    (`global_hdb_udf_0_a.1;         (`region;`global);  (`vendor;`udf);(`asset;`udf);(`procType;`hdb);(`procNum;`$"0");(`env;`a);(`dataClass;`udf));
+    (`global_hdb_udf_0_b.1;         (`region;`global);  (`vendor;`udf);(`asset;`udf);(`procType;`hdb);(`procNum;`$"0");(`env;`b);(`dataClass;`udf));
+    (`global_rdb_udf_0_a.1;         (`region;`global);  (`vendor;`udf);(`asset;`udf);(`procType;`rdb);(`procNum;`$"0");(`env;`a);(`dataClass;`udf);(`dataType;`rtudfres));
+    (`global_rdb_udf_0_b.1;         (`region;`global);  (`vendor;`udf);(`asset;`udf);(`procType;`rdb);(`procNum;`$"0");(`env;`b);(`dataClass;`udf);(`dataType;`rtudfres));
+    (`emea_qm_0_a.1;                (`region;`emea);    (`vendor;`tr);(`procType;`qm);(`procNum;`$"0");(`env;`a));
+    (`emea_qm_0_b.1;                (`region;`emea);    (`vendor;`tr);(`procType;`qm);(`procNum;`$"0");(`env;`b));
+    (`ds_report_generator_a.1;      (`region;`emea);    (`vendor;`tr);(`env;`a);(`procNum;`);(`procType;`repGen));
+    (`ds_report_generator_b.1;      (`region;`emea);    (`vendor;`tr);(`env;`b);(`procNum;`);(`procType;`repGen));
+    (`emea_tr_statsGen_a.1;         (`region;`emea);    (`vendor;`tr);(`env;`a);(`procType;`statsGen));
+    (`emea_tr_statsGen_b.1;         (`region;`emea);    (`vendor;`tr);(`env;`b);(`procType;`statsGen));
+    (`emea_tr_ms_a.1;               (`region;`emea);    (`vendor;`tr);(`env;`a);(`procType;`ms));
+    (`emea_tr_ms_b.1;               (`region;`emea);    (`vendor;`tr);(`env;`b);(`procType;`ms))
+    );
+
+/ Map names that come from .daas.cfg.procNameParsing 
+/ to variable names that get set in .daas.cfg namespace
+.daas.init.nameMap:(!) . flip (
+    (`region;       `REGION);
+    (`procType;     `PROCTYPE);
+    (`vendor;       `SOURCE);
+    (`source;       `SOURCE);
+    (`dataClass;    `DATACLASS);
+    (`asset;        `SUBCLASS);
+    (`subClass;     `SUBCLASS);
+    (`dataType;     `DATATYPE);
+    (`procNum;      `PROCNUM);
+    (`env;          `ENV)
+    );
+
+// These their init function name
+// @see .daas.init.getInitType
+.daas.init.standardProcTypes:(
+    `adminGw;
+    `ctp;
+    `eventBus;
+    `gw;
+    `hdb;
+    `lr;
+    `pdb;
+    `qm;
+    `qp;
+    `qr;
+    `rdb;
+    `repGen;
+    `rte;
+    `trep;
+    `udfDaemon;
+    `ms;
+    `cae;
+    `sc
+    );
+
+// This dictionary maps .daas.cfg.procType to init function name
+// @see .daas.init.getInitType
+.daas.init.mappedProcTypes:(!) . flip (
+    (`dcWrite;              `fw);
+    (`watchListUpload;      `fw);
+    (`clientFileUpload;     `fw);
+    (`fw;                   `fw);
+    (`mergeDaemon;          `fw);
+    (`processingDaemon;     `fw);
+    (`hdbCopy;              `adminCopy);
+    (`merge;                `mergeSlave);
+    (`ddlGw;                `gw);
+    (`udf_gw;               `udfGw);
+    (`stats;                `hdb);
+    (`secMaster;            `hdb)
+    );
+
+
+// These process inits are tightly coupled and compare .daas.cfg.procType against a value
+// as well as comparing the other meta parameter
+// @see .daas.init.getInitType
+.daas.init.combProcTypeCols:`procType`metaParam`comparisonValue`initType;
+.daas.init.combProcTypesData:(
+    (`hdbcopy;          `DATACLASS;     `marketData;            `hdbCopy);
+    (`statsGen;         `SUBCLASS;      `;                      `statsGenAdHoc);
+    (`statsGen;         `SOURCE;        `tr;                    `statsGen);
+    (`processing;       `ENV;           `pe;                    `trthRte);
+    (`processing;       `ENV;           `tp;                    `processingTp);
+    (`tp;               `DATACLASS;     `marketData;            `tp);
+    (`tp;               `DATACLASS;     `transactionData;       `tp);
+    (`tp;               `DATACLASS;     `udf;                   `udfTp);
+    (`tp;               `SOURCE;        `monitoringCapture;     `monitoringTp);
+    (`tp;               `DATACLASS;     `paymentData;            `tp);
+    (`tp;               `DATACLASS;     `amlData;                `tp)
+    );
+
+.daas.init.combProcTypesTab:flip .daas.init.combProcTypeCols!flip .daas.init.combProcTypesData;
+
+/ Code
+
+/ Parse the init type from the process
+/ Checks configuration through a hierachy
+/  .daas.init.combProcTypesTab
+/  .daas.init.mappedProcTypes
+/  .daas.init.standardProcTypes
+/ @see .daas.process.init
+.daas.init.getInitType:{[]
+    
+    metaDict:.daas.init.parseMetaFromName[.ex.getName[]];
+    metaProcType:metaDict[`PROCTYPE];
+    
+    $[metaProcType in .daas.init.combProcTypesTab`procType;
+        initType:exec first initType from .daas.init.combProcTypesTab where procType=metaProcType, (metaDict[metaParam])~'comparisonValue;
+    metaProcType in key .daas.init.mappedProcTypes;
+        initType:.daas.init.mappedProcTypes[metaProcType];
+    metaProcType in .daas.init.standardProcTypes;
+        initType:metaProcType;
+    / else
+        .pl.report_error_and_terminate["InvalidInitTypeException - check the process meta data"; metaDict]
+        ];
+
+    initType 
+    
+    }
+
+/ Parse process meta data from task name
+/ This replaces .daas.infra.procParams
+/ Returns a dictionary of the meta parameters
+/ @param procName {symbol} This is the full task name including any ".1" at the end (from .ex.getName[])
+.daas.init.parseMetaFromName:{[procName]
+    
+    / set the meta based on the exceptions map
+    if[procName in .daas.init.metaExceptions[;0];
+        metaInfo:1_first .daas.init.metaExceptions where procName=.daas.init.metaExceptions[;0];
+        :(.daas.init.nameMap metaInfo[;0])!metaInfo[;1]
+        ];
+   
+    typeToMetaParams:.daas.cfg.procNameParsing[`procType]!value each .daas.cfg.procNameParsing[`paramNames];
+    inferredProcType:$[sum procName like '("daas_*";"*_ms_*");
+            `DAAS;
+         sum procName like '("*_gw_*";"*_udfEngine_*";"*_clientFileUpload*";"*_qm_*";"*_qr_*";"*_qp_*");
+            `QUERYNODE;
+         sum procName like ("*_transactionData_*");
+            `TRANSACTIONDATANODE;
+         sum procName like '("*_rdb_*";"*_hdb_*";"*_tp_*";"*_rfavelocity_*";"*_lr_*";"*_ctp_*";"*_rte_*";"*_hdbcopy_*";"*_pdb_*");
+            `DATANODE;
+         sum procName like ("*_statsGen_*");
+            `STATSGENNODE;
+         sum procName like ("*_stats_*");
+            `STATSDATANODE;
+         /else
+            `ELSE
+            ];
+
+    metaList:typeToMetaParams[inferredProcType];
+    
+    //KXSURV edit to allow qrs to be started as service classes
+    if[all `cloneID`side`instanceType in key cmdArgs:.Q.opt .z.x;
+        nameParts:-1_"_" vs first cmdArgs`class;
+        numParts:count nameParts;
+
+        dct:(numParts#except[;`PROCNUM`ENV]metaList)!(`$-1_nameParts),first `$"." vs last nameParts;
+        if[`PROCNUM in metaList;
+            dct,:enlist[`PROCNUM]!enlist `$first cmdArgs`instanceNo
+            ];
+        if[`ENV in metaList;
+            dct,:enlist[`ENV]!`$first first cmdArgs`side
+            ];
+        :dct
+        ];
+    nameParts:"_" vs string procName;
+    numParts:count nameParts;
+
+    (numParts#metaList)!(`$-1_nameParts),first `$"." vs last nameParts
+
+    }
+
+
+/ Gets the meta parameters that are set on a process defined in .daas.init.nameMap
+.daas.init.getMeta:{[]
+    
+    metaData:();
+    
+    if[not ()~key `.daas.cfg;
+        metaData:metaNames!.daas.cfg[metaNames:key .daas.init.nameMap]
+        ];
+    
+    metaData
+    
+    }
+
+/ Sets the meta parameters from .daas.init.nameMap 
+.daas.init.setMeta:{[]
+    
+    / parse the process meta and then set the meta variables 
+    metaDict:.daas.init.parseMetaFromName[.ex.getName[]];
+    (` sv/: `.daas.cfg,/:key[.daas.init.nameMap]) set' metaDict value .daas.init.nameMap;
+    
+    }
+
+/ checks if a meta parameter matches a particular value
+.daas.init.checkMetaValue:{[metaParam;compFunc;compVal]
+    
+    if[()~key ` sv pName:`.daas.cfg,metaParam;
+        :0b
+        ];
+    
+    compFunc[value pName; compVal]
+   
+    }
+
+/ Checks if a given function is already defined or exists as an analytic
+/ @param funcName {symbol} Name of function to check existence of
+/ @return {boolean} true/false indicator of the existence of the function
+.daas.init.checkFuncExists:{[funcName]
+      
+    / check if function is already defined and try to get analytic if it isn't
+    if[not funcName~key funcName;
+        .log.out[`RefProcInit; "Function [ ",string[funcName]," ] isn't defined, checking if an analytic exists"; ()];
+        .al.getfunction funcName;
+        ];
+    
+    / if function still isn't defined then exit
+    if[not funcName~key funcName;
+        .log.out[`RefProcInit; "Function [ ",string[funcName]," ] doesn't exist"; ()];
+        :0b
+        ];
+    
+    1b
+    
+    };
+
+/ Run a function with the option of terminating on failure
+/ This assumes the existence of the function
+/ @param funcName {symbol} Name of function to run
+/ @param termOnFail {boolean} Indicator of whether to terminate on failure
+.daas.init.runFunc:{[funcName;termOnFail]
+    
+    .log.out[`RefProcInit; "Running function [ ",string[funcName]," ]"; ()];
+    
+    res:@[value[funcName];(::);{(`EXEC_FAIL;x)}];
+
+    if[(`EXEC_FAIL~first res) and termOnFail;
+        .pl.report_error_and_terminate["Function [ ",string[funcName]," ] failed to execute with error [ ",last[res]," ]";()]
+        ];
+        
+    .log.out[`RefProcInit; "Successfully executed function [ ",string[funcName]," ]"; ()];
+    
+    }
+
+/ Run an analytic/function if it exists
+/ @param funcName {symbol} Name of function to run
+/ @param termOnFail {boolean} Indicator of whether to terminate on failure
+.daas.init.runIfExists:{[funcName;termOnFail]
+    
+    if[not .daas.init.checkFuncExists[funcName];
+        :()
+        ];
+    
+    .daas.init.runFunc[funcName;termOnFail];
+     
+    };
+
+/ Core Features for Level 2 that are needed on all L2 processes
+/  - Loads the daasL2 analytic groups
+/  - Defines in-memory variables used by the daasL2 functions
+.daas.init.l2.setGenericGlobals:{[]
+    
+    .al.loadgroupfunctions[`daasL2]; 
+    .daas.l2rdbCountTabNames:`eqL2`futL2!`.l2.eqSymCounts`.l2.futSymCounts;
+    .daas.l2rdbIntraTabNames:`equity`future!`eql2intradaySnapShots`futl2intradaySnapShots;
+    .daas.l2rdbIntraTabNamesEOD:`eqL2`futL2!`eql2intradaySnapShots`futl2intradaySnapShots;
+    .daas.l2rdbCurrentTabNamesEOD:`eqL2`futL2!`eql2CurrentSnapShot`futl2CurrentSnapShot;
+    .daas.l2currentSnapShotTabName:.daas.l2rdbCurrentTabNamesEOD[.daas.cfg.asset];
+    .daas.l2rdbCountTabNames[.daas.cfg.asset] set ([sym:`$()];nCounts:"i"$());
+    .daas.l2actionFuncDict:"AMD"!`.daas.util.l2snapshotAdd`.daas.util.l2snapshotModify`.daas.util.l2snapshotDelete;
+    .daas.l2idToPriceMults:([sym:`$()]ratio:"f"%());
+    .daas.l2.snapshotTb:`$string[lower .daas.cfg.asset],"intradaySnapShots";
+    .daas.l2.snapshotIdTb:`$string[.daas.l2.snapshotTb],"Ids";
+    .daas.l2.updateTb:`$string[.daas.cfg.asset],"Update";
+    .daas.l2.dateWindow:7;
+    .daas.l2.snapTickThreshold:1000;
+    
+    }
+
+/ On disk Features for Level 2
+/ Loaded on L2 hdb processes in addition to the generic globals
+.daas.init.l2.setOnDiskGlobals:{[]
+    
+    if[()~key .daas.l2.snapshotIdTb; 
+        .daas.l2.snapshotIdTb set ([]date:"d"$();sym:"s"$();matchInd:"j"$();id:())
+        ];
+
+    if[not `date in cols .daas.l2.snapshotTb;
+        update date:0Nd from .daas.l2.snapshotTb
+        ];
+    
+    //if there is no writedown 
+    if[not 1 &lt; count system"ls";  
+        (.daas.l2rdbIntraTabNamesEOD .daas.cfg.asset) set([]date:`date$();sym:`$();side:`$();time:"p"$();exchTime:"p"$();price:`long$();size:`long$();numOrders:`long$();matchInd:`long$());
+        ((`eqL2`futL2!`eqL2Update`futL2Update).daas.cfg.asset) set `date xcols update date:`date$() from value (`eqL2`futL2!`eqL2Update`futL2Update).daas.cfg.asset;
+        ];
+    
+    }
+
+
+/ Initialise process meta info and connect to event bus
+/ Meta needs to be set before event bus connection 
+/ as it currently uses region and vendor to infer the messaging server
+.daas.init.setMetaAndEventBusConn:{[]
+    
+    .daas.init.setMeta[];
+    
+    / check for existence of event bus to boot
+    if[()~key `.daas.events.startEventService;
+        .al.getfunction`.daas.events.startEventService
+        ];
+    
+    .daas.events.startEventService[];
+    
+    }
+
+/ Set up bare minimun configuration needs to register with gateways 
+/ as a data node.
+.daas.init.setUpDataNodeMinimal:{[]
+    
+    .al.loadinstruction[`.daas.cfg.serverCfg];
+    
+    / Load table meta data
+    .al.loadinstruction[`.daas.meta.common];
+    .daas.meta.init[];
+    
+    .al.loadinstruction[`.daas.cfg.routingMetaServerInit];
+   
+    };
+
+/ Subscribe to reference data updates
+/ Needed on nodes that apply corporate actions and adjust symbology
+.daas.init.subForRefData:{
+    .daas.infra.secmasterSub[`$"DAAS_",upper[string[.daas.cfg.asset]],"_SEC"];
+    };
+
+/ Transaction Data FW specific configuration 
+/ Loaded global configuration and registers as a source to publish data
+.daas.init.transactionFwCfg:{[]
+    
+    / for instrumentMapping for orderExec files
+    .uc.getAndSaveActiveParamValue[`.daas.orderExec.instrumentDescriptionMapping;`order;`.daas.orderExec.instrumentDescMapOrder;()];
+    .uc.getAndSaveActiveParamValue[`.daas.orderExec.instrumentDescriptionMapping;`execution;`.daas.orderExec.instrumentDescMapExecution;()];
+    
+    //field validation for minimum viable schema for orderExec files
+    .uc.getAndSaveActiveParamValue[`.daas.orderExec.fwRequiredFieldTypes;`$(string .daas.cfg.asset),"Execution";`.daas.cfg.execReqFields;()];
+    .uc.getAndSaveActiveParamValue[`.daas.orderExec.fwRequiredFieldTypes;`$(string .daas.cfg.asset),"Order";`.daas.cfg.orderReqFields;()];
+    .daas.cfg.oeExceptionReportDir:getenv[`DAASDATA_EXCEPTIONREPORTDIR_ORDEREXEC];
+    
+    //add orderExec table name mapping
+    .daas.orderExec.tableNameMap:(!) . .uc.getActiveParamValue[`.daas.cfg.orderExecTableMap;`] `tableName`baseName;
+    
+    //validation for mergeHeaders in file
+    .uc.getAndSaveActiveParamValue[`.daas.cfg.fwAcceptedMergeHeaders;`;`.daas.cfg.fwAcceptedMergeHeaders;()];
+    
+    //configurations required for loading data into correct schema
+    .uc.getAndSaveActiveParamValue[`.daas.cfg.fwReadCharCount;.ex.getInstanceName[];`.daas.cfg.fwReadCharCount;`];
+    .daas.orderExec.targetDict:(exec fileregex from .uc.getActiveParamValue[`DS_FILEWATCHER_MATCHTABLE;.ex.getInstanceName[]])!{?[.uc.getActiveParamValue[`.daas.orderExec.fwTargetDB;x];enlist(=;`assetClass;`.daas.cfg.asset);0b;()]}each `orders`executions;
+    //.daas.orderExec.targetDict:(`$"*",string[.daas.cfg.asset],"orders.csv";`$"*",string[.daas.cfg.asset],"executions.csv")!{?[.uc.getActiveParamValue[`.daas.orderExec.fwTargetDB;x];enlist(=;`assetClass;`.daas.cfg.asset);0b;()]}each `orders`executions;
+    .daas.orderExec.FATVAR:`order`execution!(.uc.getActiveParamValue[`.daas.cfg.FATVAR;`$(string .daas.cfg.asset),"Order"];.uc.getActiveParamValue[`.daas.cfg.FATVAR;`$(string .daas.cfg.asset),"Execution"]);
+    
+    //Merge dir for historical batch write down
+    .daas.fw.mergeDir:getenv`DAAS_MERGEDIR;
+    .daas.fw.mergeLoc:getenv[`DATACOPY_MERGETRIGGERS];
+    .daas.fw.hdbTarget:getenv`$"DAASDATA_HDBLOGDIR_EMEA_CORE_TRANSACTIONDATA_",upper string .daas.cfg.asset;
+    
+    {.dm.regsrcc[`$"emea_core_transactionData_",(string .daas.cfg.asset),"_fw_a";string x]} each .tbl.gettablesbygroup[`$"DAAS_ORDEREXEC_",upper string .daas.cfg.asset];
+
+    .al.loadinstruction`.daas.fw.functionDefinitions;
+    
+    }
+
+
+/ Processing Daemon specific configuration 
+.daas.init.processingDaemonCfg:{[]
+    
+    `.daas.processing.pdInfo upsert (0N;0Np;`;0Ni;`;`;`;`;`;`;`;::;::;::);
+    .daas.processing.complete:.daas.processing.pdInfo;
+    
+    //clean up any trth stacks that are still here
+    @[{
+        if[count toDel:ins where (ins:.ex.prh".pl.getallinstancenames[]") in `$(raze ("daas_processing_",/:("fm_";"tp_";"pe_")),/:\:string 1001+til 8999),\:"_",string .daas.cfg.env;
+            .log.out[.z.h;"cleaning out spawned instance library";()];
+            {
+                .log.out[.z.h;"deleting instance : ";x];
+                .ex.prh(".pl.deleteprinstanceNOCHECK";x)}each toDel;
+            ];
+        };
+        ::;
+        {.log.out[.z.h;"could not clear stacks";x];}];
+
+    }
+
+/ Merge Daemon specific configuration 
+.daas.init.mergeDaemonCfg:{
+    
+    .al.loadgroupfunctions`daasMerge;
+    .daas.merge.slaveLimit:value getenv`DAAS_MERGE_SLAVELIMIT;
+    .daas.events.resp.trthEOD:.daas.merge.eodMoveToMain;
+    .tbl.gettable each `.daas.merge.errors`.daas.merge.status`.daas.merge.completed`.daas.merge.mergeJobs;
+
+    /set timer to move jobs in at midnight
+    .d.prcl.addFunctToTimer[`.daas.merge.eodMoveToMain;();`datetime$.z.D+1;0Wz;`int$24*60*60*1000;1b];
+    
+    }
+
+
+/ Refiney add-on features to core filewatcher
+/ Loaded various different configuration dependent on the type of process 
+/ This allows the file watchers share the same coreInit function
+/ @see .daas.fw.coreInit
+.daas.fw.coreFeaturesInit:{[]
+    
+    .log.debug[`RefProcInit; "Loading Core Refinery Filewatcher features";()];
+    
+    / TODO: Make these checks be from meta not hardcoded process names
+    / dsp feature - on client file upload
+    if[.ex.getInstanceName[] like "daas_clientFileUpload_*";
+        .d.prcl.addFunctToTimer[`.daas.dsp.runJob;();.z.Z;0Nz;900000;1b]
+        ];
+    
+    / dss bars feature - on dss bars fw init 
+    if[.ex.getInstanceName[] like "daas_fw_dss_barsData_*";
+        .daas.fw.acDict:`assetClass xkey .uc.getActiveParamValue[`.daas.cfg.dssBarsHDBDirectories;`]
+        ];
+    
+    / on orderExec transaction fw
+    if[.daas.init.checkMetaValue[`dataClass;~;`transactionData];
+        .daas.init.transactionFwCfg[]
+        ];
+    
+    / on processing daemon fw
+    if[.ex.getInstanceName[] like "daas_processingDaemon_*";
+        .daas.init.processingDaemonCfg[]
+        ];
+    
+    / on merge daemon fw
+    if[.ex.getInstanceName[] like "daas_dataMergeDaemon_*";
+        .daas.init.mergeDaemonCfg[]
+        ];
+    
+    }
+
+/ Refiney add-on features to core filewatcher
+/ Loaded various different configuration dependent on the type of process 
+/ This allows the file watchers share the same coreInit function
+/ @see .daas.fw.coreInit
+.daas.ctp.coreFeaturesInit:{
+    
+    if[not .daas.cfg.procType~`ctp;
+        .pl.report_error_and_terminate["InvalidProcessException - .daas.cfg.procType is not `ctp"; .daas.cfg.procType]
+        ];
+    
+    .daas.init.tickStreamingCfg[];
+    .daas.init.l2.setGenericGlobals[];
+    
+    }
+
+/ Configuration needs in a ctp to stream ticks
+.daas.init.tickStreamingCfg:{
+
+    .al.loadgroupfunctions`daasStream;
+    .daas.stream.startStreamingTicks[];
+    
+    .tbl.gettable each `$string[.daas.cfg.asset],/: string `Trade`Quote`OpenClose`Update`LastTrade`LastQuote`LastOpenClose;
+    .tbl.gettable each `$string[.daas.cfg.asset],/: string `Order`Execution;
+    .tbl.gettable`$@[string[.daas.cfg.asset],("CurrentSnapShot");where "L"=string[.daas.cfg.asset];:;"l"];
+
+    .al.loadgroupfunctions each value "`",ssr[;",";"`"]"DeltaTools,DxAF,DxAFFunctions,DxGwAgg,DxHDB,DxSelect,DxSelectUtils,DxTZ,daasAsync,daasCanCor,daasPlatform,daasQS,daasUtil";
+
+    .daas.stream.lastTable:(`$string[.daas.cfg.asset],/:("Trade";"Quote";"OpenClose"))!`$string[.daas.cfg.asset],/:("LastTrade";"LastQuote";"LastOpenClose");
+    .daas.stream.L2booktab:(enlist`$string[.daas.cfg.asset],"Update")!enlist`$@[string[.daas.cfg.asset],("CurrentSnapShot");where "L"=string[.daas.cfg.asset];:;"l"];
+    
+    }
+
+/ Feature for rdbs to publish new condition codes that have been recieved
+.daas.init.condCodes:{
+    
+    if[.daas.cfg.dataClass = `marketData;
+        .d.prcl.addFunctToTimer[`.daas.util.alertForConditionCodes;(01:00:00.000);.z.Z;0Nz;3600000;1b];
+        ];
+    
+    };
+
+/ Feature for security master needed to support getRef
+.daas.init.secMasterCfg:{
+   
+    {.dm.regsrcc[`$"emea_tr_secMaster_feed_", string[.daas.cfg.env];string x]} each .tbl.gettablesbygroup[`DAAS_REF_DATA];
+    {.d.prcl.forceFunctToTimer[`.daas.util.secMasterPub;x;.z.Z;0Nz;600000;1b]}each .tbl.gettablesbygroup[`DAAS_REF_DATA];
+
+    mifidAssetClass::exec first assetClass by objectPermID from .uc.getActiveParamValue[`.daas.cfg.mifidAssetClass;`];
+    mifidSubAssetClass::exec first subAssetClass by objectPermID from .uc.getActiveParamValue[`.daas.cfg.mifidSubAssetClass;`];
+    mifidInstrGrouping::1!.uc.getActiveParamValue[`.daas.cfg.mifidInstrGrouping;`];
+
+    }
+
+/ Feature for real time udf processes
+.daas.init.rtUDF:{
+
+    .al.loadgroupfunctions[`daasUtil];
+    .al.loadgroupfunctions[`daasUDF];
+    `rtudfres set flip (!). (`time`udfName`result;"PS*"$/:());
+
+    };
+
+
+.daas.rdb.coreFeaturesInit:{[]
+    
+    if[not .daas.cfg.procType~`rdb;
+         .pl.report_error_and_terminate["InvalidProcessException - .daas.cfg.procType is not `rdb"; .daas.cfg.procType]
+        ];
+    
+    isMarketData:.daas.init.checkMetaValue[`dataClass;~;`marketData];
+    isTransactionData:.daas.init.checkMetaValue[`dataClass;~;`transactionData];
+    isL2:.daas.init.checkMetaValue[`asset;like;"*L2"];
+   
+    if[isMarketData and not isL2;
+        .daas.init.subForRefData[];
+        .daas.infra.shardSub[];
+        .daas.init.condCodes[];
+        ];
+    
+    if[isMarketData and isL2;
+        .daas.init.subForRefData[];
+        .daas.infra.shardSub[];
+        .daas.init.l2.setGenericGlobals[];
+        ];
+    
+    if[isTransactionData;
+        .daas.init.subForRefData[];
+        .daas.infra.shardSub[];
+        ];
+    
+    if[.daas.cfg.dataClass~`udf;
+        .daas.init.rtUDF[];
+        ];
+    
+    if[.daas.cfg.vendor~`monitoringCapture;
+        .daas.infra.shardSub[];
+        .al.loadinstruction `.daas.cmon.q.common;
+        ];
+    
+    };
+
+.daas.init.hdbCluster:{
+     
+    `startCluster set {[]
+        .log.out[.z.h;"Initiating cluster check";()];
+        .al.callfunction[`.daas.infra.checkForCluster][];
+     };
+ 
+    .daas.events.runOnInitialBusCon`startCluster;
+    
+    };
+
+.daas.hdb.coreFeaturesInit:{[]
+    
+    if[not any .daas.cfg.procType~/:`stats`hdb`secMaster;
+        .pl.report_error_and_terminate["InvalidProcessException - .daas.cfg.procType is not `hdb"; .daas.cfg.procType]
+        ];
+   
+    isHdb:.daas.init.checkMetaValue[`procType;~;`hdb];
+    isMarketData:.daas.init.checkMetaValue[`dataClass;~;`marketData];
+    isL2:.daas.init.checkMetaValue[`asset;like;"*L2"];
+    
+    / procType filter due to stats hdbs
+    if[isHdb and isMarketData and not isL2;
+        .daas.init.subForRefData[];
+        .daas.init.hdbCluster[];
+        ];
+    
+    / procType filter due to stats hdbs
+    if[isHdb and isMarketData and isL2;
+        .daas.init.subForRefData[];
+        .daas.init.hdbCluster[];
+        .daas.init.l2.setGenericGlobals[];
+        .daas.init.l2.setOnDiskGlobals[]
+        ];
+    
+    if[.daas.cfg.procType~`stats;
+        .daas.init.subForRefData[]
+        ];
+    
+    if[.daas.cfg.procType~`secMaster;
+        .daas.init.secMasterCfg[]
+        ];
+    
+    };
+
+.daas.init.trth.setGenericGlobals:{
+    .al.loadgroupfunctions`.daas.trth;
+    .daas.trth.jarStatus:0b;
+    .daas.trth.javaHandle:();
+    .daas.trth.javaQueue:([]reqTime:`timestamp$();id:`$();subReport:`$();javaTime:`timestamp$();requestSym:`$();reportStats:());
+    }
+
+
+.daas.init.processingTpCfg:{
+    
+    .u.c:0; 
+    .u.upd:{[t;x]
+        .u.c:.u.c+1; 
+        if[not t~`linestatus; /linestatus table is sent in by the feed and this table is ignored / TODO: Why?
+            c:key flip value t;
+            x:$[0&amp;lt;type first x;x;flip enlist x];
+            x:$[count[c]&amp;gt;count x;(enlist count[first x]#gettime[type t first c]),x;x];
+            d:flip c!x;
+            $[.ds.cfg.pub;
+                [.ds.tp.CtPub+:1i; upsert[t;d];];
+                [.ds.tp.Ct+:1i;.d.pub[t;d]]
+            ];
+        ];
+    
+        };
+
+    }
+
+/ Monitoring init functions general across all processes
+.daas.init.mon.common:{
+   
+    / Monitoring 2.0 - connectivity and common metrics (not loaded via serverCfg / gwCfg)
+    .al.loadinstruction each `.daas.cmon.conn`.daas.cmon.common;
+    .daas.cmon.init[];
+    .daas.cmon.common.init[];
+   
+    }
+
+.daas.init.mon.rdb:{
+    
+    / Monitoring 2.0 - RDB metrics
+    .al.loadinstruction each `.daas.cmon.rtc`.daas.cmon.rdb;
+    .daas.cmon.rtc.init[];
+    .daas.cmon.rdb.init[];
+    
+    }
+
+.daas.init.mon.tp:{
+    
+    / Monitoring 2.0 - TP-specific metrics
+    .al.loadinstruction `.daas.cmon.tp;
+    .daas.cmon.tp.init[];
+    
+    }
+
+.daas.init.mon.hdb:{
+    
+    / Monitoring 2.0 - HDB
+    .al.loadinstruction `.daas.cmon.hdb;
+    .daas.cmon.hdb.init[];
+    
+    }
+
+.daas.init.mon.rtc:{
+    / Monitoring 2.0 - Real-Time Consumer metrics
+    .al.loadinstruction `.daas.cmon.rtc;
+    .daas.cmon.rtc.init[];
+
+    }
+
+//load any additional timezones that are in the SURV_TIMEZONES config
+.al.loadgroupfunctions each `SurveillanceUtils;
+.surv.util.loadTZs[];
+</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>1</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

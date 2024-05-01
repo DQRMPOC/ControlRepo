@@ -1,0 +1,21 @@
+<analyticgroup>
+	<name>DxReportActionAnalytics</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.events.resp.trthUpdate</analytic>
+	<analytic>.daas.trth.requestAction</analytic>
+	<analytic>.daas.util.allFeeds</analytic>
+	<analytic>.surv.report.saveToCache</analytic>
+	<analytic>dxReportEmail</analytic>
+	<analytic>dxReportHtmlEmail</analytic>
+	<analytic>dxReportPushToTP</analytic>
+	<analytic>dxReportSaveToCSV</analytic>
+	<analytic>dxReportSaveToHDBProcessSerialised</analytic>
+	<analytic>dxReportSaveToHDBSerialised</analytic>
+	<analytic>dxReportSaveToPDF</analytic>
+	<analytic>dxReportSaveToTxt</analytic>
+	<analytic>dxReportSaveToXLS</analytic>
+	<analytic>dxReportWriteToFlatFile</analytic>
+	<analytic>dxReportWriteToPartitioned</analytic>
+	<analytic>dxReportWriteToSplayed</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

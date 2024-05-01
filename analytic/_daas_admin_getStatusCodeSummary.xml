@@ -1,0 +1,21 @@
+<analytic>
+	<analytic>.daas.admin.getStatusCodeSummary</analytic>
+	<code_text>{[]
+    allRespStatus:.daas.admin.getRdbRespStatus[];
+
+    :select count i by statusCode from allRespStatus;
+ }
+    </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+	<analyticgroup>daasWatchlistDashboard</analyticgroup>
+</analytic>

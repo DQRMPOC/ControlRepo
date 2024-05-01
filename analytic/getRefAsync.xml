@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>getRefAsync</analytic>
+	<code_text>{[params] 
+
+.daas.util.checkParams[`getRef;params];
+
+queryParams: `handle`user`analytic`input`API`clientMode!(.z.w;.z.u;`getRef;params;`getRef;`sync);
+:.daas.async.run[queryParams]
+ 
+/getRef[(`assetClass`identifier`dataType`sym`src`columns`startDate`endDate)!(`equity;`instrument;`refData;`VOD.L;`TRTH;`ISINCode`currencyCode;2016.08.06; 2016.08.06)]
+ }</code_text>
+	<description>Checks that all required parameters are present and of the correct type.
+Apply the default parameters for any fields not entered by the user.
+Creates dictionary mapping periodicity parameters to appropriate server functions.
+Dispatches calls to servers, extracts and joins data fitting conditions.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias>getStats_copy_copy_copy</alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasGateway</analyticgroup>
+</analytic>

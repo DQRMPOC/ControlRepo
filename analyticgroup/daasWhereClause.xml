@@ -1,0 +1,14 @@
+<analyticgroup>
+	<name>daasWhereClause</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.wc.default</analytic>
+	<analytic>.daas.wc.filterRule</analytic>
+	<analytic>.daas.wc.getSymCol</analytic>
+	<analytic>.daas.wc.partitionCol</analytic>
+	<analytic>.daas.wc.symList</analytic>
+	<analytic>.daas.wc.temporality</analytic>
+	<analytic>.daas.wc.time</analytic>
+	<analytic>.daas.wc.timeColDateFilter</analytic>
+	<analytic>.daas.wc.tradeFlag</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

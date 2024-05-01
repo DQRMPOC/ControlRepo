@@ -1,0 +1,31 @@
+<analytic>
+	<analytic>.daas.python.constructExString</analytic>
+	<code_text>{[udf]
+            
+    ex:$[not `~m:first exec method from .daas.udf.pythonRTUDFConfig where udfName=udf;
+        string[udf],"().",string m;
+        string[udf]
+        ];
+        
+    string[udf],"Res=pool.apply_async(",ex,", (data,))"
+            
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>udf</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPython</analyticgroup>
+</analytic>

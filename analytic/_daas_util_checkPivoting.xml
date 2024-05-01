@@ -1,0 +1,67 @@
+<analytic>
+	<analytic>.daas.util.checkPivoting</analytic>
+	<code_text>{[functionName;args]
+    
+    //Only getTicks can ask for pviot explicitly 
+    if[(not args[`dataType] in .daas.cfg.pivotSettings`tableName) and (1b~args`pivot) and functionName~`getTicks;
+        :"Cannot pivot table - unconfigured";
+        ];
+    
+    //no pivoting, exit - all good
+    if[not args[`dataType] in .daas.cfg.pivotSettings`tableName;
+        :();
+        ];
+
+    //If trying to aggregate a table that should be pivotted
+    if[functionName~`getStats;
+        if[not first exec pivotForAggregations from .daas.cfg.pivotSettings where tableName=args[`dataType];
+            if[99=type ana:args`analytics;
+                ana:value ana;
+                ];
+            syms:(flat where -11=type each flat:(raze/) args[`applyFilter],ana) except `;
+            if[not args[`dataType] in tables[];
+                .tbl.gettable args[`dataType];
+                ];
+            if[not all present:syms in\: cols args`dataType;
+                :"Column not in unpivoted table - ",", " sv string syms where not present
+                ];
+            ];
+        ];
+
+    //Checks or disallowed parameters
+	if[1b~args`adjustCorAx;
+        :"Cannot apply corAx to a pivotable dataset";
+        ];
+    
+    if[1b~args`applyCanCor;
+        :"Cannot apply canCor to a pivotable dataset";
+        ];
+    
+    ()
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

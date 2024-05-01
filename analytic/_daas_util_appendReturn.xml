@@ -1,0 +1,36 @@
+<analytic>
+	<analytic>.daas.util.appendReturn</analytic>
+	<code_text>{[tab;args]
+	//This analytic is it's own function as it has to be applied after openClose data has been requested and joined to main data read
+    if[`return in args`analytics;
+	    :![tab;();0b;(enlist`return)!enlist(%;(-;`lastPrice;`closePrice);`closePrice)];
+	    ];
+    
+    tab
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

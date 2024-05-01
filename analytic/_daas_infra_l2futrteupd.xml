@@ -1,0 +1,54 @@
+<analytic>
+	<analytic>.daas.infra.l2futrteupd</analytic>
+	<code_text>{[tabName;data]
+/ Monitoring 2.0 - Real-time consumer UPD row metrics
+.rtc.updStatistics[tabName]+:count data;
+
+upsert[tabName;data];
+
+
+if[tabName=`futL2Update;
+    .l2.futSymCounts:delete x from update nCounts:(0^nCounts)+(0^x) from .l2.futSymCounts uj select count i by sym from data;
+    if[any b:not (a:exec distinct sym from data) in\: key .daas.l2idToPriceMults;
+      `.daas.l2idToPriceMults upsert select ratio:first ({"F"$ -1 _ first  ":" vs x}each id)% price by sym from 
+        select first id,first price by sym from 
+          data
+            where sym in (a where b),not null price;
+      ];
+      {[x]if[x[`indication] in 1 3;
+           futl2CurrentSnapShot[(x`sym;`BID)]:futl2CurrentSnapShot[(x`sym;`ASK)]:`time`exchTime`price`size`numOrders`id!(x`time;x`exchTime;`float$();`int$();`int$();());
+           ];
+       value (.daas.l2actionFuncDict x`action;x)}each select from data where not condition~\:"MKO";
+    
+    pushSyms:exec sym from .l2.futSymCounts where nCounts&gt;1000;
+    futl2intradaySnapShots,:0!select from futl2CurrentSnapShot where sym in pushSyms;
+    @[`.l2.futSymCounts;;:;0] each pushSyms;
+   
+    ];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tabName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

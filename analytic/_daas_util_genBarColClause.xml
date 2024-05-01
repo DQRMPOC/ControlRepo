@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.daas.util.genBarColClause</analytic>
+	<code_text>{[args]
+    
+    if[any`=args`analytics;
+        args[`analytics]:.daas.cfg.barTableFunctionMap[args`dataType];
+        ];
+    
+    if[-11=type args[`analytics];
+        :(enlist args[`analytics])!enlist .daas.cfg.barAggregationFunctions[args`analytics]
+        ];	
+
+    (args[`analytics])!.daas.cfg.barAggregationFunctions[args`analytics]
+     
+    }</code_text>
+	<description>Applies column aggregations for correct table when aggregating by interval.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

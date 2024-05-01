@@ -1,0 +1,22 @@
+<analytic>
+	<analytic>.daas.infra.rteEOD</analytic>
+	<code_text>{[]
+.log.out[.z.h;"RTE EOD PROCESSING";.daas.cfg.asset];
+delete from .daas.summary.tableName;
+.daas.stream.removeAllSubs[];
+
+/ Monitoring 2.0 - row count tracking reset
+.daas.cmon.rtc.eod[];
+ }</code_text>
+	<description>Initial state function for RDB, HDB and iHDB.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

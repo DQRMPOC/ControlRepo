@@ -1,0 +1,67 @@
+<analytic>
+	<analytic>.daas.canCor.getCanCorMatchInds</analytic>
+	<code_text>{[tb;canCorData]
+
+       // get "match" columns in the canCorTable (canCorMatchCols) and their corresponding non-canCor columns (oldMatchCols)     
+       baseMatchCols: `$(lower a[;4]),' 5 _/: a:string canCorMatchCols:a where(a:cols canCorData) like "orig*";
+       // remove match columns not found in the base table
+       baseMatchCols:baseMatchCols i: where baseMatchCols in cols tb;
+       canCorMatchCols:canCorMatchCols i; 
+       
+       cancellations: select from canCorData where canCorType=`CAN;
+       corrections:select from canCorData where canCorType=`COR;
+       
+       // match query is currently hardcoded. TODO: build this clause using the matchCols variables
+       /canCorWhereClause:((=;`sym;(`r;enlist`sym));(all;(enlist;({$[null y;(count x)#1b;x=y]};`sequenceNumber;(`r;enlist`origSequenceNumber));({$[null y;(count x)#1b;x=y]};`price;(`r;enlist`origPrice));({$[null y;(count x)#1b;x=y]};`volume;(`r;enlist`origVolume));({$[null y;(count x)#1b;x=y]};`exchTime;(`r;enlist`origExchangeTime))));(&gt;;(`r;enlist`time);`time));       
+       
+       
+       
+	   ind:raze {[tb;r]
+            f:{$[null y;(count x)#1b;raze(=;x;y)]};
+        whereClause:((f[`price;r`origPrice]);(f[`volume;r`origVolume]));
+      	whereClause,:$[20&gt;abs type r[`sym];enlist[(=;`sym;enlist r`sym)];enlist[(=;`sym;enlist value r`sym)]] , enlist(&lt;;`exchTime;(`r;enlist `exchTime));
+                
+                if[count r`origTradeId;
+                    if[all not null r`origTradeId;
+      	                whereClause,:enlist ((\:;~);`tradeId;(`r;enlist `origTradeId));
+                        ];
+                    ];
+                if[count r`origSequenceNumber;
+                    if[not null r`origSequenceNumber;
+      	                whereClause,:(enlist(=;`sequenceNumber;(`r;enlist `origSequenceNumber)));
+                        ];
+                    ];
+	   	:?[tb;whereClause;();(last;`i)];
+
+	   	}[tb;] each canCorData;
+       // hard-coded match columns again. Only have matching where there is appropriate match data
+       isMatchable:exec ( ((not null origPrice) and (not null origVolume)) or (not null origSequenceNumber)) from canCorData ;
+       : update ind:ind[where isMatchable] from canCorData where isMatchable ; 
+}</code_text>
+	<description>given a tick table "tb" and a table of canCor records "canCorData", returns a table (columns  `ind`canCorType)  of length count canCorData that matches canCor records to tick records at those indices. A null entry  in `ind corresponds to "no match found".</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tb</parameter>
+		<default></default>
+		<description>tick table</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>canCorData</parameter>
+		<default></default>
+		<description>canCor record tb</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasCanCor</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.daas.util.l2snapshotDelete</analytic>
+	<code_text>{[x]
+bidChange:.daas.l2currentSnapShotTabName @ (x`sym;`BID);
+askChange:.daas.l2currentSnapShotTabName @ (x`sym;`ASK);
+bidPosition:first bidChange[`id]?enlist x`id;
+askPosition:first askChange[`id]?enlist x`id;
+
+changes:`bidChange`askChange!{[x;change;position]
+	change:@[change;`price;:;change[`price](til count change[`price])except position];
+	change:@[change;`size;:;change[`size](til count change[`size])except position];
+	change:@[change;`numOrders;:;change[`numOrders](til count change[`numOrders])except position];
+	change:@[change;`id;:;change[`id](til count change[`id])except position];
+	change[`time]:x`time;
+	change[`exchTime]:x`exchTime;
+	change
+	}[x]'[(bidChange;askChange);(bidPosition;askPosition)] ;
+@[.daas.l2currentSnapShotTabName;[(x`sym;`BID)];:;changes`bidChange];
+@[.daas.l2currentSnapShotTabName;[(x`sym;`ASK)];:;changes`askChange];
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>x</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

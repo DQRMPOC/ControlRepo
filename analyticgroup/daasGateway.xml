@@ -1,0 +1,18 @@
+<analyticgroup>
+	<name>daasGateway</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.admin.editFilterConfigParam</analytic>
+	<analytic>.daas.infra.updateConnGroup</analytic>
+	<analytic>.daas.util.barInitAggregations</analytic>
+	<analytic>getBarsAsync</analytic>
+	<analytic>getInstrumentTaxonomyAsync</analytic>
+	<analytic>getInstrumentTaxonomySync</analytic>
+	<analytic>getJoin</analytic>
+	<analytic>getRefAsync</analytic>
+	<analytic>getRefSync</analytic>
+	<analytic>getStatsAsync</analytic>
+	<analytic>getStatsSync</analytic>
+	<analytic>getSummaryAsync</analytic>
+	<analytic>getTicksAsync</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

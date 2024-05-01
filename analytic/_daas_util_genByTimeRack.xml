@@ -1,0 +1,68 @@
+<analytic>
+	<analytic>.daas.util.genByTimeRack</analytic>
+	<code_text>{[params]
+	
+	//if temporality is slice, buckets start at the same time everyday rather than continuing from the end time of the previous bucket
+	//slice cases
+	//	-when start time preceeds end time(bars crossing midnight)
+	//  -when the bar width is greater than or equal to 24 hours
+	//  -all other cases
+	//continuous
+	//  -all cases where temporality is continuous
+	
+	width:.daas.cfg.grandict[params`granularityUnit]*params`granularity;
+	
+	//determine case and build timeRack List
+	$[`slice~params`temporality;
+		$[(24:00:00.000000000 &lt;= width);
+			//Gets a, the minimum number of days the bar size is less than in hours (eg:36 hours -&gt; less than 2 days so 48:00:00)
+			//gets til 1+ the endDate minus the startDate divided by the bar size to give the maximum number of groups of days from the rackstart to the rack end
+			//multiplies these by a and add to the start time, to give all possible start times of bars
+			//Check that the last of these start times is within the given rackStart and rackEnd
+			timeRackList:asc{$[y &lt; last[x];-1_x;x]}[;params`rackEnd]params[`rackStart]+ (til 1+ceiling (params[`ed] - params[`sd])%a)* 24:00:00.000000000 * a:ceiling width%24:00:00.000000000;
+			$[params[`st]&gt;params[`et];
+				//Get total size of time window all the bars are in
+				//Divide the time window by the number of bars and add 1 to it, then til this number and multiply it by the bar width
+				//add the bar times to the start time, then add each of these to the dates for the bars
+				//only differences between st&gt;et and vice versa is accounting for the times crossing 24 hours and changing dates.
+				timeRackList:asc raze(params[`sd]+ {if[x&gt;0;:til x]0} params[`ed] - params`sd) +\:{$[y &lt; last[x] - 1D;-1_x;x]}[;params`et]params[`st]+/:width*til 1+ ceiling (1D + params[`et] - params`st)%width;
+		    	timeRackList:asc raze(params[`sd]+ {if[x&gt;0;:til 1+x]0} params[`ed] - params`sd) +\: {$[y &lt; last[x];-1_x;x]}[;params`et]params[`st]+width*til 1+ ceiling (params[`et] - params`st)%width
+			]
+		];
+		//divide rackend-rackstart by width, get 1+til that number and multiply it by bar width to get all bars. Add these to rackstart then check if last bar is within boundry
+		timeRackList:{$[y &lt; last[x];-1_x;x]}[;params`rackEnd](params`rackStart)+width*til 1+ceiling(params[`rackEnd]-params`rackStart)%width
+	];
+	
+	if[not count timeRackList; 
+		:0D00:00:00.000
+		];
+	//return timeRack List
+	timeRackList
+ }</code_text>
+	<description>Generate timerack list</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

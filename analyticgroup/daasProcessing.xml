@@ -1,0 +1,30 @@
+<analyticgroup>
+	<name>daasProcessing</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.dataCopy.zipData</analytic>
+	<analytic>.daas.processing.bootTRTHStack</analytic>
+	<analytic>.daas.processing.checkSpace</analytic>
+	<analytic>.daas.processing.fmComplete</analytic>
+	<analytic>.daas.processing.fmInit</analytic>
+	<analytic>.daas.processing.fmStartPlayback</analytic>
+	<analytic>.daas.processing.getCurrentJobs</analytic>
+	<analytic>.daas.processing.getMerged</analytic>
+	<analytic>.daas.processing.hdbDropConfig</analytic>
+	<analytic>.daas.processing.mergeData</analytic>
+	<analytic>.daas.processing.parseTRTHconfig</analytic>
+	<analytic>.daas.processing.pdCreateTRTHConfig</analytic>
+	<analytic>.daas.processing.peComplete</analytic>
+	<analytic>.daas.processing.peInit</analytic>
+	<analytic>.daas.processing.peInitialisePlayback</analytic>
+	<analytic>.daas.processing.peUpd</analytic>
+	<analytic>.daas.processing.readProcessingConfig</analytic>
+	<analytic>.daas.processing.removeFromStack</analytic>
+	<analytic>.daas.processing.tpComplete</analytic>
+	<analytic>.daas.processing.tpInit</analytic>
+	<analytic>.daas.processing.trimTrthData</analytic>
+	<analytic>.daas.processing.trimTrthPartition</analytic>
+	<analytic>.daas.processing.trimTrthTable</analytic>
+	<analytic>.daas.processing.writeStubTabs</analytic>
+	<analytic>.daas.processing.writeTab</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

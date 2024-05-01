@@ -1,0 +1,192 @@
+<analytic>
+	<analytic>.daas.cmon.conn</analytic>
+	<code_text>// Refinery (DaaS) Client Connectivity for Monitoring 2.0
+// Copyright (c) 2019 Kx Systems Inc
+
+.daas.cmon.cfg.sendTypes:`timer`event;
+
+.daas.cmon.cfg.stateTypes:`dict`table;
+
+
+.daas.cmon.handle:0Ni;
+
+.daas.cmon.metrics:`metricName xkey flip `metricName`sendType`interval`stateType!"SSNS"$\:();
+
+
+.daas.cmon.init:{
+    .ch.addPC `.daas.cmon.i.onHandleClose;
+ };
+
+
+/ Remote function called by the monitoring daemon to register itself with the current process. This
+/ handle the registration orignates from is then marked as the monitoring daemon handle
+/  @see .daas.cmon.handle
+.daas.cmon.daemonRegister:{
+    if[not null .daas.cmon.handle;
+        .log.warn[`cmon;;()] "Duplicate registration received but already registered with another daemon. Ignoring [ Current Daemon: ",string[.daas.cmon.handle]," ] [ New Request: ",string[.z.w]," ]";
+        '"ProcessAlreadyRegisteredException";
+    ];
+
+    .daas.cmon.handle:.z.w;
+
+    .log.out[`cmon;;()] "Monitoring daemon registered [ Handle: ",string[.z.w]," ] [ Metrics: ",string[count .daas.cmon.metrics]," ]";
+
+    neg[.daas.cmon.handle] (`.mon.upd.register; .ex.getInstanceName[]; .z.p; 0!.daas.cmon.metrics; .z.i);
+ };
+
+/ Adds a timer-based metric to be registered with the monitoring daemon. This function also adds the metric
+/ generating function to the timer system
+/ NOTE: All metrics must be added prior to the monitoring daemon registering with the process
+/  @param metricName (Symbol) The unique name of the metric
+/  @param metricFunc (Symbol) The function that will generate the metrics
+/  @param interval (Timespan) The frequency which the metric should be generated
+/  @param stateType (Symbol) The type of metric output. One of: table or dict
+/  @throws InvalidMetricFunctionException If the metric function is not a symbol
+/  @throws MetricFunctionDoesNotExistException If the specified metric function does not exist
+/  @see .daas.cmon.i.addMetric
+.daas.cmon.addTimerMetric:{[metricName; metricFunc; interval; stateType]
+    if[not -11h = type metricFunc;
+        '"InvalidMetricFunctionException";
+    ];
+
+    funcExists:@[get; metricFunc; { (`METRIC_FUNC_NO_EXIST;x) }];
+
+    if[`METRIC_FUNC_NO_EXIST~first funcExists;
+        '"MetricFunctionDoesNotExistException";
+    ];
+
+    .daas.cmon.i.addMetric[metricName; `timer; interval; stateType];
+
+    .log.out[`cmon;;()] "Scheduling timer based metric monitoring [ Metric: ",string[metricName]," ] [ Interval: ",string[interval]," ]";
+    .d.prcl.addFunctToTimer[metricFunc; (); 0Nz; 0Wz; `long$interval % 1e6; 1b];
+ };
+
+/ Adds an event-based metric to be registered with the monitoring daemon
+/ NOTE: All metrics must be added prior to the monitoring daemon registering with the process
+/  @param metricName (Symbol) The unique name of the metric
+/  @param stateType (Symbol) The type of metric output. One of: table or dict
+/  @see .daas.cmon.i.addMetric
+.daas.cmon.addEventMetric:{[metricName; stateType]
+    .daas.cmon.i.addMetric[metricName; `event; 0Nn; stateType];
+ };
+
+/ Adds an event-based metric to be registered with the monitoring daemon. This function requires an
+/ interval to be supplied which can be used to specify how often the event should occur
+/ NOTE: All metrics must be added prior to the monitoring daemon registering with the process
+/  @param metricName (Symbol) The unique name of the metric
+/  @param stateType (Symbol) The type of metric output. One of: table or dict
+/  @param interval (Timespan) The frequency which the metric should be expected
+/  @see .daas.cmon.i.addMetric
+.daas.cmon.addEventMetricWithInterval:{[metricName; stateType; interval]
+    .daas.cmon.i.addMetric[metricName; `event; interval; stateType];
+ };
+
+/ Sends the generated metrics to the monitoring daemon
+/  @param name (Symbol) The name of the metrics to send
+/  @param metrics (Table|Dict) The metric data to send
+/  @see .daas.cmon.sendMetricsFlush
+.daas.cmon.sendMetrics:{[name; metrics]
+    :.daas.cmon.sendMetricsFlush[name; metrics; 0b];
+ };
+
+/ Sends the generated metrics to the monitoring daemon, with the ability to force flush the data to
+/ the monioring daemon
+/  @param name (Symbol) The name of the metrics to send
+/  @param metrics (Table|Dict) The metric data to send
+/  @param flush (Boolean) If true, flush the handle after sending metrics. If false, wait until kdb+ flushes
+.daas.cmon.sendMetricsFlush:{[name; metrics; flush]
+    if[not name in key .daas.cmon.metrics;
+        .log.warn[`cmon;;()] "Metric not configured, will not send [ Metric: ",string[name]," ]: ",.Q.s1 metrics;
+        :(::);
+    ];
+
+    if[null .daas.cmon.handle;
+        .log.debug[`cmon;;()] "No monitoring daemon connection. Metric: ",.Q.s1 metrics;
+        :(::);
+    ];
+
+    / Send UTC time as part of metric information
+    neg[.daas.cmon.handle] (`.mon.upd.metric; .ex.getInstanceName[]; name; .z.p; metrics);
+    
+    if[flush;
+        neg[.daas.cmon.handle](::);
+    ];
+ };
+
+
+/ Event handler function for when a handle is closed
+/  @see .daas.cmon.handle
+.daas.cmon.i.onHandleClose:{[h]
+    if[not h = .daas.cmon.handle;
+        :(::);
+    ];
+
+    .log.err[`cmon;;()] "Monitoring daemon handle was closed. Cannot send metrics outbound until reconnected";
+    .daas.cmon.handle:0Ni;
+ };
+
+/ Internal function to add a new metric to the metrics tracking table
+/  @see .daas.cmon.i.validateMetricArgs
+.daas.cmon.i.addMetric:{[metricName; sendType; interval; stateType]
+    .daas.cmon.i.validateMetricArgs[metricName; sendType; interval; stateType];
+
+    .log.debug[`cmon;;()] "Adding new metric [ Metric Name: ",string[metricName]," ]";
+
+    `.daas.cmon.metrics upsert `metricName`sendType`interval`stateType!(metricName;sendType;interval;stateType);
+ };
+
+/ Argument validation function when new metrics are added
+/  @throws InvalidMetricNameException
+/  @throws MetricAlreadyExistsException
+/  @throws InvalidSendTypeException
+/  @throws InvalidIntervalException
+/  @throws InvalidStateTypeException
+.daas.cmon.i.validateMetricArgs:{[metricName; sendType; interval; stateType]
+    symTypeChecks:({ not -11h = type x }; { (all/) null x });
+
+    if[any symTypeChecks@\:metricName;
+        '"InvalidMetricNameException";
+    ];
+
+    if[metricName in key .daas.cmon.metrics;
+        '"MetricAlreadyExistsException";
+    ];
+
+    if[any symTypeChecks@\:sendType;
+        '"InvalidSendTypeException";
+    ];
+
+    if[not sendType in .daas.cmon.cfg.sendTypes;
+        '"InvalidSendTypeException";
+    ];
+
+    if[not -16h = type interval;
+        '"InvalidIntervalException";
+    ];
+
+    if[not null interval;
+        if[0D &gt;= interval;
+            '"InvalidIntervalException";
+        ];
+    ];
+
+    if[any symTypeChecks@\:stateType;
+        '"InvalidStateTypeException";
+    ];
+
+    if[not stateType in .daas.cmon.cfg.stateTypes;
+        '"InvalidStateTypeException";
+    ];
+ };
+    </code_text>
+	<description>Refinery monitoring client connectivity</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

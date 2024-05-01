@@ -1,0 +1,17 @@
+<analytic>
+	<analytic>.daas.events.interBusHandles</analytic>
+	<code_text>{[]
+	:value exec first handle by process from .ch.cp where process like "*eventBus*",status=`opened, handle&gt;0;
+ }</code_text>
+	<description>gets handles for other event buses currently connected to this one</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

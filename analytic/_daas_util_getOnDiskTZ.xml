@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.util.getOnDiskTZ</analytic>
+	<code_text>{[table;timeCol]
+    // insertTime and exchTime can have different on disk timezone
+    // in general we could have multiple different time columns with different ondisk timezones
+    // TODO: Extend this to make use of table arg and store on disk timezone per col per table in config
+
+    onDiskTZ:$[timeCol~`exchTime;
+               .daas.cfg.exchangeTimeZone[`timeZone];
+               .daas.cfg.insertTimeZone
+            ];
+
+    // if onDiskTZ is null then default to UTC
+    `UTC^onDiskTZ
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>table</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>timeCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

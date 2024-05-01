@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.cmon.failover</analytic>
+	<code_text>// Refinery (DaaS) Failover Monitoring 2.0
+// Copyright (c) 2020 Kx Systems Inc
+
+.daas.cmon.failover.init:{
+    .daas.cmon.addEventMetric[`failover.process;        `dict];
+    .daas.cmon.addEventMetric[`failover.stack;          `dict];
+    .daas.cmon.addEventMetric[`failover.routing;        `dict];
+ };
+
+
+.daas.cmon.failover.process:{[failed; failTo]
+    .daas.cmon.sendMetrics[`failover.process; `failedProcess`failToProcess!(failed; failTo)];
+ };
+
+.daas.cmon.failover.stack:{[stack; environment; failed; failTo]
+    .daas.cmon.sendMetrics[`failover.stack; `stack`environment`failedProcesses`failToProcesses!(stack; environment; failed; failTo)];
+ };
+
+.daas.cmon.failover.routingMaster:{[newRoutingMaster]
+    .daas.cmon.sendMetrics[`failover.routing; enlist[`newRoutingMaster]!enlist newRoutingMaster];
+ };
+    </code_text>
+	<description>Refinery (DaaS) Failover Monitoring 2.0</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

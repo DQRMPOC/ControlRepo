@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.events.resp.eodRte</analytic>
+	<code_text>{[data]
+	if[`begin=data`tag1;
+		.daas.events.pubEventMessage[`eodRte;`started;.daas.cfg.asset;`;`];
+		.log.out[.z.h;"RTE EOD STARTED";.daas.cfg.asset];
+		.daas.infra.rteEOD[];
+		.daas.events.pubEventMessage[`eodRte;`complete;.daas.cfg.asset;`;`];
+		.log.out[.z.h;"RTE EOD COMPLETED";.daas.cfg.asset];
+		];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

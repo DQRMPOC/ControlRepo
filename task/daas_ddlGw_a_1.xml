@@ -1,0 +1,11 @@
+<task>
+	<taskName>daas_ddlGw_a.1</taskName>
+	<taskEnabled>0</taskEnabled>
+	<taskManual>0</taskManual>
+	<taskType>Once</taskType>
+	<prInsName>daas_ddlGw_a</prInsName>
+	<stDateTime>2018.12.11T14:39:00.000</stDateTime>
+	<endDateTime>2018.12.11T14:39:00.000</endDateTime>
+	<rptFrequency>None</rptFrequency>
+	<rptInterval>0</rptInterval>
+</task>

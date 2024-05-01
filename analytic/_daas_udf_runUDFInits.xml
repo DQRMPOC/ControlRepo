@@ -1,0 +1,27 @@
+<analytic>
+	<analytic>.daas.udf.runUDFInits</analytic>
+	<code_text>{[]
+    .daas.udf.trigKeyed:(`trigTab xkey .daas.udf.rtConfig);
+
+    .daas.udf.dataRequirements:flip (!).(`tabName`timeNeededFrom`udfName;"SPS"$/:());
+    `.daas.udf.dataRequirements upsert ungroup select tabName:mappedTab,timeNeededFrom:.z.P,udfName:UDF from .daas.udf.rtConfig;
+
+    //run the custom init funcs
+    @[{value(.daas.udf.udfFuncStore[x]`func;::) ;};;{.log.err[`udfInit;"error running custom udf init func";x]}] each .daas.udf.rtConfig[`initFunc] except `;
+
+
+    //Have to reach out to DC once to grab the mapping of tp pub channels to tables
+    .daas.udf.channelTabMap:.daas.util.createTableChannelMap[];
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

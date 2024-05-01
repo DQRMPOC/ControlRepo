@@ -1,0 +1,27 @@
+<analytic>
+	<analytic>.daas.routing.setPrimaryNoPub</analytic>
+	<code_text>{[procName]
+	if[not .daas.routingMetaData[procName]`procUp;
+		.daas.log.logErrorAndSignal["Target process for .daas.routing.setPrimary is down - ";procName];
+		];
+	.[`.daas.routingMetaData;(procName;`primary);:;1b];
+	{.[`.daas.routingMetaData;(x;`primary);:;0b]}each .daas.routingMetaData[procName]`failoverTo;
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>procName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+</analytic>

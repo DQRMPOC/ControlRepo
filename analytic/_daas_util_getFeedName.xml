@@ -1,0 +1,29 @@
+<analytic>
+	<analytic>.daas.util.getFeedName</analytic>
+	<code_text>{[params]
+
+   $[params in .daas.util.allFeeds[]; 
+    params;
+    .log.err[.z.h; "Error watchlist not found"; params]]
+
+}</code_text>
+	<description>Gets watchlist name of entered RFA configured on the system</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

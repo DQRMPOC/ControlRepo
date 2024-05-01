@@ -1,0 +1,14 @@
+<analyticgroup>
+	<name>daasWatchlistDashboard</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.admin.getRdbRespStatus</analytic>
+	<analytic>.daas.admin.getRfaAssetTypes</analytic>
+	<analytic>.daas.admin.getStatusCodeSummary</analytic>
+	<analytic>.daas.admin.getTickLossDetail</analytic>
+	<analytic>.daas.admin.getTickLossStatus</analytic>
+	<analytic>.daas.admin.getTrRdbHandles</analytic>
+	<analytic>.daas.admin.getWatchlist</analytic>
+	<analytic>.daas.admin.r.getTickLossStatus</analytic>
+	<analytic>.daas.admin.updateWatchlist</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

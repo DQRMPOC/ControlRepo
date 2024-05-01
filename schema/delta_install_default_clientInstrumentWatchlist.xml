@@ -1,0 +1,41 @@
+<schema>
+	<ucname>delta_install_default</ucname>
+	<table>clientInstrumentWatchlist</table>
+	<description>This is the client reference data table</description>
+	<column>
+		<column>clientID</column>
+		<coltype>String</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>instruments</column>
+		<coltype>String</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>account</column>
+		<coltype>String</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>accountManager</column>
+		<coltype>String</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>lastUpdate</column>
+		<coltype>Date</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<schemagroup>DAAS_REF_DATA</schemagroup>
+</schema>

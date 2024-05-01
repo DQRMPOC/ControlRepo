@@ -1,0 +1,82 @@
+<analytic>
+	<analytic>.validation.checkFilters</analytic>
+	<code_text>{[config]
+	
+	.debug.checkFilters:config;
+	
+	filtersInConfig:config[`filters] except `;
+	if[not count filtersInConfig;
+		:1b
+	]; 
+	filtersInConfig:string filtersInConfig;
+	indivFilters:raze ";" vs/: filtersInConfig;
+
+	substituteCOMPARISONCHAR:"∝";
+	indivFiltersWithCOMPARISONcharacter:ssr[;"=";substituteCOMPARISONCHAR]each ssr[;"&gt;";"="]each ssr[;"&lt;";"="]each ssr[;"&lt;&gt;";"="]each indivFilters;
+	
+	/detect if user did not seperated individual filters within one instance with semi-colons
+	if[any 0&lt;&gt;(count each indivFiltersWithCOMPARISONcharacter)-((count substituteCOMPARISONCHAR)+count each indivFiltersWithCOMPARISONcharacter except\: substituteCOMPARISONCHAR);
+		'"Validation Message:  Unexpected number of comparison characters detected within the one filter - ensure individual filters in one instance are seperated by semi-colon characters which contain either one occurence of \"=\" or \"&lt;&gt;\"";
+	];	
+	
+	tableAndColumnNamesAndFilterValues:{![`tab`col;`$-2#"."vs ".",x[0]],enlist[`val]!enlist x[1]}each substituteCOMPARISONCHAR vs/: indivFiltersWithCOMPARISONcharacter;;
+
+    /where table name is used in filters, check it is valid
+    statedTables:exec tab from tableAndColumnNamesAndFilterValues where not null tab;
+    validTableNames:exec distinct table from .tbl.tablecolumn where any table like/:("*[Qq]uote*";"*[Oo]rder*";"*[Ee]xecution*";"restrictedSecurityList";"wallCrossList";"materialEvents";"*[Tt]ransactions*";"*accounts*";"*[Cc]learing*";"*[Dd]ividendCompensation*";"*[Ss]ettlement*");
+	if[count invalidTableNames:statedTables except validTableNames;
+		'"Validation Message:  The following tables are invalid or are not filterable: ",", " sv string invalidTableNames; 
+	];
+    
+    statedCols:select tab,col from tableAndColumnNamesAndFilterValues where not null tab;
+    expectedCols:exec column by table from .tbl.tablecolumn where table in statedCols[`tab];
+    
+    {[a;e]      
+        if[not a[`col] in e[a[`tab]];
+            '"Validation Message:  The column ",string[a`col]," is not in table ",string[a`tab]
+        ];
+    }[;expectedCols]each statedCols;
+    
+    columnNames:exec col from tableAndColumnNamesAndFilterValues where null tab;    
+	
+	validColumnNames:exec column from .tbl.tablecolumn where any table like/:("*[Qq]uote*";"*[Oo]rder*";"*[Ee]xecution*";"restrictedSecurityList";"wallCrossList";"materialEvents";"*SingleCreditTransfer*";"*[Tt]ransactions*";"*accounts*";"*transactionTypes*";"*[Cc]learing";"*[Dd]ividendCompensation";"*[Ss]ettlement");
+	exceptionsColumnNames:`$exec elementValue from .uc.userconfig where parameter=`SURV_FILTERS_COLUMN_EXCEPTIONS,element=`filtersColumnExceptions;
+	if[count invalidColumnNames:columnNames except validColumnNames,exceptionsColumnNames;
+		'"Validation Message:  The following columns are not in any of quote, order or trade schemas: ",", " sv string invalidColumnNames; 
+	];
+	
+	//check if filter values contain valid characters
+    filterValues:exec val from tableAndColumnNamesAndFilterValues;
+	invalidCharacters:filterValues except\: "ABCDEFGHIJKLYMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890.&lt;&gt;=*|_-\\/%$:?@ ";
+	if[sum count each invalidCharacters;
+		'"Validation Message: Filters within any instance must be split by semi-colons.  Only characters a-z,A-Z,0-9, =/&lt;&gt; for equals/not equals, wild-cards *, alternatives | and _-\\/%:. are allowed"
+	];
+	
+    //check if a single filter has multiple = conditions for the same column
+    if[any {0&lt;count where 1&lt;count each group `$first each "=" vs' indiv where "=" in/:indiv:";" vs x}each filtersInConfig;
+        '"Validation Message: Only a singular = expression allowed per column within a filter"
+	];
+    
+ 	/at this stage, valid filters detected, so return true
+ 	:1b
+    
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

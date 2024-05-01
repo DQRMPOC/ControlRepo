@@ -1,0 +1,88 @@
+<analytic>
+	<analytic>.daas.events.resp.getClusterData</analytic>
+	<code_text>{[data]
+
+if[(data`tag1)=`getData;
+	//Run by GW
+	if[not (.daas.cfg.procType=`gw);:()];
+	
+	//Run by GW with same sharding parameters as the cluster
+	proc:data`process;
+	if[(.daas.cfg.region;.daas.cfg.env)~{(first l),last l:`$"_" vs string x}proc;
+		
+		.log.out[.z.h;"Cluster data requested. Scanning for open ports";()];
+		
+		//Get remaining info needed for cluster data prep
+		clSize:first (data`info)[0];
+		clProcs:(data`info)[1];
+		clPort::data`port;
+
+		//Find open ports
+		usedPorts::`int$asc distinct exec port from .ds.gw.getServerDetails[];
+		freePorts:`int${c:clPort;cp:system"p";while[c in usedPorts;c+:1;if[not c in usedPorts;@[system;"p ",string[c];{[x;y]usedPorts,:x}[c;]];system["p ",string[cp]]]];usedPorts,:c;c}each til (clSize-1);
+		
+		.log.out[.z.h;"Ports found. Adding new database group.";()];
+		
+		//Add a group to groupings masterlist
+		//This ensures successful querying via API calls
+		grp:`$"_" sv 5#"_" vs string[proc];
+		addDatabaseGroup[grp;`DEFAULT];
+		addDatabaseToGroup ./: (clProcs,\:grp);
+		
+		
+		
+		.log.out[.z.h;"Database group added. Checking for existing processes";()];
+		
+		//Find existing process instances (if any) to exclude from process instance creation in .daas.infra.createCluster;
+		existingProcs:`$9_/:(string exec name from .ds.gw.getServerDetails[] where name like "instance*");
+		doNotMake:clProcs[where clProcs in\: existingProcs];
+		
+		.log.out[.z.h;"Cluster data ready. Sending to HDB";()];		
+		.daas.events.pubEventMessage[`hdbCluster;`runCluster;`;`;(clProcs;freePorts;doNotMake)]]];
+		
+if[(data`tag1)=`runCluster;
+	//Run by HDB
+	if[not (.daas.cfg.procType=`hdb);:()];
+	
+	//Run by the 0th node in this particular cluster
+	proc:(data`info)[0;0];
+	if[not (first .fd.process) like "*",string[proc],"*";:()];
+	
+	.log.out[.z.h;"Cluster data received from gateway. Creating cluster";()];
+	
+	//Create the cluster with the input data
+	.daas.infra.createCluster[(data`info)[0];(data`info)[1];(data`info)[2]]];
+	
+	
+if[(data`tag1)=`connectCluster;
+	//Run by GW
+	if[not (.daas.cfg.procType=`gw);:()];
+	
+	//Run by GW with same sharding parameters as the cluster
+	proc:data`process;
+	if[(.daas.cfg.region;.daas.cfg.env)~{(first l),last l:`$"_" vs string x}proc;
+	
+		{addDatabase[x;.ex.getdetails[x][`paramvalues;`dc_host];.ex.getdetails[x][`paramvalues;`dc_port];`;`;`off]}each data`info;
+		{.d.prcl.forceFunctToTimer[`connectNamedDb;x;.z.Z;`datetime$.z.P+(`timespan$300e9);5i;1b]}each data`info;
+		.daas.events.pubEventMessage[`hdbCluster;`complete;`;`;()]]];
+
+ }</code_text>
+	<description>When a new HDB cluster is forming, the GW will seek available ports and determine which relevent processes already exist. This is then run by the HDB to initiate the cluster creation</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

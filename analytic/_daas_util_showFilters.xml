@@ -1,0 +1,65 @@
+<analytic>
+	<analytic>.daas.util.showFilters</analytic>
+	<code_text>{[res;args]
+        
+    if[not `showFilter in key args;
+        :res
+        ];
+    
+    args:.daas.util.applyNonAssetClassTableName[args];
+    
+    if[not (dataType:args`dataType) in `trade`quote;
+        :res
+        ];  
+    
+    filRules:(`trade`quote!(.daas.cfg.tradeFilterRules;.daas.cfg.quoteFilterRules))dataType;
+    symbol:exec sym from res;
+    qualifiers:?[res;();();(`trade`quote!`conditions`qualifiers) args[`dataType]];
+    exch:.daas.cfg.symExMapDict symbol;
+
+    if[any `  in exch;
+        dict:.daas.cfg.symExMapDict,(exec sym from a)!(exec listedExchange from a:?[ricInfo;enlist(in;`sym;enlist distinct symbol where null exch);(enlist `sym)!(enlist `sym);()]);
+        exch:dict symbol;
+        ];
+
+    if[not args[`showFilter]=`;
+        
+        if[not args[`showFilter] in 2_cols filRules;
+            :update showFilter:(count res)#() from res;
+            ];
+       
+        filt:$[1&lt;count args[`showFilter];args[`showFilter];enlist args[`showFilter]]; 
+        
+        :update showFilter:where each ?[filRules @/: flip (exch;`$qualifiers);();0b;filt!filt]from res;
+        
+        ];
+
+    update showFilter:(where each filRules @/: flip (exch;`$qualifiers)) from res
+    
+    }</code_text>
+	<description>Takes sym, qualifiers and filterRules and returns a list of booleans. It is used for selecting vaild records according to .daas.cfg.filterRulesDict.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

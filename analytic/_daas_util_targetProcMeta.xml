@@ -1,0 +1,115 @@
+<analytic>
+	<analytic>.daas.util.targetProcMeta</analytic>
+	<code_text>{[params;functionName]
+    
+	if[lower[functionName] like "*udf*";
+		:(),.daas.udf.udfRouting[functionName;params];
+	];
+	
+	//build whereclause for selecting process
+    whereClause:enlist(in';enlist functionName;`supportedAPIs);
+    
+    /Get primary process supported by the process - put in when failover included
+    whereClause,:enlist(=;1b;`primary); 
+    whereClause,:enlist(=;1b;`procUp);
+    
+	if[functionName=`getSummary;
+  		params[`dataType]:`summary;
+	];
+    
+    /enhanced source routing
+    if[(functionName in `getTicks`getStats`getBars`getSummary)and `source in key params;
+    	params[`vendor]:params[`source];
+    ];
+    	
+    $[`vendor in key params;
+    	whereClause,:enlist(=;`vendor;enlist params`vendor);
+    `=.daas.cfg.defaultSource;
+    	();
+    / else
+        whereClause,:enlist(=;`vendor;enlist .daas.cfg.defaultSource)
+    ];
+    
+    if[(functionName in `getTicks`getStats`getBars`getSummary)and `region in key params;
+        whereClause,:enlist(=;`region;enlist params`region);
+        ];
+
+    if[count params`dataType;
+		assetClassValid:not `assetClass in value .daas.cfg.reqParamExceptions(`funcName`paramName`paramValue!(functionName;`dataType;(params`dataType)));
+		if[assetClassValid and (not functionName in `getRef`getInstrumentTaxonomy) and `assetClass in key params;
+			whereClause,:enlist(=;`assetClass;enlist params`assetClass);
+		];
+	];
+		
+   	if[`dataType in key params;
+    	whereClause,:enlist(in';enlist params`dataType;`dataTypes);
+    ];
+    
+    if[params[`dataClass] like "*acktest*";
+        params[`dataClass]:`$"[bB]acktestData"
+    ];
+        
+    // Addition for dataClass filtering
+    whereClause,:$[`dataClass in key params;
+        enlist(like;`procName;"*",string[params`dataClass],"*");
+            `referenceData~.surv.util.getDataClassFromDataType params`dataType;
+                        enlist(not;(like;`procName;"*acktest*"));
+                `amlData~.surv.util.getDataClassFromDataType params`dataType;
+                        enlist(like;`procName;"*amlData*");
+                        enlist(like;`procName;"*transactionData*")
+            ];
+    
+    targets:?[.daas.routingMetaData;whereClause;();`procName];
+
+    if[not count targets;
+    	:`noTargetError;
+        ];
+
+    if[functionName=`getBars;
+  		if[count barTags:.daas.util.barStatTags[params];
+    		whereClause:enlist ({all value x in/:\: flip value flip ?[raze y;();0b;(key x)!(key x)]};barTags;`barStatTags);
+            procs:select from .daas.routingMetaData where procName in targets;
+            targets:?[procs;whereClause;();`procName];
+    	];
+    ];
+    
+    if[not count targets;
+    	:`noTargetError;
+        ];
+
+    / Pick one random HDB per vendor
+    if[1 &lt; count hdbs:targets where h:targets like "*_hdb_*";
+    	vendorClusters:hdbs group (.daas.routingMetaData each hdbs)`vendor;
+        vendorHdb:rand@/:vendorClusters;
+
+        targets:raze[vendorHdb],targets where not h;
+	];
+	
+    distinct targets   
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

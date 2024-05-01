@@ -1,0 +1,25 @@
+<analytic>
+	<analytic>.daas.infra.secmasterSub</analytic>
+	<code_text>{[tabGroup]
+{.dm.regsubc[`$"emea_tr_secMaster_feed_",string[.daas.cfg.env];string x]} each .tbl.gettablesbygroup[tabGroup]
+
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tabGroup</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

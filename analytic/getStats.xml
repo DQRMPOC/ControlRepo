@@ -1,0 +1,271 @@
+<analytic>
+	<analytic>getStats</analytic>
+	<code_text>{[args] 
+		
+    //---PRE FUNCTION---//
+    //Adjust parameters - default args / timezones / Symbology mapping etc
+    args[`rawParams]:args;
+    args[`API]:`getStats;
+    args:.daas.util.adjustParams[`getStats;args];
+    args:.daas.util.qsAdjustTemporalParams[args];
+    args:.daas.util.qsAdjustAnalyticParams[args];
+    args:.daas.util.stripAnalyticSyms[args];
+    
+    
+    //---PREPARE---//
+    //Generate time buckets to aggregate
+    buckets:.daas.stats.genStatsBuckets[args];
+    /set it into the arg dict to make use of later
+    args[`timeRack]:buckets;
+  
+    //Generate clauses for the select
+    args[`symCol]:.daas.wc.getSymCol args`idType;
+    $[not `~args[`byClause];
+        args[`bc]:.daas.stats.genByClause[args`time;args`byClause;buckets;args`granularityUnit;args];
+        args[`bc]:.daas.stats.genByClause[args`time;args`symCol;buckets;args`granularityUnit;args]
+    ];
+    args[`cc]:.daas.stats.genStatsColClause[args];
+    args[`wc]:.daas.util.genWhereClause[args];
+    
+
+    //If table mapping is needed
+    args:.daas.util.applyAssetClassTableName[args];
+
+    
+    
+    //---READ---//
+    /Get underlying tab name OR read and aggregate if there are underlying adjustments to data
+    aggTab:.daas.stats.getUnderlyingStatsTab[args];
+    
+    //Component reads needed (due to bucket spanning process)
+    args:.daas.stats.readRdbHdbBoundarySpanData[args];
+    piv:.daas.stats.readPivotDataset[args;aggTab];
+    //piv is (table;args) output
+    args:last piv;
+    
+    //If it's distributed we have to go at gw
+    if[`distributedDataPivot in key args;
+        :piv;
+        ];
+    aggTab:first piv;
+    
+    //---AGGREGATE---//
+    res:.daas.util.select[aggTab;(args`startTime;args`endTime;args`time);(args`symList;args`symCol);args[`cc];args[`bc];args[`wc]];
+    res:.daas.util.reTypeAggregatedTable[aggTab;res];
+    
+    //---POST-AGGREGATION FILTER---//
+    if[`postFilter in key args;
+        res:?[res;args`postFilter;0b;()]    
+        ];    
+    
+    //---ADJUST---//
+    //Append any additonal tables/data
+    res:.daas.util.appendMedStats[args;buckets;res;args[`wc]];
+    res:.daas.util.appendOpenClose[res;args];
+    res:.daas.util.appendReturn[res;args];
+
+    //context specific adjustments 
+    res:.daas.util.adjustStockSplits[res;args;"post"];
+
+    //other adjustments
+    res:.daas.stats.outboundAdjustments[res;args];
+    res:.daas.stats.removeSpanBucket[res;args`span;buckets;args`midnight;args`time];
+    
+    
+    
+    //--RETURN--//
+    :(0!res;args)
+ }</code_text>
+	<description>Build dictionary of syms and qualifiers to group by.
+Build dictionary of columns to select with aggregations.
+Select from server, applying created dictionaries and conditions passed in params dictionary.
+Concatenate qualifiers.
+Select from result table where entries are valid based on concatenated qualifiers.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias>getStats</alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>assetClass</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>dataType</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>symList</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>startDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>endDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>analytics</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>startTime</name>
+				<datatype>Time</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>endTime</name>
+				<datatype>Time</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>inputTimeZone</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>outputTimeZone</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>timeZone</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>temporality</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>filterRule</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>time</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>granularityUnit</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>granularity</name>
+				<datatype>Integer</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>fill</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>applyCanCor</name>
+				<datatype>Boolean</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>columns</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>sortCols</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>trackSym</name>
+				<datatype>Boolean</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>idType</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>applyFilter</name>
+				<datatype>NullType</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>adjustCorAx</name>
+				<datatype>Boolean</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>the time parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasQR</analyticgroup>
+	<analyticgroup>daasQS</analyticgroup>
+</analytic>

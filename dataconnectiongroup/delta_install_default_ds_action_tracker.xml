@@ -1,0 +1,16 @@
+<dataconnectiongroup>
+	<ucname>delta_install_default</ucname>
+	<grpid>ds_action_tracker</grpid>
+	<key>
+		<keyname>DBS</keyname>
+		<val>ds_action_tracker_a,ds_action_tracker_b,</val>
+	</key>
+	<key>
+		<keyname>CONN_SELECTOR</keyname>
+		<val>LEADER_CLUSTER</val>
+	</key>
+	<key>
+		<keyname>PRIMARY</keyname>
+		<val>primary,primary,</val>
+	</key>
+</dataconnectiongroup>

@@ -1,0 +1,54 @@
+<analytic>
+	<analytic>.daas.util.orderExecInstrumentDescMapping</analytic>
+	<code_text>{[tabName;data]
+    if[not `instrumentDescription in cols data;:data];
+ 	requiredFields:select field,fieldType,alternativeColumns from .uc.getActiveParamValue[`.daas.orderExec.fwRequiredFieldTypes;tabName] where required;
+	//find which columns can be replaced by alternative requiredcols
+	altreq:exec field by alternativeColumns from requiredFields where not alternativeColumns like "";
+	//grab data that have nulls and can be updated with alternative columns
+	replaceData:?[data;{(null;x)}each raze value altreq;0b;()];
+	//grab data that isn't going to be changed
+	data:?[data;{(not;(null;x))}each raze value altreq;0b;()];
+	//add on info needed to form required cols
+	instDescMap:`order`execution!(.daas.orderExec.instrumentDescMapOrder;.daas.orderExec.instrumentDescMapExecution);
+	replaceData:replaceData lj `instrumentDescription`instrumentIDType xkey instDescMap[.daas.orderExec.tableNameMap[tabName]];
+	//make sure the columns needed to fill out required columns are not null
+	replaceData:(,/){[Y]?[enlist Y;{(not;(null;x))}each `$1_"`" vs raze Y`inputTradeCombineFields;0b;()]} each replaceData;	
+	//update requiredFields col to symbol list
+	if[count replaceData;
+		replaceData:![replaceData;();0b;(enlist `inputTradeCombineFields)!enlist(`$;(1_';(vs';"`";(raze';`inputTradeCombineFields))))]];
+		
+	//original data joined with the data that has the instrumentMapping done	
+	data,:(,/){[rd;tabName]
+	rd[`instrumentID]:`$(,/) rd[`TRClassificationScheme],(string each rd[(rd`inputTradeCombineFields)]);
+	:?[enlist rd;();0b;(cols tabName)!(cols tabName)];
+	}[;tabName] each replaceData;
+:data
+			
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tabName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

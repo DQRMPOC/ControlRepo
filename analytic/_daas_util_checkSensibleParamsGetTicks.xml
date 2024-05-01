@@ -1,0 +1,124 @@
+<analytic>
+	<analytic>.daas.util.checkSensibleParamsGetTicks</analytic>
+	<code_text>{[functionName;args]
+
+    // Pull out frequently referenced variables
+    dataType:args`dataType;
+    assetClass:args`assetClass;
+    argList:key args;
+    filterRuleExists:`filterRule in argList;
+    
+    if[`columns in argList;
+        
+        if[taqDataType:dataType in `taq`taqWide;
+            validcols:raze `,.daas.cfg.tickColumns@/:.daas.meta.getSchemaFromArgs[args;;assetClass;functionName]@/:`trade`quote;
+            if[count a:a where not(a:raze enlist args`columns)in validcols;
+                :a;
+                 ];
+             ];
+
+        if[not taqDataType;     
+            
+            if[oeDataType:any dataType like/: ("*[Oo]rder";"*[Ee]xecution");
+                allowedColumns:`i,.daas.cfg.tickColumns .daas.meta.getSchemaFromArgs[args;dataType;assetClass;functionName];
+                if[not all (a:raze enlist args`columns)in allowedColumns;
+                    a:a where not (a:raze enlist args`columns)in allowedColumns;
+                    :a;
+                   ];	
+                ];
+            
+            if[not oeDataType;
+                if[count a:a where not(a:raze enlist args`columns)in `,.daas.cfg.tickColumns .daas.meta.getSchemaFromArgs[args;dataType;assetClass;functionName];
+                        :a;
+                    ];
+                ];
+            ];     
+        ];
+
+    if[dataType in `taqWide`taq`OC;
+        if[`adjustCorAx in argList;
+            if[args`adjustCorAx;
+                :"corporate actions cannot be applied to taq or OC. This is a temporary limitation.";
+                ];
+            ];
+        ];
+    
+    if[(isOC:`OC=dataType) and `applyCanCor in argList;
+        if[args`applyCanCor;
+            :"cannot apply canCor to open/Close";
+            ];
+        ];
+    
+    if[isOC and filterRuleExists;
+        :"filter rules cannot be applied to open/close";
+        ];
+
+    if[`assetClass in argList;
+        
+        if[(`openInterest=dataType) and not assetClass in `future`listedOptions;
+            :"openInterest is futures and listedOptions only";
+            ];
+        
+        if[(`auction=dataType) and not assetClass in `equity`fixedIncome`index`future;
+            :"auction is equity, fixedIncome, index and future only";
+            ];
+        
+        ];
+
+    if[filterRuleExists and `openInterest=dataType;
+        :"filter rules cannot be applied to openInterest";
+        ];
+
+    if[filterRuleExists and nonTqDataType:not dataType in `trade`quote`taq`taqWide;
+       :"filter rules can be only be applied to trade and quote";
+       ];
+    
+    if[nonTqDataType and `adjustCorAx in argList;
+       if[args`adjustCorAx;
+            :"corAx can be only be applied to trade and quote";
+            ];
+        ];
+    
+    if[(`time in argList) and not `execution~args`dataType;
+        if[args[`time] in `tradeTime;
+            :"tradeTime can only be applied to execution";
+            ];
+        ];    
+    
+    args
+    
+    }</code_text>
+	<description>Checks parameter options are correct</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

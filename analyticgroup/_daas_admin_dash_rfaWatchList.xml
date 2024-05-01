@@ -1,0 +1,6 @@
+<analyticgroup>
+	<name>.daas.admin.dash.rfaWatchList</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.admin.dash.rfaWatchList.upload</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

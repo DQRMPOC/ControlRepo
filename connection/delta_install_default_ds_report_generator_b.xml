@@ -1,0 +1,14 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>ds_report_generator_b</connection>
+	<host>ENV=ds_report_generator_b_HOST=</host>
+	<port>ENV=ds_report_generator_b_PORT=</port>
+	<user></user>
+	<pass></pass>
+	<dbname></dbname>
+	<dbtype>q</dbtype>
+	<tls></tls>
+	<connectiongroup>MyApps</connectiongroup>
+	<dataconnectiongroup>ds_report_generator</dataconnectiongroup>
+	<primarystatus>backup</primarystatus>
+</connection>

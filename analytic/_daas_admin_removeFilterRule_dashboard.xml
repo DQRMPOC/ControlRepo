@@ -1,0 +1,48 @@
+<analytic>
+	<analytic>.daas.admin.removeFilterRule_dashboard</analytic>
+	<code_text>{[daasTextInput;daasFilterType;daasRemoveFilterBool]
+if[daasRemoveFilterBool;
+ 		if[null daasFilterType;daasFilterType:`trade];
+		selectedTable:.daas.admin.filterConfigSelect daasFilterType;
+		if[not daasTextInput in cols tab;.daas.admin.logOut[(.z.P;selectedTable;`filterDoesNotExist;0b;.p.u;`filterConfigUpdate)];:([] (`boolValue,`counter);(0b,.z.P))];
+		if[daasTextInput in (`exch;`cond);.daas.admin.logOut[(.z.P;selectedTable;`cannotDeleteCondOrExch;0b;.p.u;`filterConfigUpdate)];:([] (`boolValue,`counter);(0b,.z.P))];
+
+		.daas.admin.editFilterConfigParam[0!![tab;();0b;enlist daasTextInput];selectedTable;`];
+		.daas.admin.logOut[(.z.P;selectedTable;`filterRemoved;1b;.p.u;`filterConfigUpdate)];
+		:([] (`boolValue,`counter);(0b,.z.P))
+	];
+	([] (`boolValue,`counter);(0b,.z.P))
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>daasTextInput</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>daasFilterType</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>daasRemoveFilterBool</parameter>
+		<default>false</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

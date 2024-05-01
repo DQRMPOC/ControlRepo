@@ -1,0 +1,54 @@
+<analytic>
+	<analytic>.daas.util.pivot</analytic>
+	<code_text>{[t;c;r;d]
+    //t - table
+    //c - column with keys to become new columns (usually sym)
+    //r - pivot keys                             (usually time)
+    //d - values                                 (usually value)
+    
+    colData:?[t;();();(distinct;c)];
+    pvCols: {[t;c;r;cd;d] 
+                :r xkey ?[t;enlist (=;c;$[-11h=type cd;enlist;::] cd);0b;(r,cd)!(r,d)];
+            }[t;c;r;;d] each colData;
+    :(,'/) pvCols;	
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>t</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>c</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>r</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>d</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

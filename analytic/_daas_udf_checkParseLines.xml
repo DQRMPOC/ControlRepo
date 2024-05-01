@@ -1,0 +1,50 @@
+<analytic>
+	<analytic>.daas.udf.checkParseLines</analytic>
+	<code_text>{[localArgs;parsedCode]
+	if[(100&gt;=t) and not 0=t:type parsedCode;
+		:();
+		];
+	
+	
+	if[100&lt;=type func:first parsedCode;
+		if[any a:func~/: .daas.udf.qNativeForbiddenFuncs,value each b:.daas.udf.forbiddenFuncs except `.z.s;
+			:(b where a);
+			];
+		if[func~(exit);
+			: enlist `exit;
+			];
+		];
+	
+	handleException:$[((type func) in -5 -6 -7h) and 1&lt;count parsedCode;`handleException;()];
+		
+	
+	: distinct raze handleException, $[1&lt;count parsedCode;
+		a where 100&gt;type each a:.z.s/:[localArgs;(1 _ parsedCode)]
+		;()];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>localArgs</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<param>
+		<parameter>parsedCode</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

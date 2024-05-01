@@ -1,0 +1,66 @@
+<analytic>
+	<analytic>.daas.util.adjustStockSplits</analytic>
+	<code_text>{[res;params;aggType]
+    if[(params[`adjustCorAx])~1b;
+    tab:.daas.util.appendAdjustmentFactor[res;params];
+    filColsPrice:(cols tab) where (cols tab) in `medPrice`medBidPrice`medAskPrice`medMidPrice`medSpread`openPrice`closePrice;
+    filColsVol:(cols tab) where (cols tab) in `medVolume`medBidSize`medAskSize;
+    adjustDict:.daas.cfg[`$aggType,"CorAxDict"];
+    params:.daas.util.applyNonAssetClassTableName[params];
+    
+    $[aggType ~ "pre";
+            [
+                tab:$[count a:value (adjustDict[params`dataType]`castVolume)`agg;![tab;();0b;a];tab];
+                tab:$[count a:value (adjustDict[params`dataType]`adjustVolume)`agg;![tab;();0b;a];tab];
+                tab:$[count a:value (adjustDict[params`dataType]`adjustPrice)`agg;![tab;();0b;a];tab];
+                tab:$[count a:value (adjustDict[params`dataType]`stockDivAdjustDiffStock)`agg;![tab;();0b;a];tab];
+                params:.daas.util.applyAssetClassTableName[params];
+                :delete splitFactor,stockFactor,splitAdjustVolume from tab
+            ];
+        
+            [   
+                if[(c:(count filColsPrice) = 0) and (b:(count filColsVol)=0); :delete splitFactor,stockFactor,splitAdjustVolume from tab];
+                $[b;tab;tab:$[count a:(filColsVol!(value (adjustDict[params`dataType]`castVolume)`agg)filColsVol);![tab;();0b;a];tab]];
+                $[b;tab;tab:$[count a:(filColsVol!(value (adjustDict[params`dataType]`adjustVolume)`agg)filColsVol);![tab;();0b;a];tab]];
+                $[c;tab;tab:$[count a:(filColsPrice!(value (adjustDict[params`dataType]`adjustPrice)`agg)filColsPrice);![tab;();0b;a];tab]];
+                $[c;tab;tab:$[count a:(filColsPrice!(value (adjustDict[params`dataType]`stockDivAdjustDiffStock)`agg)filColsPrice);![tab;();0b;a];tab]];
+                params:.daas.util.applyAssetClassTableName[params];
+                :delete splitFactor,stockFactor,splitAdjustVolume from tab
+            ]
+        ];
+       ];
+    :res
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>aggType</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>String</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

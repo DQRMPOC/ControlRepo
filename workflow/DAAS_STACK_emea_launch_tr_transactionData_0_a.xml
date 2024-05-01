@@ -1,0 +1,43 @@
+<workflow>
+<wfName>DAAS_STACK_emea_launch_tr_transactionData_0_a</wfName>
+	<branch>
+		<tName1>emea_tp_tr_transactionData_0_a.1</tName1>
+		<tName2>emea_ctp_tr_transactionData_0_a.1</tName2>
+		<fName></fName>
+		<fRes>1</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>emea_tp_tr_transactionData_0_a.1</tName1>
+		<tName2>emea_rdb_tr_transactionData_0_a.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>emea_tp_tr_transactionData_0_a.1</tName1>
+		<tName2>emea_pdb_tr_transactionData_0_a.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>emea_hdb_tr_transactionData_0_a.1</tName1>
+		<tName2>emea_fw_tr_transactionData_0_a.1</tName2>
+		<fName></fName>
+		<fRes>1</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>emea_tp_tr_transactionData_0_a.1</tName1>
+		<tName2>emea_hdb_tr_transactionData_0_a.1</tName2>
+		<fName></fName>
+		<fRes>1</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+</workflow>

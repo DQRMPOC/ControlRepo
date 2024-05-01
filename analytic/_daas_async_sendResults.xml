@@ -1,0 +1,44 @@
+<analytic>
+	<analytic>.daas.async.sendResults</analytic>
+	<code_text>{[query]
+return:raze exec return from ?[.daas.queryCache;enlist(=;`queryNum;query`queryNum);0b;()];
+
+delete from `.daas.queryCache where queryNum=query[`queryNum];
+
+if[not query[`analytic] in `getBars`getSummary`getRef`getBarsSync`getSummarySync`getInstrumentTaxonomy;
+	return:getJoin return;
+ ];
+
+query[`return`queryNum]:(return; query`tieredQueryNum);
+
+/send to client
+neg[first query`handle](`.daas.async.success;query);
+
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>query</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasAsync</analyticgroup>
+</analytic>

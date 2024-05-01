@@ -1,0 +1,11 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>processingDaemon_b</connection>
+	<host>ENV=daas_processingDaemon_b_HOST=</host>
+	<port>ENV=daas_processingDaemon_b_PORT=</port>
+	<user></user>
+	<pass></pass>
+	<dbname></dbname>
+	<dbtype>q</dbtype>
+	<tls></tls>
+</connection>

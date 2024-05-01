@@ -1,0 +1,39 @@
+<analytic>
+	<analytic>.daas.stream.trepIP</analytic>
+	<code_text>{[]
+.trep.log::{show (x)};
+
+.log.out[.z.h;"defining trep path";()];
+trep::`$"libdeltatreppub";
+
+.log.out[.z.h;"defining trep functions";()];
+.trep.init::trep 2:(`init;1);
+.trep.publish::trep 2:(`publish;2);
+.trep.publishFlat::trep 2:(`publishFlat;2);
+.trep.accept::trep 2:(`accept;1);
+.trep.closeitem::trep 2:(`closeitem;3);
+.trep.dispatch::trep 2:(`dispatch;1);
+.trep.setStatus::trep 2:(`setStatus;1);
+.trep.setRICStatus::trep 2:(`setRICStatus;2);
+.trep.sendPayload:trep 2:(`sendPayload;1);
+
+.trep.onrequest::{[x;y;z;a] show x; show y; show z; show a; handle::y; aaa::a;@[.daas.stream.trepSubParser;aaa;{.log.out[.z.h;"trep sub failed";x]}]};
+.trep.onclose::{show ("close";x);.daas.stream.deleteConsumerSub[string[x]]};
+/.trep.close:{show ("close";x)}
+
+
+.z.ts:: {.trep.dispatch[]};
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

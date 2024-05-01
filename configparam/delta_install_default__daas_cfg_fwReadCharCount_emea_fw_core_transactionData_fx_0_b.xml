@@ -1,0 +1,13 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>emea_fw_core_transactionData_fx_0_b</override>
+	<parameter>.daas.cfg.fwReadCharCount</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>charCount</element>
+		<elementType>Integer</elementType>
+		<elementValue>5000</elementValue>
+	</param>
+</configparam>

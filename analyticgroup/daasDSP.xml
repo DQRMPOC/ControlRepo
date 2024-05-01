@@ -1,0 +1,7 @@
+<analyticgroup>
+	<name>daasDSP</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.dsp.pullFiles</analytic>
+	<analytic>.daas.dsp.runJob</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

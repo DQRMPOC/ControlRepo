@@ -1,0 +1,12 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>dm_rte_bridge_b</connection>
+	<host>ENV=dm_rte_bridge_b_HOST=</host>
+	<port>ENV=dm_rte_bridge_b_PORT=</port>
+	<user>Administrator</user>
+	<pass>AESencrypted!106788FEBA38639057BDE65584E37120</pass>
+	<dbname></dbname>
+	<dbtype>q</dbtype>
+	<tls></tls>
+	<connectiongroup>MyApps</connectiongroup>
+</connection>

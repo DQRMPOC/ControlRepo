@@ -1,0 +1,24 @@
+<analytic>
+	<analytic>.daas.cmon.dash.serverCpuStats</analytic>
+	<code_text>{[serverName]
+	select source:cpu, used from select used:100*1-(last deltas -2#idleSecs)%1e-9*last deltas -2#generatedTime by processName,cpu from SystemCpu where not cpu=`total, processName in (`$"systemInfo.",string[serverName])
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>serverName</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

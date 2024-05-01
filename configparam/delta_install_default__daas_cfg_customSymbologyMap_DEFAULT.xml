@@ -1,0 +1,31 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.customSymbologyMap</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>inputSymbol</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>mappedSymbol</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>alwaysMap</element>
+		<elementType>Boolean</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>returnAsMappedSym</element>
+		<elementType>Boolean</elementType>
+		<elementValue></elementValue>
+	</param>
+</configparam>

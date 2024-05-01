@@ -1,0 +1,27 @@
+<workflow>
+<wfName>DAAS_TRTH_A</wfName>
+	<branch>
+		<tName1>daas_clientFileUpload_a.1</tName1>
+		<tName2></tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>daas_processingDaemon_a.2</tName1>
+		<tName2></tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>daas_jtrthclient_a.1</tName1>
+		<tName2></tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+</workflow>

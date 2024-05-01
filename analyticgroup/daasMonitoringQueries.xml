@@ -1,0 +1,24 @@
+<analyticgroup>
+	<name>daasMonitoringQueries</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.cmon.dash.availableMemory</analytic>
+	<analytic>.daas.cmon.dash.fileSystemSize</analytic>
+	<analytic>.daas.cmon.dash.processCount</analytic>
+	<analytic>.daas.cmon.dash.processCpuUsage</analytic>
+	<analytic>.daas.cmon.dash.processMemUsage</analytic>
+	<analytic>.daas.cmon.dash.processState</analytic>
+	<analytic>.daas.cmon.dash.serverCpuStats</analytic>
+	<analytic>.daas.cmon.dash.serverFilesystemStats</analytic>
+	<analytic>.daas.cmon.dash.serverMemoryStats</analytic>
+	<analytic>.daas.cmon.dash.serverNetworkStats</analytic>
+	<analytic>.daas.cmon.dash.serverSelection</analytic>
+	<analytic>.daas.cmon.q.getHdbLatestDateRowCount</analytic>
+	<analytic>.daas.cmon.q.getHdbMaxDate</analytic>
+	<analytic>.daas.cmon.q.getProcessPing</analytic>
+	<analytic>.daas.cmon.q.getProcessTimeouts</analytic>
+	<analytic>.daas.cmon.q.getQRQueryLog</analytic>
+	<analytic>.daas.cmon.q.getRdbFlowCheck</analytic>
+	<analytic>.daas.cmon.q.getRdbFlushStatus</analytic>
+	<analytic>.daas.cmon.q.getTpSlowSubscribers</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

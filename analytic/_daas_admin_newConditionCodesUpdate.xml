@@ -1,0 +1,82 @@
+<analytic>
+	<analytic>.daas.admin.newConditionCodesUpdate</analytic>
+	<code_text>{[add;upd;del;configName]
+	
+	/ make a table out of the updates
+	updates:$[count upd; flip upd;()];
+	updates:delete index from updates;
+	/ log unsuccesful changes
+	if[not count updates;`.daas.admin.logStatusTable insert (.z.P;configName;`addUnsuccessful;0b;.p.u;`conditionCodeUpdate);
+             '"No new updates have been made"];
+             
+	/ add the updates to the correct table:
+	$[configName like "*quote*";
+       [ .daas.admin.newQuoteConditionCodes:(2!0!.daas.admin.newQuoteConditionCodes) upsert (2!updates);
+       	 ];
+	   [ .daas.admin.newTradeConditionCodes:(2!0!.daas.admin.newTradeConditionCodes) upsert (2!updates);
+	     ]];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>add</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>upd</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>del</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>configName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

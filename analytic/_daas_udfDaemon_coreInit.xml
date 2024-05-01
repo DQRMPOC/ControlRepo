@@ -1,0 +1,53 @@
+<analytic>
+	<analytic>.daas.udfDaemon.coreInit</analytic>
+	<code_text>{[]
+    
+    // write down the relevant analytics required for UDF
+    .al.getfunction each `.daas.bboUDF.writeQFilesToDisk`.daas.bboUDF.bboInit`.daas.bboUDF.bboUDF;
+    .daas.bboUDF.writeQFilesToDisk[;`realtime]each `.daas.bboUDF.bboInit`.daas.bboUDF.bboUDF;
+    
+    /load funcs
+    .al.loadgroupfunctions`daasUtil;
+    .al.loadgroupfunctions`daasUDF;
+    .al.loadinstruction`.daas.cfg.serverCfg;
+    
+    / load table meta data
+    .daas.init.setMeta[];
+    .al.loadinstruction`.daas.meta.common;
+    .daas.meta.init[];
+    
+    .daas.cfg.env:`$last string .ex.getInstanceName[];
+
+
+    /load udf
+    .daas.udf.fileDir: hsym .utils.checkForEnvVar "ENV=DELTADATA_HOME=/DaaSData/udfdir";
+    .al.loadinstruction[`.daas.udf.udfStartup];
+    //Load config, check input formats, parse.
+    .daas.udf.rtConfig:.daas.udf.loadAndMapRTConfig[];
+    .daas.udf.trigKeyed:(`trigTab xkey .daas.udf.rtConfig);
+    .daas.udf.dataRequirements:flip (!).(`tabName`timeNeededFrom`udfName;"SPS"$/:());
+    `.daas.udf.dataRequirements upsert ungroup select tabName:mappedTab,timeNeededFrom:0Np,udfName:UDF from .daas.udf.rtConfig;
+
+
+    .daas.udf.rtudfProcAllocation[];
+    
+    procsToSpawn:"rtudf_node_",/:(string each exec distinct procNo from .daas.udf.rtConfig),\:"_",string .daas.cfg.env;
+    
+    .daas.util.bootServiceClass["daas_rtudf";;string .z.h] each procsToSpawn;
+    
+    /set func to shutdown booted nodes
+    .ch.addExit`.daas.udf.shutDownNodes;
+
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

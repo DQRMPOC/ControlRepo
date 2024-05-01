@@ -1,0 +1,66 @@
+<analytic>
+	<analytic>.daas.udf.saveUDFToDisk</analytic>
+	<code_text>{[funcName;funcType;func;description]
+
+    funcPath: ` sv .daas.udf.fileDir,funcType,` sv funcName, `q;
+    descPath: ` sv .daas.udf.fileDir,funcType,` sv funcName, `txt;
+
+    .daas.udf.archiveUDF[funcName;funcType];
+        
+    $[100h~type func;
+        funcPath 0: "\n" vs string func;
+        10h~type func;
+            funcPath 0: "\n" vs func;
+            '"Error - Specified function is not a string or type 100h function."
+        ];
+    
+    descPath 0: "\n" vs description;
+    
+    res:.daas.udf.loadUDFFile funcPath;
+    
+    if[res=`error; '"Error reloading UDF from disk after writedown"];
+    
+    .daas.events.pubEventMessage[`newUDF;`;`;`;`funcName`func`description`env`procNum!(funcName;-3!func;description;.daas.cfg.env;.daas.cfg.procNum)];
+ }</code_text>
+	<description>performed after all type / content checks on a saveUDF query
+
+writes the func (type 100h) down as a q script with the given name + .q , and the given description as the given name + .txt</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>funcName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>funcType</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>func</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>description</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

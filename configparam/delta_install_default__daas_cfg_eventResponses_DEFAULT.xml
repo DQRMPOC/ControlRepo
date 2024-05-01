@@ -1,0 +1,25 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.eventResponses</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>procType</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>procName</element>
+		<elementType>String</elementType>
+		<elementValue>*eventBus*</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>responses</element>
+		<elementType>String</elementType>
+		<elementValue>.daas.events.eventBusUpd</elementValue>
+	</param>
+</configparam>

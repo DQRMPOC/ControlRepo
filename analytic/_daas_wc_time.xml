@@ -1,0 +1,55 @@
+<analytic>
+	<analytic>.daas.wc.time</analytic>
+	<code_text>{[tab;timecol;sts;ets]
+	w:();
+    
+    // continuous where clause 
+    // we don't exclude sts=00:00:00 and ets=23:59:59.999 at the moment because the date part might be different
+    // TODO: extend so it caters for this case 
+    if[(not null timecol) and (timecol in cols tab);
+        w:enlist (within; timecol; (enlist;sts; ets))
+        ];
+    
+    w
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>timecol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>sts</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>ets</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasWhereClause</analyticgroup>
+</analytic>

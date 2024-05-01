@@ -1,0 +1,22 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_MONITORING</tablegroup>
+	<tablename>GwQueryStatus</tablename>
+	<tablename>MonitoringMetrics</tablename>
+	<tablename>MonitoringProcesses</tablename>
+	<tablename>ProcessConnection</tablename>
+	<tablename>ProcessCpu</tablename>
+	<tablename>ProcessInfo</tablename>
+	<tablename>ProcessMem</tablename>
+	<tablename>ProcessMemKdb</tablename>
+	<tablename>ProcessMetric</tablename>
+	<tablename>ProcessPing</tablename>
+	<tablename>QueryDispatch</tablename>
+	<tablename>QueryResponse</tablename>
+	<tablename>SystemCpu</tablename>
+	<tablename>SystemFileSystem</tablename>
+	<tablename>SystemMem</tablename>
+	<tablename>SystemMetric</tablename>
+	<tablename>SystemNetInterface</tablename>
+	<tablename>SystemNetProtocol</tablename>
+</schemagroup>

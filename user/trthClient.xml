@@ -1,0 +1,27 @@
+<user>
+	<delta>
+		<user>trthClient</user>
+		<password>96d8097565c5441dd60d257ca5357c2fd3cd770e014088de4868b6b73499a7ab</password>
+		<ip>*</ip>
+		<maxAttempts></maxAttempts>
+		<minHistory></minHistory>
+		<minLength></minLength>
+		<maxLength></maxLength>
+		<duration></duration>
+		<policyType>Custom</policyType>
+		<policyUserGroup></policyUserGroup>
+		<inheritPolicy>0</inheritPolicy>
+		<authType></authType>
+		<logging>0</logging>
+		<email></email>
+		<policy>
+			<cLower>0</cLower>
+			<cUpper>0</cUpper>
+			<number>0</number>
+			<special>0</special>
+		</policy>
+		<salt>7bb6c95eaa61157271fc72c02cca587606fe8b0c5ae050158bda31468b870a6d</salt>
+		<ugroup>Administrators</ugroup>
+		<ugroup>BusinessSuperUser</ugroup>
+	</delta>
+</user>

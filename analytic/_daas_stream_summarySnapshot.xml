@@ -1,0 +1,90 @@
+<analytic>
+	<analytic>.daas.stream.summarySnapshot</analytic>
+	<code_text>{[id]
+
+	params::.daas.stream.streamSubs[id;`params];
+	params[`timeType]:first params[`timeType];
+	
+	if[null params`timeType;
+	    params[`timeType]:`insertTime
+	    ];
+	
+	.log.out[.z.h;"running snapshot";params];
+	/check if function has run for this subscription ID. If it has, publish data that's there
+	if[not params[`tradeQrID]~`;
+		.daas.stream.singleSubPub[id];
+		:()
+	];
+	
+	/if start and end times not specified assign to beginning and end of day
+	if[first null params[`start];
+		params[`start]:0D
+		];
+	if[first null params[`end];
+		params[`end]:1D-1
+		];
+	params[`start]:"n"$(get string[params[`start]]);
+	params[`end]:"n"$(get string[params[`end]]);
+	
+	/Have subtime, this becomes the endTime for the getTicks request
+	params[`startTime]:"t"$"n"$(get string[params`start]);
+	$[params[`end]&gt;.z.T;
+		params[`subTime]:.z.T;
+		[
+		 params[`subTime]:params[`end];
+		 .log.out[.z.h;"subscription already finished, will not update further";()]
+		]
+	];
+	
+	
+	/if it's before startTime give empty table
+	if[params[`start]&gt;.z.N;
+		show "current time before start time, will not update until then"; 
+		startTab:((enlist(value .daas.summary.tableName)[`]),'([sym:enlist params[`symList]]time:enlist .z.P));
+		.daas.stream.streamTabs[id]::`newSyms`data!(params[`symList];startTab);
+		.daas.stream.summaryPub[id];
+		.daas.stream.streamSubs[id;`params]::params;
+		:()];	
+	/parameters to send to the qr
+	qrParams: `symList`assetClass`dataType`startDate`endDate`startTime`endTime`time!(params[`symList]; params[`assetClass];`trade;.z.D;.z.D;params[`startTime];params[`subTime];first params[`timeType]);
+    if[(count params`applyFilter)&gt;0;qrParams[`applyFilter]:params[`applyFilter]];	
+
+	/run getTicks on qr Params tie run id to sub id 
+	getTicks[qrParams];
+ 	.daas.stream.qrIdMap[.qr.runCounter]:id;
+ 	params[`tradeQrID]:.qr.runCounter;	
+ 	
+	/change datatype to quote and remove filter
+ 	qrParams[`dataType]:`quote;
+ 	qrParams:`applyFilter _qrParams;
+
+	/send quote request to qr
+ 	getTicks[qrParams];
+ 	.daas.stream.qrIdMap[.qr.runCounter]:id;
+ 	params[`quoteQrID]:.qr.runCounter;
+ 	/add these params to stream sub table again
+ 	.daas.stream.streamSubs[id;`params]::params;
+ 	
+ 	/Add id to the stream cache
+	.daas.stream.streamCache[params[`symList];`idCount]+:1i;
+	
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>id</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Long</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

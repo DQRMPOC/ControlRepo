@@ -1,0 +1,32 @@
+<analytic>
+	<analytic>.daas.trth.requestFulfilled</analytic>
+	<code_text>{[req]
+	.log.out[.z.h;"request fulfilled";req];
+	delete from `.daas.trth.javaQueue where subReport=req;
+	
+	/pick request to send off
+	
+if[count first reqSym:exec requestSym,reportStats from .daas.trth.javaQueue where null javaTime;
+	.daas.trth.javaRequest .(enlist first reqSym`requestSym; first reqSym`reportStats);
+	update javaTime:.z.p from `.daas.trth.javaQueue where requestSym=first reqSym`requestSym;
+	];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>req</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

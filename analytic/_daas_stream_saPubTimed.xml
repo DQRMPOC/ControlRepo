@@ -1,0 +1,20 @@
+<analytic>
+	<analytic>.daas.stream.saPubTimed</analytic>
+	<code_text>{[]
+	curTime:.z.P;
+	pubIds: exec id from .daas.stream.streamSubs where period&gt;0,(period+(neg 0Np)^lastPub)&lt;curTime;
+	update lastPub:curTime from `.daas.stream.streamSubs where id in pubIds;
+	value each .daas.stream.streamSubs[enlist each pubIds;`pubFunc] ,' pubIds;
+ }</code_text>
+	<description>timer function for publishing streaming subscriptions with a positive period</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

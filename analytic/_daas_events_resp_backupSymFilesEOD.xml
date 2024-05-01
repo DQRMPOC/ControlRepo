@@ -1,0 +1,32 @@
+<analytic>
+	<analytic>.daas.events.resp.backupSymFilesEOD</analytic>
+	<code_text>{[]
+	thisFunc:".daas.events.resp.backupSymFilesEOD";
+
+	if[.ex.getInstanceName[] like "*acktest*";
+		.log.out[.z.h;thisFunc;"backtest process, not creating sym backup"];
+		:()
+ 	];
+
+	if[not .ex.getInstanceName[] like "*_0_*";
+		.log.out[.z.h;thisFunc;"Process not main assetClass HDB, not creating sym backup"];
+		:()
+ 	];
+
+    symDir:ssr[string[.ds.cfg.hdbDir];"hdblog";"symBackups"];
+    system"mkdir -p ",symDir;
+    system"cp sym ",symDir,"/sym_",string[.z.D-1]
+
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

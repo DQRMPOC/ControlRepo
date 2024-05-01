@@ -1,0 +1,769 @@
+<analytic>
+	<analytic>.daas.cae.common</analytic>
+	<code_text>//---- Conditional Analytics Engine (CAE) functions ----//
+
+//-- Utilities --//
+
+
+//Function to boot service class instance
+.daas.cae.boot:{[pipeline;procNums]
+    //pipline - string
+    /example boot command:    
+    /.daas.cae.boot["DAAS_STACK_emea_launch_tr_marketData_eq_0_a";0]
+    
+    //bit of a hack, replacing "launch" with "tp" to parse metadata correctly
+    //Needs to be replaced by metadata framework
+    bootMeta:.daas.init.parseMetaFromName `$"_" sv  @[2_"_" vs pipeline;1;:;"tp"];
+
+    bootMeta[`PROCTYPE]:`cae;
+
+    .daas.cae.bootSingle[bootMeta;] each procNums
+    }
+
+//Boot a single process given it's procnum
+.daas.cae.bootSingle:{[bootMeta;procNum]
+        bootMeta[`PROCNUM]:`$string procNum;
+
+        caeName:"_" sv string value bootMeta;
+        
+        .log.out[`caeBoot;"Booting service class ";caeName];
+        //TODO: Dynamic host boot
+        .daas.util.bootServiceClass["conditional_analytics_engine";caeName;"localhost"];
+        }
+
+//Function to determine process numbers for scaling
+.daas.cae.scaleProcesses:{[config;mode]
+        //Returns numbers of the processes to boot
+    
+        //Mode can either be
+        / - `performance - one process per analytic.
+        / - `memory      - one process per data set.
+        / - `singular    - one process.
+        / - `manual      - user configured number of processes
+    
+        if[mode~`singular;
+            :(),0;
+            ];
+    
+        if[mode~`performance;
+            :til count config;
+            ];
+    
+        if[mode~`manual;
+            procNos:asc exec distinct procNum from config;
+            if[all procNos&lt;0;
+                .log.warn[`ConditionalAnalytics;"scale mode set to manual however process numbers are negative - auto scaling using `memory mode";procNos];
+                :.daas.cae.scaleProcesses[config;`memory];
+                ];
+            :procNos;
+            ];
+    
+        /Else mode is memory based.
+        til exec count distinct table from config
+    
+        }
+
+//Function to subset the cfg per process for scaling
+.daas.cae.configByProcess:{[caeCfg]
+    
+    pipeline:`$.daas.util.getPipelineName[];
+    scaleMode:first ?[.uc.getActiveParamValue[`.daas.cfg.caeSettings;pipeline];enlist(=;`settingName;(),`scalingMode);();`settingValue];
+    
+    //All on this process
+    if[scaleMode~`singular;
+        :caeCfg;
+        ];
+
+    processNumber:"I"$-1#-1_"_" vs string .ex.getInstanceName[];
+    //One analytic per process
+    if[scaleMode~`performance;
+        :caeCfg processNumber;
+        ];
+    
+    //Manualy configured
+    if[scaleMode~`manual;
+        :select from caeCfg where procNum in processNumber;
+        ];
+    
+    //one data type
+    dataTypes:exec distinct raze table from caeCfg;
+    select from caeCfg where table=(first dataTypes processNumber)
+
+    }
+
+
+//Function run in tp init to boot up caes
+.daas.cae.loadAndScale:{
+    
+    //Parse configuration
+    pipeline:`$.daas.util.getPipelineName[];
+    caeCfg:.uc.getActiveParamValue[`.daas.cfg.realtimeConditionalAnalytics;pipeline]; 
+
+    //If no configuration - do nothing (exit)
+    if[(`$())~caeCfg`analyticName;
+        :()
+        ];
+
+    //Load mode from config - if doesnt exist use default
+    scaleMode:first ?[.uc.getActiveParamValue[`.daas.cfg.caeSettings;pipeline];enlist(=;`settingName;(),`scalingMode);();`settingValue];
+    .log.out[`caeScaling;"Scaling mode is set to ";scaleMode];
+    
+    //Get the numbers of process to boot
+    instanceNums:.daas.cae.scaleProcesses[caeCfg;scaleMode];
+    
+    .daas.cae.boot[string pipeline;instanceNums]
+    }
+
+//For splitting config on init
+.daas.cae.extractDurationAnalytics:{[caeCfg]
+    `aggregations`durations!
+    (
+        select from caeCfg where not analytic~\:`duration;
+        select from caeCfg where analytic~\:`duration
+        )
+    }
+
+
+//-- Initialisation --//
+
+//Main init func
+.daas.cae.init:{[]
+    //Load base config
+    .al.loadinstruction`.daas.cfg.coreFeatures;
+    //Switch off core features load to avoid double load of core features
+    .daas.coreFeaturesInit.loadEnabled:0b;
+    
+    
+    //Parse configuration
+    pipeline:`$.daas.util.getPipelineName[];
+    caeCfg:.uc.getActiveParamValue[`.daas.cfg.realtimeConditionalAnalytics;pipeline]; 
+   
+    //Set metadata for each table
+    .daas.cae.setTableMeta exec distinct table from caeCfg;
+    
+    //Map config to split out lookback vs strict intervals
+    caeCfg:update granularity:period,granularityUnit:periodUnit from caeCfg where not isMovingWindow;
+    caeCfg:update lookbackPeriod:period,lookbackUnit:periodUnit from caeCfg where isMovingWindow;
+    caeCfg:delete period,periodUnit,isMovingWindow from caeCfg;
+    
+    //Checking if any tables are pivot tabs, in which case we get the identifiers from the analytic and filter
+    caeCfg:.daas.cae.extractPivotIdentifiersProtected[caeCfg];
+    
+    //Validate the config is correct format
+    caeCfg:.daas.cae.validateCfg[caeCfg];
+
+    //Pick this processes analytics to run (scaling)
+    caeCfg:.daas.cae.configByProcess caeCfg;
+    
+    
+    //Get identifiers to subscribe to out of config
+    subs:select distinct raze identifiers by table from caeCfg;      
+      
+    //Split config based on duration or aggregation metric
+    caeCfg:.daas.cae.extractDurationAnalytics[caeCfg];
+    .daas.cfg.cae:caeCfg`aggregations;      
+    .daas.cfg.caeDurations:caeCfg`durations;
+    
+    //Split out the configs on a per table basis to enable quick index lookup on upd
+    `.daas.cfg.caeDict`.daas.cfg.caeDurationsDict set' .daas.cae.splitConfigByTable each (.daas.cfg.cae;.daas.cfg.caeDurations);
+    
+    //Set up subscriptions
+    tabMap:.daas.util.createTableChannelMap[];
+    .daas.util.subscribeWithChannelMap[tabMap;;] ./: flip (0!subs)`table`identifiers;
+        
+    //Set up publish of results
+    .cae.tpChannel:`$"_" sv string each .daas.init.parseMetaFromName[.ex.getName[]][`REGION`SOURCE`SUBCLASS];
+    .dm.regsrcc[.cae.tpChannel;"ConditionalAnalytics"]; 
+    
+    //Define upd func
+    `upd set .daas.cae.upd;
+    
+    //Load in schema
+    .tbl.gettable`ConditionalAnalytics;
+    
+    //Define tables - cache etc
+    .daas.cae.defineIntermediaryTables[];
+    
+    //Set config for calculating windows
+    .daas.cae.lookbackDict:`day`hour`minute`second`millisecond`microsecond`nanosecond!(24*60*60*1000000000;60*60*1000000000;60*1000000000;1000000000;1000000;1000;1);
+    
+    //Set dict for quick access of fill mode per table
+    .daas.cae.fillModeMap:`forward^exec first fillForAggregations by tableName from .daas.cfg.pivotSettings;
+    
+    
+    
+    //Set the upd if there are custom - this to be moved to .daas.process.init for 4.6 - not just CAE specific.
+    .al.loadinstruction[`.daas.upd.common];
+    .daas.upd.init[];
+
+    };
+
+
+//Validate the config is correct format
+.daas.cae.validateCfg:{[caeCfg]
+    //If it's been uploaded via the CLI it should have been validated by this func already
+    
+    //Attempt to turn the identifiers string into symList (done via vs rather than value)
+    ids:@[{distinct `$1_"`" vs x};;{.pl.report_error_and_terminate["Incorrectly formatted identifiers in .daas.cfg.realTimeConditionalAnalytics";x]}] each caeCfg`identifiers;
+    
+    //Attempt to value the analytic and filter strings
+    analytics:@[value;;{.pl.report_error_and_terminate["Incorrectly formatted analytic in .daas.cfg.realTimeConditionalAnalytics";x]}] each caeCfg`analytic;
+    filts:@[value;;{.pl.report_error_and_terminate["Incorrectly formatted filter in .daas.cfg.realTimeConditionalAnalytics";x]}] each caeCfg`filter;
+
+    //If not nested, need to enlist 
+    filts:@[filts;where not 0h=type each first each filts;enlist];
+    
+    caeCfg:update identifiers:ids,analytic:analytics,filter:filts from caeCfg;
+    
+    //If we're in DC we can grab the table and validate the statement
+    .tbl.gettable each caeCfg`table;
+    
+    //Check all tables have been loaded in. If not we log out that schema not loaded
+    if[any tMissing:not caeCfg[`table] in tables[];
+        .pl.report_error_and_terminate["Schema not loaded";"," sv string caeCfg[`table] where tMissing];
+        ];
+    
+    //Check successful clause execution
+    forSelectValidation:select from caeCfg where not table in .daas.cfg.pivotSettings`tableName;   
+    .[{?[x;y;enlist[`sym]!enlist[.daas.cae.tabMeta[x]`symCol];enlist z]};;{.pl.report_error_and_terminate["Error in analytic or filter in .daas.cfg.realTimeConditionalAnalytics";x]}] each flip forSelectValidation`table`filter`analytic;
+    
+    //independently check pivot config
+    /.daas.cae.validatePivotFilterAnalytic each select from caeCfg where table in .daas.cfg.pivotSettings`tableName;
+    
+    //Add list of columns that need to be tracked
+    flat:exec (raze/) each (analytic,'filter) from caeCfg;
+    caeCfg:update trackCols:flat @' where each -11=/:/: type each/: flat  from caeCfg;
+    
+    caeCfg
+    }
+
+//Function run in init to define schemas used throughout upd to hold state
+.daas.cae.defineIntermediaryTables:{
+    //Data caching dictionary
+    /Key - Name of conditional analytic
+    /Value - table of time | sym | value held for cache calcs
+    .daas.cae.dataCache:enlist[`]!();
+    
+    //Condition state table - for current state of filters for duration calculations
+    /analyticName - Name of analytic
+    /sym - Identifier
+    /state - true false condition satisfied
+    /satisfyStart - when started being true
+    /duration - how long it's been true
+    .daas.cae.conditionState:([]analyticName:`$();sym:`$();state:`boolean$();satisfyStart:`timestamp$();duration:`timespan$());
+        
+    //Data caching dictionary for tall format tables
+    /Key - Name of conditional analytic
+    /Value - table of time | sym | value held for cache calcs    
+    .daas.cae.pivotCache:(`$())!();
+    
+    //Dictionary to maintain last point at which the duration of a pivoted conditon was calculated
+    .daas.cae.lastPivDurCacPoint:(`$())!`timestamp$();
+    
+    //Cache for pviot aggregations that are yet to be interpolated due to lack of data
+    .daas.cae.preInterpolationCache:enlist[`]!enlist();
+    
+    //Cache for last output of a pivot conditional - to stop duplicate outputs due to incoming condition satisfy ticks that don't change the aggregation value or timestamp
+    .daas.cae.lastPivotOutput:enlist[`]!enlist();
+    }
+
+.daas.cae.splitConfigByTable:{[cfg]
+    tabs:exec distinct table from cfg;
+    tabs!{?[x;enlist(=;`table;enlist y);0b;()]}[cfg;] each tabs
+    }
+
+//Function to extract identifiers from pivot conditions/analytics
+.daas.cae.extractPivotIdentifiers:{[caeCfg] 
+    if[any pivotTable:caeCfg[`table] in\: .daas.cfg.pivotSettings`tableName;
+        caeCfg:$[(sum pivotTable)=count caeCfg;
+            update identifiers:{"`","`" sv string x except `duration} each (((raze/) each value each analytic),'((raze/) each value each filter))@'where each -11=/: type each/: (((raze/) each value each analytic),'((raze/) each value each filter)) from caeCfg;
+            update identifiers:{"`","`" sv string x except `duration} each (((raze/) each value each analytic),'((raze/) each value each filter))@'where each -11=/: type each/: (((raze/) each value each analytic),'((raze/) each value each filter)) from caeCfg where pivotTable
+            ];
+        ];
+    caeCfg
+    };
+
+//Proctected evaluation of the extract function to handle improperly formatted configuration
+.daas.cae.extractPivotIdentifiersProtected:{[caeCfg]
+    @[.daas.cae.extractPivotIdentifiers;caeCfg;{.pl.report_error_and_terminate["Incorrectly formatted analytic or condition in .daas.cfg.realTimeConditionalAnalytics";x]}]
+    };
+
+.daas.cae.validatePivotFilterAnalytic:{[cfgRow]
+    //Create table
+    t:flip (cfgRow`identifiers)!(count cfgRow`identifiers)#();
+    
+    //protected eval of analytic
+    if[not `duration~cfgRow`analytic;
+        analyticOutput:@[
+            ?[t;();0b;];
+            enlist[`agg]!enlist(cfgRow`analytic);
+            {.pl.report_error_and_terminate["Error in analyic in .daas.cfg.realTimeConditionalAnalytics";x]}
+            ];
+        if[not 9h=type (.Q.V analyticOutput)`agg;
+            .pl.report_error_and_terminate["Output of analytic not float type in .daas.cfg.realTimeConditionalAnalytics";cfgRow`analytic]
+            ];
+        ];
+    //protected eval of filter
+    @[
+        ?[t;;0b;()];
+        cfgRow`filter;
+        {.pl.report_error_and_terminate["Error in filter in .daas.cfg.realTimeConditionalAnalytics";x]}
+        ];
+    };
+    
+//Func to load the metadata of tables and set in quick access dictionary. Report out if config is missing
+.daas.cae.setTableMeta:{[tabs]
+    //Get meta of normal format tables
+    flatTabs:select tabName:tableSchemaName,symCol,timeCol:diskTimeCol from .daas.cfg.tableMetaData where tableSchemaName in tabs;
+
+    //Get meta of tall/pivot tables
+    tallTabs:select tabName:tableName,symCol,timeCol,pivotCol from .daas.cfg.pivotSettings where tableName in tabs;
+
+    //Only take pivot settings meta for tall tables
+    flatTabs:delete from flatTabs where tabName in tallTabs`tabName;
+
+    //Combine
+    .daas.cae.tabMeta:1!flatTabs uj tallTabs;
+
+    //Report and terminate if metadata is missing
+    if[any noCfg:not tabs in\: key .daas.cae.tabMeta;
+        //err and shut down
+        .pl.report_error_and_terminate["table not in .daas.cfg.tableMetaData or .daas.cfg.pivotSettings so can not be configured ";] each tabs where noCfg;
+        ];
+    };
+
+
+
+
+//-- Upd funcs --//
+
+//Main upd func
+.daas.cae.upd:{[table;data]
+
+    //Skip if no duration based metrics
+    if[table in key .daas.cfg.caeDurationsDict;
+        .daas.cae.durationUpd[table;data];
+        ];
+
+    if[table in key .daas.cfg.caeDict;
+        .daas.cae.condAggUpd[table;data];
+        ];
+    
+    //Publish out results
+    .dm.pub[`ConditionalAnalytics;`time xasc ConditionalAnalytics];
+    
+    //Wipe local table
+    delete from `ConditionalAnalytics;
+    
+    }
+
+//Conditional Analytics upd func
+.daas.cae.condAggUpd:{[table;data]
+
+    //Get analytics relevant to incoming data set 
+    tableAnalytics: .daas.cfg.caeDict[table];
+   
+    //Split the tableAnalytics by type to work out the start point
+    tableAnalytics:update startPoint:.daas.cae.intervalStarts[;;data;] ./: flip (granularityUnit;granularity;periodStartTime) from tableAnalytics where not null granularityUnit;
+    tableAnalytics:update startPoint:.daas.cae.lookbackStarts[;;data;] ./: flip (lookbackPeriod;lookbackUnit;table) from tableAnalytics where not null lookbackUnit;
+
+    //Add data that satisfies to the cache - this also flushes data outside range on matching table
+    .daas.cae.filterAndCacheData[;;data;;;;] ./:  flip value exec analyticName,table,identifiers,filter,trackCols,startPoint from tableAnalytics;
+        
+    //If it's a pivot table step into pivot aggregation func and exit as rest of code is only relevant to wide format.
+    if[table in .daas.cfg.pivotSettings`tableName;
+        out:.daas.cae.executePivotConditionals ./: flip value flip (select analyticName,filter,analytic,startPoint,table,identifiers from tableAnalytics);
+        `ConditionalAnalytics upsert/:.daas.cae.castOutput each out;
+        :();
+        ];
+    
+    //Extract intervals for caclulations from the cache
+    datas:(.daas.cae.dataCache tableAnalytics`analyticName);
+   
+    /per sym execution - create arg sets
+    tickSyms:?[data;();();(distinct;.daas.cae.tabMeta[table]`symCol)];
+
+    /Replace ` (all syms) with the list of syms we have in the update so we can apply the analytic over each of them
+    if[any ` in/: tableAnalytics`identifiers;
+        tableAnalytics:update identifiers:(1_/:identifiers,\:tickSyms) from tableAnalytics where ` in/: identifiers;
+        ];
+
+    //Run the aggregations on each cache selection
+    out:.daas.cae.executeBasicCondition  ./: datas,'flip value flip (select analyticName,identifiers,analytic,filter,table from tableAnalytics);
+
+    //Type cast the outputs and put into conditional analytics table
+    `ConditionalAnalytics upsert/:.daas.cae.castOutput each out;
+
+    }
+
+//Duration upd func
+.daas.cae.durationUpd:{[table;data]
+
+    ids:`,?[data;();();(distinct;.daas.cae.tabMeta[table]`symCol)];
+
+    //Get analytics
+    durationAnalytics:?[.daas.cfg.caeDurationsDict[table];enlist(each;any;((\:;in);`identifiers;`ids));0b;()];
+    
+    //If there are no analytics for this table/syms short circuit exit.
+    if[not count durationAnalytics;
+        :();
+        ];
+    
+    //If it is a pivot table (that we have a duration metric for we cache last value
+    if[table in .daas.cfg.pivotSettings`tableName;
+        :.daas.cae.pivotDuration[data;durationAnalytics];
+        ];
+    
+    
+    //Chop incoming data up on a by sym basis
+    splitBySym:(1_ids)!{?[x;enlist(=;.daas.cae.tabMeta[z]`symCol;enlist y);0b;()]}[data;;table] each 1_ids;
+    
+    //Run each duration analytic 
+    .daas.cae.durationAnalyic[splitBySym;;table] each durationAnalytics;
+    }
+
+//Analytic by analytic duration func
+.daas.cae.durationAnalyic:{[symSplitData;cfgRow;table]
+    /over each analytic
+    $[` in cfgRow`identifiers;
+        dataSets:symSplitData;
+        dataSets:symSplitData cfgRow`identifiers
+        ];
+        
+    .daas.cae.durAnalyticPerSym[cfgRow;;table] each dataSets
+    }
+
+//Sym by sym duration func
+.daas.cae.durAnalyticPerSym:{[cfgRow;data;table]
+    /over each sym
+    .daas.cae.durationCondCheck[;cfgRow`analyticName;cfgRow`filter;table] each data;
+    }
+  
+//Row by row duration func
+.daas.cae.durationCondCheck:{[row;analyticName;condition;table]
+    tCol:.daas.cae.tabMeta[table]`timeCol;
+    sCol:.daas.cae.tabMeta[table]`symCol;
+
+    //over each tick apply gate check
+
+    //If we don't have a sym col then we're not doing analytic per sym basis (pivot tables)
+    sym:$[sCol in key row;
+            first row sCol;
+            `
+            ];
+    
+    condRow:first value ?[.daas.cae.conditionState;((=;`analyticName;enlist analyticName);(=;`sym;enlist sym));();enlist[`i]!enlist[`i]];
+    
+    //Is there an entry in the gate tab?
+    if[not count condRow;
+        /set up initial state
+        `.daas.cae.conditionState upsert `analyticName`sym`state`satisfyStart`duration!(analyticName;sym;0b;0Np;0Nn);
+        condRow:enlist -1+count .daas.cae.conditionState;
+        ];
+    
+    state:.daas.cae.conditionState condRow;
+    //If there is count - cond satisfied - add to timer
+    if[condTrue:count ?[enlist row;condition;0b;()];
+    
+        if[not first state`state;
+            //if state is 0b, change to 1b, set start to tick time, set duration 0
+            .daas.cae.conditionState[condRow; `state`satisfyStart`duration]:(1b; row tCol; 0D);
+            //Do we want to publish out instananteous trues? - doing it now for time being
+            .daas.cae.pubDurStateRow[row tCol;condRow];
+            ];
+    
+        if[first state`state;
+            //if state is 1b, update duration to tick time - start
+            /this case might be wrong - check schema types
+            duration:`timespan$row[tCol]-first state`satisfyStart;
+            .daas.cae.conditionState[condRow; `duration]:duration;
+            .daas.cae.pubDurStateRow[row tCol;condRow];
+            ];
+        ];
+    
+    //Else
+    if[not condTrue;
+        //if the state is 0b, do nothing
+        if[first state`state;
+            //if the state is 1b, change the state to 0b and null start and duration
+            .daas.cae.conditionState[condRow; `state`duration]:(0b; 0Nn);
+            ];
+        ];
+    
+    };
+
+//Func to run duration metrics on tables that pivot
+.daas.cae.pivotDuration:{[data;durationAnalytics]
+    
+    //For each duration analytic, subset the data to channels that match a analytic.
+    table:exec first table from durationAnalytics;
+    filteredData:{?[x;enlist (in;.daas.cae.tabMeta[z]`symCol;enlist y);0b;(!). 2#enlist .daas.cae.tabMeta[z]`timeCol`symCol`pivotCol]}[data;;table]each durationAnalytics`identifiers;
+    
+    .daas.cae.pivotDurationPerAnalytic ./:  flip value (enlist[`data]!enlist filteredData),exec analyticName,filter,identifiers,table from durationAnalytics;
+    };
+
+//Func operates on each analytic to calculate duration metric on a pivot table inbound
+.daas.cae.pivotDurationPerAnalytic:{[dataSubset;analyticName;condition;identifiers;table]
+    tCol:.daas.cae.tabMeta[table]`timeCol;
+    sCol:.daas.cae.tabMeta[table]`symCol;
+    pCol:.daas.cae.tabMeta[table]`pivotCol;
+
+    //Grab data for this analytic out of the cache
+    cachedData:.daas.cae.pivotCache[analyticName];
+
+    //Append on new upd data
+    tallset:cachedData,?[dataSubset;();0b;`time`sym`val!(tCol;sCol;pCol)];
+
+    //This is the most recent time that we have had prints of all syms so can calculate.
+    calcPoint:?[;();();(min;`time)] ?[tallset;();enlist[`sym]!enlist `sym;enlist[`time]!enlist(last;`time)];
+    
+    //Pivot
+    fullSet:asc 0!.daas.util.pivot[tallset;`sym;`time;`val];
+
+    //Fill
+    fillmode:.daas.cae.fillModeMap[table];
+    fullSet:.daas.util.joinFills[fullSet;fillmode;`val];
+
+    //select out data earlier than the calc point so we can trigger a duration on
+    computationSelection:?[fullSet;((&lt;=;`time;calcPoint);(&gt;;`time;.daas.cae.lastPivDurCacPoint[analyticName]));0b;()];
+    .daas.cae.lastPivDurCacPoint[analyticName]:calcPoint;
+    
+    //if not all identifiers have appeared yet then we cant calculate
+    if[all identifiers in\: tallset `sym;
+        .daas.cae.durationCondCheck[;analyticName;condition;table] each tCol xcol `time xcols computationSelection
+        ];
+
+    //convert last fully populated row into tall format to be the top of our cache
+    atCalcPoint:first ?[fullSet;enlist(=;`time;calcPoint);0b;()];
+    timeDropped:`time _ atCalcPoint;
+    fullRowTall:flip `time`sym`val!(count[timeDropped]#atCalcPoint `time;key timeDropped;value timeDropped);
+    
+    //Add any new incoming data that is after our calc point
+    toCache:distinct fullRowTall,?[tallset;enlist(&gt;;`time;calcPoint);0b;()];
+
+    //Add to cache
+    .daas.cae.pivotCache[analyticName]:toCache;
+    };
+
+
+
+
+//-- Upd util funcs --//
+//Publish function for duration analytics
+.daas.cae.pubDurStateRow:{[rowTime;condRow]
+    //prepare row for pub
+    pubTab:select analytic:analyticName,sym,val:0Nf,duration from first .daas.cae.conditionState condRow;
+    pubTab:`time`analytic`sym`val`duration xcols update time:rowTime from pubTab;
+    
+    //Upsert data to batch pub with all cond analytics
+    `ConditionalAnalytics upsert pubTab;
+    
+    }
+
+//Basic condition filtering func
+.daas.cae.executeBasicCondition:{[data;analyticName;identifiers;analytic;filter;table]
+    tCol:.daas.cae.tabMeta[table]`timeCol;
+    sCol:.daas.cae.tabMeta[table]`symCol;
+
+    timeClause:`time`analytic!((last;tCol);enlist analyticName);
+
+    byClause:enlist[`sym]!enlist[sCol];
+    
+    symClause:enlist(in;sCol;enlist identifiers);
+
+    //Func select the data
+    output:`time`analytic`sym`val xcols 0!?[data;symClause,filter;byClause;timeClause,enlist[`val]!enlist analytic];
+    
+    //Morph into condAnalytics
+    output
+    }
+
+//Func to maintain output type
+.daas.cae.castOutput:{[result]
+    //Check for cols that need mapping - if not, append null time col
+    if[not any toMap:not (value type each .Q.V result) in 9 11 12h;
+        :update duration:0Nn from result
+        ];
+
+    //Map any cols that are needed
+    typeMap:`time`analytic`sym`val!(($;enlist`timestamp;`time);($;enlist`symbol;`analytic);($;enlist`symbol;`sym);($;enlist`float;`val));
+    clause:k!typeMap k:`time`analytic`sym`val where toMap;
+    update duration:0Nn from ![result;();0b;clause]
+    
+    }
+
+//Function to maintain data cache for lookback analytics
+.daas.cae.filterAndCacheData:{[analyticName;tableName;data;identifiers;filter;trackCols;startPoint]
+    tCol:.daas.cae.tabMeta[tableName]`timeCol;
+    sCol:.daas.cae.tabMeta[tableName]`symCol;
+
+    //If it's a pivot table then the caching behaves slightly differently
+    if[tableName in .daas.cfg.pivotSettings`tableName;
+        :.daas.cae.pivotDataCaching[analyticName;tableName;data;identifiers;trackCols;startPoint];
+        ];
+   
+    tClause:enlist[tCol]!enlist[tCol];
+    trackCols:distinct (tCol;sCol),trackCols;
+    byClause:enlist[`identifiers]!enlist[sCol];
+    //not caching by sym
+    byClause:0b;
+    
+    idClause:$[` in identifiers;();enlist(in;sCol;enlist identifiers)];
+
+    colClause:trackCols!trackCols;
+    
+    tab:0!?[data;filter;byClause;colClause];
+    
+    cacheData:first .daas.cae.dataCache[analyticName];
+    
+    //Assume the "now" time is the latest print in the upd
+    if[(not null startPoint) and count cacheData;
+        cacheData:select from cacheData where time&gt;startPoint;
+        ];
+    
+    .daas.cae.dataCache[analyticName]:enlist tab,cacheData
+    };
+
+//Func to cache data that is a pivot table
+.daas.cae.pivotDataCaching:{[analyticName;tableName;data;identifiers;trackCols;startPoint]
+    tCol:.daas.cae.tabMeta[tableName]`timeCol;
+    sCol:.daas.cae.tabMeta[tableName]`symCol;
+    pCol:.daas.cae.tabMeta[tableName]`pivotCol;
+
+    //Trim data and get cache entry
+    trimmed:?[data;enlist(in;sCol;enlist trackCols);0b;()];
+
+    /dont do anything if no data for this analytic
+    if[not count trimmed;
+        :()
+         ];
+    
+      
+    //Cached is in pivotted and interpolated format - everything in here is actual values. Do not keep interpolated forecasts.
+    cachedData:.daas.cae.dataCache[analyticName];
+
+    //Separate cache for inbound rows that are not able to be interpolated properly yet.
+    preCache:.daas.cae.preInterpolationCache[analyticName];
+    
+    //New inbound data pivoted and joined to uninterpolated data.
+    trimmedPivot:(tCol) xasc 0!.daas.util.pivot[trimmed;sCol;tCol;pCol];
+    //Take last row of the cached data so can interpolate
+    preCache:(-1 sublist cachedData) uj preCache uj trimmedPivot;
+
+    //Do I have every ID in my cols 
+    //- No - insert into precache and exit
+    //- yes - contiue
+    if[not all identifiers in\: cols preCache;
+        .daas.cae.preInterpolationCache[analyticName]:preCache;
+        :();
+        ];
+    
+    //get time of last non null in each column
+    lastPrints:identifiers!preCache[tCol] last each where each not null preCache identifiers;
+    
+    //Min of these is calc point.
+    calcPoint:min lastPrints;
+    
+    //Run interpolation on full set, trim at the calc point.
+    //Fill
+    fillmode:.daas.cae.fillModeMap[tableName];
+    //If we're forward filling the calc point isn't relevant - set to max
+    if[fillmode~`forward;
+        calcPoint:max lastPrints;
+        ];
+    
+    //joinfills hardcoded to time so replace before and after
+    fullSet:`time xcol tCol xcols preCache;   
+    fullSet:.daas.util.joinFills[fullSet;fillmode;sCol];
+    fullSet:tCol xcol fullSet;
+    
+    //insert interpolation into main cache.
+    toCache:?[fullSet;enlist(&lt;=;tCol;calcPoint);0b;()];
+    fullCache:((count[cachedData]-1) sublist cachedData),toCache;
+    timeCondition:enlist(&gt;;tCol;startPoint);
+    timeTrimmed:?[fullCache;(),timeCondition;0b;()];
+    .daas.cae.dataCache[analyticName]:timeTrimmed;
+    
+    //insert uninterpolated into preCache
+    .daas.cae.preInterpolationCache[analyticName]:?[preCache;enlist(&gt;;tCol;calcPoint);0b;()];
+    
+    //Now analytics can be cacluated on the data cache.
+    //The preinterpolation cache remains until new data comes in alowing it to be interpolated.
+    
+    
+    };
+
+
+//Func that pivots and filters data for tall format tables
+.daas.cae.pivotDataFilter:{[analyticName;filter;startPoint;tableName;identifiers]
+        //Get cache
+        data:.daas.cae.dataCache[analyticName];
+
+         //If no data exit
+        if[not count data;
+            :();
+            ];
+    
+        //If not all the syms are in the cache then we can't satisfy the condition
+        if[not all identifiers in cols data;
+            :0#data;
+            ];
+        
+        //Apply the filter
+        data:?[data;filter;0b;()];
+    
+        data
+    };
+
+//Func to execute the aggregations on pivot data
+.daas.cae.executePivotConditionals:{[analyticName;filter;analytic;startPoint;tableName;identifiers];
+    //Extract data from cache and filter it to the subset
+    data:.daas.cae.pivotDataFilter[analyticName;filter;startPoint;tableName;identifiers];
+    
+    //if there is no data just return empty table
+    if[not count data;
+        :delete duration from 0#ConditionalAnalytics;
+        ];
+    
+    timeClause:`time`analytic!((last;.daas.cae.tabMeta[tableName]`timeCol);enlist analyticName);
+
+    //Func select the data
+    output:`time`analytic`sym`val xcols 0!?[data;();0b;timeClause,`val`sym!(analytic;enlist`)];
+        
+    //If the output matches last published for this analytic, do not output. - this can be the case if one component of the condition keeps coming in
+    if[output~.daas.cae.lastPivotOutput[analyticName];
+        :delete duration from 0#ConditionalAnalytics;
+        ];
+    
+    .daas.cae.lastPivotOutput[analyticName]:output;
+    
+    output
+    };
+
+//Func to calculate start point of a bucket for analytics that are interval based
+.daas.cae.intervalStarts:{[granUnit;gran;data;startPoint]
+    startPoint:0D ^ startPoint;
+    
+    interval:.daas.cae.lookbackDict[granUnit]*gran;
+    latest:exec last time from data;
+    
+    latest - ((`timespan$latest)-startPoint) mod interval 
+    
+    };
+
+//Func to calculate start point of a bucket for analytics that are lookback based
+.daas.cae.lookbackStarts:{[lookBackPeriod;lookBackUnit;data;tableName]
+    (last data .daas.cae.tabMeta[tableName]`timeCol)-(lookBackPeriod*' .daas.cae.lookbackDict lookBackUnit)
+    };
+</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>1</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

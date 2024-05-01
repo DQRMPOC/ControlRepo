@@ -1,0 +1,39 @@
+<analytic>
+	<analytic>.daas.events.resp.getRfaSubscription</analytic>
+	<code_text>{[data]
+ //set dictionary with data:((`assetType`csvPath)!(assetType;filePath))
+ dict:data`info;
+ watchListTable:(` sv `.daas.mon.rfaSub,dict`assetClass);
+ //set the .daas.mon.rte local table (.daas.mon.rfaSub.assetType) to new rfa sub
+ watchListTable set .uc.getActiveParamValue[`rfasubscription;dict`rfaSub];
+ .daas.mon.trimRespStatus[dict`assetClass];
+ 
+ .log.out[.z.h;".daas.mon.rfaSub.",(string dict`assetClass)," has been updated";()]
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

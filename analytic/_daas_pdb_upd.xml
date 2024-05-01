@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.daas.pdb.upd</analytic>
+	<code_text>{[t;x]
+	
+	//Should upsert table in memory
+	.daas.pdb.rdbUpd[t;x];
+	//Should update row count
+	.daas.pdb.rowCount+:count x;
+	//If row count is higher then run write func
+	if[not .daas.cfg.writeFreqRowCount &gt;.daas.pdb.rowCount;
+		.daas.pdb.writeTables[];
+		.daas.pdb.rowCount:0;
+		//Update time so func does not run again for at least required interval &lt;- not sure if required, think it is
+		update nxtRun:.z.Z+.daas.cfg.writeFreqTimeSeconds from `.d.prcl.timerFunct where functName=`.daas.pdb.writeOnTimer
+	 ]
+ }</code_text>
+	<description>Upd function for the PDB</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>t</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>x</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasPDB</analyticgroup>
+</analytic>

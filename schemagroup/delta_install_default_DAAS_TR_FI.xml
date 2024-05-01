@@ -1,0 +1,14 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_TR_FI</tablegroup>
+	<tablename>ConditionalAnalytics</tablename>
+	<tablename>auction</tablename>
+	<tablename>dacsUpdate</tablename>
+	<tablename>fiCanCor</tablename>
+	<tablename>fiOpenClose</tablename>
+	<tablename>fiQuote</tablename>
+	<tablename>fiRefData</tablename>
+	<tablename>fiTrade</tablename>
+	<tablename>respStatus</tablename>
+	<tablename>ricInfo</tablename>
+</schemagroup>

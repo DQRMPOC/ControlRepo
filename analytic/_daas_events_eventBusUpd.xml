@@ -1,0 +1,44 @@
+<analytic>
+	<analytic>.daas.events.eventBusUpd</analytic>
+	<code_text>{[topic;data]
+	busHandles:.daas.events.interBusHandles[];
+	$[topic=`adminInterface;
+		[.daas.events.adminResponse[data];
+		`.daas.events.eventRecords upsert data];
+		[`.daas.events.eventRecords upsert data;
+			.daas.events.pubdata[data`topic;data];
+			(neg busHandles)@/:\:( (`.q.upsert;`.daas.events.eventRecords;data);(`.daas.events.pubdata;data`topic;data) );
+			/(neg busHandles)@\: (`.q.upsert;`.daas.events.eventRecords;data);
+			] 
+		];
+		
+	/log event message
+	if[count key`.daas.events.logh; .daas.events.logh enlist (`.daas.events.replay;data)];
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>topic</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

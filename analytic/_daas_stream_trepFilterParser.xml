@@ -1,0 +1,59 @@
+<analytic>
+	<analytic>.daas.stream.trepFilterParser</analytic>
+	<code_text>{[filter]
+
+
+	//Escape if it's not a filter
+	if[0=count filter;
+		:""
+		];
+
+
+	//Function that manipulates the filter input string to a KDB readable format 	
+    filter:ssr[filter;"!=";"&lt;&gt;"];	/user inputs != as not equals, KDB requires &lt;&gt;
+	filter:ssr[filter;"vol";"volume "];
+	filter:ssr[filter;"price";"price "];
+
+	inFilter:("&lt;";"&gt;";"&lt;=";"&gt;=";"=";"&lt;&gt;");
+    exFilter:("&gt;=";"&lt;=";"&gt;";"&lt;";"&lt;&gt;";"=");
+	
+	filter:rtrim(raze {x," "} each (0, 1+ last where filter in inFilter)_filter);
+
+	filter:" " vs filter;
+	//if it starts with EX: use exFilter
+	if[(raze 3#filter[0]) like "EX:";
+		filter[1]:$[(count filter[1])=1;	/requires different matching funtion if using &gt;, &lt; or = vs &lt;= &gt;= &lt;&gt; 
+			exFilter[where (first filter[1])~'inFilter];
+			exFilter[where inFilter~\:(filter[1])]
+		]
+	];
+
+	//Rearrange it so it can be read by the RTE
+	filter[0]:3_filter[0];
+	op:filter[1];
+	val:get filter[2];
+	filter[1]:filter[0];
+	filter[0]:get first op;
+	filter[1]:`$filter[1];
+	filter[2]:val;
+	:filter;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>filter</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>String</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

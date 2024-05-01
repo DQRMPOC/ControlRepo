@@ -1,0 +1,97 @@
+<analytic>
+	<analytic>.daas.pdb.coreInit</analytic>
+	<code_text>{[]
+
+	.daas.init.setMetaAndEventBusConn[];
+
+	//Load pdb functions
+	.al.loadinstruction`.daas.pdb.functionDefinitions;
+	//Set dictionary of intraday functions for upd
+	.daas.pdb.intradayTableFuncs:(`parted`splay)!(.daas.pdb.writeSplayByPart;.daas.pdb.writeSplay);
+	//Set dictionary of EOD functions for write downs
+	.daas.pdb.eodFunctions:((`splay`datePartition);(`none`datePartition);(`parted`datePartition))!(`.daas.pdb.writeSplayToHDB;`.daas.pdb.writeInMemoryToHDB;`.daas.pdb.writeSplayBySymToHDB);
+
+	//Set .ds.rdb.hdbDir 
+	.ds.rdb.hdbDir:`;
+
+	//Load in pdbSettings
+	.daas.cfg.pdbSettings:.uc.getActiveParamValue[`.daas.cfg.pdbSettings;.ex.getInstanceName[]];
+	//Validate pdbSettings
+	.daas.pdb.validateStartupSettings[];
+	.daas.pdb.rowCount:0;
+
+	//HDB Details
+	.daas.cfg.hdbDirectoryEnvVar:first .daas.cfg.pdbSettings`hdbDir;
+	if[null .daas.cfg.hdbDirectory:hsym $[.daas.cfg.hdbDirectoryEnvVar like "ENV*";
+		.utils.checkForEnvVar .daas.cfg.hdbDirectoryEnvVar;`$.daas.cfg.hdbDirectoryEnvVar];.log.err[`pdb;"No HDB directory set, check env var in .daas.cfg.pdbSettings";()]
+	 ];
+	.daas.cfg.hdbSym:` sv .daas.cfg.hdbDirectory,`sym;
+		
+	//PDB Details
+	.daas.cfg.persistDirectoryEnvVar:first .daas.cfg.pdbSettings`persistDir;
+	if[null .daas.cfg.persistDirectory:hsym .utils.checkForEnvVar .daas.cfg.persistDirectoryEnvVar;
+		.log.err[`pdb;"No PDB directory set, check env var in .daas.cfg.pdbSettings";()]
+	 ];
+		
+	//Sym backup Dir details
+	if[null .daas.cfg.symBackupDir:hsym .utils.checkForEnvVar "ENV=DAASDATA_SYMBACKUPDIR_EMEA_TR_EQ=";
+		.log.err[`pdb;"No Env variable for sym backup directory"]
+	 ];
+
+	//Load table settings
+	.daas.pdb.tableSettings:.uc.getActiveParamValue[`.daas.cfg.pdbTableSettings;.ex.getInstanceName[]];
+	//Validate table settings (acceptable values, tables defined in process,parted columns in tables)
+	if[count k:.daas.pdb.validateTableSettings[];
+		.pl.report_error_and_terminate["Error found during table validation";k]
+	 ];
+	//Extract table subscription list as tables in pdbSettings table
+	.daas.pdb.subscriptionTables:exec tableName from .daas.pdb.tableSettings;
+
+	//Extract data processes and gather details (for reload/flush in eod)
+	.daas.cfg.pdbDataProcs:.uc.getActiveParamValue[`.daas.cfg.pdbDataProcs;.ex.getInstanceName[]];
+	.ds.cfg.rdbProcessList:{update instancename:x,dc_hostport:(`$":",?[.utils.checkTLS[];"tcps://";""],1_":" sv string(`;dc_host;dc_port)) from .ex.getdetails[x]`paramvalues} each exec rdbList from .daas.cfg.pdbDataProcs where not null rdbList;
+	.fd.hdbProcessList:.ds.cfg.hdbProcessList:{update instancename:x,dc_hostport:(`$":",?[.utils.checkTLS[];"tcps://";""],1_":" sv string(`;dc_host;dc_port)) from .ex.getdetails[x]`paramvalues} each exec hdbList from .daas.cfg.pdbDataProcs where not null hdbList;
+	//Load variables for L2 snapshot generation
+	if[.daas.cfg.asset like "*L2";
+		.ds.cfg.hdbDir:.daas.cfg.hdbDirectory;
+		.ds.cfg.replayTableList:(exec tableName from .daas.pdb.tableSettings where not intradayPersistType =`none),`$lower[string .daas.cfg.asset],"intradaySnapShots";
+	 ];
+
+	//Load in rdb upd function
+	.daas.pdb.rdbUpd:.fd.rdbUpdFunct.function;
+	//Run custom load function
+	.fd.customLoadFunct.function[];
+
+	//Subscribe to tickerplant
+	.dm.regsubc[.fd.subscriptionChannel;] each .daas.pdb.subscriptionTables;
+		
+	//Define connections table for use in eod
+	.daas.cfg.connections:([instance:`$()] host:`$(); port:`int$(); tls:`$(); class:`$(); service:`boolean$(); handle:`int$(); running:`boolean$());
+		
+	//Parts of rollover
+	.daas.pdb.refreshTables[];
+
+	//Add write tables to timer with frequecy provided
+	.d.prcl.addFunctToTimer[`.daas.pdb.writeTables;();.z.Z+.daas.cfg.writeFreqTimeSeconds;0Nz;.daas.cfg.writeFreqTime;1b]
+
+	/ Monitoring 2.0 - connectivity and common metrics
+	.al.loadinstruction each `.daas.cmon.conn`.daas.cmon.common`.daas.cmon.rtc`.daas.cmon.pdb;
+	.daas.cmon.init[];
+	.daas.cmon.common.init[];
+	.daas.cmon.rtc.init[];
+	.daas.cmon.pdb.init[];
+	
+ 	}
+ </code_text>
+	<description>Initialisation function for PDB</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPDB</analyticgroup>
+</analytic>

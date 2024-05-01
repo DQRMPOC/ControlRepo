@@ -1,0 +1,39 @@
+<analytic>
+	<analytic>.daas.util.barInitAggregations</analytic>
+	<code_text>{[]
+
+operatorNames:a where not (a:.uc.getActiveParamValue[`.daas.cfg.aggregationOperators;`]`operator) in `avg;
+columns:(exec table from a)!({"`",/:string[x],\:")"}each exec column from a:`table xgroup .uc.getActiveParamValue[`.daas.cfg.barTableAggregationColumns;`]);
+operators:"(",/:string[operatorNames],\:";";  
+
+quoteStats:(raze `$(string each operatorNames),/:\:@[;0;upper] each string each value each -1_/:columns`quote)!raze (operators),/:\:columns`quote;
+tradeStats:(raze `$(string each operatorNames),/:\:@[;0;upper] each string each value each -1_/:columns`trade)!raze (operators),/:\:columns`trade;
+
+quoteTables:`quoteMinStats`quoteDayStats;
+tradeTables:`tradeMinStats`tradeDayStats;
+
+aggregationFunctions:([]colName:key stats;agg:value stats:quoteStats,tradeStats;tableNames:(((count quoteStats)#enlist quoteTables),((count tradeStats)#enlist tradeTables)));
+
+compTrade:update tableNames:(count a)#enlist tradeTables from a:select colName, agg from .uc.getActiveParamValue[`.daas.cfg.complexBarAggregationFunctions;`] where tableNames like "*trade*";
+compQuote:update tableNames:(count a)#enlist quoteTables from a:select colName, agg from .uc.getActiveParamValue[`.daas.cfg.complexBarAggregationFunctions;`] where tableNames like "*quote*";
+aggregationFunctions:aggregationFunctions, compTrade, compQuote;
+
+/aggregation parse trees used in stats 
+.daas.cfg.barAggregationFunctions:(aggregationFunctions`colName)!value each aggregationFunctions`agg;
+/which aggregations are offered on what table
+.daas.cfg.barTableFunctionMap:a!{[x;y]exec colName from x where tableNames=y}[tab;] each a:distinct exec tableNames from tab:ungroup select colName,tableNames from aggregationFunctions;
+ }
+ </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasGateway</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

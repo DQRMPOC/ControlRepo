@@ -1,0 +1,25 @@
+<analytic>
+	<analytic>.daas.cmon.eb</analytic>
+	<code_text>// Refinery (DaaS) Event Bus Monitoring 2.0
+// Copyright (c) 2019 Kx Systems Inc
+
+.daas.cmon.eb.init:{
+    .daas.cmon.addEventMetric[`eb.primaryState; `dict];
+ };
+
+
+.daas.cmon.eb.sendPrimaryState:{[isPrimary]
+    .daas.cmon.sendMetrics[`eb.primaryState; enlist[`isPrimary]!enlist isPrimary];
+ };
+    </code_text>
+	<description>Refinery (DaaS) Event Bus Monitoring 2.0</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

@@ -1,0 +1,4 @@
+product.name=DaaSCore
+major.version=4
+minor.version=0
+incremental.version=0

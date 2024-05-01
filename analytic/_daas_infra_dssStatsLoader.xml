@@ -1,0 +1,101 @@
+<analytic>
+	<analytic>.daas.infra.dssStatsLoader</analytic>
+	<code_text>{[dir;file]
+    
+    .daas.events.pubEventMessage[`dssStatsLoader;`start;`;`;`];
+    
+	filepath:` sv dir,file;
+	// get the header line as in DSP (first line is download info, second line is col names)
+	//fileHeaders:system"head -1 ",1_string ` sv dir,`$string[file];
+
+	override:first l where file like/: raze each "*",/:string (l:`DSS_EOD`DSS_PRICE_HISTORY),\:"*";
+    ac:first k where file like/: raze each "*",/:string (k:`EQ`FUT),\:"*";
+	// get cols names as symbols
+	//fileFields:`$"," vs last fileHeaders;
+	fileFields: `$ "," vs first system"head -1 ",(1_string filepath);
+
+	// src and dst info
+	loaderInfo:.uc.getActiveParamValue[`.daas.cfg.fileLoader; override];
+	destinationInfo:.uc.getActiveParamValue[`.daas.cfg.fwTargetDB; `DSS_STATS];
+	separator:destinationInfo[`separator];
+
+	// get dictionary of our field names and types
+	d: exec externalField,internalField,t from loaderInfo where externalField in fileFields,incl;
+	// check that all the cols in the file have a row in fileLoader config
+	if[not d[`externalField]~(fileFields);
+		:()
+	];
+	typestring:raze d[`t];
+	fields:d[`internalField];
+
+	// import the file
+	import:(typestring;separator) 0: read0 (filepath);
+	// update with our col names
+	import:fields xcol import;
+	// (Set of cols in DSS stats schema) &lt;&gt; (Set of cols in Refinery stats schema)
+	target:.tbl.gettabledetails[first destinationInfo`tab];
+	nullcast:(`Symbol`Boolean`Byte`Short`Integer`Long`Real`Float`Timestamp`Month`Day`Datetime`Timespan`Minute`Second`Time)!(enlist($;`;string 0n)),($;;0n)each "bxhijefpmdznuvt";
+	import:![import;();0b;(target[`colnames] l)!(count import)#/:value each nullcast[target[`coltype] l:where not target[`colnames] in cols import]];
+
+	// Reorder columns to match schema on disk
+	import:target[`colnames] xcols import;
+
+	// get hdb directory
+	// TODO: REPLACE DIR WITH ENV VAR
+	hdbdir: hsym `$getenv .daas.fw.acDict[ac;`dir];
+	// get parted field (parted on sym)
+	p:`$(first destinationInfo`partedCol);
+	// get table to save to
+	tab:first destinationInfo`tab;
+
+	// upsert the data, partition on date
+	$[()~a:exec distinct time.date from import;
+		::;
+		dt:a
+	];
+	import:`time xcols import;
+
+	{[tab;tabName;hdb;dt]
+		if[0=type key dtdir:` sv hdb,(`$string[dt]),`;system["mkdir -p ", 1_string[dtdir]]];
+		rawData:update `p# sym from `sym`time xasc 0!?[tab;enlist(=;`time.date;dt);0b;()];			
+		f:`$"/" sv (string hdb; string dt; string tabName; string `);
+		$[0 = type key f; set ; upsert][f;.Q.en[hdb;rawData]];
+		`sym`time xasc f;
+		@[f;`sym;`p#];
+	}[import;tab;hdbdir;] each dt;
+
+	.[import;();:;.ds.schema[tab]];
+	if[0=system"g"; .Q.gc[]];
+    newFile:string[file],".", raze ":" vs string .z.Z;
+    newPath:"/" sv ( string[dir]; newFile);
+    system "mv ",1_string[filepath] ," ",1_newPath;
+    
+    .daas.events.pubEventMessage[`dssStatsLoader;`complete;`;`;`];
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasFilewatcher</analyticgroup>
+</analytic>

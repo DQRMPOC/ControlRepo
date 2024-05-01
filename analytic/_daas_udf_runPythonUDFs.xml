@@ -1,0 +1,55 @@
+<analytic>
+	<analytic>.daas.udf.runPythonUDFs</analytic>
+	<code_text>{[exfuncs]
+
+    //get funcs to run
+    pyFuncs:exfuncs where `python=(.daas.udf.udfFuncStore each exfuncs)`funcLang;
+    dMapped:.daas.udf.pythonRTUDFConfig lj 1!select udfName:UDF, mappedTab from .daas.udf.rtConfig;
+
+   
+    //run pre funcs - if not in func store, warn and set to ` which will just return underlying table later on
+    if[any missing:not (pf:dMapped[`preExFunc]) in\: key .daas.udf.udfFuncStore;
+        .log.warn[`udfPreFunc;"Pre-execution function does not exist in the udf function store - ";] each pf where missing;
+        dMapped:update preExFunc:` from dMapped where missing;
+        ];            
+            
+    //grouped by data and pre func, so that can parallelise the udf execution on same data set
+    groupedPyFuncs:select udfName by preExFunc,mappedTab from dMapped where udfName in pyFuncs;
+    //running the pre-func ---- test case here convert to pandas dataframe to hand table are arg to python
+    preData:{$[null x;value y;.daas.udf.executeRTUDF[x;y;value y]]}./: flip value flip update first each mappedTab from key groupedPyFuncs;
+
+    
+    dmap:delete preExFunc,mappedTab from update data:preData from groupedPyFuncs;
+    pyComplete:raze .daas.python.multiProcessData ./: flip value flip dmap;
+
+    .log.warn[`pythonUDF;"UDF failed to execute";]each exec funcName from pyComplete where not success;
+
+    //post process funcs, same as pre process.    
+    if[any missing:not (pf:dMapped[`postExFunc]) in\: key .daas.udf.udfFuncStore;
+       .log.warn[`udfPreFunc;"Post-execution function does not exist in the udf function store - ";] each pf where missing;
+       dMapped:update postExFunc:` from dMapped where missing;
+       ];       
+        
+    postExFuncRes:{$[null x;y;.daas.udf.executeRTUDF[x;`result;y]]}./: flip value flip select postExFunc,result from(select funcName,result from pyComplete where success)lj 1!`funcName xcol dMapped;
+        
+    select time:.z.p,udfName:funcName,result:postExFuncRes from (value pyComplete) where success      
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>exfuncs</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPython</analyticgroup>
+</analytic>

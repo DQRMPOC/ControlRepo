@@ -1,0 +1,66 @@
+<analytic>
+	<analytic>.daas.udf.checkRTConfigRow</analytic>
+	<code_text>{[row]
+    /operate over each line to parse and check is correct format
+    //check the named UDF exists in store
+    if[not (row`UDF) in key .daas.udf.udfFuncStore;
+        .log.warn[`udfInit;"UDF does not exist within the realtime UDF function store";row`UDF];
+        .log.warn[`udfInit;"Ignoring row of .daas.udf.rtconfig";row];
+        :();
+        ];
+    /format of data reqiurements
+    if[not 11=type (),@[value;row`dataReq;{0b}];
+        .log.warn[`udfInit;"dataReq failed to parse as symbol";row`dataReq];
+        .log.warn[`udfInit;"Ignoring row of .daas.udf.rtconfig";row];
+        :();
+        ];
+    /format of the metadata dicts
+    if[(count row`dataTabMeta) and not 99=type @[value;row`dataTabMeta;{0b}];
+        .log.warn[`udfInit;"dataTabMeta failed to parse as dictionary";row`dataTabMeta];
+        .log.warn[`udfInit;"Ignoring row of .daas.udf.rtconfig";row];        
+        :();
+        ];    
+    /if its on tick then don't need to check trig stuff
+    if[row`triggered;
+         if[(count row`trigTabMeta) and not 99=type @[value;row`trigTabMeta;{0b}];
+            .log.warn[`udfInit;"trigTabMeta failed to parse as dictionary";row`trigTabMeta];
+            .log.warn[`udfInit;"Ignoring row of .daas.udf.rtconfig";row];        
+            :();
+            ];     
+
+          //preferentially check if the trigger func exists, else check the cond clause is legit
+          if[not (row`trigFunc) in key .daas.udf.udfFuncStore;
+             if[not 0=type @[value;row`trigCond;{0b}];
+                .log.warn[`udfInit;"trigCond failed to parse as mixed list";row`trigCond];
+                .log.warn[`udfInit;"Ignoring row of .daas.udf.rtconfig";row];
+                :();
+                ];
+            ];   
+        ];
+    
+     if[(not null row`initFunc) and not (row`initFunc) in key .daas.udf.udfFuncStore;
+        .log.warn[`udfInit;"initialisation function not present in udf store";row`initFunc];
+        .log.warn[`udfInit;"Ignoring row of .daas.udf.rtconfig";row];        
+        :();
+        ];   
+    row
+        }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>row</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

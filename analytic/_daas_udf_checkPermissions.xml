@@ -1,0 +1,33 @@
+<analytic>
+	<analytic>.daas.udf.checkPermissions</analytic>
+	<code_text>{[funcName;user]
+
+ }</code_text>
+	<description>checks if the provided user has access permissions for the given UDF function.
+
+this analytic should throw a descriptive error if the user does not have permission to use the UDF</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>funcName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>user</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

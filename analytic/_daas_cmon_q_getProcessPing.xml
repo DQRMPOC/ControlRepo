@@ -1,0 +1,24 @@
+<analytic>
+	<analytic>.daas.cmon.q.getProcessPing</analytic>
+	<code_text>{[]
+    pingData:.daas.cmon.q.i.getProcesses[0b] lj select by processName from ProcessPing;
+    pingData:select workflow, processName, connected, registered, `time$generatedTime, metricStale, responseTime:0Wn^remoteReceiveTime - daemonSendTime from pingData;
+
+    pingData:update status:`NOT_OK from pingData where metricStale | responseTime &gt; 00:00:05;
+    pingData:update status:`OK from pingData where null status;
+
+    :`status xasc pingData;
+}
+    </code_text>
+	<description>Refinery Monitoring - Process Ping</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

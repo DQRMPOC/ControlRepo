@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>dxCheckSAML</analytic>
+	<code_text>{[data;dict]
+  paths:exec activationPath from data;
+  if[count[distinct paths]&lt;count paths; :0b];
+  ucname:dict`ucname;
+  param:dict`parameter;
+  oride:dict`override;
+  if[oride=`DEFAULT; :1b];
+  orrides:`${last ":" vs string x} each .uc.getParamOverrides[ucname;param];
+  orrides:orrides except oride,`DEFAULT;
+  if[0=count orrides; :1b];
+  allOtherValues:raze {.uc.readParamValue[y;x;`$last ":" vs string z]}[ucname;param] each orrides;
+  :not any paths in exec activationPath from allOtherValues;
+ }</code_text>
+	<description>validation analytic for SAMLAuthentication config param</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>config param table</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dict</parameter>
+		<default>"c"$()</default>
+		<description>profile, param, override name</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

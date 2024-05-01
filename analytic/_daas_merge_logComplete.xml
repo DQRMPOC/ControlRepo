@@ -1,0 +1,34 @@
+<analytic>
+	<analytic>.daas.merge.logComplete</analytic>
+	<code_text>{[ID]
+jID:first exec jobID from .daas.merge.mergeJobs where slaveID=ID;
+sz:first exec size from .daas.merge.status where slaveID=ID;
+targetDir:first exec targetDir from .daas.merge.mergeJobs where slaveID=ID;
+sourceDir:first exec sourceDir from .daas.merge.mergeJobs where slaveID=ID;
+jobAddTime :first exec startTime from .daas.merge.status where slaveID=ID;
+dt:first exec date from .daas.merge.mergeJobs where slaveID=ID;
+m:first exec mode from .daas.merge.mergeJobs where slaveID=ID;
+c:first exec copy from .daas.merge.mergeJobs where slaveID=ID;
+
+`.daas.merge.completed upsert `jobID`time`elapsed`size`partitionDate`mode`target`source`merged`copy!(jID;.z.P;`time$.z.P-jobAddTime;sz;dt;m;targetDir;sourceDir;0b;c)
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>ID</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

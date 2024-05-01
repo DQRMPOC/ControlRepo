@@ -1,0 +1,56 @@
+<analytic>
+	<analytic>.daas.wc.timeColDateFilter</analytic>
+	<code_text>{[timeCol;startDate;endDate]
+	
+    // if you're querying on a time based column you aren't partitioned by 
+    // (assumes date on column you're sorted by is your partitioning date)
+    // extra days are added to the select statement to catch overlap 
+    
+    // these extra days need to be filtered out 
+    // currently done with a hardcoded `exchTime
+    // TODO: extended to other time based cols like internalTimestamp in transaction data etc
+    
+    whereClause:();
+    
+    if[`exchTime~timeCol;
+        datePart:` sv timeCol,`date;
+        whereClause:enlist(within;datePart;(startDate;endDate));
+        ];
+    
+    whereClause
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>timeCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>startDate</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>endDate</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasWhereClause</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

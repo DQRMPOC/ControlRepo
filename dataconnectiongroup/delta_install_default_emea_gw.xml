@@ -1,0 +1,16 @@
+<dataconnectiongroup>
+	<ucname>delta_install_default</ucname>
+	<grpid>emea_gw</grpid>
+	<key>
+		<keyname>DBS</keyname>
+		<val>instance.emea_gw_0_a,instance.emea_gw_0_b,</val>
+	</key>
+	<key>
+		<keyname>CONN_SELECTOR</keyname>
+		<val>DEFAULT</val>
+	</key>
+	<key>
+		<keyname>PRIMARY</keyname>
+		<val>primary,primary,</val>
+	</key>
+</dataconnectiongroup>

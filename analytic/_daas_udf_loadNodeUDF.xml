@@ -1,0 +1,36 @@
+<analytic>
+	<analytic>.daas.udf.loadNodeUDF</analytic>
+	<code_text>{[]
+    /load udf
+    .daas.udf.fileDir: hsym .utils.checkForEnvVar "ENV=DELTADATA_HOME=/DaaSData/udfdir";
+    .al.loadinstruction[`.daas.udf.udfStartup];
+
+    /reg data
+    .dm.init`$"DS_MESSAGING_SERVER:emea_tr_",string .daas.cfg.env;
+    .dm.regsrcc[`region_udf_udf_a;"rtudfres"]; 
+
+
+    //Load config, check input formats, parse.
+    .daas.udf.rtConfig:.daas.udf.loadAndMapRTConfig[];
+      
+    .daas.udf.rtudfProcAllocation[];
+        
+    /pick the allocated udfs
+    .daas.udf.rtConfig:select from .daas.udf.rtConfig where procNo=.daas.cfg.procNum;
+        if[not count .daas.udf.rtConfig;
+            .log.warn[`udfInit;"no configured analytics, terminating process"];
+            '`terminate;
+            ];
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

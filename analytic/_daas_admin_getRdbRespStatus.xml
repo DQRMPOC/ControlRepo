@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.admin.getRdbRespStatus</analytic>
+	<code_text>{[]
+	if[0 &lt; count .daas.rs.cache`data;
+		if[.z.P &lt; .daas.rs.cache[`queryTime] + .daas.rs.cacheDuration;
+			.log.debug[`respStatus;;()] "Returning cached 'respStatus'";
+			:.daas.rs.cache`data;
+    	];
+	]; 
+
+    trRdbHandles:.daas.admin.getTrRdbHandles[];
+
+    .log.out[`respStatus;;()] "Querying all TR RDBs for 'respStatus' table";
+
+	newRespStatus:trRdbHandles@\:`respStatus;
+	newRespStatus:raze {[src; tbl] update srcProcess:src from tbl } .' key[trRdbHandles],' enlist each value newRespStatus;
+
+    .daas.rs.cache:`queryTime`data!(.z.P; newRespStatus);
+
+    :newRespStatus;
+ }
+    </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+	<analyticgroup>daasWatchlistDashboard</analyticgroup>
+</analytic>

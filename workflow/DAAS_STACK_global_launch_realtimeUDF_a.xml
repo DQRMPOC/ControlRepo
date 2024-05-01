@@ -1,0 +1,43 @@
+<workflow>
+<wfName>DAAS_STACK_global_launch_realtimeUDF_a</wfName>
+	<branch>
+		<tName1>global_rdb_udf_0_a.1</tName1>
+		<tName2>global_tp_udf_0_a.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>global_tp_udf_0_a.1</tName1>
+		<tName2>global_pdb_udf_0_a.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>global_rdb_udf_0_a.1</tName1>
+		<tName2>global_hdb_udf_0_a.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>global_tp_udf_0_a.1</tName1>
+		<tName2>global_ctp_udf_0_a.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>global_pdb_udf_0_a.1</tName1>
+		<tName2>daas_udfDaemon_a.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+</workflow>

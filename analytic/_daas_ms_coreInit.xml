@@ -1,0 +1,22 @@
+<analytic>
+	<analytic>.daas.ms.coreInit</analytic>
+	<code_text>{[]
+
+    / Monitoring 2.0
+    .al.loadinstruction each `.daas.cmon.conn`.daas.cmon.common;
+    .daas.cmon.init[];
+    .daas.cmon.common.init[];
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

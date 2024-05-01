@@ -1,0 +1,135 @@
+<analytic>
+	<analytic>.daas.merge.merge</analytic>
+	<code_text>{[source;target;enumTarget;dt]
+
+    /helper func to unenum later
+    unenumerateTable::{@[x;;value](exec c from meta[x] where t="s")inter where (type each first x) within -76 -20h};
+
+
+    /source is one date from our hdb ready to merge
+    /target is a copied out date of the main hdb
+    
+    .merge.targetTabs:targTabs:key[target];
+
+    tablist:key `$string[source],"/",string dt;
+
+    .log.out[.z.h;"tables to merge ";tablist];
+    
+    //load the data to be merged and initialise everything
+    system"l ",1_string[source];
+    .daas.merge.sourceSym:get `sym;
+
+    .daas.tabCounts:tablist!{[tab;dt] first exec c from ?[tab;enlist(=;`date;dt);0b;enlist[`c]!enlist(count;`i)]}[;dt] each tablist;
+    .daas.merge.totalRows: sum value .daas.tabCounts;
+    .daas.mergeWriteCount:0;
+    /we are going to make general assumption that 10 million rows is roughly 1GB. Each merge slave should max 1GB mem.
+    /~~1000MB - 10,000,000
+    .daas.merge.rowLoadLimit:10000000;
+
+
+
+
+    /iterate this function over tables
+    {[table;target;enumTarget;dt]
+        `sym set .daas.merge.sourceSym;
+        fullCount:.daas.tabCounts table;
+
+        /select from table where i within loadIndicie, loadind+block, less than fullCount. If 
+        loadInd:0;
+
+        /if we're replacing a partition (or it's new) set down the first chunk
+        if[.daas.merge.replace;
+            .log.out[.z.h;"Empty target dir, setting table chunk down";()];
+            end:loadInd+.daas.merge.rowLoadLimit;
+            writeTab:delete date from ?[table;((in;`date;enlist dt);(&gt;=;`i;loadInd);(&lt;;`i;min (fullCount;end)));0b;()];
+            loadInd:end;
+            /set
+            toWrite:.Q.en[enumTarget;] unenumerateTable writeTab;
+            (`$string[target],"/",string[table],"/") set toWrite;
+            .daas.merge.reportStatus completion:100*(.daas.mergeWriteCount+:count writeTab)%.daas.merge.totalRows; 		
+            .log.out[.z.h;"overall job completion: ",string[completion],"%.  Chunk Written for table: ",string[table];()]; 
+            ];
+
+        if[not fullCount;
+            /if there is no rows, we exit here after setting empty tab
+            .log.out[.z.h;"no rows to merge for ",string[table];()];
+            if[not table in .merge.targetTabs;
+                .log.out[.z.h;"Setting empty table for ",string[table];()];
+                writeTab:delete date from ?[table;enlist(in;`date;enlist dt);0b;()];
+                toWrite:.Q.en[enumTarget;] unenumerateTable writeTab;
+                (`$string[target],"/",string[table],"/") set toWrite;
+                ];
+            :();
+            ];
+
+        /loop over chunks
+        while[loadInd&lt;fullCount;
+            `sym set .daas.merge.sourceSym;
+            end:loadInd+.daas.merge.rowLoadLimit;
+            /load
+            writeTab:delete date from ?[table;((in;`date;enlist dt);(&gt;=;`i;loadInd);(&lt;;`i;min (fullCount;end)));0b;()];
+            loadInd:end;
+
+            /enum and save
+            toWrite:.Q.en[enumTarget;] unenumerateTable writeTab;
+            (`$string[target],"/",string[table],"/") upsert toWrite;
+
+            .daas.merge.reportStatus completion:100*(.daas.mergeWriteCount+:count writeTab)%.daas.merge.totalRows; 
+            .log.out[.z.h;"overall job completion: ",string[completion],"%.  Chunk Written for table: ",string[table];()]; 
+            ];
+        }[;target;enumTarget;dt]each tablist;
+
+
+    .log.out[.z.h;"Garbage collecting";()];
+    .Q.gc[]; 
+
+    .log.out[.z.h;"Starting sort";()];
+    .daas.merge.sortPartition target;
+    .log.out[.z.h;"Merge and sort complete";()];
+
+
+    .log.out[.z.h;"Checking if compression is needed";()];
+    .daas.merge.recompress[target;dt];
+    .log.out[.z.h;"complete";()]
+
+		}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>source</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>target</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>enumTarget</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>dt</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

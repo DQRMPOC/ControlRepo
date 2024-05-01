@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.daas.util.checkSensibleParamsGetBars</analytic>
+	<code_text>{[functionName;params]
+if[not `analytics in key params; params[`analytics]:`;];
+if[not params[`granularityUnit] in ``minute`hour`day`week`month;:`granularityUnit];  
+if[count k:k where not (k:raze enlist each params`analytics) in `,.daas.cfg.columnDefaults[params`dataType]; :k];
+params
+}</code_text>
+	<description>Checks parameter options are correct</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,68 @@
+<analytic>
+	<analytic>.daas.processing.trimTrthData</analytic>
+	<code_text>{[file;tempDir]
+	
+	//if this is the first week in the req, then we have to trim off sat-&gt;req start
+	
+	child:value 10#(sp:"_" vs string file)1;
+	rptSettings:first ("S**S*SBSS";enlist",") 0: `$":",getenv[`REPORTSETTINGS_CONFIG_DROP],"/",sp[0],"_",11_sp[1],".csv";
+	
+	/make sure correct date string
+    rptSettings[`startDateTime]:{ssr[ssr[x;"-";"."];"T";"D"]} rptSettings[`startDateTime];
+    rptSettings[`endDateTime]:{ssr[ssr[x;"-";"."];"T";"D"]} rptSettings[`endDateTime];
+	
+	
+	/if the child is the same date as the rpt start date, then we are first report. check trim
+	if[not child~`date$value rptSettings[`startDateTime];
+		:();
+		];
+	/is the request start date midnight on a sat? if so we're all good
+	if[(midnight:0=startTime:`time$sdt) and sat:0=offset:(`date$sdt:value rptSettings[`startDateTime]) mod 7;
+		:();
+		];
+		
+	/now we need to remove any days extra
+	if[not sat;
+		rmdirs:1_/:string[tempDir],/:"/",/:string delDays:`date$sdt-1+til offset;
+		.log.out[.z.h;"removing unneeded trth date ";] each rmdirs;
+		{@[system;"rm -rf ",x;{.log.out[.z.h;"cannot remove trth date ";x]}]} each rmdirs;
+		];
+		
+	/if it's not midnight we need to ammend the day
+	if[midnight;
+		:();
+		];
+		
+	.log.out[.z.h;"Trimming data day";child];
+	partition:`$string[tempDir],"/",string`date$sdt;
+	.daas.processing.trimTrthPartition[partition;startTime];
+	
+	.log.out[.z.h;"Completed trim";child];
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tempDir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

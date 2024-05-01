@@ -1,0 +1,221 @@
+<analytic>
+	<analytic>.daas.join.common</analytic>
+	<code_text>////////Functions using in joining result sets at gw/qp////////
+/Functions are referenced from getJoin, the overall join function
+/getJoin is defined as a DC analytic
+
+//-- Functions to extract data and argument sets out of input to overall join func
+
+
+.daas.join.normaliseResultSet:{[resultSet]
+    //Data comes in as a list of result/argument pairs i.e.
+    // ((result;args);(result;args)
+    //When it's through the QR/QP this is embedded in a single argument dictionary, so needs to be valued out
+    if[.daas.cfg.procType~`qp;
+        resultSet:value resultSet;
+        ];
+    resultSet
+	};
+
+.daas.join.extractArgs:{[resultSet]
+    //arg dicts are the last element of each resultSet
+    //if there are multiple result sets we take the first arg dict
+    
+    args:last each resultSet;
+    if[not 99=type args;
+        args:first args;
+        ];
+    args
+    };
+
+
+.daas.join.extractData:{[resultSet]
+	//Data is the first element of each result set
+    first each resultSet
+	};
+
+
+
+//-- Short circuit case functions for immediate aggregations and returns --
+
+.daas.join.statInterval:{[data;args;resultSet]
+    //If there is no granularity unit it is an aggregation over the whole interval, so aggregate and return
+    if[`spanBucket in key args;
+        data:.daas.join.boundaryBucket[args;resultSet];
+        :.daas.util.deleteCols[data;args];
+        ];
+                
+    data:.daas.join.mapReduce[data;args];
+    data
+	};
+
+.daas.join.udf:{[data]
+    //For udfs we attempt to union join results
+    //If it fails we return as is
+    res:@[(uj/);data;data];
+    :res
+	};
+
+
+
+//-- Functions for combining aggregated data across multiple processes --
+
+.daas.join.boundaryBucket:{[args;resultSet]
+    //Take the span data out of the arg dicts
+    spanData:(last each resultSet)`spanBucket;
+    
+    spanTab:.daas.join.order[spanData];
+    :.daas.join.mapReduceIntervalCombine[args;spanTab];
+	};
+
+.daas.join.mapReduce:{[data;args]
+    //For combining aggregations between rdb/hdb
+    tab:.daas.join.order[data];
+    tab:.daas.join.mapReduceIntervalCombine[args;tab];
+    tab:.daas.util.deleteCols[tab;args];
+    tab:.daas.util.rackTable[tab;args];
+    .daas.util.sortCols[tab;args]
+ };
+
+.daas.join.mapReduceIntervalCombine:{[args;tab]
+    
+    aggCol:args`symCol;
+    
+    //if sym or symlist then it is a classic analytics parameter
+    if[11=abs type args`analytics;
+        colClause:.daas.util.genMRRedColClause[args];
+        colClause:((enlist`time)!enlist(min;`time)),colClause;       
+        :`time xcols 0!?[tab;();(enlist aggCol)!enlist aggCol;colClause]
+        ];
+        
+    if[`spanBucket in key args;
+        :`time xcols 0!?[tab;();(enlist aggCol)!enlist aggCol;(enlist[`time]!enlist(first;`time)),args`cc];
+        ];
+   
+    `time xcols 0!tab
+
+    };
+
+//-- Function to combine and order data sets
+.daas.join.order:{[data]
+    //Data input to this function is either a list of tables (tab;tab) to be joined, or a single table
+    //If it's a single table just return (check that it's not mixed list
+    if[not 0h = type data;
+        :data;
+        ];
+
+    
+    //Drop off any tabs in list that have no data
+    empties:0=count each data;
+    //If they're all empty just return the schema
+    if[all empties;
+        :first data;
+        ];
+    
+    data:data where not empties;
+    
+    //Optimise for tables with `time column
+    timeSortCol:`time;
+    
+    /Grab cols from first table (schema should match)
+    resCols:cols first data;
+
+    if[not `time in resCols;
+        / Try and sort by the first time column in the result set
+        timeSortCol:first resCols where upper[resCols] like "*TIME*";
+        ];
+
+    //If we have a column to match, we sort and join
+    if[not null timeSortCol;
+        :(uj/) data iasc first each data@\:timeSortCol;
+        ];
+
+    //Otherwise is simple raze
+    raze data
+ };
+
+
+.daas.join.distributedDataPivot:{[resultSet;args;functionName]
+	//Grab data from resultSet
+    tab:(last each resultSet)`distributedDataPivot;
+    
+    tab:.daas.join.order[tab];
+    tabMet:.Q.ty each .Q.V tab;
+        
+    //Pivot
+    tab:first .daas.util.pivotDataset[tab;args;1b];
+
+    if[functionName~`getTicks;
+        :tab;
+        ];
+    
+    //Interpolate
+    tab:.daas.util.joinFills[tab;args`fill;`];
+
+    //If there is a filter clause that does not have the sym there to satisfy it return empty
+    if[not all (flat where -11=type each flat:(raze/)args`wc) in cols tab;
+        tab:select time from 0#tab;
+        ];
+
+    if[not count tab;
+        pivCol:first exec pivotCol from .daas.cfg.pivotSettings where tableName=args`dataType;
+        addCols:(key args`cc) except cols tab;
+        :![tab;();0b;(!) .(addCols;count[addCols]#enlist tabMet[pivCol]$())];
+        ];
+    
+    
+    //Continue with getStats
+    
+    //Not doing by symcol as pivoted
+    bc:args[`symCol] _args[`bc];
+
+    //aggregate it
+     //---AGGREGATE---//
+    res:0!.daas.util.select[tab;(args`startTime;args`endTime;args`time);(`;`);args`cc;bc;args`wc];
+    res:.daas.util.reTypeAggregatedTable[tab;res];
+    
+    res:.daas.stats.outboundAdjustments[res;args];
+
+    //Bottom of join func
+    res:.daas.util.sortCols[res;args];
+    res:.daas.util.joinFills[res;args`fill;args`symCol];
+    
+    res
+	};
+
+.daas.join.checkIfDistributedPivot:{[resultSet]
+    //for it to be distrubuted, no single return can have the full set
+    //if it was, all the args would have the dist key
+    all `distributedDataPivot in/: key each resultSet[;1]
+    };
+    
+.daas.join.postPivotFilter:{[res;args]
+    //If earlier on a post pivot filter has been flagged then we filter after the filling is applied.
+    if[`postPivotApplyFilter in key args;
+        col:();
+        //Unless doing all sym query, construct col selection
+        if[not `~args`reqSyms;
+            col:(!). 2#enlist(`time,args`reqSyms);
+            ];
+        //If the filtering clause sym is missing, return empty tab of requested channels
+        if[not all (args[`symList] except args`reqSyms) in cols res;
+            :?[0#res;();0b;col];
+            ];
+        //Otherwise filter (catch any error in their filter clause structure)
+        res:@[?[res;;0b;col];args`postPivotApplyFilter;{'"Error in applyFilter clause - ",x}];
+        ];
+    res
+    }; 
+    
+    </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>1</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

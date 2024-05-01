@@ -1,0 +1,49 @@
+<analytic>
+	<analytic>.daas.admin.addConditionCode</analytic>
+	<code_text>{[exchName;conditionCode;filterList;cfgName]
+/load in table to add condition code to
+tab:.uc.getActiveParamValue[cfgName;`];
+/create list of values for new row, insert it into the table, and update the config parameter
+.daas.admin.editFilterConfigParam[tab upsert (raze(exchName;conditionCode; @[(count a)#0b;(where (a) in filterList);:;(count (where (a: 2_cols tab) in filterList))#1b]));cfgName;`]
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>exchName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>conditionCode</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>filterList</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<param>
+		<parameter>cfgName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

@@ -1,0 +1,118 @@
+<analytic>
+	<analytic>.daas.ddl.eod</analytic>
+	<code_text>{[mdb]
+	.log.out[.z.h;"Overwritting source for DB";mdb];
+	.daas.ddl.eodFailed:0b;
+  	procParams:();
+	
+    //Define source DB and mounted HDB process(es)
+    sdb:`$raze "_modified" vs string mdb;
+    proc:$[
+    	sdb like "*SECMASTER*";
+	        exec processName from .uc.getActiveParamValue[`.daas.cfg.processMap;`] where procType=`secMaster;
+	    sdb like "*ORDEREXEC*";
+        	exec processName from .uc.getActiveParamValue[`.daas.cfg.processMap;`] where dataClass=`transactionData,procType=`hdb;
+        	
+        	[
+	            procParams:`$lower -3#"/" vs string sdb;
+            	exec processName from .uc.getActiveParamValue[`.daas.cfg.processMap;`] where region=procParams[0], source=procParams[1], asset=procParams[2], procType=`hdb
+        	]
+    ];
+    
+    //Handle to hdb
+    procH:exec asyncHandle from database where name in proc;
+  
+  	//Handle to statsGen
+  	statsProc:"_" sv string (-1_procParams),`statsGen,.daas.cfg.env;
+	statsH:@[hopen;`$raze ":",/:(getenv`$statsProc,"_HOST";getenv`$statsProc,"_PORT");{:0b}];
+    if[not statsH;
+        .log.err[.z.h;"Could not connect to statsGen. Persisted stats will not be generated";sdb];
+    ];
+    
+    //Get tables/dates
+    d:raze dates,/:'key each ` sv/: mdb,/:dates:key mdb;
+    
+    //Block HDB process(es)
+	@[
+    	.daas.processing.blockHDB;
+    	procH;
+    	{
+      		.log.warn[.z.h;"Connection to HDB dropped. Reconnecting and trying again.";()];
+      		connectDb each proc;
+      		.daas.processing.blockHDB[procH]
+      	}
+    ];   
+    
+    //Remove affected table partitions from source database (rm for symlinks)
+	r:.daas.util.sysCmd["rm"]each 1_/:string .Q.par[sdb;] ./: d;
+	$[all r:-1h~/:type each r;
+    	.daas.ddl.eodFailed:1b;
+    any r;
+    	.log.warn[.z.h;"Failed to remove table partitions";d where r];
+    ];
+  
+	if[.daas.ddl.eodFailed;
+		.log.err[.z.h;"Backing out of EOD for DB";mdb];
+		.daas.processing.unlockHDB procH;
+		:()
+	];
+
+    //Move modified table partitions into source database
+    r:.daas.util.sysCmd["mv"]each (enlist each 1_/:string .Q.par[mdb;] ./: d),'enlist each 1_/:string ` sv/: sdb,'-1_/:d;
+  	$[all r:-1h~/:type each r;
+    	.daas.ddl.eodFailed:1b;
+    any r;
+    	.log.warn[.z.h;"Failed to move table partitions";d where r];
+    ];
+  
+  
+    if[.daas.ddl.eodFailed;
+    	.log.warn[.z.h;"EOD not completed for DB";mdb]
+    ];
+    
+    //Unblock HDB process(es)
+	@[
+    	.daas.processing.unlockHDB;
+    	procH;
+    	{
+      		.log.warn[.z.h;"Connection to HDB dropped. Reconnecting and trying again.";()];
+      		connectDb each proc;
+      		.daas.processing.unlockHDB[procH]
+      	}
+    ]; 
+    
+    @\:[procH;".ds.hdb.reloadDB[]"];
+    
+    // Removed modified DB
+    .daas.util.sysCmd["rm -r"] 1_string mdb;
+    
+  	// Run stats generation to account for removed data
+  	if[(0&lt;&gt;count procParams) and (not procParams[2] like "*[lL]2*");
+    	.log.out[.z.h;"Signalling statsGen process to regenerate stats for affected dates";dates];
+    	asset:(`eq`fi`fx`fut`idx`mn!(`equity;`fixedIncome;`foreignExchange;`future;`index;`moneyMarket))[lower procParams[2]];
+  		{[statsH;asset;date] neg[statsH] (`.daas.maint.histStatsGen;asset;date;date)}[statsH;asset;] each value each string dates
+    ];
+  
+  
+  	hclose statsH;
+  	.log.out[.z.h;"Completed EOD for DB";sdb];
+}</code_text>
+	<description>Replace database partitions with modified copies created during intraday changes</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>mdb</parameter>
+		<default></default>
+		<description>Full path to modified copy of database</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasDDL</analyticgroup>
+</analytic>

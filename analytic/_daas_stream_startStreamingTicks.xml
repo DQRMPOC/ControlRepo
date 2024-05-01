@@ -1,0 +1,62 @@
+<analytic>
+	<analytic>.daas.stream.startStreamingTicks</analytic>
+	<code_text>{[]
+.daas.stream.updCount:0;
+
+// store original upd function in .daas.stream.oldUpd. change upd function
+/if[()~key`.daas.stream.oldUpd;`.daas.stream.oldUpd set upd];
+/`upd set .daas.stream.upd;
+	
+// .daas.stream.streamingID is a unique streaming identifier used only on this process
+.daas.stream.streamingID:1i;
+
+// .daas.stream.streamTabs stores the current state of the streaming table for a given ID (all stream tabs are updated on every upd cycle but may be polling only)
+.daas.stream.streamTabs: enlist[-1i]!enlist (::);
+
+// store streaming sub information (id corresponds to the key of the .daas.stream.streamTabs)
+// a null period means you should publish on every upd cycle
+.daas.stream.streamSubs:([id:`long$()]subFunc:`$();params:();lastUpd:`timestamp$();lastPub:`timestamp$();period:`timespan$();tabs:(); updateFunc:`$(); pubFunc:`$();snapshotFunc:`$(); unsubFunc:`$());
+
+
+// timer function for timed publishing
+.d.prcl.addFunctToTimer[`.daas.stream.saPubTimed;enlist[::];0N;0N;50;1b];
+
+// .daas.stream.streamFuncMap is a table connecting table names, stream function names, stream update function names, and snapshot function names.
+// keyed on subFunc (stream sub function name, which appears as a key in .daas.stream.streamSubs).
+// a row in tabFuncMap is utilized when an update comes in for a table name t in "tabs"
+// subFunc gets called with a dict with keys `func`params`period and should (i) initialize streaming info for that sub (use .daas.stream.streamSub with the same input to do this and get a stream id "streamID") and (ii) initialize the streaming data in .daas.stream.streamTabs[streamID]. Needs to return this streamID. 
+// updateFunc[tabName;data;id] should update the data in .daas.stream.streamTabs[id] (the return value does not matter here, in order to allow upserts to .daas.stream.streamTabs instead of only total overwrites)
+// pubFunc[id] should run .sa.pub[id;data] where "data" is whatever you want to push to the client (.e.g. you might want to reference the sub params to determine whether to push table changes or the whole table)
+// snapshotFunc[id] should return initial data to be published to the client after the stream sub has been created (if not desired, use `dxEmptyFunction here)
+// unsubFunc 
+
+ .daas.stream.tabFuncMap:([subFunc:`$()]tabs:();updateFunc:`$();pubFunc:`$();snapshotFunc:`$();unsubFunc:`$());
+
+////////// streaming function registration ///////////
+// upsert functions to tabFuncMap
+$[.daas.cfg.asset like "*L2";
+	`.daas.stream.tabFuncMap upsert  `subFunc`tabs`updateFunc`pubFunc`snapshotFunc`unsubFunc!(`getTicks;(`$string[.daas.cfg.asset],/: string enlist`Update);`.daas.stream.tickUpd;`.daas.stream.tickPub;`.daas.stream.tickSnapshot;`.daas.stream.unsub);
+	(.ex.getInstanceName[]  like "*_transactionData_*")|(.ex.getInstanceName[]  like "*_amlData_*");
+	`.daas.stream.tabFuncMap upsert  `subFunc`tabs`updateFunc`pubFunc`snapshotFunc`unsubFunc!(`getTicks;{`$@[;0;lower] (string .daas.cfg.asset), @[;0;upper] x} each string .surv.util.getParamValue[`SURV_STREAMING_TABS;`];`.daas.stream.tickUpd;`.daas.stream.tickPub;`.daas.stream.tickSnapshot;`.daas.stream.unsub);
+	.ex.getInstanceName[]  like "*_udf_*";
+    `.daas.stream.tabFuncMap upsert  `subFunc`tabs`updateFunc`pubFunc`snapshotFunc`unsubFunc!(`getUDF;`rtudfres;`.daas.udf.streamRTudf;`.daas.stream.tickPub;`.daas.stream.tickSnapshot;`.daas.stream.unsub);
+    `.daas.stream.tabFuncMap upsert  `subFunc`tabs`updateFunc`pubFunc`snapshotFunc`unsubFunc!(`getTicks;(`$string[.daas.cfg.asset],/: string `Trade`Quote`OpenClose);`.daas.stream.tickUpd;`.daas.stream.tickPub;`.daas.stream.tickSnapshot;`.daas.stream.unsub)
+	];
+
+//////////////////////////////////////////////////////
+
+// every `subFunc`unsubFunc`snapshotFunc triple also needs to be registered with the QM streaming API with a .sa.registerfuncs[`subFunc;`unsubFunc;`snapshotFunc] call
+exec .sa.registerfuncs'[subFunc;unsubFunc;snapshotFunc] from .daas.stream.tabFuncMap;
+ }</code_text>
+	<description>startup analytic for the QM in the daas system</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

@@ -1,0 +1,32 @@
+<analytic>
+	<analytic>.daas.loadConfig.applyFilter</analytic>
+	<code_text>{[]
+	ops:(
+        "&lt;&gt;";
+        "&lt;";
+        "&gt;";
+        "=";
+        "&gt;=";
+        "&lt;=";
+        "within";
+        "in";
+        "and";
+        "or";
+        "~";
+        "not";
+        "like");
+
+    .daas.cfg.applyFilterFuncDict:(vops,`$ops)!raze 2#enlist vops:value each ops;
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

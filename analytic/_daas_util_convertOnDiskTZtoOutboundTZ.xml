@@ -1,0 +1,104 @@
+<analytic>
+	<analytic>.daas.util.convertOnDiskTZtoOutboundTZ</analytic>
+	<code_text>{[args;table]
+    
+    // early exit if there is no data
+    if[0=count table;
+      :delete date from table
+      ];
+    
+    // if there's no timestamp type cols then exit 
+    timestampCols:exec c from meta[table] where t="p";
+    if[not atLeastOneTimestampCol:1=count first timestampCols;
+        :delete date from table    
+        ];
+
+    //timeNamedCols:cols[table] where (upper cols[table]) like "*TIME*";
+    timeNamedCols:exec c from meta[table] where t="p";
+    
+    // LOGIC CLAUSES //
+
+    // Retrieve exchange time based columns 
+    // like exchTime, lastExchangeTime, etc
+    exchangeTimeCols:exec c from meta[table] where t="p", c&lt;&gt;`time, not any upper[c] like/: ("*INSERTTIME*";"TIMETRADE*";"TIMEQUOTE*");
+    atLeastOneExchangeTimeBasedCol:1&lt;=count exchangeTimeCols;
+
+    // Certain queries by exchangeTime
+    // will have their column name updated to `time when the data is exchangeTime
+    // exchTimeStatsBars will be true for queries that have this behaviour
+    statsBars:any `getBars`getStats~\:args[`API];
+    exchTimeQuery:`exchTime ~ args[`time];
+    exchTimeStatsBars:statsBars and exchTimeQuery; 
+    
+    // Split out exchTime cols &amp; nonExchTime cols because
+    // these may have different on disk timezones
+    
+    if[exchTimeStatsBars and `time in timeNamedCols;
+        exchangeTimeCols:exchangeTimeCols,`time
+        ];
+    
+    nonExchangeTimeCols:timeNamedCols except exchangeTimeCols;
+    
+    exchOnDiskTZ:.daas.util.getOnDiskTZ[`;`exchTime];
+    // output timezone specified 
+    // at this point we have selected from disk 
+    // and need to convert to requested outbound timezone
+    if[null args[`tz];args[`tz]:exchOnDiskTZ];
+    outboundTimeZone:args[`tz];
+    nonExchOnDiskTZ:.daas.util.getOnDiskTZ[`;`time];
+    
+    if[atLeastOneExchangeTimeBasedCol or exchTimeStatsBars; 
+        
+        convertedExchCols:.daas.util.convertBetweenTZ[;exchOnDiskTZ;outboundTimeZone] each (0!table)[exchangeTimeCols];
+        convertedNonExchCols:.daas.util.convertBetweenTZ[;nonExchOnDiskTZ;outboundTimeZone] each (0!table)[nonExchangeTimeCols];
+
+        table:![table;();0b;exchangeTimeCols!convertedExchCols];
+        table:![table;();0b;nonExchangeTimeCols!convertedNonExchCols];
+        
+        :delete date from table
+        
+        ];
+    
+    // when there's no exchange time based columns
+    // the behaviour for TZ conversions was as below
+    // TODO: Review if this is expected behaviour &amp; how transaction data should manage TZ conversions
+    col:convCols first where (convCols:`tradeTimestamp`time`eventTimestamp`internalTimestamp) in cols table;
+    
+    delete date from ![table;();0b;enlist[col]!enlist (`.daas.util.convertBetweenTZ;col;enlist nonExchOnDiskTZ;enlist outboundTimeZone)]
+
+    } </code_text>
+	<description>Converts a UTC time in a table to local time.
+If there is a timebar column it will be adjusted too</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>table</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

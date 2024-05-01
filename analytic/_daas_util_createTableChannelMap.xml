@@ -1,0 +1,26 @@
+<analytic>
+	<analytic>.daas.util.createTableChannelMap</analytic>
+	<code_text>{[]
+	    
+    .log.out[`channelMap;"Making synchronous call to delta control process to get channel information";()];
+    
+    //Make call to DC to investigate TP library to get list of channels and tables
+	tpChanMap:.ex.prh" tps!{x`publishChannel} each (.pl.getinstancedetails each tps:exec instance from 0!select from .pl.instance where process=`DS_TP)`paramvalues";
+    tabs:{`$exec tableName from .uc.getActiveParamValue[`.daas.cfg.tpRealtimeTables;x]}each  key tpChanMap;
+        
+    .log.out[`channelMap;"Synchronous call Complete";()];
+    
+    ([]channel:value tpChanMap;tabs)
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

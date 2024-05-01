@@ -1,0 +1,51 @@
+<analytic>
+	<analytic>.surv.master.clearAlertLogicCalcsFromUI</analytic>
+	<code_text>{[alert;dts]
+
+    .debug.clearAlertLogicCalcsFromUI:(`time`alert`dts)!(.z.p;alert;dts);
+    thisFunc:".surv.master.clearAlertLogicCalcsFromUI";
+    .log.out[.z.h;thisFunc;"started"];
+    
+    if[0=count string alert;
+        '"insert single alertName or ,-seperated list or word all"
+    ];
+    
+    if[(and/)(not "-" in dts;not "," in dts;null "D"$dts);
+        msg:"invalid dates: either D1-D2 or D1,D2,D3,... or D1";
+        .log.err[.z.h;thisFunc;msg];
+        '"invalid dates"
+    ];    
+    
+    cid:first exec cloneID from masterServiceStatus where instanceType=`gatekeeping;
+    extraArgs:`clearAlertLogicCalcsAlert`clearAlertLogicCalcsDts`clearAlertLogicCalcsMasterSide!(alert;dts;.surv.side);
+    batchJobs:.uc.getActiveParamValue[`SURV_BATCH_JOBS;`clearAlertLogicCalcs];
+    .surv.master.runBatchOnClone (`dt`batchName`batchJobs`instanceType`cloneID!(.z.D;`$"clearAlertLogicCalcs_",string .z.P;batchJobs;`gatekeeping;cid)),extraArgs;
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>alert</parameter>
+		<default></default>
+		<description>job details for batch</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>dts</parameter>
+		<default></default>
+		<description>jobs in batch</description>
+		<required>1</required>
+		<datatype>String</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatchUI</analyticgroup>
+</analytic>

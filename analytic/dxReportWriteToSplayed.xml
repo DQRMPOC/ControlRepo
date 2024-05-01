@@ -1,0 +1,67 @@
+<analytic>
+	<analytic>dxReportWriteToSplayed</analytic>
+	<code_text>{[reportData;dictn;reportStats]
+
+    dxReportTableCheck[reportData;`dxReportWriteToSpayed];
+	.sd.i:`reportData`dictn`reportStats!(reportData;dictn;reportStats);
+    if[not ""~e:dxReportDictionaryCheck[dictn;`ffpath`fffilename];
+     .log.err[.z.h;e:"dxReportWriteToSplayed : ",e;()];
+     'e];
+	
+    path:hsym .utils.checkForEnvVar[.utils.createString[dictn`ffpath;dictn]];
+    filename:`$.utils.createString[dictn`fffilename;dictn];
+
+	res:(` sv (path;filename;`)) set .Q.en[path;] reportData;
+	(res;`Action`ffpath`fffilename!(`dxReportWriteToSplayed;path;filename))
+ }</code_text>
+	<description>Report action analytic to save report results to a splayed table
+ffpath: full filepath to the directory you wish the file to be saved in
+fffilename: name for the splayed folder</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description></description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>ffpath</name>
+				<datatype>Character[]</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>fffilename</name>
+				<datatype>Character[]</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default></default>
+		<description>report statistics</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+	<analyticgroup>DxReportGenerator</analyticgroup>
+</analytic>

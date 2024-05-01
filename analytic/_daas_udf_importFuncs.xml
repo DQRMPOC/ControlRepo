@@ -1,0 +1,76 @@
+<analytic>
+	<analytic>.daas.udf.importFuncs</analytic>
+	<code_text>{[params]
+	
+	if[not 99h=type params;'"Input should be a dictionary with keys `dir`funcNames"];
+	if[any not `dir`funcNames in key params; '"Input should be a dictionary with keys `dir`funcNames"];
+
+	if[()~key`.daas.udf.fileDir;.daas.udf.fileDir: hsym .utils.checkForEnvVar "ENV=DELTADATA_HOME=/DaaSData/udfdir"];
+	
+	dir:params`dir;
+	funcNames:(),params`funcNames;
+	
+	if[not (-11=type dir) and 11=type funcNames; "`dir and `funcNames should be of symbol and symbol(-list) type, respectively"];
+	
+	outputTb:([funcName:`$()]hasDescription:"b"$();importSuccess:"b"$();errorReason:());
+	
+	qFiles:raze a where (a:key dir) like "*.q";
+	importNames: raze {`$-1 _ "." vs string x} each qFiles;
+	txtFiles:raze a where (a:key dir) like "*.txt";
+	txtNames:raze {`$-1 _ "." vs string x} each txtFiles;
+	
+	if[not ` in funcNames;
+		importNames: importNames b:where importNames in funcNames;
+		qFiles: qFiles b;
+		];
+		
+	hasTxt: importNames in txtNames;
+	qFiles:` sv' dir,' qFiles;
+	txtLookup: txtNames ? importNames;
+	txtFiles:` sv' dir,' txtFiles txtLookup;
+	
+	resTb:{[funcName;codeFile;txtFile;hasTxt]
+		description:$[not hasTxt;""; "\n" sv read0 txtFile];
+		func:"\n" sv read0 codeFile;
+		result: @[{(saveUDF x;1b)};`funcName`func`description!(funcName;func;description) ; {(raze string x;0b)}];
+		success:last result;
+		errorString:$[success;"";first result];
+		:`funcName`hasDescription`importSuccess`errorReason!(funcName;hasTxt;success;errorString);
+		}'[importNames;qFiles;txtFiles;hasTxt ];
+		
+	: 0! outputTb upsert resTb; 
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>dir</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>funcNames</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

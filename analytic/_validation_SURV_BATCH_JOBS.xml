@@ -1,0 +1,58 @@
+<analytic>
+	<analytic>.validation.SURV_BATCH_JOBS</analytic>
+	<code_text>{[config]
+    thisFunc:".validation.SURV_BATCH_JOBS";
+	batchJobs:config;
+    
+    .log.out[.z.h;thisFunc;"Running config validation function"];
+    
+    .al.callfunction[`.surv.batch.varInit][];
+    
+    if[1&lt;count distinct exec instanceType from batchJobs where not null instanceType;
+        '"instanceType entries must be the same for every row in the config"
+        ];
+    
+    if[any null "D"$exec startDate from batchJobs;
+        '"start date entires must be of the form yyyy.mm.dd"
+        ];
+    
+    typ:first exec instanceType from batchJobs where not null instanceType;
+    if[not count typ;
+        '"Must be at least one row in the config with a value for instanceType"
+        ];
+    
+    maxDt:max "D"$batchJobs`startDate;
+    noDatesToCheck: 7|max ,[;0] exec (.surv.freqTypes frequencyType)$frequency from batchJobs where frequencyType=`days;
+    
+    rs:raze  {[dt;batchJobs;typ]
+    update dt:dt from .al.callfunction[`.surv.batch.checkJobDependencies][;typ]  exec jobName from .al.callfunction[`.surv.batch.getBatchJobsForDate][`dt`batchJobs!(dt;batchJobs)]
+    }[;batchJobs;typ] each (maxDt + til noDatesToCheck);
+    
+    //if missing dependicies, throw an error
+    if[count errs:select from rs where not errMsg like "", dt = (first;dt) fby errMsg;
+    '"Frequency Checks Failed!\n ",",\n " sv {" " sv (string x`jobName;x`errMsg;" on test date ",(string first where .surv.weekdays=x[`dt] mod 7)," ",string x`dt)} each errs
+    ];
+    
+    1b
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatch</analyticgroup>
+</analytic>

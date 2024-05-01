@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.cmon.dash.fileSystemSize</analytic>
+	<code_text>{[serverName]
+	if[null serverName;
+ 		:([]K:`diskSize;V:enlist "File System Usage (%)")
+ 	 ];
+ 	 ignoreFs:("/boot"; "/dev*"; "/run*"; "/sys*");
+ 	 sStats:exec from (0!select by processName, filesystem from SystemFileSystem) where processName = (`$"systemInfo.",string serverName), not queryFail, not any filesystem like/:ignoreFs;
+ 	 :select V:("File System Usage(%) Total Available : ",.Q.f[2; sStats[`totalBytes] % 1024 xexp 3],"GB") from sStats;
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>serverName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

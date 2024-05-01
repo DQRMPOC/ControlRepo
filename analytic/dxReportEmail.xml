@@ -1,0 +1,98 @@
+<analytic>
+	<analytic>dxReportEmail</analytic>
+	<code_text>{[reportData;dictn;reportStats]
+    dxReportTableCheck[reportData;`dxReportEmail];    
+
+	
+    if[not ""~e:dxReportDictionaryCheck[dictn;`to`subject`body];
+       .log.err[.z.h;e:"dxReportEmail : ",e;()];
+       'e
+    ];
+
+	TO:`$"," vs string dictn[`to];
+	SUBJECT:.utils.createString[string dictn`subject;dictn];
+	BODY:.utils.createString[string dictn`body;dictn];
+	
+	$[`=dictn[`filelist];
+		[res:@[.pl.sendemail;(`to`sub`body!(TO;SUBJECT;BODY));{.log.error[.z.h;"dxReportEmail : Error sending email : ";x];'x}];
+		 attachlist:()!()];
+		[ATTACHMENTS:.utils.checkForEnvVar each "," vs string dictn[`filelist];
+		ATTACHMENTS:{c:0b;a:last "/" vs x;$[(-4#a) like ".*";[a:-4_a;c:1b];(-3#a) like ".*";[a:-3_a;c:1b];(-5#a) like ".*";[a:-5_a;c:1b];(-6#a) like ".*";[a:-6_a;c:1b];[()]];b:.utils.createString[a;y] except ".";if[not c;b:b except ":"];`$ssr[x;a;b]}[;dictn]each string ATTACHMENTS;
+		 attachlist:(enlist`Attachments)!enlist ATTACHMENTS;
+		 if[count `dxReportSaveToXLS`dxReportSaveToPDF inter raze first exec onComplete from subscriptionsPoll where runID=reportStats[`rptID], report=reportStats[`rptSchNameOrig];
+		 	whenComplete:enlist(`dxReportEmailOnComplete;();dictn;reportStats);
+		 	update onComplete:whenComplete from `.rpt.sentDocs where rptID=reportStats`rptID,time=last time;
+		 	:(`pending;((`Action`Recipients`Subject)!(`dxReportEmail;TO;SUBJECT)),attachlist);
+		   ];
+		 res:@[.pl.sendemail;(`to`sub`body`file_list!(TO;SUBJECT;BODY;ATTACHMENTS));{.log.error[.z.h;"dxReportEmail : Error sending email : ";x];'x}]]];
+
+		 if[res~0b; .log.error[.z.h;"dxReportEmail : Error sending email : no alert tickerplant running";()]; '"Error sending email : no alert tickerplant running"];
+	(res;((`Action`Recipients`Subject)!(`dxMailReport;TO;SUBJECT)),attachlist)
+ }</code_text>
+	<description>Report action analytic to send report results in an email
+to: email address to send the report results to
+subject: message to appear in the subject line
+body: text to appear in the email
+filelist: full paths to files to send with email</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description></description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>to</name>
+				<datatype>Email</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>subject</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>body</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>filelist</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default>"c"$()</default>
+		<description>report statistics</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+	<analyticgroup>DxReportGenerator</analyticgroup>
+</analytic>

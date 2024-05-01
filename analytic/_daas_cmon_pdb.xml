@@ -1,0 +1,22 @@
+<analytic>
+	<analytic>.daas.cmon.pdb</analytic>
+	<code_text>// Refinery (DaaS) Persisting Database Monitoring 2.0
+// Copyright (c) 2019 Kx Systems Inc
+
+
+.daas.cmon.pdb.init:{
+    .daas.cmon.addEventMetric[`pdb.rollover; `dict];
+ };
+
+    </code_text>
+	<description>Refinery (DaaS) Persisting Monitoring 2.0</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

@@ -1,0 +1,152 @@
+<analytic>
+	<analytic>.daas.processing.fmComplete</analytic>
+	<code_text>{[]
+
+    .log.out[.z.h;"Completion call recieved from PE";()];
+    pdInfo:.daas.trth.pd".daas.processing.pdInfo";
+
+    /move file to processed
+    processingFilePath:?[pdInfo;enlist(=;`jobID;.daas.cfg.jobID);();(first;`processingFilePath)];
+    processedFilePath:?[pdInfo;enlist(=;`jobID;.daas.cfg.jobID);();(first;`processedFilePath)];
+    
+    if[()~key `.daas.processing.feedFail;
+        .daas.processing.feedFail:0b;
+        ];
+
+    if[.daas.processing.feedFail;
+        /move to failed
+            split:"/" vs string processedFilePath;
+            processedFilePath:`$"/" sv @[split;-2+count split;:;"failed"];
+            ];
+
+
+    system "mv ",1_string[processingFilePath]," ",1_string[processedFilePath];
+
+    /move config to processed
+    fin:?[pdInfo;enlist(=;`jobID;.daas.cfg.jobID);();(first;`file)];
+    cfg:`$(raze (-7_string[fin]),"_trthConfig.csv");
+    dir:hsym `$getenv`PROCESSINGDAEMON_WATCH;
+    cfgPath:` sv (dir;cfg);
+    processedCfgPath:` sv (dir;`processed;cfg);
+
+  if[.daas.processing.feedFail;
+    /move to failed
+    .log.out[.z.h;"failed report, moving cfg to failed dir";()];
+    split:"/" vs string processedCfgPath;
+    processedCfgPath:`$"/" sv @[split;-2+count split;:;"failed"];
+    ];
+
+    system "mv ", 1_string[cfgPath], " ", 1_string[processedCfgPath];
+    
+    /exit here if failed to replay
+    if[.daas.processing.feedFail;
+        neg[.daas.trth.pd](".daas.processing.removeFromStack";`$first .fd.process;1b);
+        neg[.daas.trth.pd]"update status:`failed from `.daas.processing.pdInfo where jobID=",string .daas.cfg.jobID;
+        :();
+        ];
+
+	/if it is the only file in the job, we can trigger merge and clean up
+	/otherwise we need to wait for the other parts
+	/if it is a multipart report, wait until both are done
+	if[not fin like "*-of-1*";
+		/multi part report
+		completionStatus:exec status from pdInfo where file like (("_"sv 2#"_" vs string[fin]),"*"),not file=fin;
+		
+		/not all parts have been downloaded
+		if[not (1+count completionStatus)=value last "-" vs first -1#-1_"_"vs string[fin];
+			.log.out[.z.h;"Mutlipart report, not all parts downloaded yet. Stages complete -";fin];
+			neg[.daas.trth.pd](".daas.processing.removeFromStack";`$first .fd.process;1b);
+			:();
+			];
+			
+		if[not all `complete=completionStatus;
+			.log.out[.z.h;"Mutlipart report incomplete. Skipping merge while waiting for other parts to complete";fin];
+			//Send call to PD for shutdown and instance deletion
+			neg[.daas.trth.pd](".daas.processing.removeFromStack";`$first .fd.process;1b);
+			:();
+			];
+			
+		.log.out[.z.h;"Mutlipart report all stages complete";fin];
+		];
+	
+	
+	
+	//if this is the first week in the req, then we have to trim off sat-&gt;req start
+	if[`TRTH= first exec processingType from pdInfo where jobID=.daas.cfg.jobID;
+		tempDir:first exec tempDir from pdInfo where jobID=.daas.cfg.jobID;
+		.[.daas.processing.trimTrthData;(fin;tempDir);{.log.out[.z.h;"failed trimming data";x]}];
+		];
+	
+	
+	
+	
+	/move temp into merge daemon
+	tmpDir:?[pdInfo;enlist(=;`jobID;.daas.cfg.jobID);();(first;`tempDir)];
+	.log.out[.z.h;"moving tmp dir to mergeDir";()];
+	/@[system;"cp -r ",1_string[tmpDir]," ",getenv[`DAAS_MERGEDIR],"/";{.log.out[.z.h;"could not move tmp hdb to merge location";x]}];	
+	@[system;"mv ",1_string[tmpDir]," ",getenv[`DAAS_MERGEDIR],"/";{.log.out[.z.h;"could not move tmp hdb to merge location";x]}];
+	
+	
+	
+	
+	/load region 
+	.daas.cfg.regionConfig:(raze enlist a`key)!raze enlist(a:.uc.getActiveParamValue[`.daas.cfg.regionConfig;`])`value;
+	if[null region:.daas.cfg.regionConfig`trthDefaultRegion;
+		region:`EMEA;
+		];
+	hdbTarget:raze string[region],"/TR/",-1#-1_"/" vs string tmpDir;
+	rpt:last "/" vs string tmpDir;
+
+	.log.out[.z.h;"Dropping merge trigger";()];
+	/save down the merge trigger
+	mergeTriggerLoc:getenv[`DATACOPY_MERGETRIGGERS],"/";
+
+	/this needs to be dynamic for other modes
+    modeMatch:first (lower 1_-4_"_" vs string fin);
+	mode:$[modeMatch like "*recovery*";`replace;modeMatch like "*forceadd*";`forceAdd;`add];  
+	immediacy:$[first .uc.getActiveParamValue[`.daas.cfg.trth.frameworkSettings;`]`.daas.trth.runTrthEodIntraday;`immediate;`eod];
+	copy:first .uc.getActiveParamValue[`.daas.cfg.trth.frameworkSettings;`]`.daas.trth.runhdbCopyToSecondary;
+	
+	
+	@[{x 0: csv 0: y}[`$":",mergeTriggerLoc,rpt,"_Trigger.csv";];enlist `processingType`file`hdbTarget`mode`when`copy!(`trth;rpt;hdbTarget;mode;immediacy;copy);{.log.out[.z.h;"could not drop merge trigger";x]}];
+
+
+	/why is this named failure, when it's actually a success and does cleanup?
+	.al.loadgroupfunctions`.daas.trth;
+	.daas.eod.asset:(?[pdInfo;enlist(=;`jobID;.daas.cfg.jobID);();(first;`assetClass)])`short;	
+
+	@[.daas.trth.cleanUp;1_string tmpDir;{.log.out[.z.h;"cannot clean up trth files";x]}];
+	
+	/delete job
+	/neg[.daas.trth.pd]"delete from `.daas.processing.pdInfo where jobID=",string .daas.cfg.jobID;
+	
+	
+
+	/*** OLD CODE (unmodified)	***/
+	
+	/run trthEOD intraday if cfg is true
+	/.daas.trth.runTrthEodIntraday:first(flip .uc.getActiveParamValue[`.daas.cfg.trth.frameworkSettings;`])[`.daas.trth.runTrthEodIntraday];
+	/.if[.daas.trth.runTrthEodIntraday;
+	/	.log.out[.z.h;"Running trthEOD Intraday";()];
+	/	@[{.daas.trth.eod[".daas.trth.eod[];"];};.daas.trth.eod;{[err] .log.err[.z.p;"Error caught running .daas.trth.eod[]";(err)];}];
+	/];
+	
+	/***	***/
+		
+	//Send call to PD for shutdown and instance deletion
+	neg[.daas.trth.pd](".daas.processing.removeFromStack";`$first .fd.process;1b);
+
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

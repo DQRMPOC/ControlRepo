@@ -1,0 +1,103 @@
+<analytic>
+	<analytic>.daas.processing.pdCreateTRTHConfig</analytic>
+	<code_text>{[dir;file]
+
+	.log.out[.z.h;"picked up csv.gz from trth dir";file];
+	
+	/Check there is space to process unless disabled
+	if[first .uc.getActiveParamValue[`.daas.cfg.trth.frameworkSettings;`]`abortOnNotEnoughDisk;
+		if[not .[.daas.processing.checkSpace;(1_string dir;string file);{.log.out[.z.h;"Could not determine if there is enough space to unpack. Continuing anyway...";x];1b}];
+			.log.err[.z.h;"Not enough space to process. Aborting.";::];
+			.log.out[.z.h;"DELETING DOWNLOAD TO PREVENT DISK FILL";file];
+			@[system;"rm ",1_string[dir],"/",string[file];{.log.out[.z.h;"Could not delete";x]}];
+			/move .txt to aborted folder
+			.log.out[.z.h;"Moving .txt file to aborted directory";file];
+			@[system;"mv ",(1_string[dir],"/",string[file]),".notes.txt ",1_string[dir],"/aborted/",string[file],".notes.txt";{.log.out[.z.h;"Could not move txt file";x]}];			
+			.log.err[.z.h;"Aborted";::];
+			:();
+			];	
+		];
+	
+	/*** OLD CODE (modified) ***/
+	.d.d:dir;
+	.d.f:file; /debug
+	.daas.trth.file:file;
+	.daas.trth.dir:dir;
+	.daas.trth.fileSplit:"_" vs string[file];
+	
+	/getting info from report name
+	.daas.trth.fileDict:`status`reportID`reportName`filePart`statusMessage`reportDate!(`PENDING;(.daas.trth.fileSplit[0]);.daas.trth.fileSplit[1];.daas.trth.fileSplit[4];"";.daas.trth.fileSplit[2]);
+	.daas.trth.eventBusUpdate:`status`reportID`reportName`filePart`statusMessage!(`PENDING;.daas.trth.fileSplit[0];.daas.trth.fileSplit[1];.daas.trth.fileSplit[4];"");
+	
+	.daas.trth.statusMsg:(first .fd.process),": ",(.daas.trth.eventBusUpdate[`reportID],"_",.daas.trth.eventBusUpdate[`reportName]);
+	.daas.trth.eventBusUpdate[`statusMessage]:.daas.trth.statusMsg," - File part ",.daas.trth.fileDict[`filePart]," - has been picked up the Processing Daemon and is about to be processed by the feed";
+	
+	/update event bus
+	.log.out[.z.h;"Updating Event bus";.daas.trth.eventBusUpdate[`statusMessage]];
+	.daas.events.pubEventMessage[`trthUpdate;`;`;`;.daas.trth.eventBusUpdate];
+	
+	/get asset class
+	feedType::{[file]
+	
+	  /currently only supporting L2 &amp; LL2 for EQ,FUT
+	  /if file contains L2 or LL2, but is empty then report fail!
+	     if[(first "." vs last "RFA-" vs string file) like "*L2*"; 
+	        r:();
+	        if[file like "*RFA-EQUITYL2*";:"RFA-EQUITYL2"];
+	        if[file like "*RFA-FUTUREL2*";:"RFA-FUTUREL2"];
+	        if[file like "*RFA-EQUITYLL2*";:"RFA-EQUITYLL2"];
+	        if[file like "*RFA-FUTURELL2*";:"RFA-FUTURELL2"];
+	        ];
+	        
+	    if[file like "*RFA-EQUITY*";:"RFA-EQUITY"];
+	    if[file like "*RFA-FUTURE*";:"RFA-FUTURE"];
+	    if[file like "*RFA-FOREX*";:"RFA-FOREX"];
+	    if[file like "*RFA-FIXED*";:"RFA-FIXED"];
+	    if[file like "*RFA-INDEX*";:"RFA-INDEX"];
+	    if[file like "*RFA-MNYM*";:"RFA-MNYM"];
+	    if[file like "*RFA-LISOPT*";:"RFA-LISOPT"];
+	    }[file];
+	
+	/***	***/
+	
+	rptInfoDict:(`processingType`filePath`feedType`file)!(`TRTH;dir;feedType;file);
+	
+	/save cfg
+	.log.out[.z.h;"Saving config to disk";rptInfoDict];
+	cfgName:`$(-7_string[file]),"_trthConfig.csv";
+	
+	if[cfgName in key `$":",(getenv`PROCESSINGDAEMON_WATCH);
+	    .log.out[.z.h;"config already exists for ";cfgName];
+	    :();
+	];
+	    
+	(hsym `$(getenv`PROCESSINGDAEMON_WATCH),"/",string cfgName) 0: csv 0:enlist rptInfoDict
+
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

@@ -1,0 +1,59 @@
+<analytic>
+	<analytic>.daas.processing.readProcessingConfig</analytic>
+	<code_text>{[dir;file]
+
+	/insert into log	
+	.log.out[.z.h;"Picked up new config file";file];
+    cfg:(!).`$csv vs/: read0 (` sv (dir;file));
+    
+    /is there use case for when cfg[`processingType]&lt;&gt;`TRTH
+    if[`TRTH~cfg[`processingType];
+        `.daas.processing.pdInfo upsert info:.daas.processing.parseTRTHconfig[cfg];
+        ];
+    
+    /read job ID
+    newJob:info[`jobID];
+    .log.out[.z.h;"Assigned jobID";newJob];
+    
+    /Create instances upto the stacklimit
+    stLim:value getenv`TRTH_PROCESSING_STACKLIMIT;
+    $[stLim&gt;exec count i from .daas.processing.pdInfo where status=`processing;
+    
+    	[.log.out[.z.h;"Generating process instances";newJob];
+    	update status:`processing from `.daas.processing.pdInfo where jobID=newJob;
+    	.daas.processing.bootTRTHStack[newJob;`DS_RTE];
+    	.log.out[.z.h;"Waiting for processes to start";newJob]
+    	];
+    	
+    	[.log.out[.z.h;"TRTH Stack Limit reached. Changing job status to `pending`";newJob];
+    	update status:`pending from `.daas.processing.pdInfo where jobID=newJob;
+    	]
+    ];
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

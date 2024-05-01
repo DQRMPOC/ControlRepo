@@ -1,0 +1,47 @@
+<analytic>
+	<analytic>.daas.util.getCanCorMatchInds</analytic>
+	<code_text>{[tb;canCorData]
+		
+       
+       cancellations: select from canCorData where canCorType=`CAN;
+       corrections:select from canCorData where canCorType=`COR;
+       
+        //Output the indices from the trade data that have a match in the canCorData. The match is based on either the origTradeId or the origSequenceNumber.
+	   
+       
+       ind: raze {[tb;r] 
+      	whereClause:((&lt;;`time;(`r;enlist `time));(|;((\:;~);`tradeId;(`r;enlist `origTradeId));(=;`sequenceNumber;(`r;enlist `origSequenceNumber))));
+      	whereClause:$[20&gt;abs type r[`sym];enlist[(=;`sym;enlist r`sym)];enlist[(=;`sym;enlist value r`sym)]] , whereClause;
+	    :?[tb;whereClause;();(last;`i)];
+	   	}[tb;] each canCorData;
+       
+       isMatchable:exec ((not ""~/:origTradeId) or not null origSequenceNumber) from canCorData;
+       : update ind:ind[where isMatchable] from canCorData where isMatchable ; 
+ }
+ </code_text>
+	<description>given a tick table "tb" and a table of canCor records "canCorData", returns a table (columns  `ind`canCorType)  of length count canCorData that matches canCor records to tick records at those indices. A null entry  in `ind corresponds to "no match found".</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tb</parameter>
+		<default></default>
+		<description>tick table</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>canCorData</parameter>
+		<default></default>
+		<description>canCor record tb</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,87 @@
+<analytic>
+	<analytic>.daas.util.joinFills</analytic>
+	<code_text>{[table;fill;aggCol]
+    //Short circuit for no fill
+    if[not count fill;
+        :table;
+        ];
+    
+    //dict for available fills
+    clause:(!). flip (
+        (`forward   ;   {(fills;x)}                                                             );
+        (`zero      ;   {(^;0;x)}                                                               );
+        (`linear    ;   {(`.daas.util.fillmap.linear;(`table;enlist`time);(`table;enlist x))}   )
+        );
+    
+    //If the fill isn't one supported, return tab (should never be triggered due to param checking)
+    if[not fill in key clause;
+        :table;
+        ];
+   
+    //Not all tables have identifier (if been pivoted)
+    byClause:0b;
+    if[aggCol in cols table;
+        byClause:(enlist aggCol)!enlist aggCol;
+        ];
+    
+    /If forward we can fill all cols 
+    if[fill=`forward;
+        columns:cols table;
+        ];
+    
+    //If we are doing zero fill, we can only apply to numerical or temporal cols
+    if[fill=`zero;
+        columns:where (type each .Q.V table) in 5 6 7 8 9 12 19h;
+        ];
+        
+    //If we are doing linear fill, we can only apply to numerical cols
+    if[fill=`linear;
+        columns:where (type each .Q.V table) in 5 6 7 8 9h;
+        ];
+        
+    columns:columns except`time,aggCol;
+    columns:columns!clause[fill] @/: columns;
+    
+    //If we are doing a linear fill we need to update any int,short,long to floats
+    if[fill~`linear;
+        if[count castCols:where (type each .Q.V table) in 5 6 7h;
+            castClause:(!). (castCols;($;enlist`float),/:castCols);
+            table:0!![table;();0b;castClause];
+            ];
+        ];
+    
+    :![table;();byClause;columns];   
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>table</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>fill</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>aggCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

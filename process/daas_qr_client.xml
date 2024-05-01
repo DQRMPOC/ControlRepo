@@ -1,0 +1,15 @@
+<process>
+	<process>daas_qr_client</process>
+	<directory>/</directory>
+	<file>daas_qr_client.q</file>
+	<description></description>
+	<apps></apps>
+	<returnstat></returnstat>
+	<param>
+		<parameter>dc_additionalFiles</parameter>
+		<description>Additional Files</description>
+		<datatype>Symbol[]</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+</process>

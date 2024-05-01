@@ -1,0 +1,31 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.caeSettings</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>settingName</element>
+		<elementType>Symbol</elementType>
+		<elementValue>scalingMode</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>settingValue</element>
+		<elementType>Symbol</elementType>
+		<elementValue>singular</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>settingType</element>
+		<elementType>Symbol</elementType>
+		<elementValue>S</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>settingDescription</element>
+		<elementType>String</elementType>
+		<elementValue>Method for scaling cae - memory | performance | singular | manual</elementValue>
+	</param>
+</configparam>

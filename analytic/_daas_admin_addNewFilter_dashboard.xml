@@ -1,0 +1,71 @@
+<analytic>
+	<analytic>.daas.admin.addNewFilter_dashboard</analytic>
+	<code_text>{[daasTextInput;daasFilterType;daasAddFilterBool2]
+ if[daasAddFilterBool2;
+		if[null daasFilterType;daasFilterType:`trade];
+		selectedTable:.daas.admin.filterConfigSelect daasFilterType;
+		tab:value selectedTable;
+		if[null daasTextInput;
+		    .daas.admin.logOut [(.z.P;selectedTable;`$"FAIL - Filter Rule Name Cannot Be Null";0b;.pm.u;`filterConfigUpdate)];
+		    :([] (`boolValue,`counter);(0b,.z.P))
+		    ];
+		if[daasTextInput in cols tab;
+		    .daas.admin.logOut[(.z.P;selectedTable;`$"FAIL - Filter Rule Name Already Exists";0b;.pm.u;`filterConfigUpdate)];
+		    :([] (`boolValue,`counter);(0b,.z.P))
+		    ];
+        if[any "-+/!|#=()[]{}*&amp;^%&lt;&gt;$:;@~?,`\\\"'" in string daasTextInput;
+            .daas.admin.logOut[(.z.P;selectedTable;`$"FAIL - Invalid Character Used In Filter Rule Name";0b;.pm.u;`filterConfigUpdate)];
+            :([] (`boolValue,`counter);(0b,.z.P))
+            ];
+        if[" " in string daasTextInput;
+            .daas.admin.logOut[(.z.P;selectedTable;`$"FAIL - No Blank Spaces Allowed in Filter Rule Name ";0b;.pm.u;`filterConfigUpdate)];
+            :([] (`boolValue,`counter);(0b,.z.P))
+            ];
+        if[any "0123456789_" in first string daasTextInput;
+            .daas.admin.logOut[(.z.P;selectedTable;`$"FAIL - First Value of Filter Rule is Invalid";0b;.pm.u;`filterConfigUpdate)];
+            :([] (`boolValue,`counter);(0b,.z.P))
+            ];
+        if[any not (upper ((string daasTextInput) where not (string daasTextInput) in "0123456789_")) in .Q.A;
+            .daas.admin.logOut[(.z.P;selectedTable;`$"FAIL - Invalid Character Used";0b;.pm.u;`filterConfigUpdate)];
+            :([] (`boolValue,`counter);(0b,.z.P))
+            ];
+		0!((cols tab),daasTextInput) xcol update newFilter:(count tab)#0b from tab;
+		.daas.admin.editFilterConfigParam[0!((cols tab),daasTextInput) xcol update newFilter:(count tab)#0b from tab;selectedTable;`];
+		.daas.admin.logOut[(.z.P;selectedTable;`filterAdded;1b;.pm.u;`filterConfigUpdate)];
+		:([] (`boolValue,`counter);(0b,.z.P))
+	];
+	([] (`boolValue,`counter);(0b,.z.P))
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>daasTextInput</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>daasFilterType</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>daasAddFilterBool2</parameter>
+		<default>false</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

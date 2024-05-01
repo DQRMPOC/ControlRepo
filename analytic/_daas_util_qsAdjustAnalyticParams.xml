@@ -1,0 +1,61 @@
+<analytic>
+	<analytic>.daas.util.qsAdjustAnalyticParams</analytic>
+	<code_text>{[args]
+    //if symbol type then it is a classic analytics parameter
+    if[(symTypeArgs:11=analyticType:abs type args`analytics) and not `tick~args`granularityUnit;
+        if[any`=args`analytics;
+            args[`analytics]:.daas.cfg.tableFunctionMap[.daas.meta.getSchemaFromDataType[args`dataType]];
+            ];
+
+        /return components - can generalise to config if we have more like this
+        if[`return in args`analytics;
+            if[not any b:(a:`lastPrice`closePrice) in\: args`analytics;
+                args[`delCols]:a where not b;
+                ];
+            args[`analytics]:distinct raze `lastPrice`closePrice,args`analytics;
+            ];
+
+        :args;
+        ];
+    
+     if[symTypeArgs and `tick~args`granularityUnit;
+        :args;
+        ];
+   
+    
+    //otherwise we are constructing col clause from what should be already correct format
+    
+    //if not dict, then is singular and we turn col name to `aggregation
+    if[not 99=analyticType;
+        args[`analytics]:enlist[`aggregation]!enlist args`analytics;
+        ];
+    //otherwise, the col clause is as is listed
+    args
+ }</code_text>
+	<description>changes the table name into the name defined for the asset class, eg trade to eqTrade for equities</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,64 @@
+<analytic>
+	<analytic>.daas.merge.sortTab</analytic>
+	<code_text>{[dir;tab;enumTarget]
+    
+if[not null enumTarget;
+    `sym set get enumTarget;
+    ];
+
+/applying parted by first symbol type column
+if[not count pCol: first exec c from (meta tab) where t="s";
+	.log.out[.z.h;"no rows to sort for ",string[tab];()];
+	:();
+	];
+	
+tabDir:` sv (dir;tab;`);
+sortCols:$[`time in cols tab;pCol,`time;pCol];
+
+if[count sortCols;
+	.log.out[.z.h;"Sorting ",string tab;()];
+	sortCols xasc tabDir;
+	.log.out[.z.h;"Finished sorting ",string tab;()];
+	];
+         
+if[not null pCol;
+	.log.out[.z.h;"Applying `p# attribute to ",string tab;()];
+	@[tabDir;pCol;`p#];
+	colNames:@[tabDir;`.d];
+	@[tabDir;`.d;:;pCol,colNames except pCol];
+	.log.out[.z.h;"Applied `p# attribute to ",string tab;()];
+	];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>enumTarget</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

@@ -1,0 +1,9 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_TR_MN_SEC</tablegroup>
+	<tablename>coraxCapChange</tablename>
+	<tablename>coraxDividends</tablename>
+	<tablename>dividendRecord</tablename>
+	<tablename>splitRecord</tablename>
+	<tablename>symRefData</tablename>
+</schemagroup>

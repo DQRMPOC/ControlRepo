@@ -1,0 +1,67 @@
+<analytic>
+	<analytic>.daas.l2.buildDailySnapSeries</analytic>
+	<code_text>{[buildDate;symList;usePrevSnaps]
+
+	// load in default parameters if any aren't set already
+	.daas.l2.default.updateTb:`$string[.daas.cfg.asset],"Update";
+	.daas.l2.default.snapshotTb:`$string[lower .daas.cfg.asset],"intradaySnapShots";
+	.daas.l2.default.snapshotIdTb:`$string[lower .daas.cfg.asset],"intradaySnapShotsIds";
+	.daas.l2.default.dateWindow:7;
+	.daas.l2.default.snapTickThreshold:1000;
+
+	{if[()~key a:` sv `.daas.l2,x; a set value (` sv `.daas.l2.default,x)]} each `updateTb`snapshotTb`snapshotIdTb`dateWindow`snapTickThreshold;
+
+
+	// get syms to build book for
+	symList:$[` in symList;first value flip select distinct sym from .daas.l2.updateTb where date within buildDate + (neg .daas.l2.dateWindow;0);(),symList];
+	// find syms present in yesterday's snapshot
+	if[usePrevSnaps;prevSnapSyms:first value flip select distinct sym from .daas.l2.snapshotTb where date=buildDate-1];
+	// find syms we need to recalculate the starting snap for instead of using a snapshot (this is all syms if we say we don't want to use previous snaps)
+	recalcPrevSnapSyms:$[usePrevSnaps; symList except prevSnapSyms; symList];
+	
+	// fetch from previous day's snapshot table
+	startSnap: $[usePrevSnaps; ungroup delete date,matchInd from (select by sym,side from .daas.l2.snapshotTb where date=buildDate-1, sym in prevSnapSyms ) lj (select id by sym,matchInd from .daas.l2.snapshotIdTb where date=buildDate-1,sym in prevSnapSyms); ()];
+	
+	// recalculate yesterday's eod snapshot table
+	builtEodSnap:.daas.l2.getEodSnap[buildDate-1;recalcPrevSnapSyms];
+	
+	
+	startSnap,: builtEodSnap;
+	dbg2::`startSnap`symList!(startSnap;symList);
+	: $[count symList; 
+		update "j"$size,"j"$numOrders from `sym`time xasc raze dbg::.daas.l2.buildSymSnapSeries[buildDate;startSnap]'[symList];
+		update "j"$size,"j"$numOrders from `sym`time xasc .daas.l2.buildSymSnapSeries[buildDate;startSnap;`] ];
+ }</code_text>
+	<description>creates a time series of level 2 order book snapshots by using the L2 update tables and prior snapshots</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>buildDate</parameter>
+		<default>1970.01.01</default>
+		<description>date to create a snapshot time series for</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>symList</parameter>
+		<default></default>
+		<description>list of symbols to examine</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<param>
+		<parameter>usePrevSnaps</parameter>
+		<default>false</default>
+		<description>use the previous date's snapshot table in place of a computation for the initial snapshot state</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>daasL2</analyticgroup>
+</analytic>

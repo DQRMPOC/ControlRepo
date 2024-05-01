@@ -1,0 +1,47 @@
+<analytic>
+	<analytic>.daas.routing.procHandleDrop</analytic>
+	<code_text>{[procHandle]
+
+    .log.out[`refinery;"Handle dropped";procHandle];
+
+    downProc:first exec name from .ds.gw.getServerDetails[] where any procHandle=/:(syncHandle;asyncHandle);
+
+    if[not downProc in key .daas.routingMetaData;
+        :(::);
+    ];
+
+    .log.out[`refinery;;()] "Process down [ Process: ",string[downProc]," ] [ Handle: ",string[procHandle]," ]";
+
+    .daas.routingMetaData[downProc; `procUp]:0b;
+
+    if[not 0 = count .daas.routingMetaData[downProc]`failoverTo;
+        
+        .daas.routingMetaData[downProc; `primary]:0b;
+        
+        failoverUp:0!select from .daas.routingMetaData where procName in .daas.routingMetaData[downProc]`failoverTo, procUp;
+
+        .log.out[`refinery;;()] "Updating failover processes to primary [ Fail To: ",.Q.s1[failoverUp`procName]," ]";
+
+        update primary:1b from `.daas.routingMetaData where procName in failoverUp`procName;
+    ];
+
+  }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>procHandle</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

@@ -1,0 +1,36 @@
+<analytic>
+	<analytic>.daas.trth.getWatchList</analytic>
+	<code_text>{[x]
+$[not x ~ `allRics;
+	[
+		asset:.daas.util.getFeedName[x];
+		/ if (dictn`ricType) = ` then it returns emea_tr__rfavelocity_a so the call defaults to the default rfasubscription, this shouldent be the case it should be empty
+		tA: .uc.getActiveParamValue[`rfasubscription; asset];
+		tA: `mp`mbp xcol tA;
+		mp: exec mp from tA where mp &lt;&gt; `, mp &lt;&gt; `null;
+		mbp: exec mbp from tA where mbp &lt;&gt; `, mbp &lt;&gt; `null;
+		$[(count mp)&gt;0; :mp; :mbp]
+		];
+
+	`ricTypeNotInTypesList
+]
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>x</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

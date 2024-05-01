@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.events.initBusLogging</analytic>
+	<code_text>{[daysInMem;logDir]
+	.daas.events.replay:`.daas.events.eventRecords upsert;
+	// replay log files from the past week (these will be upserted to the eventRecords table)
+	oldLogs:{` sv x, `$string[.ex.getInstanceName[]],"_", ssr[;".";"_"]string y}[logDir] each .z.D - til daysInMem;
+	
+	{@[-11!;x;{.log.out[.z.h;"Error reading event log file: ", string[x]; y]} x]} each oldLogs where not ()~/:key each oldLogs;
+	`time xasc `.daas.events.eventRecords;
+	
+	// reconnect to today's logFile if it exists; otherwise create it
+	.daas.events.logFile:first oldLogs;
+	if[()~key .daas.events.logFile;.daas.events.logFile set ()];
+	.daas.events.logh:hopen .daas.events.logFile;
+ }</code_text>
+	<description>sets up logging for event messages. remember to also update the event bus EOD to switch log files.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>daysInMem</parameter>
+		<default></default>
+		<description>number of log days to maintain in memory</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<param>
+		<parameter>logDir</parameter>
+		<default></default>
+		<description>file directory handle</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

@@ -1,0 +1,29 @@
+<serviceclass>
+	<serviceclass>daas_qr_client</serviceclass>
+	<process>daas_qr_client</process>
+	<description></description>
+	<mode>DEFAULT</mode>
+	<param>
+		<parameter>dc_schemagroups</parameter>
+		<pvalue></pvalue>
+	</param>
+	<param>
+		<parameter>dc_schemas</parameter>
+		<pvalue></pvalue>
+	</param>
+	<shutdown>
+		<shutdownType>unexpected</shutdownType>
+		<action></action>
+		<publish>1</publish>
+	</shutdown>
+	<shutdown>
+		<shutdownType>proper</shutdownType>
+		<action></action>
+		<publish>1</publish>
+	</shutdown>
+	<shutdown>
+		<shutdownType>dc_timeoutAction</shutdownType>
+		<action></action>
+		<publish>1</publish>
+	</shutdown>
+</serviceclass>

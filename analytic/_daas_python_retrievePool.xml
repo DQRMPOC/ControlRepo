@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.python.retrievePool</analytic>
+	<code_text>{[resName]
+	
+    //get result, if timeout error skip, if another error, report and drop from getstrings
+     out:@[.p.e;raze"res = ",string[resName],".get(timeout=0.001)";{if[x~"e: ";:`timeout];`fail}];
+    
+     if[not any out~/:`fail`timeout;
+         res:.p.get[`res]`;
+         .[`.python.results;(resName;`result);:;res];
+         .[`.python.results;(resName;`success);:;1b];
+         ];
+     if[not out~`timeout;
+         .[`.python.results;(resName;`completed);:;1b];
+         ];
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>resName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPython</analyticgroup>
+</analytic>

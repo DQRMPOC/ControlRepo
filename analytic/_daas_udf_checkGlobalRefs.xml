@@ -1,0 +1,26 @@
+<analytic>
+	<analytic>.daas.udf.checkGlobalRefs</analytic>
+	<code_text>{[refList]
+
+	refList: refList except `,.daas.udf.allowedInternalFuncs;
+	: distinct (refList where not refList like ".[qQz].*"), refList where refList in .daas.udf.forbiddenFuncs;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>refList</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

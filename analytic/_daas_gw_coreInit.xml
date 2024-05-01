@@ -1,0 +1,52 @@
+<analytic>
+	<analytic>.daas.gw.coreInit</analytic>
+	<code_text>{[]
+
+	.daas.init.setMetaAndEventBusConn[];
+
+	.al.loadinstruction[`.daas.cfg.gwCfg];
+	.al.loadinstruction[`.daas.join.common];
+    
+	/ Load table meta data
+	.al.loadinstruction[`.daas.meta.common];
+	.daas.meta.init[];
+    
+	/ Monitoring 2.0 - GW metrics
+	.al.loadinstruction each `.daas.cmon.gw`.daas.cmon.failover;
+	.daas.cmon.gw.init[];
+	.daas.cmon.failover.init[];
+
+	$[(first .fd.process) like "*ddl*";
+		[
+			.daas.routing.subToMetaTables[];
+			.daas.cfg.tickColumns:`i,/:.daas.cfg.tickColumns;
+			];
+	.daas.cfg.procType~`gw;
+		[
+			.al.loadinstruction[`.daas.cfg.routingMetaGWInit];
+			.daas.infra.updateConnGroup 1b;
+			]
+	];
+
+	// query logging setup
+	.daas.log.logDir:hsym .utils.checkForEnvVar "ENV=DELTADATA_HOME=/DaaSData/querylog";
+	.daas.log.logDays:3;
+	.daas.log.initQueryLogging[.daas.log.logDays;.daas.log.logDir];
+	
+	.al.getfunction `.daas.infra.gwEod;
+	.daas.util.initEod[23:59:59.999;`.daas.infra.gwEod];
+	.daas.async.failureFlag:0b;
+
+ }</code_text>
+	<description>Initial state function for GW</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

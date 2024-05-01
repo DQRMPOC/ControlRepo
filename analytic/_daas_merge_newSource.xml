@@ -1,0 +1,67 @@
+<analytic>
+	<analytic>.daas.merge.newSource</analytic>
+	<code_text>{[sourceDir;targetDir;copy;mode;immediate]
+
+
+	c:count sourceDts:"D"$/:string -1_key sourceDir;
+	
+	/add to queue
+	`.daas.merge.mergeJobs upsert flip (neg[c]?0Ng;c#`queued;c#targetDir;c#sourceDir;reverse sourceDts;c#.z.P;c#0N;c#mode;immediate;copy);
+	.log.out[.z.h;"adding ",string[c]," jobs to queue";()]; 
+ 
+    readyJobs:.daas.merge.checkQueue[];
+ 	
+ 	/if there is overlap on current jobs then there may be no jobs
+ 	if[readyJobs~0b;
+ 		:();
+ 		];
+ 	
+ 	.daas.merge.bootSlave each exec jobID from readyJobs;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>sourceDir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>targetDir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>copy</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>mode</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>immediate</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

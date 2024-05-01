@@ -1,0 +1,17 @@
+<analytic>
+	<analytic>.daas.cfg.routingMetaSysProcInit</analytic>
+	<code_text>.al.loadgroupfunctions`daasRouting;
+.daas.events.resp.sysProcDataRequest::.daas.routing.registerSysProcess;
+/registering the process with the gw
+.daas.events.runOnInitialBusCon[`.daas.routing.registerSysProcess];</code_text>
+	<description>Parameters that are defined on startup of a qs process</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

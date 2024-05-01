@@ -1,0 +1,62 @@
+<analytic>
+	<analytic>.daas.admin.dash.rfaWatchList.upload</analytic>
+	<code_text>{[dir;file]
+.log.out[.z.h;"Uploading of Watchlist file STARTING ";file];
+.log.out[.z.h; "Overwriting WatchList: ",string[file]," from DIR: ",string dir; ()];
+//open a handle to main DC process to get rfaList
+h:hopen`$(":",(raze .fd.prhost),":",(raze .fd.prport),":Administrator:password");
+rfaList:h".uc.getActiveParamOverrides[`rfasubscription]";
+hclose h;
+//modify the list to cut out pre and post fixes
+rfaList:16_/:(string rfaList);
+rfaList:-2_/:rfaList;
+//check the file against each feedhandler name in rfaSub and find the one it matches
+rfaSub:`$(rfaList (first where(((string file) til (last((string file) ss ".csv"))) like/: ("*",/:rfaList))));
+//retrieve the assetClass
+.daas.admin.rfaAssetTypes:`fut`futL2`futL2Legacy`fi`eq`eqL2`eqL2Legacy`fx`idx`mn;
+assetClass:last .daas.admin.rfaAssetTypes where[(string rfaSub) like/: ("*_",/:(string .daas.admin.rfaAssetTypes),\:"_*")];
+//map file name to assetType watch list name - get config from the admin process
+assetTypeA:`$((string rfaSub),"_a");
+assetTypeB:`$((string rfaSub),"_b");
+//get the dir + file - sym
+dir:.utils.checkForEnvVar[dir];
+filePath:`$"/" sv (string dir; string file);
+.log.out[.z.h;"Uploading of Watchlist file PROCESSING ";file];
+//load csv into memory
+table: ("SS"; enlist ",") 0: filePath;
+.daas.events.pubEventMessage[`setRfaSubs;`WatchlistUploaded;`;`;((`assetClass`csvPath`rfaSub`table)!(assetClass;filePath;rfaSub;table))];
+.log.out[.z.h; "WatchLists updated: ",string[assetTypeA]," &amp; ",string[assetTypeB]; ()];
+
+.log.out[.z.h; "Renaming file ",string[file]; ()];
+newFile:string[file],".", raze ":" vs string .z.Z;
+newPath:"/" sv (string[dir]; newFile);
+system "mv ",1_string[filePath] ," ",1_newPath;
+.log.out[.z.h;"File renamed";()];
+.log.out[.z.h;"Uploading of Watchlist file COMPLETED ";file];
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.admin.dash.rfaWatchList</analyticgroup>
+</analytic>

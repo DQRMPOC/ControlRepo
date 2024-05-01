@@ -1,0 +1,35 @@
+<workflow>
+<wfName>START_ADMIN_B</wfName>
+	<branch>
+		<tName1>ds_starter_alert_b.1</tName1>
+		<tName2></tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>daas_adminGw_b.1</tName1>
+		<tName2>daas_hdbcopy_b.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>daas_adminGw_b.1</tName1>
+		<tName2>daas_dcWrite_b.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>daas_adminGw_b.1</tName1>
+		<tName2>daas_watchListUpload_b.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+</workflow>

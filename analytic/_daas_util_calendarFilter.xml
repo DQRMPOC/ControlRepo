@@ -1,0 +1,74 @@
+<analytic>
+	<analytic>.daas.util.calendarFilter</analytic>
+	<code_text>{[params;res]
+
+	venueID:.daas.cfg.secMasterIdentifierMap[params[`identifier]];
+	dateCol:(.daas.cfg.secMasterWhereClause[params`dataType])`dateCol;
+	
+	//Return raw data unless otherwise specified
+	if[not `calendarType in key params;
+		:res
+	];
+	
+	if[` in params[`symList];
+		params[`symList]:?[res;();();(distinct;venueID)]
+	];
+	
+	
+	//Collect data for each date in range
+	$[`endDate in key params;
+		[m:();
+		while[params[`date]&lt;=params[`endDate];
+			$[params[`date] &lt; ?[res;enlist(or;(like;`event;"*[oO]pen");(like;`event;"*[cC]lose"));();(min;dateCol)];
+				();
+				m,:enlist () xkey ,'/[l where (count each l:($[`isOpen in params`calendarType;(venueID;`date) xkey .daas.util.calendarIsOpen[params;res];()];
+							$[`openClose in params`calendarType;(venueID;`date) xkey .daas.util.calendarOpenClose[params;res];()];
+							$[`nextDay in params`calendarType;(venueID;`date) xkey .daas.util.calendarNextPrevDay[params;res;`n];()];
+							$[`prevDay in params`calendarType;(venueID;`date) xkey .daas.util.calendarNextPrevDay[params;res;`p];()]))&gt;0]];
+			params[`date]+:1
+			];
+		:raze m];
+	
+	//Collect data for only date provided
+		$[params[`date] &lt; ?[res;enlist(or;(like;`event;"*[oO]pen");(like;`event;"*[cC]lose"));();(min;dateCol)];
+			:res;
+			:() xkey ,'/[l where (count each l:($[`isOpen in params`calendarType;(venueID;`date) xkey .daas.util.calendarIsOpen[params;res];()];
+							$[`openClose in params`calendarType;(venueID;`date) xkey .daas.util.calendarOpenClose[params;res];()];
+							$[`nextDay in params`calendarType;(venueID;`date) xkey .daas.util.calendarNextPrevDay[params;res;`n];()];
+							$[`prevDay in params`calendarType;(venueID;`date) xkey .daas.util.calendarNextPrevDay[params;res;`p];()]))&gt;0]];
+	];
+ }</code_text>
+	<description>Passes params and interim getRef results to appropriate .daas.util.calendar* analytic</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>getRef params</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>Result from select performed earlier in getRef</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

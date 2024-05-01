@@ -1,0 +1,7 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_FI_RTE</tablegroup>
+	<tablename>fiQuote</tablename>
+	<tablename>fiSummary</tablename>
+	<tablename>fiTrade</tablename>
+</schemagroup>

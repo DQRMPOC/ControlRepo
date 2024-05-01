@@ -1,0 +1,21 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_REF_DATA</tablegroup>
+	<tablename>EODPrices</tablename>
+	<tablename>MICInfo</tablename>
+	<tablename>accounts</tablename>
+	<tablename>calendarRef</tablename>
+	<tablename>clientInstrumentWatchlist</tablename>
+	<tablename>clientRefData</tablename>
+	<tablename>coraxCapChange</tablename>
+	<tablename>coraxDividends</tablename>
+	<tablename>dividendRecord</tablename>
+	<tablename>instrTaxonomy</tablename>
+	<tablename>instrumentRefData</tablename>
+	<tablename>materialEvents</tablename>
+	<tablename>restrictedSecurityList</tablename>
+	<tablename>splitRecord</tablename>
+	<tablename>symRefData</tablename>
+	<tablename>transactionTypes</tablename>
+	<tablename>wallCrossList</tablename>
+</schemagroup>

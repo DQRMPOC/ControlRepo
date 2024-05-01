@@ -1,0 +1,45 @@
+<analytic>
+	<analytic>.daas.infra.processCreation</analytic>
+	<code_text>{[p]
+params:l!p l:(key p) except `procName`procType;
+
+params[l]:value each p l:where 10=type each params;
+
+.log.out[.z.h;"Creating process ",string p`procName;p];
+
+/.[.pl.createprinstance;(p`procName;p`procType;params);{.log.err[.z.h;"Failed to create process";x]}];
+
+//Use the following to allow processCreation to be run from any process
+//Commented out to test. Was throwing errors when run in DC IDE 
+.ex.prh(".pl.createprinstance";p`procName;p`procType;params);
+
+.log.out[.z.h;"Process created.";()];
+
+ }</code_text>
+	<description>Analytic used to create processes from config parameter</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>p</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

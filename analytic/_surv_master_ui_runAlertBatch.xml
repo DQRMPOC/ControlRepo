@@ -1,0 +1,90 @@
+<analytic>
+	<analytic>.surv.master.ui.runAlertBatch</analytic>
+	<code_text>{[args;alertFilters;additionalParams;waitForDataLoad]
+    //EXAMPLE ARGS
+    //`alerts`alertFilters`dt`batchName`assetClass`product`startTime`endTime`timeZone`region`vendor!(`spoofing`largeOrder;([]tableName:enlist `;filters:`);2015.04.17;`ATR_spoofing_comm_new;`commodity;`;0Nn;0Nn;`;`;`)
+    if[.surv.debug.active;.debug.runAlertBatchUIArgs:`args`alertFilters`additionalParams!(args;alertFilters;additionalParams)];
+    args[`alertFilters]:alertFilters;
+    args[`alerts]:`$trim each "," vs {$[10h=abs type x;x;string x]} args`alerts;
+    thisFunc:".surv.master.ui.runAlertBatch";
+	wfName:.surv.assetPrefixes[args`assetClass];
+    batchConfig:(0#.surv.util.getParamValue[`SURV_ALERT_BATCH;`]) upsert ([]alert:args`alerts;assetClass:args`assetClass);
+    batchConfig:(cols batchConfig)#batchConfig,\: additionalParams[`param]!additionalParams`values;
+    batchArgs:(`batchConfig`dt`reuseBenchmarks`batchName`instanceType`assetClass`wfName`alertFilters`replicated)!(batchConfig;args`dt;0b;args`batchName;`replay;args`assetClass;wfName;args`alertFilters;1b);
+    /if[.surv.util.isStringTrue[.surv.setting.alertBatch.scheduleOnTrigger];
+    if[waitForDataLoad;
+        batchArgs,:enlist[`schedTriggerFunction]!enlist`.surv.dl.trig.checkIfAlertBatchFilesLoadedFromMeta
+        ];
+
+     .surv.master.runBatchOnClone batchArgs
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>alerts</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>dt</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>batchName</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>assetClass</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>alertFilters</parameter>
+		<default>SURV_ALERT_FILTERS</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Config</datatype>
+	</param>
+	<param>
+		<parameter>additionalParams</parameter>
+		<default>SURV_ADDITIONAL_ALERT_PARAMS</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Config</datatype>
+	</param>
+	<param>
+		<parameter>waitForDataLoad</parameter>
+		<default>true</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatchUI</analyticgroup>
+</analytic>

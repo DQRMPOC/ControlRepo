@@ -1,0 +1,16 @@
+<dataconnectiongroup>
+	<ucname>delta_install_default</ucname>
+	<grpid>refineryMonitoring</grpid>
+	<key>
+		<keyname>DBS</keyname>
+		<val>instance.global_rdb_monitoringCapture,</val>
+	</key>
+	<key>
+		<keyname>CONN_SELECTOR</keyname>
+		<val>DEFAULT</val>
+	</key>
+	<key>
+		<keyname>PRIMARY</keyname>
+		<val>primary,</val>
+	</key>
+</dataconnectiongroup>

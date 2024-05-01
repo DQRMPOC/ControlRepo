@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.util.barStatTags</analytic>
+	<code_text>{[params]
+    params:.daas.util.adjustParams[`getBars;params];
+	tags:(`exchTime`time!`exchangeTime`insertTime)[params`time];
+	dataTypeFilter:(`trade`quote!`tradeFilter`quoteFilter)[params`dataType];
+	if[not `filterRule in key params;
+		params[`filterRule]:`noFilter;
+		];
+	(`timeCol,dataTypeFilter,`applyCanCor)!(tags;params`filterRule;params`applyCanCor)
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

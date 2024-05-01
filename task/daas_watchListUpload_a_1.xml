@@ -1,0 +1,11 @@
+<task>
+	<taskName>daas_watchListUpload_a.1</taskName>
+	<taskEnabled>0</taskEnabled>
+	<taskManual>0</taskManual>
+	<taskType>Once</taskType>
+	<prInsName>daas_watchListUpload_a</prInsName>
+	<stDateTime></stDateTime>
+	<endDateTime></endDateTime>
+	<rptFrequency>None</rptFrequency>
+	<rptInterval>0</rptInterval>
+</task>

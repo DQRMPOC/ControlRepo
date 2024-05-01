@@ -1,0 +1,45 @@
+<analytic>
+	<analytic>.daas.pdb.eod</analytic>
+	<code_text>{[]
+	.daas.cmon.sendMetricsFlush[`pdb.rollover; `state`eodDate!(`started; .z.D - 1); 1b];
+    eodStartTime:.z.P;
+
+    .log.out[`pdb;"PDB EOD rollover kicking off"; eodStartTime];
+	//Flush tables that write intraday
+	.daas.pdb.writeTables[];
+
+	//Create date dir 
+	.daas.pdb.createDir .daas.cfg.hdbDateDir;
+
+    .log.out[`pdb;"Starting EOD write down and Sort";()];
+	//Iterate through tables, applying required function
+	.daas.pdb.eodWriteAndSort each .daas.pdb.tableSettings;
+
+    .daas.cmon.sendMetricsFlush[`pdb.rollover; `state`eodDate!(`reloading; .z.D - 1); 1b];
+	
+	//Flush table in pdb when sort is complete
+	.daas.pdb.flushAndReload[];
+	//Clear PDB directory
+	rmdirStatus:@[system;"rmdir ",1_string .daas.cfg.persistDateDir;{(`RMDIRFAIL;x)}];
+	if[`RMDIRFAIL ~ rmdirStatus;
+		.log.err[`pdb;;()] "Removing the persisted directory ",(1_ string .daas.cfg.persistDateDir)," Failed with the error ",last rmdirStatus
+	 ];
+	.daas.pdb.refreshTables[];
+
+    .daas.cmon.sendMetrics[`pdb.rollover; `state`eodDate`timeTaken!(`complete; .z.D - 1; .z.P - eodStartTime)];
+    .daas.cmon.rtc.eod[];
+
+	.log.out[`pdb;"PDB EOD Complete";()];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPDB</analyticgroup>
+</analytic>

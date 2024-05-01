@@ -1,0 +1,265 @@
+<analytic>
+	<analytic>.daas.util.checkSensibleParams</analytic>
+	<code_text>{[functionName;args]
+    if[count a:a where raze not (args a) in' .daas.cfg.paramOptionDict a:(key args) inter key .daas.cfg.paramOptionDict;
+        :a;
+        ];
+
+    if[not `dataType in key args;
+        args[`dataType]:`;
+        ];
+
+    if[`filterRule in key args;
+        if[args[`dataType] in `trade`quote;
+            if[1&lt;count a:args`filterRule;
+                :a;
+                ];
+            if[not(a:first args`filterRule) in .daas.cfg.filterRuleOptionsDict args`dataType;
+                :a;
+                ];
+            ];
+
+        if[args[`dataType] in `taq`taqWide;
+            if[2&lt;count a:args`filterRule;
+                :a;
+                ];
+            if[not (a:first args`filterRule) in .daas.cfg.filterRuleOptionsDict`trade;
+                :a;
+                ]
+            if[2~count args`filterRule;
+                if[not (a:last args`filterRule) in .daas.cfg.filterRuleOptionsDict`quote;
+                    :a;
+                ];
+            ];
+        ];
+    ];
+    
+    if[not args[`dataType] in (exec distinct raze dataTypes from .daas.routingMetaData);
+        :"No available databases for dataType [ ",(string args`dataType)," ]";
+        ];
+    
+    if[`assetClass in key args;
+        if[not args[`assetClass] in (exec distinct raze assetClass from .daas.routingMetaData);
+            :"No available databases for assetClass [ ",(string args`assetClass)," ]";
+            ];
+        ];
+    
+    if[functionName=`getStats;
+        $[99h=type res:.daas.util.checkSensibleParamsGetStats[functionName;args];
+            args:res;
+            :res
+            ];
+        ];
+        
+    if[functionName=`getTicks;
+        $[99h=type res:.daas.util.checkSensibleParamsGetTicks[functionName;args];
+            args:res;
+            :res
+            ];
+        ];
+        
+    if[functionName=`getBars;
+        $[99h=type res:.daas.util.checkSensibleParamsGetBars[functionName;args];
+            args:res;
+            :res
+            ];
+        ];
+        
+    if[functionName=`getBenchmarks;
+        $[99h=type res:.daas.util.checkSensibleParamsGetBenchmarks[functionName;args];
+            args:res;
+            :res
+            ];
+        ];  
+        
+    if[(any `timeZone`inputTimeZone`outputTimeZone in k) and (not `timeZone in k) and any not `inputTimeZone`outputTimeZone in k:key args;
+        :`timeZone`inputTimeZone`outputTimeZone
+        ];
+        
+    if[(args[`dataType] in `taq`taqWide) and not functionName=`getTicks;
+        :"taq is getTicks only";
+        ];
+        
+    if[(args[`dataType] in `depth`rawDepth) and not functionName=`getTicks;
+        :"depth is getTicks only";
+        ];
+        
+    if[(args[`dataType] in `auction) and not functionName=`getTicks;
+        :"auction is getTicks only";
+        ];
+        
+    if[(args[`dataType] in `openInterest) and not functionName=`getTicks;
+        :"openInterest is getTicks only";
+        ];
+        
+    if[args[`dataType] in `depth`rawDepth;
+        if[not args[`assetClass] in `equity`future;
+            :"l2 is futures and equities only";
+            ];
+        if[-1=type args`applyCanCor;
+            if[args`applyCanCor;
+                :"canCor not supported with depth";
+                ];
+            ];
+        if[-1=type args`adjustCorAx;
+            if[args`adjustCorAx;
+                :"corAx not supported with depth";
+                ];
+            ];
+        ];
+        
+    //l2 logicS
+    if[`temporality in key args;
+        if[(args[`temporality]=`snapshot) and (not `depth=args`dataType) and not args[`assetClass] in `equity`future;
+            :"snapshot is depth only - currently only equity and futures";
+            ];
+        ];
+        
+    if[`depth=args`dataType; 
+        if[args[`assetClass] in `equity`future;
+            if[`temporality in key args;
+                if[`slice=args[`temporality];
+                    :"slice temporality not supported with depth";
+                ];
+                if[(args[`temporality]=`snapshot);
+                    if[not (&lt;&gt;) . `startTime`endTime in key args;
+                        :"startTime or endTime must be handed for snapshot functionality";
+                        ];
+                    if[`endTime in key args;
+                        if[not 12=abs type args`endTime;
+                            args[`endTime]:args[`endDate]+args[`endTime];
+                            ];
+                        if[not all (`date$args[`endTime]) within args`startDate`endDate ;
+                            :"";
+                            ];
+                        ];
+                    if[`startTime in key args;
+                        if[not 12=abs type args`startTime;
+                            args[`startTime]:args[`startDate]+args[`startTime];
+                            ];
+                        if[not all (`date$args[`startTime]) within args`startDate`endDate ;
+                            :"";
+                            ];
+                        ];
+                    ];
+                ];
+            ];
+        ];
+
+    if[`temporality in key args;
+        if[(args[`temporality]=`snapshot) and (not `depth=args`dataType);
+            :"snapshot temporality is for depth only";
+            ];
+        ];
+
+    if[(not `depth=args`dataType) and `numLevels in key args;
+        :"numLevels parameter is only for depth dataType";
+        ];  
+
+    if[functionName=`getRef;
+        $[99h=type res:.daas.util.checkSensibleParamsGetRef[functionName;args];
+            args:res;
+            :res
+            ];
+       ];
+    if[(not functionName=`getRef) and args[`dataType] in `refData`corAx`calendar;
+        :string[args`dataType]," dataType is getRef only";
+        ];    
+
+    if[(`getBenchmarks~functionName) and `columns in key args;
+        mCols:`eventTimestamp`instrumentID`internalOrderID;
+        a:args[`columns]where args[`columns] in mCols;
+        k:mCols where not mCols in a;
+            if[not (count k)~0;
+                .daas.log.logErrorAndSignal["Mandatory Columns missing, must query `eventTimestamp`instrumentID`internalOrderID";`]
+                ];
+        ];
+
+    if[(`analytics in key args)and functionName=`getSummary;
+        if[count k:k where not (k:raze enlist each args`analytics) in `,.daas.cfg.eqSummaryCols;
+            :k;
+            ];
+        ];
+        
+    if[(`summary=args`dataType) and not functionName=`getSummary;
+        :summary;
+        ];
+
+    // streaming summary check
+    if[(functionName=`getSummary) and `stream in key args; 
+        if[args`stream;
+                $[ not (args`updType) in `deltas`full;
+                    :"updType must be `deltas or `full";
+                    not (args`startType)  in `daily`current;
+                    :"startType must be `daily or `current";
+                    ()
+                    ];
+            ];
+        ];    
+    if[`tradeFlag in key args;
+        if[ (not ` in args`tradeFlag) and not `trade=args`dataType;
+            :"tradeFlag can only be used with trade data";
+            ];
+        ];
+
+    if[(`applyCanCor in key args) and not args[`dataType] in `trade;
+        if[args`applyCanCor;
+            :"canCor can be only be applied to trade";
+            ];
+        ];
+
+    if[`time in key args;
+        if[not args[`time] in key .daas.meta.cfg.timeParamMap;
+            :"Invalid time parameter [ ",(string args`time),"]"
+            ];
+            
+        if[(not args[`dataType] in `order`execution) and args[`time]~`eventTime;
+            :"eventTime may only be used with `order or `execution dataTypes";
+            ];
+        
+        if[(not args[`dataType]~`execution) and args[`time]~`tradeTime;
+            :"tradeTime may only be used with `execution dataType";
+            ];
+        ];
+    
+    if[`idType in key args;
+        if[not args[`idType] in .daas.meta.cfg.symColList,key .daas.cfg.idTypeDescription;
+           :"Invalid idType parameter [ ",string[args `idType]," ]"
+            ];
+        ];
+    ()	
+    }</code_text>
+	<description>Checks parameter options are correct</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

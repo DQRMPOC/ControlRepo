@@ -1,0 +1,9 @@
+<analyticgroup>
+	<name>daasLog</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.log.QRErrorTrap</analytic>
+	<analytic>.daas.log.eodGwLogging</analytic>
+	<analytic>.daas.log.initQueryLogging</analytic>
+	<analytic>.daas.log.logErrorAndSignal</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

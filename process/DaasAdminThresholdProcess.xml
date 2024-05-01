@@ -1,0 +1,50 @@
+<process>
+	<process>DaasAdminThresholdProcess</process>
+	<directory>/</directory>
+	<file>DaaS_Archiving_Process.q</file>
+	<description>Directory threshold management and archiving process</description>
+	<apps></apps>
+	<returnstat></returnstat>
+	<param>
+		<parameter>messagingServer</parameter>
+		<description>Messaging Server</description>
+		<datatype>Config</datatype>
+		<required>1</required>
+		<default>DS_MESSAGING_SERVER</default>
+	</param>
+	<param>
+		<parameter>initialStateFunct</parameter>
+		<description>Initialisation Function</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>.daas.admin.thresholdInit</default>
+	</param>
+	<param>
+		<parameter>dc_host</parameter>
+		<description>Host</description>
+		<datatype>Symbol</datatype>
+		<required>1</required>
+		<default>10.185.130.148</default>
+	</param>
+	<param>
+		<parameter>dc_port</parameter>
+		<description>Port</description>
+		<datatype>Integer</datatype>
+		<required>1</required>
+		<default>3092</default>
+	</param>
+	<param>
+		<parameter>dc_taskset</parameter>
+		<description>Taskset</description>
+		<datatype>Symbol</datatype>
+		<required>1</required>
+		<default>0</default>
+	</param>
+	<param>
+		<parameter>dc_algroups</parameter>
+		<description>Analytic Groups</description>
+		<datatype>Symbol[]</datatype>
+		<required>1</required>
+		<default>daasEvents,daasUtil</default>
+	</param>
+</process>

@@ -1,0 +1,14 @@
+<analyticgroup>
+	<name>daasL2</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.l2.buildDailySnapSeries</analytic>
+	<analytic>.daas.l2.buildOrderBook</analytic>
+	<analytic>.daas.l2.buildSnapshotOnDisk</analytic>
+	<analytic>.daas.l2.buildSymSnapSeries</analytic>
+	<analytic>.daas.l2.emptyPreBookDict</analytic>
+	<analytic>.daas.l2.genWhereClause</analytic>
+	<analytic>.daas.l2.getEodSnap</analytic>
+	<analytic>.daas.l2.initUpdTables</analytic>
+	<analytic>.daas.l2.updateSnap</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

@@ -1,0 +1,28 @@
+<analytic>
+	<analytic>.daas.udf.initiateUDFstream</analytic>
+	<code_text>{[params]
+		.daas.stream.summaryDebug:params;
+		period:$[not `period in key params; 0; params`period];
+		id:.daas.stream.sub[ `func`params`period!(`getUDF;params;period)];
+		.daas.stream.streamTabs[id]:`newSyms`data!(`$();());
+		:id;
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.trep.coreInit</analytic>
+	<code_text>{[]
+.al.loadinstruction[`.daas.stream.trepStart];
+ .daas.stream.trepQRConnect[];
+  .qr.connect[];
+////Code for getting .daas.mon.respStatus
+ .daas.stream.trepRespStatus[];
+ 
+////Initialise the Trep publisher
+ .log.out[.z.h;"Starting Trep publisher";()];
+ .daas.stream.trepIP[];
+ @[.trep.init;.daas.cfg.trepPort;{.log.error[.z.h;"trep publisher initialisation failed, Exiting",x];.pl.return_exit[`]}];
+
+ .log.out[.z.h;"connecting to QM";()];
+ if[(`DC=controlAddress) and ()~key`.ex.prh; '".stream.controlAddress set as `DC for a non-DC process" ]; 	
+ 
+  .daas.stream.trepQmInit[];
+ 
+ .daas.stream.trepRespStatus[];
+ .z.ts:{.daas.stream.qrConnectGWs[]};
+
+ .log.out[.z.h;"Trep process started SUCCESSFULLY";()];
+ if[(count get `respStatus)=0;.log.error[.z.h;"respStatus table not populated, Exiting";()];.pl.return_exit[`]];
+ /.daas.events.runOnInitialBusCon[`.daas.stream.trepRespStatus]
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

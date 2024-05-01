@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.daas.trth.newNotesFile</analytic>
+	<code_text>{[dir;file]
+if[not `rptGenHandle in key .daas.processing;
+	.daas.processing.rptGenHandle:@[hopen;`$":",":" sv getenv `$("ds_report_generator_",string[.daas.cfg.env]),/:("_HOST";"_PORT");{.log.out[.z.h;"can't open handle to report generator to report download";x]}];
+	];
+
+if[not .daas.processing.rptGenHandle in .z.W;
+	.daas.processing.rptGenHandle:@[hopen;`$":",":" sv getenv `$("ds_report_generator_",string[.daas.cfg.env]),/:("_HOST";"_PORT");{.log.out[.z.h;"can't open handle to report generator to report download";x]}];
+	];
+neg[.daas.processing.rptGenHandle](`.daas.trth.requestFulfilled;`$("_" vs string file)1)
+
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

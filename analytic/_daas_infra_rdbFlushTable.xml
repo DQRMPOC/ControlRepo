@@ -1,0 +1,57 @@
+<analytic>
+	<analytic>.daas.infra.rdbFlushTable</analytic>
+	<code_text>{[deleteTime; tbl]
+        if[not tbl in tables[];
+            :`table`count`time`newcount`newtime!(tbl;0N;0Np;0N;0Np);
+        ];
+
+        / If no time column, just delete the whole table
+        if[not `time in cols tbl;
+            .log.out[`EOD;;()] "Emptying RDB table (with no time column) [ Table: ",string[tbl]," ]";
+            set[tbl;] .schema.tab tbl;
+            :`table`count`time`newcount`newtime!(tbl; 0Wj; 0Np; 0; 0Np);
+        ];
+
+        preClearRows:count select time from tbl where time &lt; deleteTime;
+        preClearFt:exec first time from tbl;
+
+        .log.out[`EOD;;()] "Starting end-of-day RDB delete [ Table: ",string[tbl]," ] [ Delete Prior: ",string[deleteTime]," ] [ Delete Rows: ",string[preClearRows]," ] [ Earliest Time: ",string[preClearFt]," ]";
+
+        ![tbl; enlist (&lt;; `time; deleteTime); 0b; `symbol$()];
+
+        postClearRows:count get tbl;
+        postClearFt:0^exec first time from tbl;
+
+        .log.out[`EOD;;()] "End-of-day RDB delete complete [ Table: ",string[tbl]," ] [ Remaining Rows: ",string[postClearRows]," ] [ Earliest Time: ",string[postClearFt]," ]";
+
+        / Upsert to original table schema to maintain attributes
+        set[tbl;] .schema.tab[tbl] upsert get tbl;
+
+        :`table`count`time`newcount`newtime!(tbl; preClearRows; preClearFt; postClearRows; postClearFt);
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>deleteTime</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Timestamp</datatype>
+	</param>
+	<param>
+		<parameter>tbl</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

@@ -1,0 +1,104 @@
+<analytic>
+	<analytic>.daas.util.l2SnapStep</analytic>
+	<code_text>{[tableName;symList;startTime;params;timeCol]
+
+    / this gets our starting point to apply add/modify/delete messages to
+    / this is why the where clause has timeCol less than startTime in it
+
+    / the reason for the -2# here is because of the structure of the intraday snapshot table, its 
+    / stored by sym and side, so the most recent two rows will look like
+    / sym    side time     exchTime price ...
+    / `VOD.L `BID 09:00:00 08:59:58 1 2 3 4 ... 
+    / `VOD.L `ASK 09:00:01 08:59:59 4 5 6 6 ...
+    
+    / -1 added to startDate so we select previous days snapshot as well 
+    
+    / on a hdb the intraday snapshots are split into 2 tables 
+    / they need to be rejoined on matchInd 
+    / startPoint will be two rows for each sym with lists of prices, sizes etc
+    
+    $[.ex.getProcessName[]~`DS_RDB;
+        [
+            startPoint:ungroup ?[.daas.l2rdbIntraTabNames[params`assetClass];$[` in symList;enlist(&lt;;timeCol;startTime);((in;`sym;enlist raze symList);(&lt;;timeCol;startTime))];(enlist`sym)!enlist`sym;`time`exchTime`side`price`size`numOrders`id!((#;-2;`time);(#;-2;`exchTime);(#;-2;`side);(#;-2;`price);(#;-2;`size);(#;-2;`numOrders);(#;-2;`id))]
+        ];
+        [
+            startPoint: ungroup ?[.daas.l2rdbIntraTabNames[params`assetClass];$[` in symList;((within;`date;(-1+params`startDate;params`endDate));(&lt;;timeCol;startTime));((within;`date;(-1+params`startDate;params`endDate));(in;`sym;enlist raze symList);(&lt;;timeCol;startTime))];(enlist`sym)!enlist`sym;`time`exchTime`side`price`size`numOrders`matchInd!((#;-2;`time);(#;-2;`exchTime);(#;-2;`side);(#;-2;`price);(#;-2;`size);(#;-2;`numOrders);(#;-2;`matchInd))];
+            idTb:?[`$string[.daas.l2rdbIntraTabNames[params`assetClass]],"Ids";$[` in symList;enlist (within;`date;(-1+params`startDate;params`endDate));((within;`date;(-1+params`startDate;params`endDate));(in;`sym;enlist raze symList))];enlist[`matchInd]!enlist[`matchInd];enlist[`id]!enlist[`id]];
+            startPoint:delete matchInd from startPoint lj idTb
+        ]
+    ];
+        
+
+    / this checks if we have a startPoint for our symbols
+    / if none of the symbols have start points (i.e all are not in startPoint)
+    / then return result from .daas.util.l2GenOrderBook
+
+    $[` in symList;
+        [if[all not (snapSyms:exec sym from ?[(`.daas.l2rdbIntraTabNames[params`assetClass]);$[.ex.getProcessName[]~`DS_HDB;enlist(within;`date;(enlist;params`startDate;params`endDate));()];1b;(enlist`sym)!enlist`sym]) in\: exec distinct sym from startPoint;
+            :.daas.util.l2GenOrderBook[1;startTime;timeCol;$[count snapSyms;snapSyms;symList];tableName;params]`preBookDict]];
+
+        [if[all not symList in\: exec distinct sym from startPoint;
+            :.daas.util.l2GenOrderBook[1;startTime;timeCol;symList;tableName;params]`preBookDict]]
+        ];
+
+    / Select entries from table that occur between previous day's EOD snapshot and params[`startTime]
+    / (on multi day query, select from end of latest snapshot up to start point)
+    / (on rdb query, selects all updates before start time)
+    / and join together
+
+    maxTime:exec max time from (ungroup startPoint) where time.date&lt;params[`endDate];
+    ts:?[tableName;$[`date in cols tableName;enlist(in;`date;(params`startDate;params`endDate));()],((in;`sym;enlist symList);(&lt;;timeCol;startTime);(&gt;;timeCol;maxTime));0b;()];
+    
+    / Join snapshot data (in startPoint) with book entries (in ts)
+    filteredTb:(ungroup startPoint) uj delete date from ts;
+
+    / Apply message deletes and generate starting point for book build
+    :.daas.util.l2genPreBookDict[filteredTb;timeCol;symList;params];
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tableName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>symList</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>startTime</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>timeCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,50 @@
+<analytic>
+	<analytic>.daas.trth.reportGeneratorInit</analytic>
+	<code_text>{[]
+    .daas.cfg.env:`$last "_" vs string .ex.getInstanceName[];
+    .daas.cfg.region:`emea;
+    .daas.cfg.procNum:`;
+    .daas.cfg.vendor:`tr;
+    .al.callfunction[`.daas.events.startEventService][]; / register with eventBus
+
+    .al.loadgroupfunctions`.daas.trth;
+
+    .daas.trth.jarStatus:0b;
+    .daas.trth.javaHandle:();
+
+    //NE NOTE - adding for Surv
+    .rpt.client.enable[{[] rptsAvailable::1b}]
+
+    .daas.trth.javaQueue:([]reqTime:`timestamp$();id:`$();subReport:`$();javaTime:`timestamp$();requestSym:`$();reportStats:());
+    
+    .surv.rpt.gw.query:{[dict;query]
+        .lb.args:`dict`query!(dict;query);
+        if[`groupMode in key dict;
+            if[`surv_master_reports~first dict`targets;
+                dict[`groupMode]:`allUp;
+                procs:exec database from databaseGrouping where databaseGroup=`surv_master_reports;
+                if[count disconnectedDBs:exec name from database where null syncHandle,name in procs;
+                    newDbWithTimeout[10000;] each disconnectedDBs
+                    ]
+                ]
+            ];
+        .ds.gw.query_org[dict;query]
+        };
+    
+    .ds.gw.query_org:.ds.gw.query;
+
+    .ds.gw.query:.surv.rpt.gw.query;    
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>SurveillanceReport</analyticgroup>
+</analytic>

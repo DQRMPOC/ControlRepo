@@ -1,0 +1,49 @@
+<analytic>
+	<analytic>.daas.processing.peUpd</analytic>
+	<code_text>{[t;x]
+
+     $[t in .daas.processing.keyedTables;
+     
+     	[x:update trthDate:"d"$time from x;
+     	t upsert (value t) ^ `sym`trthDate xkey x];
+     	
+     	upsert[t;x]
+     ];
+     
+     //check table counts
+     //if any table has a row count &gt; writeCountTrigger, then write to disk
+	if[not any tl:.daas.processing.writeCountTrigger&lt;{exec first numRows from ?[x;();0b;(enlist`numRows)!enlist(count;`i)]}each .daas.processing.rawTabs;
+     	:();
+	];
+         
+     writeTabs: .daas.processing.rawTabs where tl;
+    .daas.processing.writeTab each writeTabs;
+
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>t</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>x</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

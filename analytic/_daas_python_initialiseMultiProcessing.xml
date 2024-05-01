@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.daas.python.initialiseMultiProcessing</analytic>
+	<code_text>{[]
+    .daas.udf.pythonRTUDFConfig:.uc.getActiveParamValue[`.daas.udf.pythonRTUDFConfig;`];
+
+    //env variable for max threads (recommend send to total cores - kdb cores)
+    /   -if doesnt exist then  nprocs minus kdb lic cores
+
+    poolNum:"I"$getenv `UDF_PYTHON_POOL_PROCESSES;
+    procs:"I"$first system"getconf _NPROCESSORS_ONLN";
+    if[null poolNum;
+        poolNum:max(1;(-). 0^(procs;"I"$first .z.l));
+        ];
+
+    //if there aren't multiple python funcs we don't need full pool size
+    poolNum:min(count .daas.udf.rtConfig[`UDF] inter .daas.udf.pythonRTUDFConfig`udfName;poolNum);
+
+    //Parent function is set to terminate on failure, so if the libs are not there it will exit boot of the stacks
+    .p.e["from multiprocessing import Pool,TimeoutError"];
+    ts:last " " vs first system"taskset -pc ",string .z.i;
+
+    //set my affinity to all cores, spin pool to inherit, and swap back
+    system"taskset -pc 0-",string[procs-1]," ",string .z.i;
+    .p.e["pool = Pool(processes = ",string[poolNum],")"];
+    system"taskset -pc ",ts," ",string .z.i;
+
+
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPython</analyticgroup>
+</analytic>

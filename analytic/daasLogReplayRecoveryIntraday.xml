@@ -1,0 +1,165 @@
+<analytic>
+	<analytic>daasLogReplayRecoveryIntraday</analytic>
+	<code_text>{[logfile]	
+  .log.out[.z.h;"Starting log replay";(logfile;.Q.w[]%1e9)];
+
+  // --------------------------------------------------------------------
+  // keep track of number of updates, rows, errors
+  // --------------------------------------------------------------------
+  
+  .ds.cfg[`numUpds`numRows`badUpds`badRows]:4#enlist(`$())!"J"$();	
+  if[not `lastUpd in key `.ds.cfg; .ds.cfg.lastUpd:(`$())!()];
+  .ds.cfg.counter:0j; 	
+  .ds.cfg.numBlocks:0;				
+  hdbCount:.ds.cfg.numWritten;		// .ds.cfg.numWritten is updated by writeToHDB
+  
+ 
+   
+  // --------------------------------------------------------------------
+  // define upd + replay log file
+  // --------------------------------------------------------------------
+  
+  // only check .ds.cfg.replayTableList + .ds.cfg.filterList filters if they are set, then call logMsgFunct
+  upd_untrapped::$[count[.ds.cfg.replayTableList] and count .ds.cfg.filterList;
+  					{[x;y] .ds.cfg.numUpds[x]+:1j; .ds.cfg.lastUpd[x]:y; 
+  						if[x in .ds.cfg.replayTableList;
+  							y:select from y where sym in .ds.cfg.filterList; 
+  							if[c:count y; .ds.cfg.numRows[x]+:"j"$c; .ds.cfg.logMsgFunct[x;y]; incrementCounter[c]];
+  						];};
+				count .ds.cfg.replayTableList;
+  					{[x;y] .ds.cfg.numUpds[x]+:1j; .ds.cfg.lastUpd[x]:y; if[x in .ds.cfg.replayTableList; .ds.cfg.numRows[x]+:"j"$c:$[0h=type y; count first y; count y]; .ds.cfg.logMsgFunct[x;y]; incrementCounter[c]];};
+  				count .ds.cfg.filterList;
+  				   	{[x;y] .ds.cfg.numUpds[x]+:1j; .ds.cfg.lastUpd[x]:y; 
+  				   		y:select from y where sym in .ds.cfg.filterList; 
+  				   		if[c:count y; .ds.cfg.numRows[x]+:"j"$c; .ds.cfg.logMsgFunct[x;y]; incrementCounter[c]];};
+  					{[x;y] .ds.cfg.numUpds[x]+:1j; .ds.cfg.lastUpd[x]:y; .ds.cfg.numRows[x]+:"j"$c:$[0h=type y; count first y; count y]; .ds.cfg.logMsgFunct[x;y]; incrementCounter[c];}
+  				];
+  				
+  incrementCounter::{[numRows]
+	.ds.cfg.counter+:"j"$numRows;
+	if[.ds.cfg.blockSize=0j; :()];
+  	// check if we should flush to disk
+	if[.ds.cfg.numBlocks&lt;c:floor .ds.cfg.counter%.ds.cfg.blockSize;
+		.log.out[.z.h;"Block size of ",string[.ds.cfg.blockSize]," exceeded, writing tables to disk";(`numUpds`counter!(sum .ds.cfg.numUpds;.ds.cfg.counter);.Q.w[]%1e9)];
+		.ds.cfg.numBlocks:c;
+		// only write keyed tables (type=99h) down at the very end
+		$[first[.ds.cfg.saveTableList]=`ALL_TABLES;
+			{[t] $[t in .ds.cfg.intradayTableList; writeToHDBintraday t; .r.ismaster[]; writeToHDB t; [.ds.cfg.numWritten[t]+:"i"$c:count value t; .[t;();0#]]]} each tables[`.] where @[{(98h=type value x) and count value x};;0b] each tables[`.];
+			{[t] $[t in .ds.cfg.intradayTableList; writeToHDBintraday t; .r.ismaster[]; writeToHDB t; [.ds.cfg.numWritten[t]+:"i"$c:count value t; .[t;();0#]]]} each .ds.cfg.saveTableList where @[{(98h=type value x) and count value x};;0b] each .ds.cfg.saveTableList
+		];
+		.log.out[.z.h;"Finished writing tables to disk";.Q.w[]%1e9];
+	];
+  };			
+  upd::updLG::{[x;y] .[upd_untrapped;(x;y);{[x;y;err] .log.err[.z.h;"Error updating table"; (err;x;y)]; .ds.cfg.badUpds[x]+:1j; .ds.cfg.badRows[x]+:"j"$count y;if[@[{count badData};`;0]&lt;10;badData,:enlist(x;y)];}[x;y]]};
+  				
+  // replay log file
+  $[.ds.cfg.local;
+	@[-11!;logfile;{[f;err].pl.report_error_addInfo["Error replaying TP logfile";(err;f)]}[logfile]];
+  	@[.ds.cfg.lsHandle;(`.ds.ls.stream;logfile;0W);{[f;err].pl.report_error_addInfo["Error replaying TP logfile using logstreamer";(err;f)]}[logfile]]
+  ];
+  
+  .log.out[.z.h;"Finished log replay";`logfile`numUpds!(logfile;0j^sum .ds.cfg.numUpds)];
+  
+  // --------------------------------------------------------------------
+  // flush any remaining data to disk
+  // only write keyed tables (type=99h) down at the very end in finalStateFunct
+  // --------------------------------------------------------------------
+  
+  tabList:$[first[.ds.cfg.saveTableList]=`ALL_TABLES; 
+			tables[`.] where @[{(98h=type value x) and count value x};;0b] each tables[`.];
+  			.ds.cfg.saveTableList where @[{(98h=type value x) and count value x};;0b] each .ds.cfg.saveTableList
+  			];
+  .log.out[.z.h;"Flushing remaining data to disk";.Q.w[]%1e9];
+  {[t] $[t in .ds.cfg.intradayTableList; writeToHDBintraday t; .r.ismaster[]; writeToHDB t; [.ds.cfg.numWritten[t]+:"i"$c:count value t; .[t;();0#]]]} each tabList;
+  .log.out[.z.h;"Flushed remaining data to disk";.Q.w[]%1e9];
+
+  // --------------------------------------------------------------------
+  // reload intraday HDBs 
+  // --------------------------------------------------------------------
+
+  {[hdb]
+    cmd:$[`yes~hdb`dc_nosystem; "\\l ."; ".ds.hdb.reloadDB[]"];
+    .log.out[.z.h;"Running command on intraday HDB ",string hdb`instancename;cmd];
+  	h:.ds.cfg.getHandle[hdb];
+    if[null h; :()];
+    neg[h]@cmd;
+    neg[h][];
+  } each .ds.cfg.intradayHdbProcessList;
+
+  
+
+  // --------------------------------------------------------------------
+  // kick off replay of log file on backup DS_LOG_RECOVERY processes
+  // --------------------------------------------------------------------
+
+  .log.out[.z.h;"checking if master";(.r.ismaster[];logfile=last .ds.cfg.filesToReplay;.rpl.procs)];
+  if[.r.ismaster[] and logfile=last .ds.cfg.filesToReplay;
+  	{[inst]
+    	.log.out[.z.h;"Running checkForNewFiles on";inst];
+  		h:.ds.cfg.getHandle[inst];
+  		if[null h; :()];
+    	neg[h]@"checkForNewFiles[`force]";
+    	neg[h][];
+  	} each exec instance from .rpl.procs where not master;
+  ];
+
+
+  // --------------------------------------------------------------------
+  // print out number of updates, rows, errors per table
+  // --------------------------------------------------------------------
+  
+  hdbCountNew:.ds.cfg.numWritten;
+
+  rs:{[hdbCount;hdbCountNew;tab]
+   		nr:0j^.ds.cfg.numRows[tab];
+   		br:0j^.ds.cfg.badRows[tab];
+   		bu:0j^.ds.cfg.badUpds[tab];
+   		nu:0j^.ds.cfg.numUpds[tab];
+   		hr:(0j^hdbCountNew[tab])-0j^hdbCount[tab];
+   		// table is ok if there are no failed updates and ((HDB is not set) or (table is keyed) or (numRows received = numRows written to disk) or (table is not in saveTableList))
+   		ok:(bu=0) and null[.ds.cfg.hdbDir] or @[{99h=type value x};tab;0b] or (nr=hr) or ((first[.ds.cfg.saveTableList]&lt;&gt;`ALL_TABLES) and not tab in .ds.cfg.saveTableList);
+		msg:"For ",string[tab]," replayed ",string[nu]," updates upserting ",string[nr]," rows";
+		if[bu&gt;0; msg,:" (",string[bu]," updates containing ",string[br]," rows failed)"];
+		if[not null .ds.cfg.hdbDir; msg,:" and ",string[hr]," rows were written to disk"];
+   		$[ok; .log.out[.z.h;msg;()]; .log.err[.z.h;msg;()]];
+  		:(tab;ok;nu;nr;br;hr);
+  	}[hdbCount;hdbCountNew] each key .ds.cfg.numUpds;
+
+  rsDict:update logfile:logfile from `table`ok`upds`rows`failed`written!flip rs;
+  if[count rs; .ds.cfg.status,:flip rsDict];
+  
+  if[any (rsDict`table) in .ds.cfg.intradayTableList;
+  $[all rsDict`ok;
+    {`dxLog upsert (sym:.ex.getName[];time:.z.P;component:.utils.gethost[];logmsgId:`$"SAVE";level:`COMPLETE;summary:flip x;detail:.Q.w[]%1e6;`;0Ni)}[rsDict];
+  	{data:enlist cols[dxLog]!(.ex.getName[];.z.P;.utils.gethost[];`$"SAVE";`ERROR;flip x;.Q.w[]%1e6;`;0Ni);`dxLog upsert data;.ag.upd[`dxLog;data]}[rsDict]];
+  	 ];
+
+  $[not all rs[;1];
+  	.pl.report_error_addInfo["Not all rows written to disk from file";rsDict];
+  	.log.out[.z.h;"File processed successfully";logfile]];
+  
+  {if[`gc in key `.Q;.log.out[.z.h;"Running garbage collection";()];.Q.gc[]]}[]; 
+   
+  }</code_text>
+	<description>Replay a tickerplant log file for the DS_LOG_RECOVERY process.
+Uses a logstreamer if the tickerplant log file is on a different server.
+When the replay finishes it prints out the number of updates + rows, received, failed, written to disk.
+Reports an error if any calls to upd failed or any upserts to the hdb failed.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>logfile</parameter>
+		<default></default>
+		<description>tickerplant log file</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

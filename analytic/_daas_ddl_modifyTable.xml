@@ -1,0 +1,69 @@
+<analytic>
+	<analytic>.daas.ddl.modifyTable</analytic>
+	<code_text>{[params]
+
+	.log.out[.z.h;"Modifying table";(params[`assetClass];params[`dataType])];
+    
+    // Namespace definitions and data location
+	params:.daas.ddl.genDDLVars[params];
+    if[not count params;
+        :()
+    ];
+
+  	// Remove entire partitions
+	if[any r:(.daas.ddl.removePartition;.daas.ddl.removeTable);
+        .log.out[.z.h;"Removing partitions";(params[`startDate];params[`endDate];params[`dataType])];
+        
+        {.daas.util.sysCmd["rm -r";x]}each 1_/:string .daas.ddl.tabledirs;
+        
+        .daas.ddl.auditLog[params;`stop;""];
+        @\:[.daas.ddl.hdbH except 0Ni;".ds.hdb.reloadDBOnly[]"];
+        .log.out[.z.h;"Finished modifying HDB";(params[`assetClass];params[`dataType])];
+        :();
+    ];
+	
+	//*********RUN DDL OPERATION*********//
+	.daas.ddl.run[params;]each .daas.ddl.tabledirs;
+	
+	//***********************************//
+  
+  	if[.daas.ddl.modifiedDB like "*tmp*";
+    	.daas.util.sysCmd["rm -r";1_string .daas.ddl.modifiedDB]
+    ];
+  
+	// Reload HDB
+	@\:[.daas.ddl.hdbH;".ds.hdb.reloadDBOnly[]"];
+	
+	// Update audit log
+	.daas.ddl.auditLog[params;`stop;""];
+	
+	.log.out[.z.h;"Finished modifying table";params[`dataType]];
+
+ }</code_text>
+	<description>Run a copy, sort, or delete operation on a partitioned table (currently only runs delete)</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>Dictionary containing parameters containing table modification constraints</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasDDL</analyticgroup>
+</analytic>

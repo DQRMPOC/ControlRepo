@@ -1,0 +1,19 @@
+<analytic>
+	<analytic>.daas.udf.isFirstUDFGw</analytic>
+	<code_text>{[]
+	udfInfo:.ex.prh"select from .pl.getRunningInformation[] where instance_name like \"*udf_*\", taskstatus=`running";
+	thisHost:exec first host from udfInfo where instance_name=.ex.getInstanceName[];
+	: .ex.getInstanceName[]=first exec asc instance_name from udfInfo where thisHost=host;
+ }</code_text>
+	<description>allows you to select one UDF process per env</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

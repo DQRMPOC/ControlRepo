@@ -1,0 +1,36 @@
+<analytic>
+	<analytic>.daas.qm.coreInit</analytic>
+	<code_text>{[]
+
+	.daas.init.setMetaAndEventBusConn[];
+
+	.al.loadinstruction`.daas.cfg.gwCfg;
+	.al.loadinstruction`.daas.cfg.serverCfg;
+	
+	/ Load table meta data
+	.al.loadinstruction`.daas.meta.common;
+	.daas.meta.init[];
+    
+	.al.loadgroupfunctions each `DxQR`daasAdmin`daasLog`daasRouting;
+	.daas.routing.subToMetaTables[];
+	
+	// code updates to integrate streaming analytics with DaaS
+	.daas.stream.qmUpdates[];
+
+	/ Monitoring 2.0 - QM metrics
+	.al.loadinstruction `.daas.cmon.failover;
+	.daas.cmon.failover.init[];
+ 	}
+ </code_text>
+	<description>sets up the initial state for QM processes in the DaaS system</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

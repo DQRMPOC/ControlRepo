@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.stream.singleSubPub</analytic>
+	<code_text>{[id]
+/Getting the data for the subscription
+	whereClause:.daas.stream.streamSubs[id;`params;`whereClause];
+	colClause:.daas.stream.streamSubs[id;`params;`colClause];
+	data:0!?[.daas.summary.tableName;whereClause;0b;colClause];
+/Getting the QM id and the handle to the correct QM
+	dbID:.sa.subMap[id];
+	hn:.sa.qmSubMap[dbID;`handle];
+//can't publish if don't have handle
+	if[hn&lt;=0; .log.warn[.z.h; "No handle to publish streaming analytic data to QM"; (uID;dbID;hn)]; :()];
+//attempt to publish
+	msg:(`.daas.stream.QMDuplicateSubPub; dbID; data);
+	neg[hn] @ msg;
+ }</code_text>
+	<description>Analytic telling the QM to run .daas.stream.duplicateSubPub from the RTE</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>id</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

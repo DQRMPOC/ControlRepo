@@ -1,0 +1,102 @@
+<analytic>
+	<analytic>.daas.cmon.common</analytic>
+	<code_text>// Refinery (DaaS) Common Monitoring 2.0
+// Copyright (c) 2019 Kx Systems Inc
+
+.daas.cmon.common.init:{
+    .daas.cmon.addTimerMetric[`ipc.pendingHandleBytes; `.daas.cmon.common.pendingIpcBytes; `timespan$00:00:10; `dict];
+    .daas.cmon.addTimerMetric[`mem.kdbUsageBytes; `.daas.cmon.common.memUsageBytes; `timespan$00:00:30; `dict];
+    .daas.cmon.addTimerMetric[`process.queryTimeout; `.daas.cmon.common.processTimeout; `timespan$00:01:00; `dict];
+
+    .daas.cmon.addEventMetric[`process.connectionOpen;   `dict];
+    .daas.cmon.addEventMetric[`process.connectionClosed; `dict];
+    .daas.cmon.addEventMetric[`process.exit;             `dict];
+    .daas.cmon.addEventMetric[`process.userAuthFailure;  `dict];
+
+    .ch.addPO   `.daas.cmon.common.onConnOpen;
+    .ch.addPC   `.daas.cmon.common.onConnClose;
+    .ch.addExit `.daas.cmon.common.onProcessExit;
+
+    if[not `NO_Z_PW ~ @[get; `.z.pw; `NO_Z_PW];
+        set[`.z.pw;] .daas.cmon.common.onUserAuth[.z.pw;;];
+    ];
+ };
+
+
+/ Common monitoring metric generation function on a timer for pending IPC bytes (via .z.W)
+.daas.cmon.common.pendingIpcBytes:{
+    if[all 0 = count each .z.W;
+        .daas.cmon.sendMetrics[`ipc.pendingHandleBytes;`anyPendingBytes`pendingBytes!(0b;(`symbol$())!`long$())];
+        :(::);
+    ];
+
+    procMapping:exec handle!(`$string handle) ^ process from .ch.cp;
+
+    hPendingBytes:sum each .z.W;
+    hPendingBytes:(where 0 &lt; hPendingBytes)#hPendingBytes;
+    hPendingBytes:(procMapping key hPendingBytes)!value hPendingBytes;
+
+    .daas.cmon.sendMetrics[`ipc.pendingHandleBytes; `anyPendingBytes`pendingBytes!(1b; hPendingBytes)];
+ };
+
+/ Common monitoring metric generation function on a timer for internal memory usage
+.daas.cmon.common.memUsageBytes:{
+    .daas.cmon.sendMetrics[`mem.kdbUsageBytes; .Q.w[]];
+ };
+
+/ Common monitoring metric generation function on a timer for query timeout
+.daas.cmon.common.processTimeout:{
+    .daas.cmon.sendMetrics[`process.queryTimeout; enlist[`timeoutSecs]!enlist system "T"];
+ };
+
+/ Event-based metric generation function on connection open
+/  @see .ch.addPO
+.daas.cmon.common.onConnOpen:{[h]
+    .daas.cmon.sendMetrics[`process.connectionOpen; .daas.cmon.common.i.getConnection h]; 
+ };
+
+/ Event-based metric generation function on connection close
+/  @see .ch.addPC
+.daas.cmon.common.onConnClose:{[h]
+    .daas.cmon.sendMetrics[`process.connectionClosed; .daas.cmon.common.i.getConnection h];
+ };
+
+/ Event-based metric generation function on process exit
+/  @see .ch.addExit
+.daas.cmon.common.onProcessExit:{
+    .daas.cmon.sendMetricsFlush[`process.exit; enlist[`exitCode]!enlist x; 1b];
+ };
+
+/ Event-based metric generation function on user authentication
+.daas.cmon.common.onUserAuth:{[origPw; user; pass]
+    authAllowed:origPw[user; pass];
+
+    if[not authAllowed;
+        .daas.cmon.sendMetrics[`process.userAuthFailure; enlist[`user]!enlist user];
+    ];
+
+    :authAllowed;
+ };
+
+
+.daas.cmon.common.i.getConnection:{[h]
+    :`handle`user`host`ipaddress`port`process#exec from .ch.cp where handle = h;
+ };
+
+/  @returns All tables in the root namespace with tables to ignore removed
+.daas.cmon.common.i.getTables:{
+    :tables[] except `dxState;
+ };
+
+    </code_text>
+	<description>Refinery (DaaS) Common Process Monitoring 2.0</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

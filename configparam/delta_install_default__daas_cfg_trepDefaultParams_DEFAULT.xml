@@ -1,0 +1,19 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.trepDefaultParams</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>port</element>
+		<elementType>Integer</elementType>
+		<elementValue>27002</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>timeType</element>
+		<elementType>Symbol</elementType>
+		<elementValue>exchangeTime</elementValue>
+	</param>
+</configparam>

@@ -1,0 +1,137 @@
+<analytic>
+	<analytic>.daas.merge.generateStats</analytic>
+	<code_text>{[asset;dates]
+/MVP SANDBOX
+/JUST USING OLD CODE FROM TRTH EOD 
+/what a load of spaghetti
+
+
+/############### SKIP STATS
+/.log.out[.z.h;"SKIPPING - Generating stats";()];
+/:()
+/#################
+
+
+
+
+
+/#####
+
+/Async push request to statsGen process
+/statsGen process needs to work async and handles a queue with slaves.
+/Once i've given the request I can chill.
+
+
+.log.out[.z.h;"Generating stats";()];
+.daas.trth.eodFailed:0b;
+/hardcoded rubbish
+.daas.eod.asset:asset;
+assetDict:`eq`fi`fx`fut`idx`mn!(`equity;`fixedIncome;`foreignExchange;`future;`index;`moneyMarket);
+asset:assetDict[`$.daas.eod.asset];
+
+
+/this is going to be renamed
+statsGenProc:"emea_tr_statsGen_",string[.daas.cfg.env];
+
+/check it's been opened
+if[not `handle in key `.statsGen;
+	.statsGen.handle:@[hopen;"J"$string .utils.checkForEnvVar["ENV=",statsGenProc,"_PORT="];{[err;statsGenProc] .log.err[.z.p;"Connection to statsGen failed - Process not running:";(statsGenProc;err)]; .daas.trth.eodFailed:1b;}[;statsGenProc]];
+	];
+/check it's active
+if[not 	.statsGen.handle in key .z.w;
+	.statsGen.handle:@[hopen;"J"$string .utils.checkForEnvVar["ENV=",statsGenProc,"_PORT="];{[err;statsGenProc] .log.err[.z.p;"Connection to statsGen failed - Process not running:";(statsGenProc;err)]; .daas.trth.eodFailed:1b;}[;statsGenProc]];
+	];
+
+
+if[.daas.trth.eodFailed;
+	:();
+	];
+	
+/gen stats
+if[not .daas.eod.asset like "*L2*";
+	
+		
+		
+		{
+			neg[.statsGen.handle](`.daas.maint.histStatsGen;x;y;y);
+			neg[.statsGen.handle]"";
+			}[asset;] each dates;
+		
+		/reload stats gen hdbs
+		.daas.trth.statsHDBProcsA: exec distinct processName:{x,"_",string[.daas.cfg.env]}each string processName from .uc.getActiveParamValue[`.daas.cfg.statsHDB;`] where processName like ("*",.daas.eod.asset,"*");
+	 	
+	 	/just def the func to push to the statsGen - this is temporary crap 
+	 	.daas.statsRefresh:{
+	 		.log.out[.z.h;"sending hdb reload to";x];
+	 		statsHdb:@[hopen;"J"$string .utils.checkForEnvVar["ENV=",x,"_PORT="];{.log.out[.z.h;"could not open handle to reload stats hdb";x];()}];
+			 if[count statsHdb;
+			 	statsHdb".ds.hdb.reloadDB[]";
+			 	hclose each statsHdb;
+			 	];
+			 };
+		/ask the statsgen to do it as a chaser
+		{neg[.statsGen.handle](.daas.statsRefresh;x)} each .daas.trth.statsHDBProcsA;
+		];
+		 
+/want to build framework for statsgen to handle it all. 
+/right now just async tell it to gen, then async tell it to reload stats hdbs.
+/it's non-optimal, but its ripped from what we currently have, so overall is better.
+/just makes a bottleneck at statsgen, but at least market data is accessible instantly.
+
+/e.g.
+		/neg[.statsGen.handle](`.daas.maint.queueStatsJob;asset;date);
+		/this would queue the job on statsgen, which spawns a slave to do the compute
+		
+		
+
+/for l2, it is the LR doing the work, I can async push to the LR to generate the stats.
+
+/####
+
+	
+	//??? this stuff needs offloading to slave!!
+if[.daas.eod.asset like "*L2*";
+	/.daas.trth.l2IntraGen[.daas.eod.asset;hdbDates;hdb];
+
+	asset:.daas.eod.asset;
+	
+	.log.out[.z.h;"generating intraday tables for  ";.daas.eod.asset];
+	l2LrPort:value getenv `$"emea_lr_tr_marketData_",(lower -2_.daas.eod.asset),"L2_0_a_PORT";
+	.daas.trth.l2LrHandle:@[hopen;l2LrPort;{.log.err[.z.P;"Cannot open handle to LR for intraday table generation ";.daas.eod.asset]}];
+	
+	.log.out[.z.h;"sent build intraday tables for date";dates];
+	{neg[.daas.trth.l2LrHandle](`.daas.l2.buildSnapshotOnDisk;x)}each dates;
+	
+	.log.out[.z.h;"sent reload chaser";dates];
+	neg[.daas.trth.l2LrHandle]"{neg[.ds.cfg.getHandle[x]](`.ds.hdb.reloadDB;::)}each .ds.cfg.hdbProcessList";
+	];
+
+
+.log.out[.z.h;"finished generating stats";()];
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>asset</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>dates</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

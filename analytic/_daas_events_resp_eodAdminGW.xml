@@ -1,0 +1,25 @@
+<analytic>
+	<analytic>.daas.events.resp.eodAdminGW</analytic>
+	<code_text>{[date]
+ .daas.admin.eodAdminGW[data[`info]`date;`.daas.queryLog];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>date</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

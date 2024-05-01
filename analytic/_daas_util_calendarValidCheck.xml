@@ -1,0 +1,73 @@
+<analytic>
+	<analytic>.daas.util.calendarValidCheck</analytic>
+	<code_text>{[params;res;checkOpen]
+
+	dateCol:(.daas.cfg.secMasterWhereClause[params`dataType])`dateCol;
+	venueID:.daas.cfg.secMasterIdentifierMap[params[`identifier]];
+	
+	//Only produce results for venue's with valid data as of the given date
+	if[not all ?[res;();();(distinct;venueID)] in r:?[res;enlist(&lt;=;dateCol;params[`date]);();(distinct;venueID)];
+		params[`symList]:r;
+		res:?[res;enlist(in;venueID;enlist params[`symList]);0b;()]
+	];
+
+	//Check if the given date is listed as closed
+	if[checkOpen;
+		$[not count r:?[res;((=;dateCol;params[`date]);(=;`status;enlist`closed));0b;()];
+			
+			//Check if the given date falls on a day that is listed as open
+			if[not any raze open:first each (.af.daysofweek params[`date] mod 7) in/:/: `$"|" vs/:/: ?[res;((not;`holiday);(=;`status;enlist`open));venueID;(distinct;(lower;`dayOfWeek))];
+					open:0b];
+			
+			//Separte venues with holidays from those without	
+			[open:(r[venueID])!(enlist each (count r)#0b);
+			$[(1&lt;count params[`symList]) or (` in params[`symList]);
+				open,:first each (string .af.daysofweek params[`date] mod 7) in/:/: ?[res;((not;`holiday);(=;`status;enlist`open);(not;(in;venueID;enlist key open)));venueID;(distinct;(lower;`dayOfWeek))];
+				open:0b]]
+		];
+		:(params;res;open)
+	];
+	:(params;res)
+ }</code_text>
+	<description>Function to check which of the venues specified in params`symList has calendar data for the given date
+Can optionally check if the venue is open on the given date</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>getRef params</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>Result from select performed earlier in getRef</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>checkOpen</parameter>
+		<default>false</default>
+		<description>If true, check if the venue is open on the specified date</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

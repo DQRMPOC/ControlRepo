@@ -1,0 +1,67 @@
+<analytic>
+	<analytic>.daas.wc.partitionCol</analytic>
+	<code_text>{[tab;sts;ets;timecol]
+	    
+    wc:();
+    
+    // check if partitioned hdb first because .Q.pf won't be defined otherwise
+    if[dxSelectIsHdb[];
+        if[.Q.pf in c:cols tab;
+            / if you're querying on a column you aren't partitioned by 
+            / (assumes date on column you're sorted by is your partitioning date)
+            / add extraDays either side to select
+            // TODO: decide what this becomes when partitioned by a field other than date (i.e month, year, int)
+            extraDays:.daas.util.dayBuffer[tab;timecol];    
+
+            wc:enlist (within;.Q.pf;(enlist;neg[extraDays]+`date$sts;extraDays+`date$ets));
+            /Surveillance
+	            $[$[`date;sts]=$[`date;ets];
+	            	wc:enlist(=;.Q.pf;$[`date;ets]);
+	            	wc:enlist(within;.Q.pf;(enlist;$[`date;sts];$[`date;ets]))
+				];
+            ];
+        ];
+
+    wc
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>sts</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>ets</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>timecol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasWhereClause</analyticgroup>
+</analytic>

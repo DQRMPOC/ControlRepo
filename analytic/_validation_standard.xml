@@ -1,0 +1,106 @@
+<analytic>
+	<analytic>.validation.standard</analytic>
+	<code_text>{[config]
+
+	.debug.standardConfig:config;
+
+	/check if validation turned on
+    if[not exec first validation from .uc.getParamValue[`SURV_VALIDATION;`delta_install_default;`DEFAULT];:1b];     
+
+    /specific validation for CALIBRATION configs
+    if[config[`instance]~`start`end`numberOfIntervals;
+        /filters,entityLevel and string/symbol/character columns must be same in all rows
+        variousCharacterContainingColumns:exec c from meta[config] where t in "Ccs ",c&lt;&gt;`instance;
+        {[config;colToCheck]
+            if[1&lt;count distinct config[colToCheck];
+                '"CALIBRATION ",string[colToCheck]," must be same in all rows"
+            ]
+        }[config;]each variousCharacterContainingColumns;
+        
+        /startTime(Bucket) and endTime(Bucket) values must be same in all rows
+        if[1&lt;count distinct (2#config)[stCol:first {x where x like "startTime*"}cols[config]];
+                '"CALIBRATION ",string[stCol]," must be same in all rows"
+        ];
+        if[1&lt;count distinct (2#config)[endCol:first {x where x like "endTime*"}cols[config]];
+                '"CALIBRATION ",string[endCol]," must be same in all rows"
+        ];
+        if[not all raze 0D=distinct (-1#config)[{x where any x like/: ("startTime*";"endTime*")}cols[config]];
+                '"CALIBRATION numberOfIntervals for startTime* or endTime* cols must be zero"
+        ];
+    ];
+    
+	// - There is a standard set of validation analytics to call...
+	res:.al.callfunction[`.validation.checkEntityLevel][config];
+	res:.al.callfunction[`.validation.checkFilters][config];
+	
+	if[any raze raze value flip null (`assetClass`product`filters`benchmarkInstance`additionalTradeEntityLevel`additionalClientEntityLevel`additionalFirmEntityLevel`clientPortfolioType`bankPortfolioType`baseCurrency`minRiskLevelThresholdName`transactionsColumnToDetermineMinThreshold`tableType)_config;
+		'"Validation Failed:  No fields except assetClass, filters and relatedBenchmark can be null"
+	];
+    
+    if[`volumeMeasure in cols[config];
+        if[not all config[`volumeMeasure] in `value`quantity`turnOver;
+            '"Validation Failed: volumeMeasure must be one of the words quantity, value or turnOver"
+        ];
+    ];
+  
+  	/particular for Unusual Trade Price Movement interval specification
+  	if[`interval in cols config;
+  	
+	  	intervalsInConfig:config[`interval];
+	  	if[not all {(x like "Trade To Trade: *")or (x like "Intraday: *")or (x like "Interday: *")or (x like "Intraday Window High Low: *")}each intervalsInConfig;
+	  		'"Validation Message: Interval value in instances for Price Move alert must start with either 'Trade To Trade: ', 'Intraday: ', 'Interday: ' or 'Intraday Window High Low'"   	
+	  	];  	
+  		
+  		interdayInstances:intervalsInConfig where intervalsInConfig like "Interday*";
+   		if[count interdayInstances;
+   			
+   			interdayCalendarDays:string[interdayInstances] except\: "Interday: (calendar days)";
+  			invalidCalendarDays:interdayCalendarDays except\: "123456789";   			   		
+	  		if[sum count each invalidCalendarDays;
+	  			'"Validation Message: At least one Interday instance has an invalid number of (calendar days)"
+	  		];
+	  		
+	  	];
+	  	
+	  	nonInterdayInstances:intervalsInConfig except interdayInstances;
+	  	if[count nonInterdayInstances;    
+	  	
+	  		nonInterdayTimeIntervals:1_'string[nonInterdayInstances] except\: "TradeToTradeIntradayWindowHighLow ";	  		
+	  		/check if 12 characters
+	  		if[any (count each nonInterdayTimeIntervals)&lt;&gt;12;
+	  			'"Validation Message: Interval Time Value must have 12 characters of the form 00:00:00.000"
+	  		];	  		
+
+	  		/check if in formal 00:00:00.000  			  		
+	  		if[not all {(all x[(til 12)except 2 5 8] in\: ("1";"2";"3";"4";"5";"6";"7";"8";"9";"0"))and (x[2]=":")and (x[5]=":")and x[8]="."}each nonInterdayTimeIntervals;
+				'"Validation Message: Interval Time Value must be in format 00:00:00.000"
+			];
+						
+		];
+  	
+  	];
+  
+  
+	// - all passed at this stage =&gt; return TRUE
+ 	:1b
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

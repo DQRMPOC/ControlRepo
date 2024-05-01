@@ -1,0 +1,32 @@
+<analytic>
+	<analytic>.daas.util.initMRAggregations</analytic>
+	<code_text>{[]
+//load config
+.daas.cfg.mrReductionAggregationFunctions:.uc.getActiveParamValue[`.daas.cfg.mrReductionAggregationFunctions;`];
+
+//dict of which components to all
+.daas.cfg.mrAnalyticComponentMap:.daas.cfg.mrReductionAggregationFunctions[`colName]!value each .daas.cfg.mrReductionAggregationFunctions`components;
+//table to analytics available
+.daas.cfg.mrtableFunctionMap:a!{[x;y]exec colName from x where tableNames=y}[tab;] each a:distinct exec tableNames from tab:ungroup select colName:colName,tableNames:value each tableNames from .uc.getActiveParamValue[`.daas.cfg.mrReductionAggregationFunctions;`];
+
+.daas.cfg.mrReductionFunctionParseTrees:.daas.cfg.mrReductionAggregationFunctions[`colName]!value each .daas.cfg.mrReductionAggregationFunctions`agg;
+
+
+//load config
+.daas.cfg.mrComponentAggregationFunctions:.uc.getActiveParamValue[`.daas.cfg.mrComponentAggregationFunctions;`];
+
+.daas.cfg.mrComponentParseTrees:.daas.cfg.mrComponentAggregationFunctions[`colName]!value each .daas.cfg.mrComponentAggregationFunctions`agg;
+ }
+ </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

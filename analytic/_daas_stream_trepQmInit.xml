@@ -1,0 +1,24 @@
+<analytic>
+	<analytic>.daas.stream.trepQmInit</analytic>
+	<code_text>{[]	
+	/get the details of the QM
+	.daas.stream.qmInfo:: first select from .ex.prh(`.pl.getRunningInformation;::)  where name like "*qm*",not name like "ds_*";
+	.daas.stream.qmConn:: hsym`$":" sv string .daas.stream.qmInfo `ipaddress`port;
+	if[`:~.daas.stream.qmConn;.log.error[.z.h;"can't connect to QM, check the QM log for errors, Exiting";()];.pl.return_exit[`]];
+	heartbeatFreq::0;
+	.daas.stream.qmHand::hopen .daas.stream.qmConn;
+	/register device so the Trep process can send subsciptions
+    (neg .daas.stream.qmHand)(`registerDevice;deviceID;heartbeatFreq)
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

@@ -1,0 +1,19 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>emea_pdb_tr_marketData_eq_0_b</override>
+	<parameter>.daas.cfg.pdbDataProcs</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>rdbList</element>
+		<elementType>Symbol</elementType>
+		<elementValue>emea_rdb_tr_marketData_eq_0_b</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>hdbList</element>
+		<elementType>Symbol</elementType>
+		<elementValue>emea_hdb_tr_marketData_eq_0_b</elementValue>
+	</param>
+</configparam>

@@ -1,0 +1,31 @@
+<analytic>
+	<analytic>.daas.admin.r.getTickLossStatus</analytic>
+	<code_text>{[]
+    // This function is sent remotely by .daas.admin.getTickLossStatus to all TR RDBs
+    tradeTbl:first tables[] where tables[] like "*Trade";
+
+    if[null tradeTbl;
+        :();
+    ];
+
+    if[not all `sym`tickCount in cols tradeTbl;
+        :();
+    ];
+
+    tickSummary:?[tradeTbl; (); enlist[`sym]!enlist`sym; `tickCount`tcDeltas!(`tickCount; (deltas; `tickCount))];
+    
+    :select srcProcess:.ex.getInstanceName[], srcTbl:tradeTbl, sym, invalidTickCounts:tickCount @' (where not each 1=/: tcDeltas) from tickSummary;
+ }
+    </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasWatchlistDashboard</analyticgroup>
+</analytic>

@@ -1,0 +1,47 @@
+<analytic>
+	<analytic>getRefSync</analytic>
+	<code_text>{[params;queryNum]
+
+.daas.util.checkParams[`getRef;params];
+
+queryParams: `handle`user`analytic`input`API`clientMode`tieredQueryNum!(.z.w;.z.u;`getRef;params;`getRef;`async;queryNum);
+res:.daas.async.run[queryParams];
+
+
+ }
+ </code_text>
+	<description>Main API function for retrieving buckets and aggregations on raw tick data</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>queryNum</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<analyticgroup>daasGateway</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

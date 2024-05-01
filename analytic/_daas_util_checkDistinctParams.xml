@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.util.checkDistinctParams</analytic>
+	<code_text>{[params]
+if[(`timeZone in key params) and any `inputTimeZone`outputTimeZone in key params;
+    :`timeZone`inputTimeZone`outputTimeZone;
+    ];
+if[all (`date in key params;`systemDate in key params);
+    :`date`systemDate;
+    ];
+where 1&lt;count each group key params
+ }</code_text>
+	<description>Check parameter dictionary to ensure that all required parameters from the user are present.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

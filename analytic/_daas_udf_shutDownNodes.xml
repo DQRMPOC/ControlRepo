@@ -1,0 +1,19 @@
+<analytic>
+	<analytic>.daas.udf.shutDownNodes</analytic>
+	<code_text>{[]
+    toShutDown:sc where .daas.cfg.env=`$/:last each string sc:?[.ex.prh(`.pl.getRunningInformation;::);((=;`entityclass;enlist`serviceclass);(like;`name;"rtudf_*"));();`name];
+
+    .daas.util.shutDownService toShutDown
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

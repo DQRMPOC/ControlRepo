@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.l2.initUpdTables</analytic>
+	<code_text>{[]
+.al.loadgroupfunctions[`daasL2];
+
+.daas.l2rdbCountTabNames:`eqL2`futL2!`.l2.eqSymCounts`.l2.futSymCounts;
+.daas.l2rdbIntraTabNames:`equity`future!`eql2intradaySnapShots`futl2intradaySnapShots;
+.daas.l2rdbIntraTabNamesEOD:`eqL2`futL2!`eql2intradaySnapShots`futl2intradaySnapShots;
+.daas.l2rdbCurrentTabNamesEOD:`eqL2`futL2!`eql2CurrentSnapShot`futl2CurrentSnapShot;
+
+
+.daas.l2currentSnapShotTabName:.daas.l2rdbCurrentTabNamesEOD[.daas.cfg.asset];
+
+
+.daas.l2rdbCountTabNames[.daas.cfg.asset] set ([sym:`$()];nCounts:"i"$());
+.daas.l2actionFuncDict:"AMD"!`.daas.util.l2snapshotAdd`.daas.util.l2snapshotModify`.daas.util.l2snapshotDelete;
+.daas.l2idToPriceMults:([sym:`$()]ratio:"f"%());
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasL2</analyticgroup>
+</analytic>

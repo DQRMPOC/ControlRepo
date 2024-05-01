@@ -1,0 +1,43 @@
+<analytic>
+	<analytic>.daas.events.resp.eodHdb</analytic>
+	<code_text>{[data]
+	info:data`info;
+	
+	if[(`complete=data`tag1) and ("daas_adminGw"~("." vs first .fd.process)[0]);
+		.daas.trth.assets:.daas.trth.assets _ .daas.trth.assets?info`asset; /drop the asset class
+		if[0=count .daas.trth.assets; /run trthEOD if all assets complete
+			.daas.events.pubEventMessage[`trthEOD;`;`;`;1b]; /kick off trthEOD
+			.daas.trth.assets:`eq`fi`fut`fx`idx`ref;
+		];
+	];
+	
+	if[.ex.getProcessName[]=`DS_HDB;
+	.log.out[.z.h;"HDB EOD STARTED";()];
+	.daas.events.resp.backupSymFilesEOD[]
+		/if[(`complete=data`tag1) and (.daas.cfg.env=info`env) and (.daas.cfg.asset=info`asset);
+		/		.log.out[.z.h;"hdbEod event response called";(info`env;info`asset)];
+		/		.log.out[.z.h;"HDB EOD PROCESSING";(info`env;info`asset)];
+		/		.log.out[.z.h;"HDB EOD COMPLETED";(info`env;info`asset)];
+		/		.ds.hdb.reloadDB[];
+		/	];
+		];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

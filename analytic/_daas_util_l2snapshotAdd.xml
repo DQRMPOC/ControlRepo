@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.util.l2snapshotAdd</analytic>
+	<code_text>{[x]
+change:.daas.l2currentSnapShotTabName @ (x`sym;x`side);
+if[first enlist[x`id] in change`id;
+    :.daas.util.l2snapshotModify x;
+    ];
+insertOrder:iasc a where not null a:x[`price],raze change`price;
+change:@[change;`price;:;(raze x[`price],change[`price]) insertOrder];
+change:@[change;`size;:;(raze x[`size],change[`size]) insertOrder];
+change:@[change;`numOrders;:;(raze x[`numOrders],change[`numOrders]) insertOrder];
+change:@[change;`id;:;(enlist[x[`id]],change[`id]) insertOrder];
+change[`time]:x`time;
+change[`exchTime]:x`exchTime;
+@[.daas.l2currentSnapShotTabName;[(x`sym;x`side)];:;change];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>x</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

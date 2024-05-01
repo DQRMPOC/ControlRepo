@@ -1,0 +1,18 @@
+<analytic>
+	<analytic>statsFinalRecoveryIntradayMount</analytic>
+	<code_text>{[]
+    .log.warn[`statsFinalRecoveryIntradayMount; "This function is deprecated, please use .daas.infra.LRrollover";()];
+    .daas.infra.LRrollover[]
+ }</code_text>
+	<description>For the DS_LOG_RECOVERY process - save keyed tables to the hdb, possibly sort the tables, reload the hdbs, send email with number of rows replayed + any errors</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>DxInitial</analyticgroup>
+</analytic>

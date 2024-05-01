@@ -1,0 +1,63 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>MIC.csv</override>
+	<parameter>.daas.cfg.fwTargetDB</parameter>
+	<description>Configuration parameter containing information on the location and parsing of csv files used by the client uploader process.
+HDB - name of hdb process data is to be added to
+tab - table name for upload of data
+partedCol - name of column for data to be sorted on
+whereClause - way to filter data to be written to disk
+updateCols - used to update/add cols to raw data from csv file
+dateParted - true if table is date partitioned
+separator - file delimiter (e.g.  , for csv file)
+</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>fatvar</element>
+		<elementType>Symbol</elementType>
+		<elementValue>MIC.csv</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>HDB</element>
+		<elementType>Symbol</elementType>
+		<elementValue>daas_secMaster_a</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>tab</element>
+		<elementType>Symbol</elementType>
+		<elementValue>MIC</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>partedCol</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>whereClause</element>
+		<elementType>String</elementType>
+		<elementValue>()</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>updateCols</element>
+		<elementType>String</elementType>
+		<elementValue>()</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>dateParted</element>
+		<elementType>Boolean</elementType>
+		<elementValue>false</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>separator</element>
+		<elementType>Character</elementType>
+		<elementValue>,</elementValue>
+	</param>
+</configparam>

@@ -1,0 +1,79 @@
+<analytic>
+	<analytic>dxReportSaveToPDF</analytic>
+	<code_text>{[reportData;dictn;reportStats;reportoverride]
+
+  dxReportTableCheck[reportData;`dxReportSaveToPDF];
+  dictn[`filename]:`$.utils.createString[string dictn`filename;dictn] except ".";
+  a:first exec pdfAction from reportoverride;
+  if[`configurable=a;:dxReportSaveToConfigurablePDF[reportData;dictn;reportStats;reportoverride]];
+  if[`dynamic=a;:dxReportSaveToDynamicPDF[reportData;dictn;reportStats;reportoverride]];
+  :dxReportSaveToStandardPDF[reportData;dictn;reportStats;reportoverride];
+
+ }</code_text>
+	<description>Report action analytic to save report results to a pdf file
+reportoverride: name of override for pdf report
+filepath: full filepath to the directory you wish the pdf file to be saved in
+filename: the name for the file
+filetype: the type of file to save the results as, i.e. pdf in this case</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description></description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>filepath</name>
+				<datatype>Symbol</datatype>
+				<default>./</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>filename</name>
+				<datatype>Symbol</datatype>
+				<default>dxReportOutBasic</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>filetype</name>
+				<datatype>Symbol</datatype>
+				<default>pdf</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default>"c"$()</default>
+		<description>report statistics</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>reportoverride</parameter>
+		<default>DeltaReportDocDefinitions</default>
+		<description>config parameter override for pdf</description>
+		<required>1</required>
+		<datatype>Config</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+	<analyticgroup>DxReportGenerator</analyticgroup>
+</analytic>

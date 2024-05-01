@@ -1,0 +1,124 @@
+<analytic>
+	<analytic>.daas.l2.buildOrderBook</analytic>
+	<code_text>{[tableName;params;preBookDict;nLevels;timeCol;inputSym]
+    
+    if[inputSym ~ (); 
+        inputSym:`noSym
+        ];
+
+
+    / Selecting orders from end point of preBookDict and changing format of the history book    
+    / TODO: investigate if last time should be side based?
+    filteredTime:(?[preBookDict;((=;`sym;  $[-11h = type inputSym;enlist inputSym;inputSym]);(&gt;;timeCol;0));0b;(enlist timeCol)!enlist timeCol] timeCol) 0;
+    dateClause:(within;`date;(enlist;(`params;enlist`startDate);(`params;enlist`endDate)));
+    whereClause:((=;`sym;`inputSym);(&gt;;timeCol;`filteredTime);(&lt;;timeCol;(`params;enlist`endTime)));
+    
+    / add a date clause if needed
+    if[`date in cols tableName;
+        whereClause:enlist[dateClause],whereClause
+        ];
+    
+    / apply the filter
+    allOrders:?[tableName;whereClause;0b;()];
+    
+    / these indications are the end of atomic updates, so will be stages in a book to be shown
+    atomInds:exec i from allOrders where indication in 2 3;
+    
+    / TODO: whats the point of (count each price)#'side here? the ungrouped preBookDict only has one price per row..
+    preBook: `id xkey select id,price,size,numOrders, raze (count each price)#'side from ungroup preBookDict where sym=inputSym;
+    
+    / checking for indication=1 to reset table. 
+    / upserts new order into previous state of order book (deletes are upserted as nulls as that is how they come)
+    / this will then be allOrders with the book at each tick attached in the book column
+    r:update (book:{[x; id; price; size; numOrders; side; indication] if[indication=1; x: ([id:()] price:"f"$(); size:"j"$(); numOrders:"j"$(); side:`$())]; x upsert `id`price`size`numOrders`side!(id; price; size; numOrders; side) }\[preBook; id; price; size; numOrders; side; indication]) from allOrders;
+    
+    / function to obtain indices of sorted items, ignoring where prices=0
+    sort:{[nLevels; isBid; prices; sizes; orders] 
+        fn:$[isBid; idesc; iasc];
+        inds:fn[prices] inter where prices&gt;0;
+        inds:nLevels#  inds, nLevels#0N;
+        :(prices[inds]; sizes[inds]; orders[inds])
+        };
+
+    / adding nulls to ensure that both BID and ASK are always accounted for.
+    / sorting through and manipulating
+    sortall:{[x;sort;nLevels] exec raze x from ([]side:`BID`ASK)#select x:sort[nLevels; first[`BID=side]; price; size; numOrders] by side from x upsert flip `id`price`size`numOrders`side!(("0W";"-0Wj"); 0n 0n; 0N 0Nj; 0N 0Nj; `BID`ASK) }[;sort;nLevels];
+
+    / adding column labels and rearranging, producing order book with date, sym, time, exchTime, limiting to user defined time
+    qq:(`$("L",'string til nLevels) cross (enlist"bidPrice")),(`$("L",'string til nLevels) cross (enlist"bidSize")),(`$("L",'string til nLevels) cross (enlist"bidNumOrders")),(`$("L",'string til nLevels) cross (enlist"askPrice")),(`$("L",'string til nLevels) cross (enlist"askSize")),(`$("L",'string til nLevels) cross (enlist"askNumOrders"));
+    colLabels:(`$("L",'string til nLevels) cross ("bid";"ask") cross ("Price";"Size";"NumOrders"));
+    
+    
+    /add date column if needed
+    allOrders:$[`date in cols allOrders;allOrders;![allOrders;();0b;(enlist`date)!enlist ($;enlist`date;timeCol)]];
+   
+    /join on the order book,subset the times and return
+    joined:(select date, sym, time, exchTime,indication from allOrders),' colLabels xcols flip qq!flip raze each exec sortall each book from r;
+    subset:select from ?[joined;((&gt;;timeCol;(`params;enlist`startTime));(&lt;;timeCol;(`params;enlist`endTime)));0b;()];
+    
+    /these indicies are the end of atomic updates, so will be stages in a book to be shown
+    atomInds:exec i from subset where indication in 2 3;
+    :(delete indication from subset) atomInds; 
+ }</code_text>
+	<description>Builds an order book of nLevels according to the inputSym, from the history book (preBookDict) and new orders from tableName, according to user defined params</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tableName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>preBookDict</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>nLevels</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<param>
+		<parameter>timeCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>inputSym</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasL2</analyticgroup>
+</analytic>

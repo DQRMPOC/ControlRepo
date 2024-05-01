@@ -1,0 +1,52 @@
+<analytic>
+	<analytic>.daas.util.checkReqParams</analytic>
+	<code_text>{[functionName;params]
+
+// found using isRequire column in .daas.cfg.paramscfg
+defaultReqParams:exec paramName from .daas.cfg.paramscfg where funcName=functionName,isRequired;
+// removes mandatory parameter exceptions
+reqParams:defaultReqParams except .daas.util.checkReqParamExceptions[functionName; ] defaultReqParams!params[defaultReqParams];
+
+if[count a:k where not (k:reqParams) in key params;
+	:a;
+	];
+if[not any a:(`timeZone in key params;all (`inputTimeZone`outputTimeZone in key params));
+    :(`timeZone;`inputTimeZone`outputTimeZone) where a;
+    ];
+()
+/this can be tidied up a bit
+ }</code_text>
+	<description>Check parameter dictionary to ensure that all required parameters from the user are present.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,135 @@
+<analytic>
+	<analytic>.validation.standardThreshold</analytic>
+	<code_text>{[config;args]
+
+	.debug.standardThresholdConfig:`config`args!(config;args);
+    .debug.tst:.z.w;
+	
+	res:.al.callfunction[`.validation.standard][config];
+	
+	/instance names must be unique
+	if[(count config)&lt;&gt;count distinct config`instance;
+    	'"Validation Failed: Alert instance names must be unique"
+    ];
+	
+	/if[(count invalidAlertFunctions:config[`alertFunction]except `$-3_'exec elementValue from .uc.userconfig where override=`DEFAULT,parameter=`SURV_ALERTS,element=`function)&amp; 0=count getenv`KXSURVALERTSLOCKED_HOME;	
+	/	'"Validation Failed: The alertFunction(s): ",(","sv string[invalidAlertFunctions])," are invalid"
+	/];
+     
+    /all numerical thresholds to be non-negative
+    numericalColumns:exec c from meta[config] where t in "hijf";
+    exceptions:numericalColumns where any numericalColumns like/: ("percentageOver*";"percentageUnder*");
+    exceptions:exceptions,`$","vs exec first elementValue from .uc.userconfig where parameter=`SURV_VALIDATION_EXCEPTIONS,element=`values,index=(first exec index from .uc.userconfig where parameter=`SURV_VALIDATION_EXCEPTIONS,elementValue like "negative values");
+    if[count numericalColumns except exceptions;
+	    if[any any 0&gt;config[numericalColumns except exceptions];
+	    	'"Validation Failed: Numerical thresholds must be non-negative"
+	    ];
+	];
+	
+	/percentageOver* and percentageUnder* values have limits
+	percentageOverColumns:{x where x like "percentageOver*"}cols[config];
+    if[count percentageOverColumns;
+	    if[any any -100&gt;config[percentageOverColumns];
+	    	'"Validation Failed: percentageOver* values must be greater than or equal to -100"
+	    ];
+	];
+	percentageUnderColumns:{x where x like "percentageUnder*"}cols[config];
+    if[count percentageUnderColumns;
+	    if[any any 100&lt;config[percentageUnderColumns];
+	    	'"Validation Failed: percentageUnder* values must be less than or equal to 100"
+	    ];
+	];		
+            
+    /time interval parameters to be greater than 0D00:00:00 and less than 0D12:00:00
+    timeIntervalColNames:exec c from meta[config] where t in "n";
+    exceptions:`startTime`endTime`lookbackStartTimeThreshold;
+    if[count timeIntervalColNames except exceptions;  
+	    if[any any not config[timeIntervalColNames except exceptions] within (0D;0D12);
+	    	'"Validation Failed: Time Interval/Window thresholds must be between 0D0 and 0D12"
+	    ];
+	];
+    
+  	/end time must br greater than start time
+  	if[all in[;cols config] each `startTime`endTime;
+	  	if[any not (exec startTime from config)&lt;='exec endTime from config;
+	 		'"Validation Message:  endTimeBucket values must be greater than startTimeBucket values"
+	  	];
+	];	    
+    
+    numInstancesLimit:"J"$exec first action from .uc.getParamValue[`SURV_VALIDATION_SETTINGS;`delta_install_default;`DEFAULT] where setting=`$"number of alert instance limits";
+    
+ 	if[numInstancesLimit&lt;count config;
+ 	 	'"Validation Failed: The maximum number of alert instances permitted is ",string[numInstancesLimit]
+  	 ];
+  	 
+  	 /bait and switch specific
+  	 if[`alertFunction in cols config;
+  	 	if[first[config`alertFunction] like "*baitAndSwitch*";
+  	 		if[`typeNumber in cols config;
+  	 			.al.callfunction[`.validation.baitAndSwitchEOD][config]
+  	 		];
+  	 	];
+  	 ];
+    
+    //REALTIME THRESHOLD CHANGES CHECKS
+    alertsOverride:`$last "_" vs string args`parameter;
+    realtimeOvr:$[`REALTIME in exec distinct override from .uc.userconfig where parameter=args`parameter;`REALTIME;`DEFAULT];
+    realtimeEnginesRunning:count select from .pl.getRunningInformation[] where not null service, any name like/: ("surv_engine_realtime*";"surv_hdb_benchmark_realtime*");
+    isARealtimeAlert:`realtime in lower `$exec elementValue from .uc.userconfig where parameter like "SURV_ALERTS",override=alertsOverride, element=`alertType;
+    engineRunningCheckEnabled:"true"~lower first exec values from .al.callfunction[`.surv.util.getAllParamValues][`SURV_GENERAL_SETTINGS] where setting=`.validation.threshold.enableRealtimeEngineRunningCheck;
+    
+    if[(engineRunningCheckEnabled)&amp;(realtimeEnginesRunning)&amp;(realtimeOvr=args`override)&amp;isARealtimeAlert;
+        instances:select .uc.typeMap[elementType]@'elementValue,index from .uc.userconfig where parameter=args`parameter,override=args`override, element=`instance;
+        
+        //If thresholds are for realtime alerts, can't remove thresholds while engines are running
+        //This is to prevent potential issues with threshold sharding in the engines
+        if[count missing:instances[`elementValue] where not instances[`elementValue] in config`instance;
+            '"Can't remove alert instances for realtime alerts while the alert engines are running. Please set active=false instead. Removed Instances: ", ", " sv string missing
+            ];
+
+        //If thresholds are for realtime alerts, can't re-order thresholds while engines are running
+        //Again this is to prevent potential issues with threshold sharding in the engines
+        if[count diffOrder:instances[`elementValue] where not instances[`index]=(exec first i by instance from config ) instances`elementValue;
+            '"Can't re-order alert instances for realtime alerts while the alert engines are running. Please add new alert instances to the bottom of the config instead. Affected Instances: ", ", " sv string diffOrder
+            ];
+        ];    
+
+    if[`assetClass in cols config;
+        inputedAssetClasses:exec distinct assetClass from config;
+        allowedAssetClasses:(`;`notInUse;`$"*notInUse*"),exec ((`$string[subClass],\:"*"),(`$string[asset],\:"*")) from .uc.getActiveParamValue[`.daas.cfg.subClassToAsset;`];
+        matches:inputedAssetClasses in allowedAssetClasses;
+        isLike:any inputedAssetClasses like\:/: string[allowedAssetClasses];
+        badInputs:inputedAssetClasses where not[matches] and not[isLike];
+        if[count badInputs;
+            '"Bad assetClass inputs: ",(","sv string[badInputs]),". Only allowed values with or without *'s like: ",(","sv string[allowedAssetClasses])
+        ];
+    ];   
+  	 
+  	 :1b
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

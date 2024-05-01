@@ -1,0 +1,28 @@
+<analytic>
+	<analytic>.daas.qp.coreInit</analytic>
+	<code_text>{[]
+	
+	.daas.init.setMetaAndEventBusConn[];
+	
+	.al.loadgroupfunctions`daasRouting;
+	.daas.events.resp.QPProcDataRequest:.daas.routing.registerQP;
+	.daas.events.runOnInitialBusCon `.daas.routing.registerQP;
+	
+	.al.loadgroupfunctions `daasAsync;
+	.al.loadinstruction`.daas.cfg.gwCfg;
+	.al.loadinstruction`.daas.join.common;
+
+	.daas.util.initMRAggregations[];
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

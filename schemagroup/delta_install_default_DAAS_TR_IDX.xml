@@ -1,0 +1,13 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_TR_IDX</tablegroup>
+	<tablename>ConditionalAnalytics</tablename>
+	<tablename>auction</tablename>
+	<tablename>dacsUpdate</tablename>
+	<tablename>idxCanCor</tablename>
+	<tablename>idxOpenClose</tablename>
+	<tablename>idxQuote</tablename>
+	<tablename>idxTrade</tablename>
+	<tablename>respStatus</tablename>
+	<tablename>ricInfo</tablename>
+</schemagroup>

@@ -1,0 +1,46 @@
+<analytic>
+	<analytic>.daas.wc.tradeFlag</analytic>
+	<code_text>{[tradeFlag;dataType;tradeFlagCol]
+    
+    wc:();
+    
+    if[(not ` in tradeFlag)  and dataType~`trade;
+        wc,:enlist (in;tradeFlagCol;enlist raze tradeFlag)
+        ];
+
+    wc
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tradeFlag</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>dataType</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tradeFlagCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasWhereClause</analyticgroup>
+</analytic>

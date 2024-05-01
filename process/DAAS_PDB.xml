@@ -1,0 +1,218 @@
+<process>
+	<process>DAAS_PDB</process>
+	<directory>/</directory>
+	<file>DS_RDB.q</file>
+	<description>DeltaStream RealTimeSubscriber Process template</description>
+	<apps></apps>
+	<returnstat></returnstat>
+	<param>
+		<parameter>messagingServer</parameter>
+		<description>Delta Messaging Server</description>
+		<datatype>Config</datatype>
+		<required>1</required>
+		<default>DS_MESSAGING_SERVER</default>
+	</param>
+	<param>
+		<parameter>subscriptionChannel</parameter>
+		<description>channel to subscribe to</description>
+		<datatype>Symbol</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>subscriptionTableList</parameter>
+		<description>List of tables to subscribe to, leave empty for all tables, can also be NO_TABLES or LOCAL_TABLES</description>
+		<datatype>Symbol[]</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>subscriptionColumnList</parameter>
+		<description>Only used if messagingServer is set.  Table columns to subscribe to for subscriptionFilterList, defaults to sym</description>
+		<datatype>Symbol[]</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>subscriptionFilterList</parameter>
+		<description>List of syms to subscribe to, leave empty for all syms</description>
+		<datatype>Symbol[]</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>publishChannel</parameter>
+		<description>channel to publish on</description>
+		<datatype>Symbol</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>publishTableList</parameter>
+		<description>List of tables published</description>
+		<datatype>Symbol[]</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>logMsgFunct</parameter>
+		<description>Specifies which log replay function to use, run for each incoming replayed data segment.</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxUpdInsert</default>
+	</param>
+	<param>
+		<parameter>postLogMsg</parameter>
+		<description>Specifies task(s) to perform after the ticker replay function completes running.</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxEmptyFunctionNull</default>
+	</param>
+	<param>
+		<parameter>bufferMsgFunct</parameter>
+		<description>Specifies which message buffer function to use.</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxUpdInsertPub</default>
+	</param>
+	<param>
+		<parameter>postBufferMsg</parameter>
+		<description>Specifies task(s) to perform after the message buffer updates have been processed.</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxEmptyFunctionNull</default>
+	</param>
+	<param>
+		<parameter>initialStateFunct</parameter>
+		<description>Specifies initial state tasks and sets call backs.</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxInitialDataState</default>
+	</param>
+	<param>
+		<parameter>realTimeMsgFunct</parameter>
+		<description>Update function to be used by rdb.</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxUpdInsertPub</default>
+	</param>
+	<param>
+		<parameter>logReplayFunct</parameter>
+		<description>Analytic to replay the ticker plant log.</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxLogReplay</default>
+	</param>
+	<param>
+		<parameter>eodFunct</parameter>
+		<description>End of day function. (eg. Write to hdb,...)</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxEODSaveAndDelete</default>
+	</param>
+	<param>
+		<parameter>rollOverFunct</parameter>
+		<description>Function called by DS_EOD</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxRolloverMultiServer</default>
+	</param>
+	<param>
+		<parameter>hdbProcess</parameter>
+		<description>Name of historical database to save to at EOD.</description>
+		<datatype>Instance[]</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>gatewayQuery</parameter>
+		<description>Analytic to handle queries from the GW.</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxQuery_basic</default>
+	</param>
+	<param>
+		<parameter>monitoringInterval</parameter>
+		<description>Time (milliseconds) interval for monitoring publish events</description>
+		<datatype>Integer</datatype>
+		<required>1</required>
+		<default>0</default>
+	</param>
+	<param>
+		<parameter>tableEodList</parameter>
+		<description>Eod tables.</description>
+		<datatype>Config</datatype>
+		<required>1</required>
+		<default>DS_TABLES_EOD_LIST</default>
+	</param>
+	<param>
+		<parameter>subscriptionSource</parameter>
+		<description>Only used if messagingServer is not configured.  List of processes to subscribe to.</description>
+		<datatype>Instance</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>consumerProcesses</parameter>
+		<description>Only used if messagingServer is not configured.  List of processes that data will be published to.</description>
+		<datatype>Instance[]</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>consumerAlertSize</parameter>
+		<description>Number of bytes in output queue of a consumer process to trigger an alert</description>
+		<datatype>Integer</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>consumerDisconnectSize</parameter>
+		<description>Number of bytes in output queue of a consumer process to trigger an alert and disconnect</description>
+		<datatype>Integer</datatype>
+		<required>1</required>
+		<default></default>
+	</param>
+	<param>
+		<parameter>endInterval</parameter>
+		<description>Function to call when TP sends endInterval trigger</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxEndIntervalTemplate</default>
+	</param>
+	<param>
+		<parameter>rdbUpdFunct</parameter>
+		<description>The upd function for the related RDB to use when ingesting data so tables are stored in the same manner</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxEmptyFunctionNull</default>
+	</param>
+	<param>
+		<parameter>intervalDelete</parameter>
+		<description>Analytic to delete data from tables when dxRdbDelete is called.</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxEmptyFunctionNull</default>
+	</param>
+	<param>
+		<parameter>dc_host</parameter>
+		<description>Host</description>
+		<datatype>Symbol</datatype>
+		<required>1</required>
+		<default>No_host_set</default>
+	</param>
+	<param>
+		<parameter>dc_port</parameter>
+		<description>Port</description>
+		<datatype>Integer</datatype>
+		<required>1</required>
+		<default>0</default>
+	</param>
+	<param>
+		<parameter>customLoadFunct</parameter>
+		<description>Function to load additional parameters required within the PDB</description>
+		<datatype>Analytic</datatype>
+		<required>0</required>
+		<default>dxEmptyFunctionNull</default>
+	</param>
+</process>

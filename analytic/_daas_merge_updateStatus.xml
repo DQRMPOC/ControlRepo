@@ -1,0 +1,28 @@
+<analytic>
+	<analytic>.daas.merge.updateStatus</analytic>
+	<code_text>{[info]
+	if[`100~p:`$string[info`completion];
+		p:`sorting;
+		];
+		
+	update progress:p from `.daas.merge.status where slaveID=info`myID;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>info</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

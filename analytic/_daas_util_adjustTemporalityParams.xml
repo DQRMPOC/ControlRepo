@@ -1,0 +1,69 @@
+<analytic>
+	<analytic>.daas.util.adjustTemporalityParams</analytic>
+	<code_text>{[args]
+
+    args[`time]:.daas.util.mapTimeParamToCol[args`time];
+    args[`tz]:args[`timeZone];
+    
+    // set query timezone to inputTimezone if specified
+    if[not `none=args`inputTimeZone;
+        args[`tz]:args[`inputTimeZone];
+        ];
+    
+    // set the "default" query timezone if none was provided.
+    if[`=args`tz;
+        args[`tz]:.daas.cfg.regionConfig[`timeZone];
+        ];
+    
+    // get timezone to convert from and to
+    queryTimeZone:.dtools.getTZ[args`tz];
+    onDiskTimeZone:.daas.util.getOnDiskTZ[`;args`time];
+
+    // casting the parameters on input because in some situations
+    // like dataType=`depth and temporality=`snapshot, endTime or startTime might be timestamp types
+    args[`sd`st]:("d";"n")$\:.daas.util.convertBetweenTZ[;queryTimeZone;onDiskTimeZone] args[`startDate]+"n"$args[`startTime];
+    args[`ed`et]:("d";"n")$\:.daas.util.convertBetweenTZ[;queryTimeZone;onDiskTimeZone] args[`endDate]+"n"$args[`endTime];
+    
+    
+    // set the 'tz' to be output timezone now as 
+    // params`tz is used in places downstream 
+    if[not args[`inputTimeZone] in ``none;
+        args[`tz]:args[`outputTimeZone];
+        ];
+
+    args[`startTime]:args[`sd]+args`st;
+    args[`endTime]:args[`ed]+args`et;
+
+    // TODO: move this into the combined genWhereClause func once instances of params[`whereClause] are replaced eslewhere
+    args[`temporalWhereClause]:args[`whereClause]:.daas.wc.temporality . args`time`st`et`temporality`granularityUnit`API;
+    
+    args
+ }</code_text>
+	<description>Apply timezone.
+Build where dictionary based on temporality, start time, and end time from dictionary passed in.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

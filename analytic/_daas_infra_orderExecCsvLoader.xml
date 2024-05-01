@@ -1,0 +1,104 @@
+<analytic>
+	<analytic>.daas.infra.orderExecCsvLoader</analytic>
+	<code_text>{[dir;file]
+    
+    .debug.ne:(dir;file);
+    
+    .daas.events.pubEventMessage[`fileUpload;`started;file;`;()];
+    .log.out[`Batchload;"Starting upload of file [ ",string[file]," ]";()];
+
+    rgex:.fd[`fileListConfigName][`value]`fileregex;
+    fileregex:first rgex where file like ' string rgex;
+    dir:.utils.checkForEnvVar dir;
+    filePath:`$"/" sv (string dir; string file);
+    target:first .daas.orderExec.targetDict[fileregex];
+    tab:target`tab;
+
+    //create temp dir for potential historical data
+    .daas.fw.tempTabDir:(string dir),"/",(first "." vs string file),"_batchload_",raze ("." sv ":" vs string .z.Z);
+    
+    raw:read0(filePath;0;.daas.cfg.fwReadCharCount);
+    offset:first where raw like "---";
+    fatvar:.daas.orderExec.FATVAR[target`fatvar];
+    
+    .cfg.loadno:0;
+    
+    .Q.fsn[.daas.fw.fsCsvLoaderSplayed[;target;fatvar;offset];;100000000] filePath;
+    
+    merged:0b;
+    
+    if[0b;
+            dir:` sv ($[":"=first .daas.fw.tempTabDir; `$.daas.fw.tempTabDir; `$":",.daas.fw.tempTabDir];`$string first .cfg.loadDate;tab;`);  
+            alls:"/" vs .daas.fw.tempTabDir;
+            newdir:` sv (`$"/"sv(-1_alls),enlist ssr[last alls;":";"."];`$string first .cfg.loadDate;tab;`);  
+            order:get dir;
+            if[not `venue in cols order; order:update venue:` from order];
+            if[not `orderType in cols order; order:update orderType:`Market from order];
+            order:update "f"$leavesQuantity from order;
+            .al.loadgroupfunctions`bboUDFAnalytics;
+            .daas.bboUDF.bboInit[];
+            .daas.bboUDF.bboUDF[`order;order];
+            Data:select from .daas.bboUDF.holdingTable where eventTimestamp&lt;.z.P-.daas.bboUDF.bufferTimeSeconds;
+            //orderBookSnapshot also created - is global
+    ];
+
+    if[not ()~key `$":",.daas.fw.tempTabDir;
+        //creating a merge trigger for historical data
+        mergeTrigger:.daas.fw.genMergeTrigger[file;raw];
+        if[not 0b~mergeTrigger;
+            .daas.fw.writeMergeTrigger[mergeTrigger];
+            //moving temp dir for historical data to merge dir
+            .daas.fw.moveTempToMergeDir[];
+            merged:1b;
+            ];
+        if[0b~mergeTrigger;
+            //remove temp dir and exit
+            .log.out[`Batchload;"Removing temp dir ";.daas.fw.tempTabDir];
+            system "rm -r ",.daas.fw.tempTabDir;
+            merged:0b;
+            ];
+        ];
+
+    .daas.fw.complete[dir;file;merged];
+    if[count value tab;
+        merged:1b;
+        .log.out[`Batchload;"Publishing [ ",string[count value tab]," ] realtime rows of table [ ",string[tab]," ] on channel [ ",string[.ds.cfg.publishChannel]," ]";()];
+        .d.pub[tab;value tab];
+        delete from tab;
+        ];
+    
+    $[merged;
+        .log.out[`Batchload;"Status [ success ] for file load of [ ",string[file]," ]";()];
+        .log.err[`Batchload;"Status [ failed ] for file load of [ ",string[file]," ]";()]
+        ];
+    
+    .log.out[`Batchload;"Check log of [ daas_dataMergeDaemon ] for merge status ";()];
+
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasFilewatcher</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

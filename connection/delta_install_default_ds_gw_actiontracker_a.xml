@@ -1,0 +1,13 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>ds_gw_actiontracker_a</connection>
+	<host>ENV=ds_gw_actiontracker_a_HOST=</host>
+	<port>ENV=ds_gw_actiontracker_a_PORT=</port>
+	<user>Administrator</user>
+	<pass>AESencrypted!106788FEBA38639057BDE65584E37120C6A13B37878F5B826F4F8162A1C8D879</pass>
+	<dbname></dbname>
+	<dbtype>q</dbtype>
+	<tls></tls>
+	<dataconnectiongroup>ds_gw_actiontracker</dataconnectiongroup>
+	<primarystatus>primary</primarystatus>
+</connection>

@@ -1,0 +1,148 @@
+<analytic>
+	<analytic>.daas.fw.functionDefinitions</analytic>
+	<code_text>//Function Definitions 
+
+//Writes the historial data from the batch load into a temporary directory
+//@param tab {symbol} Data is being loaded into the schema of this table 
+//@param hist {table} Historical data from batch 
+//@param dt {date} Date to write down
+.daas.fw.writeToTempDir:{[tab;hist;dt]
+    timecol:first exec c from (meta hist) where t="p";
+    hist:?[hist;enlist(=;($;"d";timecol);dt);0b;()];
+    //Handle to table partition
+    dir:` sv (`$":",.daas.fw.tempTabDir;`$string dt;tab;`);  
+    //Write to disk
+    .log.out[`Batchload;"Saving [ ",string[count hist]," ] rows to date partition [ ",string[dt]," ]";()];
+    .[$[count key dir;upsert;set];(dir;.Q.en[`$":",.daas.fw.tempTabDir;hist]);{.log.err[`Batchload;"Error writing to disk - exiting";(x)];:()}];
+    }
+
+//Move data from the temporary directory to the merge directory ready to be processed by the merge slaves
+//Uses environment variables defined on the process
+.daas.fw.moveTempToMergeDir:{[]
+    //move temp hdb to merge location
+    rpt:last "/" vs .daas.fw.tempTabDir;
+    .log.out[`Batchload;"Moving temp hdb to merge location [ ",.daas.fw.mergeDir," ]";()];
+    @[system;"mv ",.daas.fw.tempTabDir," ",.daas.fw.mergeDir,"/";{.log.err[`Batchload;"Could not move tmp hdb to merge location - exiting";x];:()}];     
+    //hdb now in merge location - ready to create meregTrigger
+    }
+
+//Creates the merge trigger based off the offset in the raw file and adds defaults for any missing options
+//@param raw {table} Unfiltered table of data from the batch 
+//@return {table} mergeTrigger generated ready to save down
+.daas.fw.genMergeTrigger:{[file;raw]
+
+    offset:first where raw like "---";
+    mergeCfg:raw where (0^offset)#raw like "%%*";
+    mergeT:()!();
+    //create merge trigger from values in header of file
+    if[count mergeCfg;
+        /if there is one  
+        mergeT:(`$first each 1_'" " vs' mergeCfg)!(`$last each 1_'" " vs' mergeCfg);
+       .log.out[`Batchload;"Configuration for merge ";"," sv "=" sv' string each (key mergeT),'value mergeT];
+        ];
+    
+    //if any merge cfg info missing, set the defaults
+    defaults:`mode`when`copy!first each value flip .daas.cfg.fwAcceptedMergeHeaders;
+    mergeT:defaults,mergeT;
+    //if any of the merge cfg info is not in acceptedValues, reject the file
+    badHeaders:not value[mergeT] in \:' value flip .daas.cfg.fwAcceptedMergeHeaders; 
+    if[any badHeaders; 
+        badHeaderLogs:raze ({[mergeT;x] "[ ",string[(key mergeT)x]," = ",string[(value mergeT)x]," ] "}[mergeT;] each where badHeaders);
+
+        .log.err[`Batchload;"Bad merge header(s) ",badHeaderLogs," - Rejecting file";file];
+        :0b
+        ];
+
+    //target hdb after merge
+    hdbTarget:"/" sv -3#"/" vs .daas.fw.hdbTarget;
+    .log.out[`Batchload;"Target HDB for merge: [ ",hdbTarget," ]";()];
+    rpt:last "/" vs .daas.fw.tempTabDir;
+    mergeTrigger:enlist `processingType`file`hdbTarget`mode`when`copy!(`manual;rpt;hdbTarget;mergeT`mode;mergeT`when;mergeT`copy)
+    }
+
+//Save the mergeTrigger to merge location environment variable to get picked up by Merge Daemon
+//@param mergeTrigger {table} Merge Trigger will be saved down as a csv
+.daas.fw.writeMergeTrigger:{[mergeTrigger]
+    rpt:last "/" vs .daas.fw.tempTabDir;
+    mergeTriggerLoc:.daas.fw.mergeLoc,"/";
+    .log.out[`Batchload;"Dropping merge trigger [ ",mergeTriggerLoc,rpt,"_Trigger.csv ]";()];
+    @[{x 0: csv 0: y}[`$":",mergeTriggerLoc,rpt,"_Trigger.csv";];mergeTrigger;{.log.err[`Batchload;"Could not drop merge trigger - exiting";x];:()}];
+    }
+
+//Finish the fw procedure by appending the timestamp to rename the file
+//@param dir {symbol} Directory of batch file (watch directory of filewatcher process)
+//@param file {symbol} Name of file that was loaded
+.daas.fw.complete:{[dir;file;merged]
+    oldFilePath:"/" sv (string dir; string file);
+    newFile:string[file],".", raze ":" vs string .z.Z;
+    .log.out[`Batchload;"Renaming file [ ",string[file]," ] to [ ",newFile," ]";()];
+    if[merged;
+        newPath:"/" sv (string[dir];"complete";newFile);
+        .log.out[`Batchload;"File moved to [ complete ] folder";newPath];
+        system "mv ",1_oldFilePath," ",1_newPath;
+        ];
+            
+    if[not merged;
+        newPath:"/" sv (string[dir];"rejected";newFile);
+        .log.out[`Batchload;"File moved to [ rejected ] folder";newPath];
+        system "mv ",1_oldFilePath," ",1_newPath;
+        ];    
+
+    }
+
+//Read the data into the system - creating function here to be passed into .Q.fsn
+//@param filePatch {symbol} Path to the file to be read in
+//@param target {dict} Contains configuration information for the data
+//@param fatvar {dict} Field names and Types for appropriate schema
+//@param offset {long} Number of header rows to drop from the file
+.daas.fw.fsCsvLoaderSplayed:{[filePath;target;fatvar;offset]
+        .log.out[`Batchload;"Iteration of fsLoaderSplayed function [ ",string[.cfg.loadno]," ]";()];
+        separator:target`separator;
+        tab:target`tab;
+        //Remove the mergeCfg lines ONLY at the top of the file and read it in
+        rawdata:$[any (.cfg.loadno;null offset);
+            fatvar[`Field] xcol (fatvar`Type;enlist separator)0:filePath;
+            fatvar[`Field] xcol (offset+1)_(fatvar`Type;enlist separator)0:filePath];
+        if[0=count rawdata;
+            .log.err[`Batchload;"No data in file";()];
+            ];
+        t:?[rawdata;();0b;x!x:cols value tab];
+        if[.daas.orderExec.tableNameMap[tab] in `order`execution;
+            //Mapping fields for CUST instrument ID
+            t:.daas.util.orderExecInstrumentDescMapping[tab;t];
+            //validate the data - any null mandatory fields will result in exiting this funtion and the file being rejected
+            if[not .daas.util.orderExecFieldValidation[tab;t];
+                .cfg.loadno+:1;
+                :()
+            ];
+        ];  
+        //updating columns to generate internalTimestamp and internal IDs etc
+        if[not "()"~ raze target`updateCols;
+            t:![t;();0b;value raze target`updateCols];
+            ];
+        timecol:first exec c from (meta t) where t="p";
+        realtime:?[t;enlist(=;($;"d";timecol);.z.D);0b;()];
+        hist:?[t;enlist(not;(=;($;"d";timecol);.z.D));0b;()];
+
+        .log.out[`Batchload;"Upserting to table [ ",string[tab]," ]";()];
+        if[count realtime;
+            tab upsert realtime;
+            ];
+
+        if[count hist;
+            .log.out[`Batchload;"Entering function to write historical data for [ ",string[tab]," ] in [ ",1_.daas.fw.tempTabDir," ]";()];
+            .daas.fw.writeToTempDir[tab;hist;] each distinct ?[hist;();();($;"d";timecol)];
+            ];
+        .cfg.loadno+:1;
+        }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

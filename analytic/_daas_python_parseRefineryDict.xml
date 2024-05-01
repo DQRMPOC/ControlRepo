@@ -1,0 +1,46 @@
+<analytic>
+	<analytic>.daas.python.parseRefineryDict</analytic>
+	<code_text>{[dict]
+	 args:key dict;
+    //map times
+    
+    if[`startDate in args;
+        //funny syntax for embedpy
+        dict[`startDate]:"D"$(.p.wrap dict`startDate)[`:isoformat][]`;
+        ];
+    if[`endDate in args;
+        dict[`endDate]:"D"$(.p.wrap dict`endDate)[`:isoformat][]`;
+        ];
+    //map times
+    
+    //map sym/strings
+    if[`symList in args;
+        dict[`symList]:`$dict`symList;
+        ];
+    if[`assetClass in args;
+        dict[`assetClass]:`$dict`assetClass;
+        ];   
+    if[`dataType in args;
+        dict[`dataType]:`$dict`dataType;
+        ];
+    dict
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dict</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPython</analyticgroup>
+</analytic>

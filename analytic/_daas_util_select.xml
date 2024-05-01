@@ -1,0 +1,117 @@
+<analytic>
+	<analytic>.daas.util.select</analytic>
+	<code_text>{[tab;timeParams;symParams;colClause;byClause;whereClause]
+    // @param tab {symbol} On disk table name
+    // @param timeParams {list} (start time;end time; time column name)
+    // @param symParams {list} (values; symbol col)
+    // @param colClause {dict} functional select column clause
+    // @param byClause {dict} functional select by clause
+    // @param whereClause {dict} functional select where clause
+    
+    // map byClause correctly
+	// currenlty (), symbol lists and dicts are passed
+	// TODO: consolidate where these are being generated from to avoid this check
+	mapClause:{[clause;emptyVal]
+		clause:$[clause~();
+					emptyVal;
+	  		   /ifelse
+	  		   11h~abs type clause;
+	    			c!c:(),clause;
+	    		/else
+	    			clause
+				];
+		clause
+	};
+
+	byClause:mapClause[byClause;0b];
+	colClause:mapClause[colClause;()];
+	
+    sts:timeParams 0;
+    ets:timeParams 1;
+    timecol:timeParams 2;
+
+    symList:symParams 0;
+    symcol:symParams 1;
+    
+    // order dependent analytics like first/last are affected by sorting on time, so need to resort if not timeSorted and orderDep
+    // if the table is a sym, check the config. 
+    // if not, apply sorted attr and catch failure
+    timeSorted:$[dxSelectIsHdb[] and -11h~type tab;
+				timecol~first exec sortedCol from .daas.cfg.schemaSortCol where table=tab;
+				`s~attr tab[timecol]
+				];
+    
+    orderDepFunction:any (first;last) in (raze/) (::),value colClause;
+
+    if[orderDepFunction and not timeSorted;
+        // run the select without any aggregations
+        tab:?[0!tab;.daas.wc.default[tab;sts;ets;symList;whereClause;symcol;timecol];0b;()];
+        
+        // sort on the time col
+        tab:timecol xasc tab
+        ];
+
+    // complete aggregations
+    res:$[dxSelectIsHdb[];
+            ?[0!tab;.daas.wc.default[tab;sts;ets;symList;whereClause;symcol;timecol];byClause;colClause];
+            ?[update date:`date$.z.P from 0!.Q.v tab;.daas.wc.default[tab;sts;ets;symList;whereClause;symcol;timecol];byClause;colClause]
+            ];
+
+    // reorders cols on the database / keys 
+    dxSelectFormat[byClause;timecol;res]
+
+  }</code_text>
+	<description>The base function to retrieve table in hdb/rdbs</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>timeParams</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>symParams</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>colClause</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>byClause</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>whereClause</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

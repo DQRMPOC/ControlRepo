@@ -1,0 +1,60 @@
+<analytic>
+	<analytic>.daas.stats.readRdbHdbBoundarySpanData</analytic>
+	<code_text>{[args]
+    
+    //Exit if we have to pivot for agg, as handled in later function
+    if[first exec pivotForAggregations  from .daas.cfg.pivotSettings where tableName=args[`dataType];
+        :args;
+        ];
+        
+        
+    //Are there any component reads needed (due to bucket spanning process)
+    /yes - read and set into args dict to be passed back to gw/qp
+    //Generate  time buckets to return components for aggregation at gateway
+    buckets:distinct args[`timeRack],args[`endTime];;
+    span:.daas.stats.isBucketOverBoundary[buckets;args];
+    midnight:.z.D;
+    if[span;
+        spanStart:buckets last where buckets&lt;=midnight;
+        spanEnd:buckets first where buckets&gt;=midnight; 
+        
+        //if these aren't the same then bucket doesnt line up with midnight therefore we have a spanbucket that needs to be read and aggr at gw
+        if[span:not spanStart=spanEnd;
+            if[11=abs type args`analytics;
+                sp:(10b!((spanStart;(`timestamp$midnight)-1);(`timestamp$midnight;spanEnd))) .daas.cfg.procType~`hdb;
+                spanBucket:update time:spanStart from first getStats`timeZone`inputTimeZone`outputTimeZone`granularityUnit`granularity _args[`rawParams],(`startDate`endDate`startTime`endTime!(`date$sp 0;`date$sp 1;`time$sp 0;`time$sp 1)); 
+                ];
+            //need tick data if is analytic clause
+            if[not 11=abs type args`analytics;                 
+                sp:(spanStart;spanEnd);
+                columns:an where -11=type each an:(raze/) args`analytics;
+                spanBucket:args[`spanBucket]:update time:spanStart from  first getTicks(enlist[`columns]!enlist columns),`timeZone`inputTimeZone`outputTimeZone`granularityUnit`granularity _args[`rawParams],(`startDate`endDate`startTime`endTime!(`date$sp 0;`date$sp 1;`time$sp 0;`time$sp 1));
+                ];  
+            
+            args[`spanBucket]:.daas.util.outboundTZConv[spanBucket;args];
+            ];
+        ];
+    
+    args[`span]:span;
+    args[`midnight]:midnight;
+    args
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasStats</analyticgroup>
+</analytic>

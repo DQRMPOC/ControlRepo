@@ -1,0 +1,60 @@
+<analytic>
+	<analytic>.daas.cmon.qr</analytic>
+	<code_text>// Refinery (DaaS) Query Router Monitoring 2.0
+// Copyright (c) 2019 Kx Systems Inc
+
+/ QR functions to be overriden by Monitoring-specific versions. 'qrFunctionBody' is populated when
+/ the functions are overriden during init
+.daas.cmon.qr.overrides:`qrFunction xkey flip `qrFunction`overrideFunction`qrFunctionBody!"SS*"$\:();
+.daas.cmon.qr.overrides[`.qr.sendRequest]:          (`.daas.cmon.qr.sendRequest;            ::);
+.daas.cmon.qr.overrides[`completeRequest]:          (`.daas.cmon.qr.completeRequest;        ::);
+.daas.cmon.qr.overrides[`.qr.notifyClientTimeout]:  (`.daas.cmon.qr.notifyClientTimeout;    ::);
+
+
+.daas.cmon.qr.init:{
+    .daas.cmon.addEventMetric[`qr.queryDispatch; `dict];
+    .daas.cmon.addEventMetric[`qr.queryResult;   `dict];
+
+    toOverride:exec qrFunction from .daas.cmon.qr.overrides;
+
+    .log.out[`cmon;;()] "Overriding QR functions for Monitoring 2.0 [ To Override: ",.Q.s1[toOverride]," ]";
+
+    {[of]
+        .daas.cmon.qr.overrides[of; `qrFunctionBody]:get of;
+        set[of;] get .daas.cmon.qr.overrides[of; `overrideFunction];
+
+    } each toOverride;
+ };
+
+
+.daas.cmon.qr.sendRequest:{[gw; req; start; lc]
+    .daas.cmon.qr.overrides[`.qr.sendRequest; `qrFunctionBody][gw; req; start; lc];
+
+    queryInfo:first 0!select queryID, database, logCorr, all dispatched, first request by requestID from query where requestID = req`requestID;
+    .daas.cmon.sendMetrics[`qr.queryDispatch; queryInfo];
+ };
+
+.daas.cmon.qr.completeRequest:{[reqID; status; proc; queryIDs; targets]
+    .daas.cmon.qr.overrides[`completeRequest; `qrFunctionBody][reqID; status; proc; queryIDs; targets];
+
+    resultInfo:`aggFunc`requestType`managed`clientTime _ exec from request where requestID = reqID;
+    .daas.cmon.sendMetrics[`qr.queryResult; resultInfo];
+ };
+
+.daas.cmon.qr.notifyClientTimeout:{[req]
+    .daas.cmon.qr.overrides[`.qr.notifyClientTimeout; `qrFunctionBody][req];
+
+    .daas.cmon.sendMetrics[`qr.queryResult; req];
+ };
+    </code_text>
+	<description>Refinery (DaaS) Query Router Monitoring 2.0</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

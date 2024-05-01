@@ -1,0 +1,208 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.udf.realtimeConfig</parameter>
+	<description>parameter | description | example
+
+UDF | name of function | myRealtimeUDF 
+
+dataReq | table(s) required | `trade`quote
+
+dataTabMeta | dictionary of metadata for the required tables | `assetClass`region!`index`emea
+
+triggered | on trigger or every update | 1b
+
+trigTab | table to run trigger against | metadata
+
+trigTabMeta | dictionary of metadata for the 
+trigger table | `assetClass`region!`index`emea
+
+trigCond | kdb condition as alternative to trigger func | enlist(=;`sym;enlist`VOD.L)
+
+trigFunc | trigger function name | myTrigFunc
+
+initFunc | function to be run on boot of udf process, to load in config etc | myInitFunc
+
+procNo | integer number of process to allocate | 0</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>UDF</element>
+		<elementType>Symbol</elementType>
+		<elementValue>bboUDF</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>dataReq</element>
+		<elementType>String</elementType>
+		<elementValue>`order</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>dataTabMeta</element>
+		<elementType>String</elementType>
+		<elementValue>`assetClass`dataType!`equity`order</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>triggered</element>
+		<elementType>Boolean</elementType>
+		<elementValue>false</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>trigTab</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>trigTabMeta</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>trigCond</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>trigFunc</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>initFunc</element>
+		<elementType>Symbol</elementType>
+		<elementValue>bboInit</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>procNo</element>
+		<elementType>Integer</elementType>
+		<elementValue>0</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>UDF</element>
+		<elementType>Symbol</elementType>
+		<elementValue>bboUDF</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>dataReq</element>
+		<elementType>String</elementType>
+		<elementValue>`order</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>dataTabMeta</element>
+		<elementType>String</elementType>
+		<elementValue>`assetClass`dataType!`fixedIncome`order</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>triggered</element>
+		<elementType>Boolean</elementType>
+		<elementValue>false</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>trigTab</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>trigTabMeta</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>trigCond</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>trigFunc</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>initFunc</element>
+		<elementType>Symbol</elementType>
+		<elementValue>bboInit</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>procNo</element>
+		<elementType>Integer</elementType>
+		<elementValue>1</elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>UDF</element>
+		<elementType>Symbol</elementType>
+		<elementValue>bboUDF</elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>dataReq</element>
+		<elementType>String</elementType>
+		<elementValue>`order</elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>dataTabMeta</element>
+		<elementType>String</elementType>
+		<elementValue>`assetClass`dataType!foreignExchange`order</elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>triggered</element>
+		<elementType>Boolean</elementType>
+		<elementValue>false</elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>trigTab</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>trigTabMeta</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>trigCond</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>trigFunc</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>initFunc</element>
+		<elementType>Symbol</elementType>
+		<elementValue>bboInit</elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>procNo</element>
+		<elementType>Integer</elementType>
+		<elementValue>2</elementValue>
+	</param>
+</configparam>

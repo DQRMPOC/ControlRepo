@@ -1,0 +1,93 @@
+<analytic>
+	<analytic>.daas.wc.filterRule</analytic>
+	<code_text>{[filterRule;dataType;timeCol;startDate;endDate;temporality;symCol;condCol]
+    
+    wc:();
+    
+    tradeQuote:dataType in `trade`quote;
+    hasFilterRule:not (`NOFILTER=upper filterRule) or `=filterRule;
+    
+    if[hasFilterRule and tradeQuote;        
+        // functional whereClause 
+        filterRuleCheck:enlist (enlist `.daas.util.isValidRecord;symCol;condCol;enlist filterRule;enlist dataType;startDate;endDate);
+        
+        if[`snapshot~temporality;
+            snapShotTimeFilter:enlist (=;timeCol;(fby;(enlist;max;timeCol);symCol));
+            wc,:snapShotFilter;
+            ];
+        
+        wc,:filterRuleCheck;
+        
+        ];
+    
+    wc
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>filterRule</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>dataType</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>timeCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>startDate</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>endDate</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>temporality</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>symCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>condCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasWhereClause</analyticgroup>
+</analytic>

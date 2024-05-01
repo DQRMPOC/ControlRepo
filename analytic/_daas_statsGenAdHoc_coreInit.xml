@@ -1,0 +1,24 @@
+<analytic>
+	<analytic>.daas.statsGenAdHoc.coreInit</analytic>
+	<code_text>{[]
+
+	.daas.init.setMeta[];
+	.al.loadinstruction[`.daas.cfg.serverCfg];
+    
+	/ Load table meta data
+	.al.loadinstruction`.daas.meta.common;
+	.daas.meta.init[];
+    
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

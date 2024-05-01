@@ -1,0 +1,13 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>emea_tr_b</override>
+	<parameter>DS_MESSAGING_SERVER</parameter>
+	<description>This parameter and its overrides defines the process instances  which are Delta messaging servers</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>instance</element>
+		<elementType>Symbol</elementType>
+		<elementValue>emea_tr_ms_b</elementValue>
+	</param>
+</configparam>

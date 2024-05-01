@@ -1,0 +1,27 @@
+<workflow>
+<wfName>START_DAAS_A</wfName>
+	<branch>
+		<tName1>ds_appServer_a.2</tName1>
+		<tName2>daas_eventBus_a.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>daas_eventBus_a.1</tName1>
+		<tName2>daas_secMaster_a.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>emea_tr_ms_a.1</tName1>
+		<tName2>ds_appServer_a.2</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+</workflow>

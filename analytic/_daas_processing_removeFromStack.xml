@@ -1,0 +1,82 @@
+<analytic>
+	<analytic>.daas.processing.removeFromStack</analytic>
+	<code_text>{[procName;stackComplete]
+	/current stack's jobID
+	job:value first -1#-1_"_" vs string[procName];
+
+	//Delete process instance
+	.log.out[.z.h;"Deleting process instance";procName];
+	{.ex.prh(".pl.deleteprinstance";x)} procName;
+	
+	
+	//Shutdown process
+	.log.out[.z.h;"Shutting down process";procName];
+	{.ex.prh(".pl.shutdownproc";x)} procName;
+	
+	/Check if this is the last process in the stack (true if called by FM)
+	if[stackComplete;
+		
+		/Update job's status in pdInfo
+		.log.out[.z.h;"Stack completed";job];
+		update status:`complete from `.daas.processing.pdInfo where jobID=job;
+		
+		/Update event_bus that feed has finished processing
+		.daas.trth.fileDict:exec first fileDict from `.daas.processing.pdInfo where jobID=job;
+		.daas.trth.eventBusUpdate:.daas.trth.fileDict _ `reportDate;
+        .daas.trth.eventBusUpdate[`status]:`COMPLETE;
+		.daas.trth.eventBusUpdate[`statusMessage],:" - File part ",.daas.trth.fileDict[`filePart]," - The Feed has finished processing";
+		
+		.log.out[.z.h;"Updating Event bus";.daas.trth.eventBusUpdate[`statusMessage]];
+		.daas.events.pubEventMessage[`trthUpdate;`;`;`;.daas.trth.eventBusUpdate];
+		
+		/Check for pending jobs
+		$[exec count i from `.daas.processing.pdInfo where status=`pending;
+			[
+			//Get stack params for next job
+			nextJob:(first `time`file xasc select from `.daas.processing.pdInfo where status=`pending)`jobID;
+			nextStack:exec first stackNum from `.daas.processing.pdInfo where jobID=job;
+			
+			/Set stackNum to null - avoids confusion when assigning new stackNums
+			update stackNum:0N from `.daas.processing.pdInfo where jobID=job;
+			
+			/Update status in pdInfo
+			.log.out[.z.h;"Starting next stack";nextJob];
+			update status:`processing, stackNum:nextStack from `.daas.processing.pdInfo where jobID=nextJob;
+			
+			//Add small time delay to await full stack disconnect
+			.d.prcl.forceFunctToTimer[`.daas.processing.bootTRTHStack;(nextJob;`DS_RTE);`datetime$.z.p+(`timespan$5e9);`datetime$.z.p+(`timespan$6e9);5500i;1b]
+			];
+			
+			update stackNum:0N from `.daas.processing.pdInfo where jobID=job
+		]
+
+	];
+		
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>procName</parameter>
+		<default></default>
+		<description>Name of process to shutdown</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>stackComplete</parameter>
+		<default>false</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

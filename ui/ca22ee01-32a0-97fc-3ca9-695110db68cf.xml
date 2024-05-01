@@ -1,0 +1,345 @@
+<ui>
+	<name>ca22ee01-32a0-97fc-3ca9-695110db68cf</name>
+	<displayName>Client Upload</displayName>
+	<description>{
+  "creationDate": "Tue, 18 Oct 2016 10:16:48 GMT",
+  "lastUpdateDate": "Wed, 18 Mar 2020 15:33:57 GMT",
+  "tags": [],
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "bdc0430c-8bfd-3104-3bf6-a377e9778169"
+    }
+  ],
+  "thumb": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAA4CAYAAAC4yreHAAAD0UlEQVR4Xu2aP0gbYRjGn8+odFHEksEWSrsEKQ6Vgg5CUxSliA4KN+nQKR1SOjgUSsEsHbqWFjI4BNHZQaMJgkIXwWx1EqFQStHJTsKJVr9yR1vsn5iYNz0+X5/b1Hu++97fcz/PwxjwIAESKEvAkA0JkEB5AhSEdwcJnEPAeUGstR6AOwCeAfgEIG+Mef1zplKp9KCnp+cDgOcAXgKYA/AEwG0AXwC8AvAGwEfeCSRwUQLOC1JpIM/zYvF4/Ful8/71c2vtbDabfVxLlpmrQcBZQay1DwHcA3ADQAZAAkBwM98EkDPGFIKKUqnUU9/339ZSV2NjI3K5nLMMapmJmfoScPbmsNbeB3DXGDNnrb0O4CuAFwCuASgZY/I/BEn7vv8uk8lgd3cXMzMzSKfTaG1tRXNzMxoaGtDS0oKpqam/yFGQ+t5MGldzVpBqYadSqVCQas8/ex4FqYXa1cpcekGuVl2cNmoCFCRq4rzepSJAQS5VXdxs1ATMraK1UV+U1ytP4PMjw19aDt0gZnR0tKIgS0tLLM2h0riV6AiYoaGhUJBYLIaJiQkUi0V0d3ejr68P09PT4U5WV1cpSHSd8EoOETD9/f0VnyDr6+sUxKHSuJXoCJjBwcFk8P+A845CofA+ui3xSiTgDgEzPDxc8Qniznb172RlZYVPa4dqDt9BFhYW4HkeTk5O/tvWent7sbm5WfX6yWQSW1tb4btQPh9+quS3Y35+HpOTk1Wvd/bEzs5ObG9v//pWIpHAzs5OTWvVO8T3vXoTla1nBgYGbHCDtLW1IR6P4/T0NPz80vLysmzlP9IjIyNoamoKJVxcXCy79vj4OHzfx8bGBg4PD9HV1YWOjo5wT8HXwZ+DR0dH4VqFQvh5xQsfY2Nj2N/fx/HxMdrb28N8IMjBwQH29vYuvF49A2tra3yC1BOocC2WIQTIuG4CFER3v5xOSICCCAEyrpsABdHdL6cTEqAgQoCM6yZAQXT3y+mEBCiIECDjuglQEN39cjohAQoiBMi4bgIURHe/nE5IgIIIATKumwAF0d0vpxMSoCBCgIzrJkBBdPfL6YQEKIgQIOO6CVAQ3f1yOiEBCiIEyLhuAhREd7+cTkiAgggBMq6bAAXR3S+nExKgIEKAjOsmQEF098vphAQoiBAg47oJUBDd/XI6IQEKIgTIuG4CFER3v5xOSICCCAEyrpsABdHdL6cTEqAgQoCM6yZAQXT3y+mEBCiIECDjuglQEN39cjohAQoiBMi4bgIURHe/nE5IgIIIATKumwAF0d0vpxMSoCBCgIzrJvAdkpGwOccfa5QAAAAASUVORK5CYII="
+}</description>
+	<data>{
+  "id": "ca22ee01-32a0-97fc-3ca9-695110db68cf",
+  "name": "Client Upload",
+  "creationDate": "Tue, 18 Oct 2016 10:16:48 GMT",
+  "lastUpdateDate": "Wed, 18 Mar 2020 15:33:57 GMT",
+  "thumb": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAA4CAYAAAC4yreHAAAD0UlEQVR4Xu2aP0gbYRjGn8+odFHEksEWSrsEKQ6Vgg5CUxSliA4KN+nQKR1SOjgUSsEsHbqWFjI4BNHZQaMJgkIXwWx1EqFQStHJTsKJVr9yR1vsn5iYNz0+X5/b1Hu++97fcz/PwxjwIAESKEvAkA0JkEB5AhSEdwcJnEPAeUGstR6AOwCeAfgEIG+Mef1zplKp9KCnp+cDgOcAXgKYA/AEwG0AXwC8AvAGwEfeCSRwUQLOC1JpIM/zYvF4/Ful8/71c2vtbDabfVxLlpmrQcBZQay1DwHcA3ADQAZAAkBwM98EkDPGFIKKUqnUU9/339ZSV2NjI3K5nLMMapmJmfoScPbmsNbeB3DXGDNnrb0O4CuAFwCuASgZY/I/BEn7vv8uk8lgd3cXMzMzSKfTaG1tRXNzMxoaGtDS0oKpqam/yFGQ+t5MGldzVpBqYadSqVCQas8/ex4FqYXa1cpcekGuVl2cNmoCFCRq4rzepSJAQS5VXdxs1ATMraK1UV+U1ytP4PMjw19aDt0gZnR0tKIgS0tLLM2h0riV6AiYoaGhUJBYLIaJiQkUi0V0d3ejr68P09PT4U5WV1cpSHSd8EoOETD9/f0VnyDr6+sUxKHSuJXoCJjBwcFk8P+A845CofA+ui3xSiTgDgEzPDxc8Qniznb172RlZYVPa4dqDt9BFhYW4HkeTk5O/tvWent7sbm5WfX6yWQSW1tb4btQPh9+quS3Y35+HpOTk1Wvd/bEzs5ObG9v//pWIpHAzs5OTWvVO8T3vXoTla1nBgYGbHCDtLW1IR6P4/T0NPz80vLysmzlP9IjIyNoamoKJVxcXCy79vj4OHzfx8bGBg4PD9HV1YWOjo5wT8HXwZ+DR0dH4VqFQvh5xQsfY2Nj2N/fx/HxMdrb28N8IMjBwQH29vYuvF49A2tra3yC1BOocC2WIQTIuG4CFER3v5xOSICCCAEyrpsABdHdL6cTEqAgQoCM6yZAQXT3y+mEBCiIECDjuglQEN39cjohAQoiBMi4bgIURHe/nE5IgIIIATKumwAF0d0vpxMSoCBCgIzrJkBBdPfL6YQEKIgQIOO6CVAQ3f1yOiEBCiIEyLhuAhREd7+cTkiAgggBMq6bAAXR3S+nExKgIEKAjOsmQEF098vphAQoiBAg47oJUBDd/XI6IQEKIgTIuG4CFER3v5xOSICCCAEyrpsABdHdL6cTEqAgQoCM6yZAQXT3y+mEBCiIECDjuglQEN39cjohAQoiBMi4bgIURHe/nE5IgIIIATKumwAF0d0vpxMSoCBCgIzrJvAdkpGwOccfa5QAAAAASUVORK5CYII=",
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "bdc0430c-8bfd-3104-3bf6-a377e9778169"
+    }
+  ],
+  "screens": [
+    {
+      "id": "bdc0430c-8bfd-3104-3bf6-a377e9778169",
+      "name": "Screen 1",
+      "thumb": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAAA4CAYAAAC4yreHAAAD0UlEQVR4Xu2aP0gbYRjGn8+odFHEksEWSrsEKQ6Vgg5CUxSliA4KN+nQKR1SOjgUSsEsHbqWFjI4BNHZQaMJgkIXwWx1EqFQStHJTsKJVr9yR1vsn5iYNz0+X5/b1Hu++97fcz/PwxjwIAESKEvAkA0JkEB5AhSEdwcJnEPAeUGstR6AOwCeAfgEIG+Mef1zplKp9KCnp+cDgOcAXgKYA/AEwG0AXwC8AvAGwEfeCSRwUQLOC1JpIM/zYvF4/Ful8/71c2vtbDabfVxLlpmrQcBZQay1DwHcA3ADQAZAAkBwM98EkDPGFIKKUqnUU9/339ZSV2NjI3K5nLMMapmJmfoScPbmsNbeB3DXGDNnrb0O4CuAFwCuASgZY/I/BEn7vv8uk8lgd3cXMzMzSKfTaG1tRXNzMxoaGtDS0oKpqam/yFGQ+t5MGldzVpBqYadSqVCQas8/ex4FqYXa1cpcekGuVl2cNmoCFCRq4rzepSJAQS5VXdxs1ATMraK1UV+U1ytP4PMjw19aDt0gZnR0tKIgS0tLLM2h0riV6AiYoaGhUJBYLIaJiQkUi0V0d3ejr68P09PT4U5WV1cpSHSd8EoOETD9/f0VnyDr6+sUxKHSuJXoCJjBwcFk8P+A845CofA+ui3xSiTgDgEzPDxc8Qniznb172RlZYVPa4dqDt9BFhYW4HkeTk5O/tvWent7sbm5WfX6yWQSW1tb4btQPh9+quS3Y35+HpOTk1Wvd/bEzs5ObG9v//pWIpHAzs5OTWvVO8T3vXoTla1nBgYGbHCDtLW1IR6P4/T0NPz80vLysmzlP9IjIyNoamoKJVxcXCy79vj4OHzfx8bGBg4PD9HV1YWOjo5wT8HXwZ+DR0dH4VqFQvh5xQsfY2Nj2N/fx/HxMdrb28N8IMjBwQH29vYuvF49A2tra3yC1BOocC2WIQTIuG4CFER3v5xOSICCCAEyrpsABdHdL6cTEqAgQoCM6yZAQXT3y+mEBCiIECDjuglQEN39cjohAQoiBMi4bgIURHe/nE5IgIIIATKumwAF0d0vpxMSoCBCgIzrJkBBdPfL6YQEKIgQIOO6CVAQ3f1yOiEBCiIEyLhuAhREd7+cTkiAgggBMq6bAAXR3S+nExKgIEKAjOsmQEF098vphAQoiBAg47oJUBDd/XI6IQEKIgTIuG4CFER3v5xOSICCCAEyrpsABdHdL6cTEqAgQoCM6yZAQXT3y+mEBCiIECDjuglQEN39cjohAQoiBMi4bgIURHe/nE5IgIIIATKumwAF0d0vpxMSoCBCgIzrJvAdkpGwOccfa5QAAAAASUVORK5CYII=",
+      "widgets": [
+        {
+          "id": "f3c3111a-405e-6915-cad1-371866d6a5f7",
+          "layout": {
+            "row": 3,
+            "column": 0,
+            "rowSpan": 28,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_1768",
+            "key": "Upload",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AcceptFileName": {
+                  "_dashboardsType": "viewstate",
+                  "value": "selected"
+                },
+                "Server": "ds_daemon_local",
+                "DownloadEnabled": true,
+                "UploadEnabled": true,
+                "RefreshInterval": 0,
+                "AcceptFileType": "",
+                "Directory": {
+                  "_dashboardsType": "viewstate",
+                  "value": "dir"
+                }
+              },
+              "Style": {
+                "DisplayType": "Table",
+                "advanced": "",
+                "Theme": "Dark",
+                "cssClasses": ""
+              },
+              "possible_servers": [
+                "&lt;default&gt;",
+                "ds_daemon_local"
+              ],
+              "version": "4.3.0",
+              "Actions": []
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "optionsVersion": 42,
+            "hasOnSettingsChange": true,
+            "prevVersion": 36,
+            "definitionId": "1003"
+          }
+        },
+        {
+          "id": "c36358a-cc71-458b-11b7-1c888549500d",
+          "layout": {
+            "row": 0,
+            "column": 0,
+            "rowSpan": 3,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_2796",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "dropdownPossibleValues": [
+                ""
+              ],
+              "format": {
+                "widgetTitle": "",
+                "titleFontSize": 16,
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleBottomBorderWidth": 0,
+                "titleFontBold": false,
+                "titleShadow": true,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "MultiSelect": false,
+                "ShowSearch": false,
+                "Label": "Choose your Upload Type:",
+                "ForceSelectedValue": true,
+                "tooltip": "",
+                "Data": "",
+                "vertical": "Middle",
+                "DataSourceMapping": {
+                  "Value": "",
+                  "Text": ""
+                },
+                "FieldSummaryThreshold": 5,
+                "horizontal": "Center",
+                "AcceptEmptyValues": false,
+                "LabelWidth": 200,
+                "Theme": "Dark",
+                "ComponentName": "dropdown",
+                "Items": [
+                  {
+                    "Value": "secmaster",
+                    "Text": "Reference Data",
+                    "DropdownValue": "secmaster"
+                  },
+                  {
+                    "Value": "trth",
+                    "Text": "Tick History",
+                    "DropdownValue": "trth"
+                  },
+                  {
+                    "Value": "transactionData",
+                    "Text": "Order/Execution",
+                    "DropdownValue": "orderExec"
+                  },
+                  {
+                    "Value": "stats",
+                    "Text": "DSS_Bars",
+                    "DropdownValue": ""
+                  }
+                ],
+                "TooltipSummaryThreshold": 10,
+                "Width": 200,
+                "SelectAllValue": "",
+                "SelectedValue": {
+                  "_dashboardsType": "viewstate",
+                  "value": "dir"
+                },
+                "ShowRowCount": false,
+                "Flex": false,
+                "EnableDropdownHeight": false
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "version": "4.4.1",
+              "Actions": []
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "optionsVersion": 142,
+            "hasOnSettingsChange": true,
+            "prevVersion": 142,
+            "definitionId": "16"
+          }
+        }
+      ],
+      "relativeHeight": false,
+      "rowHeight": 25,
+      "colCount": 12,
+      "floatable": false,
+      "isDefault": true
+    }
+  ],
+  "popups": [],
+  "tags": [],
+  "dashboardTheme": "Dark",
+  "themeSwitchable": true,
+  "saveTimestamp": null,
+  "relativeHeight": false,
+  "rowHeight": 25,
+  "colCount": 12,
+  "floatable": false,
+  "viewState": {
+    "watchdir": {
+      "_default": "secmaster",
+      "_viewType": true,
+      "_type": "symbol",
+      "value": "secmaster"
+    },
+    "New node": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "dir": {
+      "_default": "secmaster",
+      "_viewType": true,
+      "_type": "symbol",
+      "value": "secmaster"
+    },
+    "selected": {
+      "_default": "",
+      "_viewType": true,
+      "_type": "symbol",
+      "value": ""
+    },
+    ".settings": {}
+  },
+  "data": {
+    "uploadDir": {
+      "_pagingType": "NONE",
+      "_autoExec": false,
+      "_maxRows": 100,
+      "_aggregateFns": [],
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_aggregateCols": [],
+      "_subscriptionInterval": 3,
+      "_dataType": "query",
+      "_hasUpdateQuery": false,
+      "_subscriptionKey": "",
+      "_dataSource": "kdb",
+      "_columns": [
+        "dir"
+      ],
+      "_breakdownCols": [],
+      "_queryString": "([]dir:`secmaster`trth`eqHist)",
+      "_queryParams": [],
+      "_updateQueryString": "",
+      "_subscriptionType": "static",
+      "_connection": "daas_admin_connectionGrp"
+    }
+  },
+  "worksheetPadding": 10,
+  "widgetsSpacing": 0,
+  "borderColor": "000000",
+  "borderBackground": "000000",
+  "transparentBackground": true,
+  "borderWidth": 0,
+  "borderRounding": 0,
+  "borderSpacing": 0,
+  "borderShadow": false,
+  "enableShareDashboard": false,
+  "notifications": {
+    "Notifications": {
+      "_Version": "4.2.0s2",
+      "Enabled": true,
+      "InBrowserNotifications": false,
+      "Position": "Bottom Right",
+      "MaxVisibleCount": 3,
+      "FadeOut": 5,
+      "Icon": "fa-bell-o",
+      "Sound": "beep",
+      "SoundVolume": 100,
+      "Grouping": false,
+      "GroupingInterval": 1,
+      "triggers": []
+    }
+  },
+  "showLoadingIndicators": true,
+  "unsavedViewerPrompt": false,
+  "advancedCss": "",
+  "cssClasses": "",
+  "viewStateBinding": false,
+  "wasChanged": true,
+  "version": "4.4.0p7"
+}</data>
+</ui>

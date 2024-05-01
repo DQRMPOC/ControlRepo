@@ -1,0 +1,39 @@
+<analytic>
+	<analytic>.daas.util.sysCmd</analytic>
+	<code_text>{[cmd;args]
+  	// Format args
+    if[0&lt;&gt;type args;args:enlist args];
+  
+    .log.out[.z.h;"Running system command";(cmd;args)];
+    :@[
+		system;
+		" " sv (cmd;" " sv args);
+		{[cmd;args;x].log.err[.z.h;"Failed to execute system command";(x;cmd;args)];:1b}[cmd;args;]
+    ];
+ }</code_text>
+	<description>Execute system commands with error trapping</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>cmd</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

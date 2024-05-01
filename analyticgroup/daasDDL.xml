@@ -1,0 +1,12 @@
+<analyticgroup>
+	<name>daasDDL</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.ddl.auditLog</analytic>
+	<analytic>.daas.ddl.delete1Table</analytic>
+	<analytic>.daas.ddl.eod</analytic>
+	<analytic>.daas.ddl.genDDLVars</analytic>
+	<analytic>.daas.ddl.modifyTable</analytic>
+	<analytic>.daas.ddl.run</analytic>
+	<analytic>.daas.events.resp.eodDDL</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.events.resp.setRfaSubscription</analytic>
+	<code_text>{[data]
+ dict:data`info;
+ //set names of DC configs to save to
+ assetTypeA:`$((string dict`rfaSub),"_a");
+ assetTypeB:`$((string dict`rfaSub),"_b");
+ //save to a and b side
+ .uc.editActiveSingleParamData[`rfasubscription; assetTypeA; dict`table];
+ .uc.editActiveSingleParamData[`rfasubscription; assetTypeB; dict`table];
+ .log.out[.z.h;"DC Config for rfaSubscription ",(string dict`rfaSub)," have been saved.";()];
+ 
+ .daas.events.pubEventMessage[`getRfaSubs;`DCConfigSaved;`;`;((`assetClass`rfaSub)!(dict`assetClass;assetTypeA))];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

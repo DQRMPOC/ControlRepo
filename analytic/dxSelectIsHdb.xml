@@ -1,0 +1,18 @@
+<analytic>
+	<analytic>dxSelectIsHdb</analytic>
+	<code_text>{[]
+	@[{count .Q.pt};`;0]
+ }</code_text>
+	<description>utility analytic for DxSelect analytics - check whether it is hdb database or not</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>1</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>DxSelectUtils</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

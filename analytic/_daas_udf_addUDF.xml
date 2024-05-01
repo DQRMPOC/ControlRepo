@@ -1,0 +1,112 @@
+<analytic>
+	<analytic>.daas.udf.addUDF</analytic>
+	<code_text>{[argDict]
+
+    //argDict from CLI
+    //keys
+    //`add/`modify
+    //`funcName
+    //`file
+    //`tempDir
+    //`description
+    //`func
+    //`funcType
+
+    //if it's a modify we can load unchanged info from funcStore, otherwise report it doesnt exist
+    if[`modify in key argDict;
+        if[not (`$argDict[`funcName]) in key .daas.udf.udfFuncStore;
+            '"UDF does not exist";
+            ];
+        if[not `file in key argDict;
+            func:.daas.udf.udfFuncStore[`$argDict[`funcName];`func];
+            ];
+        if[not `description in key argDict;
+            argDict[`description]:.daas.udf.udfFuncStore[`$argDict[`funcName];`description];
+            ];
+        argDict[`funcType]:string .daas.udf.udfFuncStore[`$argDict[`funcName];`funcType];
+        ];
+    
+    
+    //Load new func from disk if specified
+  if[`file in key argDict;
+        if[not argDict[`file] like "*.q";
+            if[argDict[`file] like "*.p";
+                //TODO: PYTHON ADD PATH
+                ];
+            '"Unsupported file type";
+           ];
+        func:@[{"\n" sv read0 x};`$raze":",argDict[`tempDir],"/",last "/" vs argDict`file;{.log.err[`addUDF;"Could not load file",y`file;x];`FAILED}[;argDict]]
+        ];
+    
+    if[func~`FAILED;
+        '"Could not read specified UDF file"
+        ];
+        
+    /create parameter dictionary
+    params:`funcName`funcType`func!(argDict`funcName;argDict`funcType;func);
+    
+    //Load description if specified
+    /check if it is a file extension - if so load
+    /otherwise is raw text
+    $[not any `description`modify in\: key argDict;
+        description:"";
+      count key descFile:`$raze":",argDict[`tempDir],"/",last "/" vs description:argDict`description;
+            description:@[read0;descFile;{.log.err[`addUDF;"Could not load file ",argDict`file;x]}];
+            description:argDict`description
+        ];
+    
+    //Format parameters
+    params[`description]:raze description;
+    func:params`func;
+    funcType:`$params`funcType;
+    funcName:`$params`funcName;
+    description:params`description;
+	description:(),description;
+    
+    //If the funcType was not specified we set as static (classic UDF)
+    if[`=funcType;
+        funcType:`static;
+        ];
+        
+        
+    //Check parameters are correct type before save
+    if[not funcType in `static`realtime`trigger;
+        '"Invalid funcType";
+        ];
+    if[(not -11h=type funcName) or not 10h=type description;
+        '"Type error: funcName should be a symbol and description a string"
+        ];
+    if[10h=type func;
+        func: parse func
+        ];
+    if[not 100h=type func;
+        show"hello";
+        '"Input error: func should be a function object (type 100h) or a string parsing to one"
+        ];
+    
+    .daas.udf.checkFunc[func;0];
+    
+    //If all correct save to disk
+    .daas.udf.saveUDFToDisk[funcName;funcType;func;description];	
+    
+    :`SUCCESS;
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>argDict</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>0</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

@@ -1,0 +1,21 @@
+<analytic>
+	<analytic>.daas.processingTp.coreInit</analytic>
+	<code_text>{[]
+
+	.daas.init.setMetaAndEventBusConn[];
+
+	.daas.init.processingTpCfg[];
+
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

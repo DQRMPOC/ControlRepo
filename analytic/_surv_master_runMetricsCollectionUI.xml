@@ -1,0 +1,51 @@
+<analytic>
+	<analytic>.surv.master.runMetricsCollectionUI</analytic>
+	<code_text>{[Date;scoreEntities;batchName]
+	
+    thisFunc:".surv.master.runMetricsCollectionUI";
+    if[null Date;
+        msg:"Date must be non-empty";
+        .log.err[.z.h;thisFunc;msg];
+        'msg
+        ];
+    
+    .surv.master.runBatchOnClone `dt`scoreEntities`batchName`instanceType!(Date;scoreEntities;batchName;`metricsCollection);
+	}</code_text>
+	<description>// @kind function
+// @fileoverview External interface function with the Report Manager - KxSurv dashboard, starts the metricsCollection batch on the master for a particular date
+// @param dt {Date} Date you want to the run the metrics collection for.
+// @param batchName {Symbol} The name that the end user supplied to the batch
+// @return {null} Returns nothing.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>Date</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>scoreEntities</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>batchName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatchUI</analyticgroup>
+</analytic>

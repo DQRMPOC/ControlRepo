@@ -1,0 +1,28 @@
+<analytic>
+	<analytic>deleteUDF</analytic>
+	<code_text>{[params]
+	funcNames:except[;`] (),params`funcNames;
+
+    
+    //Map the funcNames to individual dicts with string args, this matches input for CLI action in .daas.udf.deleteUDF
+   @[.daas.udf.deleteUDF;;{"failed to delete"}]each enlist[`funcName]!/:enlist each (string each funcNames),\:".q"
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

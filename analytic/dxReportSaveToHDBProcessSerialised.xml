@@ -1,0 +1,71 @@
+<analytic>
+	<analytic>dxReportSaveToHDBProcessSerialised</analytic>
+	<code_text>{[reportData;dictn;reportStats]
+    dxReportTableCheck[reportData;`dxReportSaveToHDBProcessSerialised];	
+	/- Check all required dictionary keys are available
+    if[not ""~e:dxReportDictionaryCheck[dictn;`hdblist`hdbtable];
+     .log.err[.z.h;e:"dxReportSaveToHDBSerialised : ",e;()];
+     'e];
+     
+	saveToHDB:{[hdb;data;dictn;stats]
+		hp:.pl.gethostport[hdb];
+		h:.utils.dcc[hp;0;{'x}];
+		:h(`dxReportSaveToHDBSerialised;data;update hdbpath:`. from dictn;stats);
+	};
+
+	rs:@[saveToHDB[;reportData;dictn;reportStats];;{(`err;x)}] each dictn`hdblist;
+	:$[count iFail:where `err~'first each rs; 
+		'", " sv {"Error for ",string[x]," - ",y}'[dictn[`hdblist]@iFail;last each rs@iFail];
+		first rs
+	];
+ }</code_text>
+	<description>Report action analytic to save the report results table to a HDB (Historical Database) in Serialised form
+hdblist: list of HDB reports to save the report data to
+hdbtable: name for the table to be saved to the HDB reports</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description></description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>hdblist</name>
+				<datatype>Symbol[]</datatype>
+				<default>ds_hdb_report_1,ds_hdb_report_2</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>hdbtable</name>
+				<datatype>Symbol</datatype>
+				<default>dxReportData</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default>"c"$()</default>
+		<description>report statistics</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+</analytic>

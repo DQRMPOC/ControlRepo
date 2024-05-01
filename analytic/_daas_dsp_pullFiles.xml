@@ -1,0 +1,55 @@
+<analytic>
+	<analytic>.daas.dsp.pullFiles</analytic>
+	<code_text>{[dDir;u;d;p;b]
+  /dDir - download diru - username, d - domain, p - path, b - batchfile with commands to execute
+ cmd: ("(cd "),dDir,";sftp -b ",b," ",u,"@",d,":",p,")";
+ // the sftp command with the given params and error trap
+ @[system;cmd;{[cmd;err]"Unable to execute command [ ",cmd," ]. Error was [ ",err," ]";'err}[cmd;]]
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dDir</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>u</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>d</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>p</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>b</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasDSP</analyticgroup>
+</analytic>

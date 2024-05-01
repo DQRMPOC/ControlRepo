@@ -1,0 +1,83 @@
+<analytic>
+	<analytic>.validation.SURV_JOB_DEPENDENCIES</analytic>
+	<code_text>{[config]
+	thisFunc:".validation.SURV_JOB_DEPENDENCIES";
+    .log.out[.z.h;thisFunc;"Running config validation function"];
+
+    //general checks
+    /if[not all 0&lt;exec jobOrder from config;
+    /    msg:"jobOrder entries must be greater than 0! This columns indicates what order to run jobs in, running jobs in ascending order starting from 1.";
+     /   'msg
+     /   ];
+    
+    if[count dupJobs:distinct exec jobName from config where 1&lt;(count;i) fby jobName;
+        msg:"Job names must be unique! The following job names appear more than once: ","," sv string dupJobs;
+        'msg
+        ];
+    
+    //function checks
+    /if[not all exists:0&lt;count each .al.callfunction each aggs:exec routeAggFunction from config where not null routeAggFunction;
+     /   msg:"Could not find the following routeAggFunctions in the code base: ","," sv string aggs where not exists;
+      /  'msg
+       / ];
+    
+    if[count nullJobs:exec jobName from config where null scheduleJobFunction;
+        msg:"All jobs must have a scheduleJobFunction! The following do not: ",", " sv string nullJobs;
+        'msg
+        ];
+    
+    if[`Control=.ex.instance_name;:1b];
+
+    //scheduleNextBatch checks
+    job:`scheduleNextBatch;
+    
+    if[not job in exec jobName from config;
+        msg:"The job ",string[job]," is required in one SURV_JOB_DEPENDENCIES config, please do not edit the existing row!";
+        'msg
+        ];
+    
+    if[1&lt;count select from config where jobName=job;
+         msg:"There can only one job called ",string[job]," across all config overrides!";
+        'msg
+        ];
+      
+    if[not `all in `$"," vs first exec instanceType from select from config where jobName=job;
+        msg:"'all' must be in the instanceType column for the job ",string job;
+        'msg
+        ];
+
+    if[not (1=count rs) &amp; job=first rs:exec jobName from config where jobOrder=max jobOrder;
+        msg:"All jobs must have a jobOrder less than the jobOrder of ",string[job],", since it must always run last!";
+        'msg
+        ];
+    
+    if[not 1=count select from config where jobName=job,not mustBeInBatchJobsCfg;
+        msg:"The mustBeInBatchJobsCfg column must equal 'false' for the job ",string[job];
+        'msg
+        ];
+    
+    
+
+    1b
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatch</analyticgroup>
+</analytic>

@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.udf.rtudfProcAllocation</analytic>
+	<code_text>{[]
+       /-1 or procNo signifies auto balance
+        update procNo:-1 from `.daas.udf.rtConfig where procNo&lt;0;
+        update procNo:-1 from `.daas.udf.rtConfig where null procNo;   
+        .daas.udf.order:key desc count each group raze exec distinct mappedTab from .daas.udf.rtConfig where procNo&lt;0;
+        
+        /Only need to set the procNos if autobalance is required.
+        if[count .daas.udf.order;
+            .daas.udf.procAllocAdjustment:(max(exec max procNo from .daas.udf.rtConfig;-1))+1;
+            //In decending order of table used, assign proc # to table that hasn't already be allocated.
+            {update procNo:(.daas.udf.procAllocAdjustment+.daas.udf.order?x) from `.daas.udf.rtConfig where x in/: mappedTab,procNo&lt;0} each  .daas.udf.order;
+                        update distinct[procNo]?procNo from `.daas.udf.rtConfig;
+            ];
+        delete order from `.daas.udf;
+        delete .daas.udf.procAllocAdjustment from `.;
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

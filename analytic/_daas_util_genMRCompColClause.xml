@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.util.genMRCompColClause</analytic>
+	<code_text>{[args]
+    
+    if[` in columns:args`analytics;
+	    columns:.daas.cfg.mrtableFunctionMap args`dataType;
+	    ];	
+    
+    components!.daas.cfg.mrComponentParseTrees components:(distinct raze .daas.cfg.mrAnalyticComponentMap columns) except `openPrice`closePrice
+
+    }</code_text>
+	<description>Applies column aggregations for correct table when aggregating by interval.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

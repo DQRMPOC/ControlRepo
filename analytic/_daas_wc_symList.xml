@@ -1,0 +1,61 @@
+<analytic>
+	<analytic>.daas.wc.symList</analytic>
+	<code_text>{[symList;queryCol;tabDiskName]
+    
+    wc:();
+    
+    // theres no need to generate a symbol filter if we're searching for all syms
+    if[(not symList~`) and queryCol in c:cols tabDiskName;
+        // find the type we need to cast symList to
+        queryColType:.Q.ty .Q.V[tabDiskName] queryCol;
+
+
+        // string/cast the symList to the desired type of the query column
+        symVal:$["s"~queryColType;
+                    enlist symList;
+                  "C"~queryColType;
+                    enlist string (),symList;
+                  not null queryColType;
+                    (upper queryColType)$string (),symList;
+                    '`$"Query Column cannot have null type"
+                    ];
+
+        wc:enlist (in;queryCol;symVal)
+      ];
+    
+    wc
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>symList</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>queryCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tabDiskName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>0</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasWhereClause</analyticgroup>
+</analytic>

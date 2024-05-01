@@ -1,0 +1,24 @@
+<analyticgroup>
+	<name>.daas.trth</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.events.resp.trthEOD</analytic>
+	<analytic>.daas.events.resp.trthHdbCopy</analytic>
+	<analytic>.daas.infra.hdbBlock</analytic>
+	<analytic>.daas.infra.unlockHDB</analytic>
+	<analytic>.daas.processing.blockHDB</analytic>
+	<analytic>.daas.processing.unlockHDB</analytic>
+	<analytic>.daas.trth.assetTypes</analytic>
+	<analytic>.daas.trth.cleanUp</analytic>
+	<analytic>.daas.trth.getWatchList</analytic>
+	<analytic>.daas.trth.javaRequest</analytic>
+	<analytic>.daas.trth.logReportUpdate</analytic>
+	<analytic>.daas.trth.newNotesFile</analytic>
+	<analytic>.daas.trth.rawRequestSplit</analytic>
+	<analytic>.daas.trth.requestAction</analytic>
+	<analytic>.daas.trth.requestFailed</analytic>
+	<analytic>.daas.trth.requestFulfilled</analytic>
+	<analytic>.daas.trth.requestMultiAction</analytic>
+	<analytic>.daas.trth.rteUpd</analytic>
+	<analytic>.daas.trth.validateRequest</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

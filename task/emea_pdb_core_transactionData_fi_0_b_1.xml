@@ -1,0 +1,11 @@
+<task>
+	<taskName>emea_pdb_core_transactionData_fi_0_b.1</taskName>
+	<taskEnabled>0</taskEnabled>
+	<taskManual>0</taskManual>
+	<taskType>Once</taskType>
+	<prInsName>emea_pdb_core_transactionData_fi_0_b</prInsName>
+	<stDateTime>2020.07.13T21:28:00.000</stDateTime>
+	<endDateTime>2020.07.13T21:28:00.000</endDateTime>
+	<rptFrequency>None</rptFrequency>
+	<rptInterval>0</rptInterval>
+</task>

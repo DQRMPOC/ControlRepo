@@ -1,0 +1,11 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_EQL2</tablegroup>
+	<tablename>dacsUpdate</tablename>
+	<tablename>eqL2Summary</tablename>
+	<tablename>eqL2Update</tablename>
+	<tablename>eql2CurrentSnapShot</tablename>
+	<tablename>eql2intradaySnapShots</tablename>
+	<tablename>l2Legacy</tablename>
+	<tablename>respStatus</tablename>
+</schemagroup>

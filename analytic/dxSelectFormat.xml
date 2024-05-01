@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>dxSelectFormat</analytic>
+	<code_text>{[b;timecol;x]
+ f:$[null timecol; `date`sym;`date`sym,timecol];
+ $[99h=type b;key b;()] xkey (f inter cols x) xcols 0!x
+ }</code_text>
+	<description>utility analytic for DxSelect analytics - change the format of the table to be consistent with the select by statement of the time column</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>1</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>b</parameter>
+		<default></default>
+		<description>byclause</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>timecol</parameter>
+		<default></default>
+		<description>time column name</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>x</parameter>
+		<default>"c"$()</default>
+		<description>table result</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxSelectUtils</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

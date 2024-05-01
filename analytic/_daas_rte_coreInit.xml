@@ -1,0 +1,81 @@
+<analytic>
+	<analytic>.daas.rte.coreInit</analytic>
+	<code_text>{[]
+
+.daas.init.setMetaAndEventBusConn[];
+.daas.init.setUpDataNodeMinimal[];
+.daas.init.mon.rtc[];
+
+.tbl.gettable`eqSummary;
+
+//tick aggs
+quoteTables:`eqQuote`fiQuote`idxQuote`futQuote`fxQuote`mnQuote`lisOptQuote;
+tradeTables:`eqTrade`fiTrade`idxTrade`futTrade`fxTrade`mnTrade`lisOptTrade;
+OCTables:`eqOpenClose`idxOpenClose`fiOpenClose`fxOpenClose`futOpenClose`mnOpenClose`lisOptOpenClose;
+
+compTrade:update tableNames:(count a)#enlist tradeTables from a:select colName, agg from .uc.getActiveParamValue[`.daas.cfg.rteAggregations;`] where tableNames like "*Trade*";
+compQuote:update tableNames:(count a)#enlist quoteTables from a:select colName, agg from .uc.getActiveParamValue[`.daas.cfg.rteAggregations;`] where tableNames like "*Quote*";
+compOC:update tableNames:(count a)#enlist OCTables from a:select colName, agg from .uc.getActiveParamValue[`.daas.cfg.rteAggregations;`] where tableNames like "*OpenClose*";
+aggregationFunctions: compTrade, compQuote,compOC;
+
+/aggregation parse trees used in stats 
+.daas.cfg.rteAggregationFunctions:(aggregationFunctions`colName)!value each aggregationFunctions`agg;
+/which aggregations are offered on what table
+.daas.cfg.rtetableFunctionMap:a!{[x;y]exec colName from x where tableNames=y}[tab;] each a:distinct exec tableNames from tab:ungroup select colName,tableNames from aggregationFunctions;
+
+
+
+//combining with summary
+compTrade:update tableNames:(count a)#enlist tradeTables from a:select colName, agg from .uc.getActiveParamValue[`.daas.cfg.rteCompositeAggregations;`] where tableNames like "*Trade*";
+compQuote:update tableNames:(count a)#enlist quoteTables from a:select colName, agg from .uc.getActiveParamValue[`.daas.cfg.rteCompositeAggregations;`] where tableNames like "*Quote*";
+compOC:update tableNames:(count a)#enlist OCTables from a:select colName, agg from .uc.getActiveParamValue[`.daas.cfg.rteCompositeAggregations;`] where tableNames like "*OpenClose*";
+compositeAggregationFunctions: compTrade, compQuote,compOC;
+
+/aggregation parse trees used in stats 
+.daas.cfg.rteCompositeAggregationFunctions:(compositeAggregationFunctions`colName)!value each compositeAggregationFunctions`agg;
+/which aggregations are offered on what table
+.daas.cfg.rteCompositeTableFunctionMap:a!{[x;y]exec colName from x where tableNames=y}[tab;] each a:distinct exec tableNames from tab:ungroup select colName,tableNames from compositeAggregationFunctions;
+
+
+//second step calculations
+compTrade:update tableNames:(count a)#enlist tradeTables from a:select colName, agg from .uc.getActiveParamValue[`.daas.cfg.rteCalculationAggregations;`] where tableNames like "*Trade*";
+compQuote:update tableNames:(count a)#enlist quoteTables from a:select colName, agg from .uc.getActiveParamValue[`.daas.cfg.rteCalculationAggregations;`] where tableNames like "*Quote*";
+compOC:update tableNames:(count a)#enlist OCTables from a:select colName, agg from .uc.getActiveParamValue[`.daas.cfg.rteCalculationAggregations;`] where tableNames like "*OpenClose*";
+CalculationAggregationFunctions: compTrade, compQuote,compOC;
+
+/aggregation parse trees used in stats 
+.daas.cfg.rteCalculationAggregationFunctions:(CalculationAggregationFunctions`colName)!value each CalculationAggregationFunctions`agg;
+/which aggregations are offered on what table
+.daas.cfg.rteCalculationTableFunctionMap:a!{[x;y]exec colName from x where tableNames=y}[tab;] each a:distinct exec tableNames from tab:ungroup select colName,tableNames from CalculationAggregationFunctions;
+
+.daas.summary.allTableAggregations:distinct each .daas.cfg.rteCalculationTableFunctionMap,'.daas.cfg.rteCompositeTableFunctionMap,'.daas.cfg.rtetableFunctionMap;
+
+.daas.summary.minCols:{a where not(a:x where (upper x) like "*MIN*")like "tick*"} each  distinct each .daas.cfg.rteCalculationTableFunctionMap,'.daas.cfg.rteCompositeTableFunctionMap,'.daas.cfg.rtetableFunctionMap;
+.daas.summary.runningCols:{`turnover,a where not (a:x where ((upper x) like "*SUM*") or ((upper x) like "*NOTNULL*") or (upper x) like "*COUNT*")like "tick*"} each  distinct each .daas.cfg.rteCalculationTableFunctionMap,'.daas.cfg.rteCompositeTableFunctionMap,'.daas.cfg.rtetableFunctionMap;
+
+.daas.summary.meta:((a`c)!(a:0!meta .daas.summary.tableName:.daas.meta.getSchemaFromDataType[`summary])`t);
+
+/streaming analytics
+.al.loadgroupfunctions`daasStream;
+.daas.stream.startStreaming[];
+
+/Connect to qr for streaming
+.daas.stream.qrConnect[];
+.daas.events.runOnInitialBusCon[`.qr.connect];
+.daas.events.runOnInitialBusCon[`.qr.connectGWs];
+.daas.stream.qrIdMap::()!();
+
+assetTabs::a where (a:key .daas.cfg.rteCompositeTableFunctionMap) like string[.daas.cfg.asset],"*";
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

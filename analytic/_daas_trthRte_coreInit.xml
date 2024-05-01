@@ -1,0 +1,62 @@
+<analytic>
+	<analytic>.daas.trthRte.coreInit</analytic>
+	<code_text>{[]
+.daas.events.resp.pdbWriteDown:{}
+
+.daas.init.setUpDataNodeMinimal[];
+
+.daas.trth.savedStubTabs:0b;
+.daas.trth.tmpDir:(); /set empty tmp dir
+.daas.trth.rawTabs:(); /store the tabs for each run
+.daas.trth.keyedTables:tables[`.] where @[{(99h=type value x)};;0b] each tables[`.]; /get the keyed tables
+{if[(string x) like "*OpenClose*";update trthDate:() from x;`sym`trthDate xkey x];} each .daas.trth.keyedTables; /update openclose to contain and be keyed by trthDate 
+
+/for each keyed table with rows, for each date upsert to disk
+.daas.trth.flushKeyedTables:{
+	{[t] .log.out[.z.h;"Flushing keyed table to disk:";(t)];
+		{[t;dt]
+			tabDir:` sv (` sv (.daas.trth.hdblog;`$(string dt));t;`);
+			tab:select from t where trthDate=dt;
+			tabDir upsert .Q.en[.daas.trth.hdblog;0!delete trthDate from tab];
+			.log.out[.z.h;"Flushed keyed table to disk:";(dt;t)];
+		}[t;] each exec distinct trthDate from t;
+		delete from t;
+	} each .daas.trth.rawTabs where @[{(99h=type value x) and count value x};;0b] each .daas.trth.rawTabs;
+};
+
+.daas.trth.saveToDisk:{
+	if[not ()~.daas.trth.tmpDir;
+		.log.out[.z.h;".daas.trth.saveToDisk";(.daas.trth.tmpDir)];
+		.daas.trth.hdblog: hsym .utils.checkForEnvVar["ENV=TRTH_HDBLOG_",.daas.trth.assetClass,"=/",.daas.trth.tmpDir];
+		{[t]
+			{[t;dt] /.d.t:t; .d.dt:dt; /debug
+				.log.out[.z.h;"Saving: (table;count;date)";(t;count value t;dt)];
+				tabDir:` sv (` sv (.daas.trth.hdblog;`$string dt);t;`);
+				if[(0b~.daas.trth.savedStubTabs)and (0~count key ` sv (.daas.trth.hdblog;`$string dt)); /write stub tables if false and dt dir is empty
+					.log.out[.z.h;"Creating stub tables for ";(` sv (.daas.trth.hdblog;`$string dt))]; 
+					{[dt;t] (` sv (` sv (.daas.trth.hdblog;`$string dt);t;`)) set .Q.en[.daas.trth.hdblog;0#0!delete trthDate from value t]}[dt;] each .daas.trth.rawTabs; .daas.trth.savedStubTabs:1b;	
+				];
+				if[0~count key tabDir; tabDir set .Q.en[.daas.trth.hdblog;0!0#value t]; ]; /if empty dir then set empty table
+				tab:`time xasc select from t where dt="d"$time; /select by date
+				if[count tab; tabDir upsert .Q.en[.daas.trth.hdblog; tab ];]; /upsert if tabDir present
+			} [t;] each exec distinct "d"$time from t;
+			delete from t;
+		} each .daas.trth.rawTabs where @[{(98h=type value x) and count value x};;0b] each .daas.trth.rawTabs;
+	];
+};
+
+.daas.init.mon.rtc[];
+
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

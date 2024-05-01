@@ -1,0 +1,59 @@
+<analytic>
+	<analytic>.daas.udf.udfRoutingGwInit</analytic>
+	<code_text>//--query routing meta data--//
+.daas.events.resp.procDataRequest:.daas.routing.registerProcess;
+.daas.events.resp.procDataResponse:.daas.routing.addRegisteringProcess;
+.daas.events.resp.routingTableUpdate:.daas.routing.routingTableUpdate;
+.daas.events.resp.sysProcsTableUpdate:.daas.routing.sysProcsTableUpdate;
+.tbl.gettable`.daas.routingMetaData;
+
+/set procDown bus function
+.daas.events.resp.procDown:.daas.routing.procDown;
+.daas.events.resp.setPrimary:.daas.routing.setPrimaryEvent;
+.daas.events.resp.failoverStack:.daas.routing.failoverStackEvent;
+
+/ask servers to register func
+.daas.events.gwProcInfoStart:{.daas.events.pubEventMessage[`procDataRequest;`;`;`;.ex.getInstanceName[]];};
+
+//--qp registration--//
+.daas.events.resp.QPProcDataResponse:.daas.routing.addRegisteringQPProcess;
+.daas.events.resp.QPProcsTableUpdate:.daas.routing.QPTableUpdate;
+.tbl.gettable`.daas.routingQPs;
+.daas.events.QPProcInfoStart:{.daas.events.pubEventMessage[`QPProcDataRequest;`;`;`;.ex.getInstanceName[]];};
+
+//--system failover procs--//
+.daas.events.resp.sysProcsTableUpdate:.daas.routing.sysProcsTableUpdate;
+.tbl.gettable`.daas.routingSysProcs;
+.daas.events.gwSysProcInfoStart:{.daas.events.pubEventMessage[`sysProcDataRequest;`;`;`;.ex.getInstanceName[]];};
+.daas.events.resp.sysProcDataResponse:.daas.routing.addRegisteringSysProcess;
+.daas.events.resp.sysProcDataRequest:.daas.routing.publishSysProcsTable;
+
+//--gateway table--//
+.tbl.gettable`.daas.routingGatewayProcs;
+.daas.events.resp.GWProcDataResponse:.daas.routing.addRegisteringGWProcess;
+.daas.events.resp.GWProcsTableUpdate:.daas.routing.gatewayTableUpdate;
+
+// gw to gw data request/response
+.daas.events.gwToGwInfoStart:{.daas.events.pubEventMessage[`gwToGwDataRequest;`;`;`;.ex.getInstanceName[]];};
+.daas.events.resp.gwToGwDataRequest:{.daas.events.pubEventMessage[`GWprocResponse;`;`;`;`procName`region`procType`procNum`env`primary`routingTableMaster!(.ex.getInstanceName[];.daas.cfg.region;.daas.cfg.procType;.daas.cfg.procNum;.daas.cfg.env;0b;.daas.isFirstUp)];};
+
+
+.daas.cfg.gateways:`emea_tr_gw_a`emea_tr_gw_b;
+.daas.cfg.qrs:`ds_qr_a`ds_qr_b;
+	
+.daas.events.runOnInitialBusCon `.daas.routing.requestRoutingTable;
+.daas.events.runOnInitialBusCon `.daas.routing.requestSysProcsTable;
+.daas.events.runOnInitialBusCon `.daas.routing.requestQPProcsTable;
+
+    </code_text>
+	<description>Parameters that are defined on startup of a qs process</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

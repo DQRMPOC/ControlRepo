@@ -1,0 +1,23 @@
+<analytic>
+	<analytic>.daas.cmon.q.getProcessTimeouts</analytic>
+	<code_text>{[]
+    timeoutData:.daas.cmon.q.i.getGenericMetricData[`process; `process.queryTimeout; `; `timeout; 1b];
+
+    timeoutData:select from timeoutData where metricStale | 0 = timeout;
+    timeoutData:`connected`registered _ update status:`NOT_OK from timeoutData;
+
+    :timeoutData;
+}
+    </code_text>
+	<description>Refinery Monitoring - Process Timeout</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

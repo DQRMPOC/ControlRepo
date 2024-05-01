@@ -1,0 +1,55 @@
+<analytic>
+	<analytic>.daas.admin.removeConditionCode_dashboard</analytic>
+	<code_text>{[daasExch;daasCond;daasFilterType;daasRemoveCondBool]
+if[daasRemoveCondBool;
+ 		if[null daasFilterType;daasFilterType:`trade];
+		selectedTable:.daas.admin.filterConfigSelect daasFilterType;
+		tab:0!value selectedTable;
+		if[any null (daasExch;daasCond);.daas.admin.logOut[(.z.P;selectedTable;`exchCondCannotBeNull;0b;.p.u;`filterConfigUpdate)];:([] (`boolValue,`counter);(0b,.z.P))];
+		if[not count select from tab where exch=daasExch,cond=daasCond;.daas.admin.logOut[(.z.P;selectedTable;`exchCondDoesNotExist;0b;.p.u;`filterConfigUpdate)];:([] (`boolValue,`counter);(0b,.z.P))];
+		.daas.admin.editFilterConfigParam[delete from tab where exch = daasExch, cond= daasCond;selectedTable;`];
+		.daas.admin.logOut[(.z.P;selectedTable;`conditionCodeRemoved;1b;.p.u;`filterConfigUpdate)];
+		:([] (`boolValue,`counter);(0b,.z.P))
+	];
+	:([] (`boolValue,`counter);(0b,.z.P))
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>daasExch</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>daasCond</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>daasFilterType</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>daasRemoveCondBool</parameter>
+		<default>false</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

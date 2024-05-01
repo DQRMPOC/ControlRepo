@@ -1,0 +1,81 @@
+<analytic>
+	<analytic>.daas.util.calendarNextPrevDay</analytic>
+	<code_text>{[params;res;pn]
+
+	dateCol:(.daas.cfg.secMasterWhereClause[params`dataType])`dateCol;
+	venueID:.daas.cfg.secMasterIdentifierMap[params[`identifier]];
+	d0:params[`date];
+	
+	r:.daas.util.calendarValidCheck[params;res;0b];
+	params:r[0];
+	res:r[1];
+
+	//Get days of week when venues are open
+	d1:"|" sv/: ?[res;((=;`status;enlist`open);(&lt;=;dateCol;(fby;(enlist;max;dateCol);`event)));venueID;(distinct;(lower;`dayOfWeek))];
+	d1:(value key d1)!(value d1);
+	
+	//Find first (usually open) day before/after given date
+	$[pn~`n;
+		pnd:d0+'1+{first where any each x} each flip (`$/:"|" vs/: d1) in/: l:(last l),first l:(0,1+d0 mod 7) _ .af.daysofweek;
+		pnd:d0-'1+{first where any each x} each flip (`$/:"|" vs/: d1) in/: l:(last l),first l:(0,7-d0 mod 7) _ reverse .af.daysofweek
+	];
+	
+	//If a venue is closed on the calculated date, keep going
+	if[any pnd in' r:?[params[`dataType];enlist(=;`status;enlist`closed);venueID;dateCol];
+		while[any pnd in' r;
+			d1:(l:where not pnd in' r) _ d1;
+			d2:l _ pnd;
+			$[pn~`n;
+				d3:pnd[where pnd in' r]+'1+{first where any each x} each (`$/:"|" vs/: d1) in/:' l:(last each l),'first each l:(0,'1+ d2 mod 7) _\: .af.daysofweek;
+				d3:pnd[where pnd in' r]-'1+{first where any each x} each (`$/:"|" vs/: d1) in/:' l:(last each l),'first each l:(0,'7- d2 mod 7) _\: reverse .af.daysofweek
+			];
+			pnd[where pnd in' r]:value d3];
+	];
+	
+	
+	$[pn~`n;
+		:([]MIC:key pnd;date:(count pnd)#d0;nextDay:value pnd);
+		:([]MIC:key pnd;date:(count pnd)#d0;prevDay:value pnd)
+	];
+ }</code_text>
+	<description>Given a venue and a date, finds the next/previous date on which the venue is/was open</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>getRef params</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>Result from select performed earlier in getRef</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>pn</parameter>
+		<default></default>
+		<description>Specifies previous(`p) or next(`n)</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

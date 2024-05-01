@@ -1,0 +1,45 @@
+<analytic>
+	<analytic>.daas.udf.archiveUDF</analytic>
+	<code_text>{[funcName;funcType]
+    
+    //Add .q extension if one doesnt already exist (.p extensions should be handed)
+    funcName:`$ $[1=count split:"." vs funcName:raze string funcName;
+        funcName,".q";
+        funcName
+        ];
+
+    descName:`$(first split),".txt";
+
+    funcPath: ` sv .daas.udf.fileDir,funcType,funcName;
+    descPath: ` sv .daas.udf.fileDir,funcType,descName;
+    if[count key funcPath;
+        @[system;"mv ",1_string[funcPath]," ",1_string[.daas.udf.fileDir],"/archived/",string[funcName],".q.",string[.z.P];{}];
+        @[system;"mv ",1_string[descPath]," ",1_string[.daas.udf.fileDir],"/archived/",string[funcName],".txt.",string[.z.P];{}];
+        ];
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>funcName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>funcType</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

@@ -1,0 +1,288 @@
+<analytic>
+	<analytic>.daas.meta.common</analytic>
+	<code_text>/ Map process types to the valid API's that can route to those process types
+/ Used when subsetting global meta data to local meta data because the same data type 
+/ can exist on processes that that are routed to by different API's and map to different on disk table names
+/   E.g 
+/       `trade may exist as a data type for getBars on stats and  maps to either tradeMinStats or tradeDayStats
+/       `trade may exist as a data type for getTicks on rdb/hdb and maps to table name {subClass}Trade
+/ @see .daas.meta.getLocalData 
+.daas.meta.cfg.procToAPI:(!) . flip (
+    (`rdb        ; `getTicks`getStats);
+    (`hdb        ; `getTicks`getStats);
+    (`stats      ; `getBars);
+    (`rte        ; `getSummary);
+    (`ctp        ; `getTicks);
+    (`secMaster  ; `getRef`getInstrumentTaxonomy)
+    );
+
+//TODO: temp resolutions//
+//.daas.cfg.subClass:.uc.getActiveParamValue[`.daas.cfg.subClassToAsset;`DEFAULT]; // TODO added this in to resolve assignment error, check if correct
+.daas.cfg.subClass:`eq;
+.daas.cfg.procType:`;
+//.uc.getAndSaveActiveParamValue[`.daas.cfg.tableMetaData;`;`.daas.cfg.core.tableMetaData;enlist[`action]!enlist (`.daas.meta.updateAction; (::))];
+//.daas.cfg.cust.tableMetaData:0#.daas.cfg.core.tableMetaData
+//.daas.meta.cfg.globalTableData:.daas.meta.getGlobalData[]
+
+//TODO/////
+
+/ default branch columns use when subsetting global meta data
+/ if there is only a single branch column it MUST be enlisted
+/ e.g .daas.meta.cfg.branchCols:enlist `region
+.daas.meta.cfg.branchCols:`region`source`dataClass`subClass;
+
+/ Function that validates that we have the correct process meta data defined in order
+/ to correctly generate the table meta data information
+.daas.meta.validateProcessMeta:{[]
+    / by signalling that the variables are undefined
+    / this should trigger the process to terminate if .daas.meta.common is being loaded
+    / during start up
+    if[any ()~/:definedProcMeta:key each procMeta:`.daas.cfg.procType,` sv/: `.daas.cfg,/:.daas.meta.cfg.branchCols;                
+        undefinedProcMeta:", " sv string procMeta where ()~/:definedProcMeta;
+        .log.error[`RefTableMeta;"Variables not defined [ ",undefinedProcMeta," ]";()];
+        '"UndefinedProcessMetaException - ",undefinedProcMeta;
+        ];
+    
+    };
+
+/ defines which columns from the table meta data are cast to symbol lists
+.daas.meta.cfg.symbolListTypeCols:`accessAPIs`alternateSymCol`alternateQueryTimeCol`alternateDiskTimeCol;
+
+.daas.meta.cfg.defaultSymCol:`sym;
+.daas.meta.cfg.defaultTimeCol:`time;
+
+/ Cast string columns to be valid symbol lists in the the table meta data
+.daas.meta.getGlobalData:{[]
+    
+    / value the symbol list columns 
+    .daas.cfg.tableMetaData:.daas.cfg.core.tableMetaData,.daas.cfg.cust.tableMetaData;
+    ![.daas.cfg.tableMetaData;();0b;.daas.meta.cfg.symbolListTypeCols!(each;value),/:.daas.meta.cfg.symbolListTypeCols]
+    
+    }
+
+/ Subsets the global system wide table data to only contain local data relevant for the current process
+/ The subsetting is done based on the branch columns
+/ @params branchCols {symbol[]} This defines the attributes in the meta data heirarchy where the subsetting of global data occurs
+/ e.g branchCols = `region`source`dataClass`subClass would subest 
+/                   so that only meta data that matches the processes region, source, dataClass and subClass exists on the process
+.daas.meta.getLocalData:{[branchCols]
+    
+    / entrypoints should reference the global data
+    / since they need to know about all data nodes
+    / similarly the "udf" sub class should reference global data since they need to support any data set
+    if[(.daas.cfg.procType in `gw`qr`qm`statsGen`ddlGw) or .daas.cfg.subClass=`udf;
+        :.daas.meta.cfg.globalTableData
+        ];
+    
+    branchColVals:.daas.cfg[branchCols];
+    
+    / pull out APIs defined for this process
+    processAPIs:.daas.meta.cfg.procToAPI[
+                    $[`refBacktestData in branchColVals;
+                        `secMaster;
+                        .daas.cfg.procType
+                    ]
+                ];
+    
+    localWC:enlist (each;any;(in;`accessAPIs;enlist processAPIs));
+    
+    localWC,:(=;;)'[branchCols;enlist each branchColVals];
+    //TODO fix the type error here
+    //?[.daas.meta.cfg.globalTableData;localWC;0b;()]
+    .daas.meta.cfg.globalTableData
+    }
+
+/ Returns a map from "time" parameter options to on disk time column names
+/ @return {dict} { symbol -&gt; symbol } 
+.daas.meta.getTimeParamToTimeColMap:{[]
+    
+    mapTab:distinct select query:(raze queryTimeCol,alternateQueryTimeCol), disk:(raze diskTimeCol,alternateDiskTimeCol) from .daas.meta.cfg.localTableData;
+    
+    ((::);`) _ exec query!disk from mapTab
+    
+    }
+
+/ Returns the local available "symCols" from the local table data
+/ @return {symbol[]} List of valid symCols
+.daas.meta.getAvailableSymColList:{[]
+    
+    raze (exec distinct (symCol,alternateSymCol) from .daas.meta.cfg.localTableData) except ((::);`)
+    
+    }
+
+/ Returns the local schemas from the local table data
+/ @returns {symbol[]} List of local schemas that can be queried
+.daas.meta.getLocalSchemas:{[]
+    
+    (exec distinct tableSchemaName from .daas.meta.cfg.localTableData) except `
+    
+    };
+
+/ Returns the local dataTypes from the local table data
+/ @return {symbol[]{ List of valid data types
+.daas.meta.getLocalDataTypes:{[]
+    
+    (exec distinct dataType from .daas.meta.cfg.localTableData) except `
+
+    }
+
+/ Returns the local subClasses from the local table data
+/ @return {symbol[]{ List of valid sub classes
+.daas.meta.getLocalSubClasses:{[]
+    
+    (exec distinct subClass from .daas.meta.cfg.localTableData) except `
+    
+    }
+
+/ Returns the schema name from the data type passed in from a query
+/ This function should be used on backend data nodes to query local table data
+/ Since the localTableData is subset by subClass there is no need to filter on subClass
+/ @param queryDataType {symbol} Value of the dataType parameter
+.daas.meta.getSchemaFromDataType:{[queryDataType]
+    
+    queryDataType^first exec tableSchemaName from .daas.meta.cfg.localTableData where dataType=queryDataType
+    
+    };
+
+/ Returns the schema name from arguments passed at an entrypoint level
+/ Entry points sometimes need to map directly to the schema name from the argument 
+/ dictionary to do things like checking for existence of a particular column before query dispatch 
+/ @param queryDataType {symbol} Value of the dataType parameter
+/ @param queryAssetClass {symbol} Value of the assetClass parameter
+/ @param accessAPI {symbol} API name being used to access the dataset 
+/ @return atom of the the schema name
+.daas.meta.getSchemaFromArgs:{[args;queryDataType; queryAssetClass; queryAccessAPI]
+    
+    /schema:exec tableSchemaName from .daas.meta.cfg.globalTableData where 
+    /        dataType=queryDataType, 
+    /        .daas.cfg.subClassToAsset[subClass]=queryAssetClass, 
+    /        any each accessAPIs in queryAccessAPI;
+    args:(distinct `dataType,key args)#args;
+    wc:((=;`dataType;enlist queryDataType);(=;(`.daas.cfg.subClassToAsset;`subClass);enlist queryAssetClass);(each;any;(in;`accessAPIs;enlist queryAccessAPI)));
+    if[(`region in key args)&amp;not null args`region; wc,:(=;`region;enlist args`region)];
+    if[(`vendor in key args)&amp;not null args`vendor; wc,:(=;`source;enlist args`vendor)];
+    wc,:$[(`dataClass in key args)&amp;not null args`dataClass; (=;`dataClass;enlist args`dataClass); (=;`dataClass;enlist `transactionData)];
+    schema:?[.daas.meta.cfg.globalTableData;wc;();`tableSchemaName];
+
+    if[1&lt;count schema;
+        '"More than one possible schema name from arguments"
+        ];
+    
+    / schema will be enlisted from the "exec" so apply first to return an atom
+    queryDataType^first schema
+    
+    };
+
+/ Returns the data type for a given schema
+/ @param schema {symbol} 
+.daas.meta.getDataTypeFromSchema:{[schema]
+    
+    schema^first exec dataType from .daas.meta.cfg.localTableData where tableSchemaName=schema
+    
+    };
+
+/ Returns a map from schema name to the default symCol for that schema
+/ @return {dict} { symbol -&gt; symbol } 
+.daas.meta.getSchemaToSymColMap:{[]
+    
+    ` _ exec first distinct symCol by tableSchemaName from .daas.meta.cfg.localTableData
+    
+    }
+
+/ Returns a map from schema name to the default timestamp column for that schema
+/ @return dict { symbol -&gt; symbol } 
+.daas.meta.getSchemaToTimeParamMap:{[]
+    
+    ` _ exec first distinct queryTimeCol by tableSchemaName from .daas.meta.cfg.localTableData
+
+    };
+
+/ Returns the usage of the idType parameter
+/ @return dict { symbol -&gt; symbol } 
+.daas.meta.idTypeUsage:{[args]
+    
+    / check the usage of the idType parameter
+    / * symCol: idType is being used to change the underlying "sym" column that is queried 
+    / * idMap: idType is being used to map the values of symList to another identification scheme e.g ISIN -&gt; RIC
+    
+    `symCol`idMap (not args[`idType] in .daas.meta.cfg.symColList) and not ` in args`symList
+                
+    };
+
+/ Load any schemas that are defined in local meta data
+/ Many of them may already be loaded through schema groups
+/ So we check if they're defined and then load from Control if not
+.daas.meta.loadLocalSchemas:{[]
+    
+    if[any missing:()~/:key each schemas:.daas.meta.getLocalSchemas[];
+        schemaStr:", " sv string missingSchemas:schemas where missing;
+        .log.out[`RefTableMeta;"Loading schemas [ ",schemaStr," ] that were not defined on the process";()];
+        .tbl.gettable each missingSchemas;
+        ];
+    
+    };
+
+/ action to update in-memory instances of variables using the table meta data
+/ run when the table meta data has been changed
+.daas.meta.updateAction:{[]
+
+    .daas.meta.cfg.globalTableData:.daas.meta.getGlobalData[];
+    .daas.meta.cfg.localTableData:.daas.meta.getLocalData[.daas.meta.cfg.branchCols];
+    .daas.meta.loadLocalSchemas[];
+    
+    / available data types and sym cols
+    .daas.meta.cfg.dataTypeList:.daas.meta.getLocalDataTypes[];
+    .daas.meta.cfg.symColList:.daas.meta.getAvailableSymColList[];
+    
+    / maps from input parameters to table specific
+    .daas.meta.cfg.timeParamMap:.daas.meta.getTimeParamToTimeColMap[];
+    .daas.meta.cfg.schemaToSymColMap:.daas.meta.getSchemaToSymColMap[];
+    .daas.meta.cfg.schemaToTimeParamMap:.daas.meta.getSchemaToTimeParamMap[]
+    
+
+    };
+
+/ Initialise the table meta data by getting .daas.cfg.tableMetaData and any custom overrides
+/ and defining all dependent variables
+.daas.meta.init:{[]
+     
+    / Validate that the necessary process meta data variables are set
+    .daas.meta.validateProcessMeta[];
+
+    / Load in defined table meta data 
+    / and check for and custom overrides
+    .uc.getAndSaveActiveParamValue[`.daas.cfg.tableMetaData;`;`.daas.cfg.core.tableMetaData;enlist[`action]!enlist (`.daas.meta.updateAction; (::))];
+    .daas.cfg.cust.tableMetaData:0#.daas.cfg.core.tableMetaData;
+
+    .log.out[`RefTableMeta; "Querying Control for custom extensions of .daas.cfg.tableMetaData"; ()];
+
+    if[`custom in .ex.prh(`.uc.getActiveOverrides;`.daas.cfg.tableMetaData);
+        .uc.getAndSaveActiveParamValue[`.daas.cfg.tableMetaData;`custom;`.daas.cfg.cust.tableMetaData;enlist[`action]!enlist (`.daas.meta.updateAction; (::))]
+        ];
+
+    .daas.meta.updateAction[];
+    
+    };
+
+    
+
+</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>1</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>SurveillanceEcommsDataLoader</analyticgroup>
+	<analyticgroup>DataLoader</analyticgroup>
+	<analyticgroup>DataLoaderCommon</analyticgroup>
+	<analyticgroup>DataLoaderDispatch</analyticgroup>
+	<analyticgroup>DataLoaderMaster</analyticgroup>
+	<analyticgroup>DataLoaderValidation</analyticgroup>
+	<analyticgroup>DataLoaderWorker</analyticgroup>
+	<analyticgroup>DLUtils</analyticgroup>
+</analytic>

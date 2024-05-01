@@ -1,0 +1,50 @@
+<analytic>
+	<analytic>.daas.processing.peInitialisePlayback</analytic>
+	<code_text>{[info]
+
+    .log.out[.z.h;"Initialising PE by call from feed monitor";::];
+    
+    //info dict of settings
+    `.daas.processing.rawTabs set info`writeTabs;
+    `.daas.processing.tabDir set info`tempDir;
+    .log.out[.z.h;"Temp directory set as";.daas.processing.tabDir];
+    .log.out[.z.h;"Tables being played back set as";.daas.processing.rawTabs];
+    
+    //get tables and unkey them
+	.tbl.gettable each .daas.processing.rawTabs;
+	.daas.processing.rawTabs set' 0!/: get each .daas.processing.rawTabs;
+	
+	//Update OpenClose tables to contain and be keyed on trthDate as well as sym
+	{if[(string x) like "*OpenClose*";update trthDate:() from x;`sym`trthDate xkey x;];} each .daas.processing.keyedTables;	
+	
+    .log.out[.z.h;"RTE ready for playback";::];
+
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>info</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

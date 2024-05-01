@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.util.l2snapshotModify</analytic>
+	<code_text>{[x]
+change:.daas.l2currentSnapShotTabName @ (x`sym;x`side);
+position:first (change[`id])?enlist x[`id];
+if[position&gt;=count change[`price];
+    :();
+    ];
+
+change:.[change;(`price;position);:;x`price];
+change:.[change;(`size;position);:;x`size];
+change:.[change;(`numOrders;position);:;x`numOrders];
+change:.[change;(`id;position);:;x`id];
+change[`time]:x`time;
+@[.daas.l2currentSnapShotTabName;[(x`sym;x`side)];:;change];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>x</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

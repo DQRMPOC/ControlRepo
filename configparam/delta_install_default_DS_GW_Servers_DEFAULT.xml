@@ -1,0 +1,26 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>DS_GW_Servers</parameter>
+	<description>List of servers to be used by the GW along with their type, hdb or rdb</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>serverInstance</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>serverType</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>qryable</element>
+		<elementType>Boolean</elementType>
+		<elementValue>true</elementValue>
+	</param>
+	<configgroup>DS_GATEWAY</configgroup>
+</configparam>

@@ -1,0 +1,10 @@
+<analyticgroup>
+	<name>daasPDB</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.pdb.checkTPSubActive</analytic>
+	<analytic>.daas.pdb.coreInit</analytic>
+	<analytic>.daas.pdb.eod</analytic>
+	<analytic>.daas.pdb.registerTP</analytic>
+	<analytic>.daas.pdb.upd</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

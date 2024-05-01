@@ -1,0 +1,53 @@
+<analytic>
+	<analytic>.daas.udf.adjustStartTime</analytic>
+	<code_text>{[params]
+	
+	//params dict set
+	//`startTime
+	//`startDate
+	
+	
+	 if[not `activeUDF in key `.daas.udf;
+            :params;
+            ];
+        stime:exec timeNeededFrom from .daas.udf.dataRequirements where udfName=.daas.udf.activeUDF;
+        
+        if[`startDate in key params;
+            params[`startDate]:max (params[`startDate];first `date$stime);
+            
+            if[not `startTime in key params;
+                params[`startTime]:first `time$stime;
+                ];
+            ];
+            
+        if[`startTime in key params;
+            if[-19=type params`startTime;
+                if[not (.z.D&gt;first `date$stime) and params[`startDate]&gt;first `date$stime;
+                    params[`startTime]:max (params[`startTime];first `time$stime);
+                    ];
+                   ];
+            if[-12=type params`startTime;
+                params[`startTime]:max (params[`startTime];first stime);
+                ];
+            ];
+        params
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

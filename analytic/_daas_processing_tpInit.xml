@@ -1,0 +1,73 @@
+<analytic>
+	<analytic>.daas.processing.tpInit</analytic>
+	<code_text>{[]
+	/proc params
+	.daas.cfg.env:`$first "." vs last "_" vs first .fd.process;
+	.daas.cfg.vendor:`tr;
+	.daas.cfg.region:`emea;
+	.daas.cfg.jobID:value last -1_"_" vs first .fd.process;
+	
+	/Delta messaging
+	/.al.callfunction[`.daas.events.startEventService][];
+	/.dm.regsrcc[`TRTH;"stackManagement"];
+	/.dm.regsrcc[`TRTH;string[.daas.cfg.jobID]];
+	
+	
+	/*** OLD CODE (unmodified) ***/
+	
+	.u.c:0; /count of the number of rows processed - it is reset after a raw file has been processed
+
+	.u.upd::{[t;x]
+		.u.c:.u.c+1; /.d.t:t; .d.x:x; /debug
+		if[not t~`linestatus; /linestatus table is sent in by the feed and this table is ignored
+			c:key flip value t;
+			x:$[0&lt;type first x;x;flip enlist x];
+			x:$[count[c]&gt;count x;(enlist count[first x]#gettime[type t first c]),x;x];
+			d:flip c!x;
+			$[.ds.cfg.pub;
+				[.ds.tp.CtPub+:1i; upsert[t;d];];
+				[.ds.tp.Ct+:1i;.d.pub[t;d]]
+			];
+		];
+	};
+	
+	/***	***/
+
+
+	
+	/boot feed monitor
+	`fmBoot set {
+		.log.out[.z.h;"Booting feed monitor";()];
+		
+		
+		.daas.trth.pd:hopen `$":",":" sv getenv each `$ ("daas_processingDaemon_",string[.daas.cfg.env]),/:("_HOST";"_PORT");
+
+
+		$[not null .daas.trth.pd;
+		
+			[.log.out[.z.h;"PD connected - booting FM";()];
+			neg[.daas.trth.pd]".daas.processing.bootTRTHStack[`",string[.daas.cfg.jobID],";`daas_processing_fm]"
+			];
+			
+			:()
+		];
+		.d.prcl.removeFuncFromTimer[`fmBoot;1b];
+	};
+	/Use timer to account for time required to connect to PD
+	.d.prcl.addFunctToTimer[`fmBoot;();.z.Z;`datetime$.z.P+(`timespan$30e9);1000i;1b];
+	
+	/log `boot complete`
+	.log.out[.z.h;"TP Boot Complete";()];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

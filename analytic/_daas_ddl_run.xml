@@ -1,0 +1,74 @@
+<analytic>
+	<analytic>.daas.ddl.run</analytic>
+	<code_text>{[params;tabledir]
+    .log.out[.z.h;"Deleting from table partition";tabledir];
+
+    // Partition parameters
+    params[`tabledir]:tabledir;
+    params[`startDate`endDate`date]: value last -1_l:"/" vs string params[`tabledir];
+
+    queryParams:$[(`continuous in params[`temporality]) and (any not r:params[`date]=(.daas.ddl.rawParams[`startDate];.daas.ddl.rawParams[`endDate]));
+        (`startTime`endTime where r) _ .daas.ddl.rawParams;
+        .daas.ddl.rawParams
+    ];
+    queryParams[`startDate`endDate]:params[`date];
+    queryParams[`columns]:`i;
+
+    $[`ALL in queryParams[`dataType];
+        dataTypes:.daas.meta.getDataTypeFromSchema each key tabledir;
+        dataTypes:queryParams[`dataType]
+    ];
+    
+    {[params;queryParams;dataType]
+        queryParams[`dataType]:dataType;
+        
+        // Rows affected by delete
+        queryRes:@[getTicks;queryParams;{[params;err].daas.ddl.auditLog[params;`error;err];:0b}[params]];
+        if[-1=type queryRes;:()];
+        .daas.ddl.ii:select ii by time.date from `time`sym`ii xcol queryRes;
+        if[not count .daas.ddl.ii;
+            .log.out[.z.h ;"No data to modify in this partition";(params[`tabledir];dataType)];
+            :()
+        ];
+        
+        .daas.ddl.rowCount+:exec sum count each ii from .daas.ddl.ii;
+    
+        // Path to table parition in modified database
+        .daas.ddl.dstTab:.Q.par[.daas.ddl.modifiedDB;params[`date];params[`dataType]];
+
+        @[
+            .daas.ddl.delete1Table;
+            params;
+            {[params;err]
+                .log.err[.z.h;"Failed to modify table partition";(err;params[`tabledir];params[`ddl])];
+                .daas.ddl.auditLog[params;`error;err];
+                }[params;]
+        ];
+        }[params;queryParams] each dataTypes;
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>0</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>tabledir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasDDL</analyticgroup>
+</analytic>

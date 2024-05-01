@@ -1,0 +1,34 @@
+<analytic>
+	<analytic>.daas.cmon.hdb</analytic>
+	<code_text>// Refinery (DaaS) HDB Monitoring 2.0
+// Copyright (c) 2019 Kx Systems Inc
+
+.daas.cmon.hdb.init:{
+    .daas.cmon.addEventMetric[`hdb.availableDates; `dict];
+    .daas.cmon.addEventMetric[`hdb.latestDateRowCounts; `dict];
+ };
+
+
+.daas.cmon.hdb.sendHdbDates:{
+    $[not `date in key `.;
+        .daas.cmon.sendMetrics[`hdb.availableDates; `latest`all!(0Nd; `noDatesInHdb)];
+    / else
+        .daas.cmon.sendMetrics[`hdb.availableDates; `latest`all!(max; ::) @\: date]
+    ];
+ };
+
+.daas.cmon.hdb.sendLatestHdbRowCounts:{
+    .daas.cmon.sendMetrics[`hdb.latestDateRowCounts; `latest`rowCounts!(last .Q.pv; last each .Q.pn)];
+ };
+    </code_text>
+	<description>Refinery (DaaS) HDB Monitoring 2.0</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

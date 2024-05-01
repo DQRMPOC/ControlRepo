@@ -1,0 +1,64 @@
+<analytic>
+	<analytic>dxReportSaveToTxt</analytic>
+	<code_text>{[reportData;dictn;reportStats]
+
+   dxReportTableCheck[reportData;`dxReportSaveToTxt];
+   if[not ""~e:dxReportDictionaryCheck[dictn;`txtpath`txtfilename];
+     .log.err[.z.h;e:"dxReportSaveToTxt : ",e;()];
+     'e];
+	path:.utils.checkForEnvVar[dictn`txtpath];
+    filename:`$.utils.createString[string dictn`txtfilename;dictn] except ".";
+	res:(`$":",(string path),"/",(string filename),".txt") 0: "\t" 0: reportData;
+	(res;`Action`txtpath`txtfilename!(`dxReportSaveToTxt;path;filename))
+ }</code_text>
+	<description>Report Action analytic to save report results to a text file
+txtpath: full filepath to the directory you wish the txt file to be saved in
+txtfilename: name for the txt file</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description></description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>txtpath</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>txtfilename</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default>"c"$()</default>
+		<description>report statistics</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+	<analyticgroup>DxReportGenerator</analyticgroup>
+</analytic>

@@ -1,0 +1,36 @@
+<analytic>
+	<analytic>.daas.events.resp.eodDDL</analytic>
+	<code_text>{[data]
+	.log.out[.z.h;"EOD started. Merging modified DBs with sources";()];
+
+	//Run EOD on each modified copy of the source databases
+	cmd:"find";
+	arg:(getenv`DELTADATA_HOME),"/DaaSData/hdblog";
+	opt1:"-name *_modified";
+	opt2:"-print";
+	mdb:hsym`$.daas.util.sysCmd[cmd;(arg;opt1;opt2)];
+    if[not count mdb; .log.out[.z.h;"No modified databases.";()]];
+	{@[.daas.ddl.eod;x;{[err;mdb].log.err[.z.h;"EOD Failed";(err;mdb)]}[;x]]} each mdb;
+  
+  
+	.log.out[.z.h;"Completed DDL EOD";()];
+ }</code_text>
+	<description>Responds to event bus' call for EOD. Removes temporary db's creating during intraday modification of databases</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasDDL</analyticgroup>
+</analytic>

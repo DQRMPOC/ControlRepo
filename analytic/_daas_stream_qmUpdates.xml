@@ -1,0 +1,64 @@
+<analytic>
+	<analytic>.daas.stream.qmUpdates</analytic>
+	<code_text>{[]
+	// provide a "database group" with name ` serving as a hook for DaaS targeting
+	`databaseGroup upsert `name`mode!``COMBINED;
+	
+	`saAddSubOld set saAddSub;
+	
+		
+	`saAddSub set {[clientSubID;subFunc;params;process;deltaUser]
+		if[subFunc in exec distinct raze supportedAPIs from .daas.routingMetaData;
+			params:update stream:1b from params;
+			];
+		saAddSubOld[clientSubID;subFunc;params;process;deltaUser];
+	};
+	
+	
+	
+	
+`saAddDatabaseSubCombined set {[dict]
+	
+  / get list of databases for combined group
+  	.log.out[.z.h;"choosing targets";()];
+  dbs:$[`=dict`target;
+  	    daasQRChooseTargets[dict`analytic;dict`params;dict`user;dict;();()];
+  	    getDBCombined[dict`target]
+  	    ];
+  if[first not string[dbs]like "instance.*"; dbs:`$(raze "instance.",string[dbs])];
+  .log.out[.z.h;"connecting DBs";dbs];
+  / if can't connect to any, reject subscription
+  hn:connectNamedDb'[dbs];
+  if[(type hn)&lt;0;hn:enlist hn];
+  hn[where 0i&gt;=hn]:0Ni;
+  if[all null hn; :0Nj];
+  c:count[dbs];
+
+  / setup subscription caches &amp; state
+  dbID:saGetUid[];
+  childIDs:saGetUidMult[c];
+  subs:flip `id`analytic`params`target`user`pending`active`start`handle`database`combined`combinedID`numRowsReceived`numRowsSent`lastRunTime!
+    (childIDs;dict`analytic;c#enlist dict`params;dict`target;dict`user;not null hn;0b;.z.p;hn;dbs;1b;dbID;0j;0j;0Np);
+  `saSubscriptions upsert subs;
+
+  / send subscription to each DB
+  clientID:getClientSubMapID[.z.w;dict`clientID];
+  i:where not null hn;
+  saSendDatabaseSub[;; dict`analytic; dict`params; dict`user; clientID]'[hn i;childIDs i];
+
+  :dbID
+ };
+		
+ }</code_text>
+	<description>provides some wrapper functions for the QM to integrate into the DaaS routing system</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

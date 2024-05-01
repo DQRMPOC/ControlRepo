@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.adminCopy.coreInit</analytic>
+	<code_text>{[]
+
+	.daas.init.setMetaAndEventBusConn[];
+
+	/override log.out to track status messages 
+	.daas.hdbcp.overridefunc::{
+		.daas.hdbcopy.oldLog:.log.out;
+		.log.out:.daas.hdbcopy.logOutOverride:{
+			.daas.hdbcopy.oldLog[x;y;z];
+			.log.out:.daas.hdbcopy.oldLog;
+			if[not (raze y) like "Connection opened by handle*";
+				@[.daas.events.pubEventMessage[`adhocHDBCopyStatusUpdate;`;`;;`msg`obj!(y;z)];`;{.daas.hdbcopy.oldLog[.z.h;"event message pub failure";()]}];
+				];
+			.log.out:.daas.hdbcopy.logOutOverride;
+			};
+		};
+	.daas.hdbcp.overridefunc[];
+
+	.daas.events.resp.eodLr:.daas.datacopy.dropDataLR;
+ 	}
+ </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

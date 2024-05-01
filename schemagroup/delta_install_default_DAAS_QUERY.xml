@@ -1,0 +1,6 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_QUERY</tablegroup>
+	<tablename>.daas.queryCache</tablename>
+	<tablename>.daas.queryLog</tablename>
+</schemagroup>

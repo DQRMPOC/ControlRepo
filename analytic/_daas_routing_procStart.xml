@@ -1,0 +1,27 @@
+<analytic>
+	<analytic>.daas.routing.procStart</analytic>
+	<code_text>{[data]
+	proc:data`tag1;
+	if[not ()~key`.daas.routingMetaData;
+		update procUp:1b from `.daas.routingMetaData where procName=proc;
+		];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

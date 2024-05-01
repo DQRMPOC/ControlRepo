@@ -1,0 +1,7 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_MN_RTE</tablegroup>
+	<tablename>mnQuote</tablename>
+	<tablename>mnSummary</tablename>
+	<tablename>mnTrade</tablename>
+</schemagroup>

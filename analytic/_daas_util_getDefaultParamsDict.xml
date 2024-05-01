@@ -1,0 +1,28 @@
+<analytic>
+	<analytic>.daas.util.getDefaultParamsDict</analytic>
+	<code_text>{[functionName]
+	    
+    functionTable:select paramName,paramType,default from .daas.cfg.paramscfg where funcName=functionName,not paramName in .daas.cfg.nonDefaultedParams;
+
+    exec paramName!paramType$default from functionTable
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

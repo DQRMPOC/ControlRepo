@@ -1,0 +1,33 @@
+<analytic>
+	<analytic>.daas.processing.trimTrthPartition</analytic>
+	<code_text>{[partition;startTime]
+		system"l ",1_string partition;
+		@[.daas.processing.trimTrthTable[startTime;];;{.log.out[.z.h;"Could not trim table";()]}] each key partition;
+			
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>partition</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>startTime</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

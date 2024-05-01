@@ -1,0 +1,27 @@
+<workflow>
+<wfName>DAAS_ENTRYPOINT_0_b</wfName>
+	<branch>
+		<tName1>emea_gw_0_b.1</tName1>
+		<tName2>emea_udf_0_b.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>emea_gw_0_b.1</tName1>
+		<tName2>emea_qm_0_b.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>emea_gw_0_b.1</tName1>
+		<tName2>daas_ddlGw_b.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+</workflow>

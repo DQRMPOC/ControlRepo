@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.l2.emptyPreBookDict</analytic>
+	<code_text>{[symbols]
+	// vector rows for price, size, numOrders, id
+    // atomic rows for time and exchTime
+    // keyed by sym and side
+    
+    preBookDict:update 
+                    price:count[i]#enlist enlist 0n,
+                    size:count[i]#enlist enlist 0Ni,
+                    numOrders:count[i]#enlist enlist 0Ni,
+                    id:count[i]#enlist enlist "",
+                    time:count[i]#enlist 0Np,
+                    exchTime:count[i]#enlist 0Np 
+                from flip `sym`side!flip symbols cross `ASK`BID;
+    
+    `sym`side xkey preBookDict
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>symbols</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasL2</analyticgroup>
+</analytic>

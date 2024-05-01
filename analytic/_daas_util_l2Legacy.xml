@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.daas.util.l2Legacy</analytic>
+	<code_text>{[params]
+    // when querying on exchangeTime, a buffer day is added to catch 
+    // records where exchTime.date is in a different date partition
+    whereClause:.daas.wc.timeColDateFilter . params`time`startDate`endDate;
+    symCol:.daas.wc.getSymCol params`idType;
+    
+    res:delete date from .daas.util.select[`l2Legacy;(params`startTime;params`endTime;params`time);(params`symList;symCol);();();whereClause];
+    
+    if[not count res;
+        :res
+        ];
+    
+    if[`numLevels in key params;    
+        c:(a where not a like "L*"),a where any each flip (a:cols l2Legacy) like/: ("*",/:string til params`numLevels),\:"*";
+        res:?[res;();0b;`date _c!c];
+        ];
+    
+    res
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

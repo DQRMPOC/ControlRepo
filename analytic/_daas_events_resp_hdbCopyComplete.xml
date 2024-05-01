@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.events.resp.hdbCopyComplete</analytic>
+	<code_text>{[data]
+	info:data`info;
+	if[not .ex.getInstanceName[]=info`hdb2; :()];
+	
+	.log.out[.z.h;"Reloading HDB after data copy";info];
+	
+	.ds.hdb.reloadDB[];
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

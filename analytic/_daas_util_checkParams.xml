@@ -1,0 +1,145 @@
+<analytic>
+	<analytic>.daas.util.checkParams</analytic>
+	<code_text>{[functionName;params]
+
+if[not 99=type params;
+    .daas.log.logErrorAndSignal["input must be dictionary";params];
+    ];
+if[count k:.daas.util.checkValidParams[functionName;params];
+	.daas.log.logErrorAndSignal["Invalid parameter key ";-3!k];
+	];
+if[count k:.daas.util.checkDistinctParams[params];
+    .daas.log.logErrorAndSignal["Duplicate parameter ";-3!k];
+    ];
+    
+params:.daas.util.mandatoryParamExceptions[functionName;params];
+
+if[count k:.daas.util.checkSensibleParams[functionName;params];
+	.daas.log.logErrorAndSignal["Incorrect parameter value ";-3!k];
+    ];    
+    
+if[count k:.daas.util.checkReqParams[functionName;params];
+	.daas.log.logErrorAndSignal["Required parameters missing ";-3!k];
+ 	];
+if[count k:.daas.util.checkParamTypes[functionName;params];
+	.daas.log.logErrorAndSignal["Incorrect parameter type ";-3!k];
+    ]; 
+     
+if[functionName=`getInstrumentTaxonomy;
+	if[not params[`module] in a:.daas.cfg.taxonomyParams`module;
+		.daas.log.logErrorAndSignal["Invalid module parameter, valid params are ";a]
+		];
+		
+
+	if[not params[`idType] in a:.daas.cfg.taxonomyParams`idType;
+		.daas.log.logErrorAndSignal["Invalid idType parameter, valid params are ";a]
+		];
+	];
+	
+if[`getInstrumentTaxonomy ~ functionName;
+	:()
+	];
+	
+
+if[count k:.daas.util.checkSnapshotTemporality[functionName;params];
+	.daas.log.logErrorAndSignal["Incorrect parameter value ";-3!k];
+    ];
+if[not `dataType in key params;
+    params[`dataType]:`;
+    ];
+
+if[`getRef ~ functionName;
+    if[any k:all each (params[`dataType]&lt;&gt;`corAx;params[`dataType]&lt;&gt;`calendar),'(`corAxType in key params;`calendarType in key params);
+        .daas.log.logErrorAndSignal["Incompatible parameters ";`corAxType`dataType]
+    ];
+    if[(`startDate in key params) and (`endDate in key params);
+        if[count k:.daas.util.checkStartEndTimes[functionName;params];
+        .daas.log.logErrorAndSignal["Start point is after or equal to end point ";-3!k]
+        ]
+    ];
+    :();
+];
+
+
+if[count k:.daas.util.checkBarTemporality[functionName;params];
+    .daas.log.logErrorAndSignal["getBars is T+1 only, use getStats for ";-3!k];
+    ];
+if[count k:.daas.util.checkBarGranularity[functionName;params];
+	.daas.log.logErrorAndSignal["Start time must be to minute precision for getBars, consider using getStats for greater granularity";-3!k];
+	];
+if[count k:.daas.util.checkWeeklyBarTemporality[functionName;params];
+    .daas.log.logErrorAndSignal["Attempting to generate weekly bar for current week, weekly Bars only generate 1 full week at a time, beginning on Sundays";-3!k];
+    ];
+if[count k:.daas.util.checkWeeklyBarGranularity[functionName;params];
+	.daas.log.logErrorAndSignal["Attempting to generate weekly bar for more than one week, maximum granularity is 1 week";-3!k];
+	];
+if[count k:.daas.util.checkMonthlyBarTemporality[functionName;params];
+    .daas.log.logErrorAndSignal["Attempting to generate monthly bar for current month, monthly bars are only available for previous months";-3!k];
+    ];
+if[count k:.daas.util.checkMonthlyBarGranularity[functionName;params];
+	.daas.log.logErrorAndSignal["Attempting to generate bars for more than one month. Check if granularity is set to 1 and start and end dates are in the same month";-3!k];
+	];
+
+if[count k:.daas.util.checkDayTimeZoneConversion[functionName;params];
+	.daas.log.logErrorAndSignal["TimeZone conversion cannot be used when querying persisted day bars, consider rolling up from minute bars";-3!k];
+	];
+if[count k:.daas.util.checkStartEndTimes[functionName;params];
+	.daas.log.logErrorAndSignal["Start point is after or equal to end point ";-3!k];
+	];
+if[count k:.daas.util.checkDayStartEndTimes[functionName;params];	
+	.daas.log.logErrorAndSignal["Start time and end time cannot be provided when querying persisted day bars";-3!k]; 
+	];
+if[count k:.daas.util.checkValidTargetProc[functionName;params];	
+	.daas.log.logErrorAndSignal["No persisted stats calculated for the parameters provided";-3!k]; 
+	];
+if[count k:.daas.util.checkTaqFilter[functionName;params];
+	.daas.log.logErrorAndSignal["Custom filtering is not yet supported with TAQ";-3!k];
+	];
+if[count k:.daas.util.checkValidApplyFilterClause[functionName;params];
+    .daas.log.logErrorAndSignal["Error in applyFilter functional clause ";-3!k];
+    ];
+if[count k:.daas.util.checkTickStatParams[functionName;params];
+    .daas.log.logErrorAndSignal["Error with input ";-3!k];
+    ];
+if[count k:.daas.util.checkValidSortColsClause[functionName;params];;
+  	.daas.log.logErrorAndSignal["Error in sortCols clause ";-3!k];
+    ];
+if[count k:.daas.util.checkAdjustCorAxParams[functionName;params];
+	.daas.log.logErrorAndSignal["Error - adjustCorAx can only be used for equities and not for ";-3!k];
+    ];
+ }</code_text>
+	<description>Checks parameter dictionary</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+	<analyticgroup>SurveillanceQR</analyticgroup>
+</analytic>

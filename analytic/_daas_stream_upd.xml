@@ -1,0 +1,65 @@
+<analytic>
+	<analytic>.daas.stream.upd</analytic>
+	<code_text>{[t;d]
+
+.daas.stream.updCount+:1;
+
+//Track last image
+//Hook for tracking level 2 order book
+if[.daas.cfg.procType=`ctp;
+	$[t like "*L2*";
+		.daas.infra.l2realtimeBookTrackUpd[t;d];
+		any t ~/:`order`execution`rtudfres;
+		;
+		.daas.stream.lastTable[t] set (value .daas.stream.lastTable[t]),select by sym from d
+		];
+	];
+
+
+
+/Update the cache
+if[`sym in cols t;
+    .daas.stream.cacheUpd[t;d];
+    ];
+
+//update streaming tables and log running times
+funcs:exec subFunc from .daas.stream.tabFuncMap where t in/: tabs;
+ids:exec id from .daas.stream.streamSubs where subFunc in funcs;
+if[not count ids;:()];
+updateFuncs: exec updateFunc from .daas.stream.streamSubs each ids;
+
+updIds:ids where {[f;t;d;id] updated:value(f;t;d;id); `.daas.stream.streamSubs upsert `id`lastUpd!(id;.z.P); :updated;}[;t;d;]'[updateFuncs;ids];
+
+
+// publish updated IDs not on a pub timer
+pubIds:updIds where .daas.stream.streamSubs[enlist each updIds;`period]&lt;=0;
+value each .daas.stream.streamSubs[enlist each pubIds;`pubFunc] ,' pubIds;
+.[`.daas.stream.streamSubs;(enlist each pubIds;`lastPub);:;.z.P];
+
+ }</code_text>
+	<description>in addition to the standard table updates, maintains extant stream tables.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>t</parameter>
+		<default></default>
+		<description>table name</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>d</parameter>
+		<default></default>
+		<description>table data</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

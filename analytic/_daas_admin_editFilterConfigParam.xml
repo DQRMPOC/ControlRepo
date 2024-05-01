@@ -1,0 +1,65 @@
+<analytic>
+	<analytic>.daas.admin.editFilterConfigParam</analytic>
+	<code_text>{[tab;configName;override]
+
+//override needs to be DEFAULT not null
+override: `DEFAULT^override;
+//handle to DC
+h:first exec handle from .ch.cp where process=`Control;
+
+//sending to DC the function to override the config param with the new table
+h ({[tab;configName;override]
+build:(((count tab)*count cols tab)#override;
+((count tab)*count cols tab)#configName;
+(`int$raze (count cols tab)#'til count tab);
+raze count[tab]#enlist cols tab;
+raze count[tab]#enlist ("sfCdjib"!`Symbol`Float`String`Date`Long`Integer`Boolean) exec t from meta tab;
+{@[x;asc (where first each x = "1"),(where first each x ="0");{((enlist each ("1";"0"))!("true";"false")) x}]} raze flip value string flip tab);
+.uc.deleteParamOnlyNoCheck[configName;`delta_install_default;override];
+.uc.editSingleParam[`delta_install_default;configName; override; build;""];};
+    tab;
+    configName;
+    override);
+
+//flushing handle
+(neg h) (::);
+
+//final return of lamba for H5 issues
+/:"FilterRule Configuration parameters updated" 
+:`
+
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>configName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>override</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+	<analyticgroup>daasGateway</analyticgroup>
+</analytic>

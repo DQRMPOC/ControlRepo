@@ -1,0 +1,55 @@
+<analytic>
+	<analytic>.daas.infra.updateConnGroup</analytic>
+	<code_text>{[u]
+	// Determine if primary or backup environment
+	$[.daas.cfg.env~`a;
+		connType:`primary;
+		connType:`backup
+	];
+
+	// Define group to join and see if it exists
+	//grp:`$"_" sv string each .daas.cfg.region,.daas.cfg.procType;
+	grp: `emea_gw;
+	r: select from .ex.prh[".proj.dashsettings"] where grpid=grp;
+	// Exit if process already in connection group
+	if[any (`$"instance.",string[i];i:.ex.getInstanceName[]) in `$"," vs string exec first val from r where keyname=`DBS;
+		:()
+	];
+	
+	.log.out[.z.h;"Adding GW to connection group";grp];
+	// If it does exist, add current proc to it
+	// else, create the group with this proc
+	$[(0 &lt;&gt; count r) and u;
+		[
+			connDict:exec (keyname!val) from r;
+			connDict:({[d;n]k:n 0;v:n 1;d[k]:`$"," sv string each (`$-1_"," vs string d[k]),v,`;d}/)[connDict;,'/[(`DBS`PRIMARY;(.ex.getInstanceName[];connType))]];
+		];
+		
+		[
+			connDict:`DBS`CONN_SELECTOR`PRIMARY!(.ex.getInstanceName[],`;`COMBINED;connType,`);
+			connDict[where 1&lt;count each connDict]:{`$"," sv string each x}each connDict[where 1&lt;count each connDict];
+		]
+	];
+
+	// Send request to control to update connection group
+	.ex.prh(".proj.adddashsettingsdict";`DataConnectionGroups;grp;connDict);	
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>u</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>daasGateway</analyticgroup>
+</analytic>

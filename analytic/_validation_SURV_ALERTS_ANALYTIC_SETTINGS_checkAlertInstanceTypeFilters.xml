@@ -1,0 +1,59 @@
+<analytic>
+	<analytic>.validation.SURV_ALERTS_ANALYTIC_SETTINGS_checkAlertInstanceTypeFilters</analytic>
+	<code_text>{[a;s;tableColDict;filtersString;dictKey]
+	
+	.debug.SURV_ALERTS_ANALYTIC_SETTINGS_checkAlertInstanceTypeFilters:(`a`s`tableColDict`filtersString`dictKey)!(a;s;tableColDict;filtersString;dictKey);
+	
+	colsToFilter:`$first each "="vs/:ssr[;"&lt;&gt;";"="]each ";"vs filtersString;
+	if[count alienCols:colsToFilter except tableColDict[dictKey];
+		.validation.throwError[a;s;"Columns not in ",string[dictKey]," table: ",", " sv string[alienCols]];
+	]; 
+
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>a</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>s</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tableColDict</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>filtersString</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>dictKey</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

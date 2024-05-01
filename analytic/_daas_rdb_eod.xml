@@ -1,0 +1,26 @@
+<analytic>
+	<analytic>.daas.rdb.eod</analytic>
+	<code_text>{[eodDate]
+    .log.out[`rdb;;()] "End-of-day started [ Date: ",string[eodDate]," ]";
+
+    / Monitoring 2.0 - row count tracking reset
+    .daas.cmon.rtc.eod[];
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>eodDate</parameter>
+		<default></default>
+		<description>End-of-Day date</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+</analytic>

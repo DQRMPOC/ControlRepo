@@ -1,0 +1,32 @@
+<analyticgroup>
+	<name>daasMerge</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.merge.bootSlave</analytic>
+	<analytic>.daas.merge.checkQueue</analytic>
+	<analytic>.daas.merge.clearCompleted</analytic>
+	<analytic>.daas.merge.completeStatus</analytic>
+	<analytic>.daas.merge.copyMain</analytic>
+	<analytic>.daas.merge.copyToRemote</analytic>
+	<analytic>.daas.merge.eodMoveToMain</analytic>
+	<analytic>.daas.merge.finishJob</analytic>
+	<analytic>.daas.merge.flushMerged</analytic>
+	<analytic>.daas.merge.generateStats</analytic>
+	<analytic>.daas.merge.getJobDetails</analytic>
+	<analytic>.daas.merge.initaliseStatus</analytic>
+	<analytic>.daas.merge.jobComplete</analytic>
+	<analytic>.daas.merge.logComplete</analytic>
+	<analytic>.daas.merge.merge</analytic>
+	<analytic>.daas.merge.moveToMain</analytic>
+	<analytic>.daas.merge.newSource</analytic>
+	<analytic>.daas.merge.recompress</analytic>
+	<analytic>.daas.merge.reportSlaveError</analytic>
+	<analytic>.daas.merge.reportStatus</analytic>
+	<analytic>.daas.merge.shutdownSlave</analytic>
+	<analytic>.daas.merge.slaveError</analytic>
+	<analytic>.daas.merge.sortPartition</analytic>
+	<analytic>.daas.merge.sortTab</analytic>
+	<analytic>.daas.merge.startMergeJob</analytic>
+	<analytic>.daas.merge.updateStatus</analytic>
+	<analytic>.daas.mergeSlave.coreInit</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

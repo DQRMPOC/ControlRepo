@@ -1,0 +1,29 @@
+<analytic>
+	<analytic>.validation.surv.cfg.getTicksAndPublishRT</analytic>
+	<code_text>{[config]
+
+    if[not first[config[`dataBucketSize]] in (0D00:01;0D00:05;0D00:10;0D00:20;0D02;0D03;0D04;0D06;1D);
+        '"Only bucket sizes supported are: (0D00:01;0D00:05;0D00:10;0D00:20;0D02;0D03;0D04;0D06;1D)"
+    ];
+    
+    1b
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

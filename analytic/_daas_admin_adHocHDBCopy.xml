@@ -1,0 +1,63 @@
+<analytic>
+	<analytic>.daas.admin.adHocHDBCopy</analytic>
+	<code_text>{[asset;fromEnv;dates]
+	procInfo:.ex.prh(`.pl.getRunningInformation;::);
+	masterEnv:fromEnv;
+	
+	toEnv:(`a`b!`b`a) fromEnv;
+	hdb1Procs:exec instance_name from procInfo where
+	  (all instance_name like/: ("*_hdb_*";"*_",string[asset],"_*";"*_",string[masterEnv]) ) or
+	    (all instance_name like/: ("*_stats_*";"*",string[asset],"*";"*_",string[masterEnv]));
+
+	/drop cluster
+	hdb1Procs:hdb1Procs where not each any each string[hdb1Procs] in\:\: "_",/:(string 1+til 9);
+		  
+	hdb2Procs:{`$  "_" sv ,[;enlist string y] -1 _ "_" vs string x}[;toEnv] each hdb1Procs;
+	`hdbCopyTable set (uj/){[x;y;z]update date:z, tablist:` from (flip `hdb1`hdb2!(x;y))}[hdb1Procs;hdb2Procs;] each dates;
+	.log.out[.z.h;"##START##";()];
+	.daas.dcp.success:delete from hdbCopyTable;
+	.daas.dcp.fail:delete from hdbCopyTable;	
+	@[{.daas.dcp.current:x;.daas.infra.hdbdatacopySCP[x];`.daas.dcp.success insert .daas.dcp.current};;{.log.out[.z.h;"Failure - check daas_hdbcopy log. Date not present or SCP setup may be incorrect";-3!.daas.dcp.current];`.daas.dcp.fail insert .daas.dcp.current}] each hdbCopyTable;
+
+	if[count .daas.dcp.fail;
+		.log.out[.z.h;"##FAILURES##";`asset`fromEnv`tableByDate!(asset;fromEnv;flip value exec hdb1,date from select date by hdb1 from .daas.dcp.fail)];
+		];
+	if[count .daas.dcp.success;
+		.daas.events.pubEventMessage[`hdbCopyComplete;`;`;`;] each .daas.dcp.success;
+		.log.out[.z.h;"##SUCCESSES##";`asset`fromEnv`tableByDate!(asset;fromEnv;flip value exec hdb1,date from select date by hdb1 from .daas.dcp.success)];
+		];
+	.log.out[.z.h;"##COMPLETE##";`asset`fromEnv`dates!(asset;fromEnv;dates)];
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>asset</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>fromEnv</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>dates</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

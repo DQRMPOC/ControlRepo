@@ -1,0 +1,14 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_TR_FUT</tablegroup>
+	<tablename>ConditionalAnalytics</tablename>
+	<tablename>auction</tablename>
+	<tablename>dacsUpdate</tablename>
+	<tablename>futCanCor</tablename>
+	<tablename>futOpenClose</tablename>
+	<tablename>futQuote</tablename>
+	<tablename>futTrade</tablename>
+	<tablename>openInterest</tablename>
+	<tablename>respStatus</tablename>
+	<tablename>ricInfo</tablename>
+</schemagroup>

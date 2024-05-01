@@ -1,0 +1,33 @@
+<analytic>
+	<analytic>.daas.merge.sortPartition</analytic>
+	<code_text>{[dir]
+ if[not count key dir;
+ 	.log.out[.z.h;"no tables to sort";()];
+ 	];
+ 	
+{[dir;tab]
+	@[.daas.merge.sortTab[dir;;` sv .daas.merge.enumTarget,`sym];
+		tab;
+		{.log.out[.z.h;"failed applying attribute to table (no rows?)";x]}
+		];
+	}[dir;] each key dir;  
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

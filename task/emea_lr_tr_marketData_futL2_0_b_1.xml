@@ -1,0 +1,11 @@
+<task>
+	<taskName>emea_lr_tr_marketData_futL2_0_b.1</taskName>
+	<taskEnabled>0</taskEnabled>
+	<taskManual>0</taskManual>
+	<taskType>Once</taskType>
+	<prInsName>emea_lr_tr_marketData_futL2_0_b</prInsName>
+	<stDateTime></stDateTime>
+	<endDateTime></endDateTime>
+	<rptFrequency>None</rptFrequency>
+	<rptInterval>0</rptInterval>
+</task>

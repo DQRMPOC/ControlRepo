@@ -1,0 +1,18 @@
+<analytic>
+	<analytic>.daas.admin.viewFilterRules</analytic>
+	<code_text>{[]
+.uc.getActiveParamValue[`.daas.cfg.filterRuleConfig;`]
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

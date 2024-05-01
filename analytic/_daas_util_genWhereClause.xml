@@ -1,0 +1,67 @@
+<analytic>
+	<analytic>.daas.util.genWhereClause</analytic>
+	<code_text>{[args]
+    
+    // time, sd, ed, symlist, applyFilter, whereClause, id Type
+    // dataType, tradeFlag, filterRule
+    
+    // when querying on exchangeTime, a buffer day is added to catch 
+    // records where exchTime.date is in a different date partition
+    args[`whereClause],:.daas.wc.timeColDateFilter . args`time`sd`ed;
+
+    // inital where clause
+    wc:args[`applyFilter];
+
+    if[`slice~args`temporality;
+        wc,:args`whereClause
+        ];
+
+    // allow query on non standard query column and non symbol type query column
+    // early exit before checking any filterRule / tradeFlag logic
+    // TODO: extend this assumption that params`dataType is the on disk table name to be strong
+    // TODO: it is a weak method of determining the table name right now 
+    nonStandardSymCol:args[`idType] in .daas.meta.cfg.symColList;
+    nonEmptySymList:not (`~args`symList);
+    
+    if[nonStandardSymCol and nonEmptySymList;
+        :wc
+        ];
+
+    
+    // TODO: remove hardcoding on sym, conditions
+    // only run filter rule checks
+    // early exit
+    wc:wc,.daas.wc.filterRule . args[`filterRule`dataType`time`startDate`endDate`temporality],`sym`conditions;
+    
+    // TODO: remove hardcoding of normalisedCondition
+    wc:wc,.daas.wc.tradeFlag . args[`tradeFlag`dataType],`normalisedConditon;
+    
+    $[0&lt;count wc;wc;()]
+    }</code_text>
+	<description>Applies column aggregations for correct table when aggregating by interval.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,50 @@
+<analytic>
+	<analytic>.daas.hdbCopy.coreInit</analytic>
+	<code_text>{[]
+
+.daas.init.setMetaAndEventBusConn[];
+
+procInfo:.ex.prh(`.pl.getRunningInformation;::);
+masterEnv:exec first env from .daas.cfg.masterSlaveInstances where isMaster;
+
+hdb1Procs:exec instance_name from procInfo where 
+ 		((instance_name like ("*_hdb_*")) and (instance_name like ("*_",string[.daas.cfg.asset],"_*")) and instance_name like "*_",string[masterEnv]) or 
+  		((instance_name like ("*_stats_*")) and (instance_name like ("*_",string[.daas.cfg.asset],"*")) and instance_name like "*_",string[masterEnv]) or 
+ 		((instance_name like ("*_hdb_*")) and (instance_name like ("*_",string[.daas.cfg.asset],"L2*")) and instance_name like "*_",string[masterEnv]);
+hdb2Procs:{`$  "_" sv ,[;enlist string .daas.cfg.env] -1 _ "_" vs string x} each hdb1Procs;
+
+`hdbCopyTable set update date:.z.D-1, tablist:` from (flip `hdb1`hdb2!(hdb1Procs;hdb2Procs));
+
+`hdbTransferFunct set {[]
+ `hdbCopyResults set {[p]
+  msgInfo:p, (`region`vendor`asset`env! (.daas.cfg.region;.daas.cfg.vendor;.daas.cfg.asset;.daas.cfg.env));
+
+  .daas.events.pubEventMessage[`hdbCopyStarted;`;`;`;msgInfo];
+
+  res:.daas.util.trap[.daas.infra.hdbdatacopySCP;enlist p];
+  $[res`error;
+	  .daas.events.pubEventMessage[`hdbCopyFailed;`;`;`;msgInfo, enlist[`error]!enlist[res`error]];
+	  .daas.events.pubEventMessage[`hdbCopyComplete;`;`;`;msgInfo]] ;
+  :res;
+	 } each hdbCopyTable;
+	 
+	 .daas.events.pubEventMessage[`eodHdb;`complete;`;`;`env`asset!(.daas.cfg.env;.daas.cfg.asset)];
+	.pl.return_exit[`];
+	};
+
+.daas.events.runOnInitialBusCon `hdbTransferFunct;
+
+'a;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

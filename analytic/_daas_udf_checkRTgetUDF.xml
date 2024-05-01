@@ -1,0 +1,61 @@
+<analytic>
+	<analytic>.daas.udf.checkRTgetUDF</analytic>
+	<code_text>{[params]
+	
+	//params dict set
+	//`funcName
+	//`funcType
+	//`startTime
+	//`endTime
+	//`stream
+
+	
+	
+	//start and end times
+    if[not all any each key[params] in\: `funcName`funcType`startTime`endTime`stream;
+        '"argument set must be within `funcName`funcType`startTime`endTime`stream";
+        ];
+    if[`startTime in key params;
+        if[not -12h~type params`startTime;
+            '"startTime must be timestamp type";
+            ];
+        if[not `endTime in key params;
+            '"both startTime and endTime must be provided";
+            ];
+        if[not -12h~type params`endTime;
+            '"endTime must be timestamp type";
+            ];
+        ];
+
+    //streaming
+    if[`stream in key params;
+        if[not -1h=type params`stream;
+            '"`stream must be boolean";
+            ];
+        if[params`stream;
+            if[not first  .fd.process like "*_qm_*";
+                '"streaming requests must be sent to qm entrypoint";
+                ];
+            ];
+        ];
+    
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

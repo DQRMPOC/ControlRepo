@@ -1,0 +1,112 @@
+<analytic>
+	<analytic>daasQRChooseTargets</analytic>
+	<code_text>{[request;params;user;opts;routeInfo;targetInfo]
+  .debug.qrTargets:(`request`params`user`opts`routeInfo`targetInfo)!(request;params;user;opts;routeInfo;targetInfo);
+  / Maps analytics to databases or database groups
+
+  / temporary dict before replacing API names
+  subclassDict: `getTicks`getStats`getBars`getSummary!`ticks`ticks`stats`summary;
+  timeNameDict:`exchTime`time!`exchangeTime`insertTime;
+  
+  //If APIName needs mapped to analytic use APInameDict:`getTicks`getBars`getStats!`getTicks`getBars`getStats; - calling APInameDict[request]
+  //request should now only pass through `getTicks`getBars`getStats
+  
+  params:first params;
+  rawRequest:request;
+
+  if[.daas.cfg.procType=`qm;
+    params:`period`stream _ params;
+    
+    if[request=`getTicks;
+        rawRequest:request;
+        request:`getTicksStreaming;
+    ];
+  ];
+ 
+  / TODO: temp for summary
+  if[request=`getSummary;
+      params:{((key x),y)!(value x),z}[params;`startDate;.z.D];
+      params[`endDate]:.z.D;
+      params:`symList`assetClass`analytics`stream#params
+  ];
+
+  paramChk:$[lower[request] like "*udf*";
+      .[.daas.udf.checkAndAdjustUDF; (request;params); {[msg] .surv.qr.logErrorAndReturnMsg["ParameterCheckingError"; msg] }];
+  request=`getTicksStreaming;
+      .[.daas.util.checkParams;(rawRequest;params);{[opts;msg] sendNACK[.z.w;opts`clientID;msg;0b;()]; .surv.qr.logErrorAndReturnMsg["ParameterCheckingError"; msg]}[opts;]];
+  / else
+      .[.daas.util.checkParams;(rawRequest;params); {[msg] .surv.qr.logErrorAndReturnMsg["ParameterCheckingError"; msg] }]
+  ];
+    
+  // if any errors were found in param check return a nonsense target
+  if[$[-11h~type paramChk;paramChk like "ParameterCheckingError*";0b];
+      :paramChk
+  ];  
+    
+  if[@[{x[`instanceType] like "*acktest*"};opts;0b];
+      params[`dataClass]:opts[`instanceType];
+  ];
+
+  targets:.daas.util.targetProcMeta[params;request];
+
+  if[any targets like "*_ctp_*";
+      targets:`$"instance.",/:string targets;
+  ];
+
+  .log.out[`daas;"QR TARGET:";targets];
+  :targets;
+  }</code_text>
+	<description>Sample analytic for QR instance hook mapping routed requests to databases</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype>Symbol[]</returntype>
+	<returndata>ds_rdb_fx,ds_hdb_fx</returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription>List of targets for request</returndescription>
+	<param>
+		<parameter>request</parameter>
+		<default></default>
+		<description>Name of analytic</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default>"c"$()</default>
+		<description>List of analytic parameters</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>user</parameter>
+		<default></default>
+		<description>User running request</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>opts</parameter>
+		<default></default>
+		<description>Optional parameters supplied with the request</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>routeInfo</parameter>
+		<default></default>
+		<description>Routing information for analytic</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>targetInfo</parameter>
+		<default></default>
+		<description>Table of database/group targets with coverage info</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>DxQR</analyticgroup>
+</analytic>

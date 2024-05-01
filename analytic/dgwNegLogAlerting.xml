@@ -1,0 +1,89 @@
+<analytic>
+	<analytic>dgwNegLogAlerting</analytic>
+	<code_text>{[dict]
+if[dict[`stime]=0nt;dict[`stime]:00:00:00.00];
+if[dict[`sdate]=0nd;dict[`sdate]:.z.d];
+if[dict[`etime]=0nt;dict[`etime]:00:00:00.00];
+if[dict[`edate]=0nd;dict[`edate]:.z.d];
+
+stime:"p"$dict[`sdate]+dict[`stime];
+etime:"p"$dict[`edate]+dict[`etime];
+dict[`Group]:$[dict[`Group]=`;`$();`$","  vs string dict[`Group]];
+
+order:`Group`Hosts`host`RowIDs`rowID`File`Status`date`Executed`Failed`Early`avgEarlyTime`Time`execTime`diffTime;
+servers:dxOPSSelectDatabase[stime;etime;.z.p];
+res:.ds.gw.query[servers;(`dOpNegLogAlerting;(stime;etime;dict`Group;dict`row;order))];
+
+//res:`Group`date`rowID`Time xasc res;
+/res: update Group:`#Group from res;
+:res;
+ }</code_text>
+	<description>Report analytic to create a Report based of recorded failed and successful negative log events.
+sdate - Date which you want the report to run from
+stime - Time of day which you want the report to run from
+edate - Date you want the report to run until 
+etime - Time you want the report to run until
+Group - Default is blank, to select all Negative Log Group IDs. Entering a particular Negative Group ID, will report only on that Group and the row IDs assigned to that group.
+row - Default is blank, to select all entries in Log Scraper configuration parameter that are defined as Negative logging. Entering a particular row ID will create a report only on that ID.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dict</parameter>
+		<default>
+			<dictkey>
+				<name>sdate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>stime</name>
+				<datatype>Time</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>edate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>etime</name>
+				<datatype>Time</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>Group</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>row</name>
+				<datatype>Integer[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>DxGwAlert</analyticgroup>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+</analytic>

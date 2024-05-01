@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.validation.tradingAgainstListsThreshold</analytic>
+	<code_text>{[config]
+    //run standard validation 	
+	.al.callfunction[`.validation.standardThreshold][config];
+    
+    //check both ends of lookback are less than 31 and greater than 0
+    tal: {l:"J"$"-" vs x;
+    		if[0Nj=first l;:0b];
+    		min(0&lt;=l[0];l[0]&lt;31;0&lt;=l[1];l[1]&lt;31)
+    	}each config`tradingAgainstListLookbackPeriod;
+    	
+    fr:  {l:"J"$"-" vs x;
+    		if[0Nj=first l;:0b];
+    		min(0&lt;=l[0];l[0]&lt;31;0&lt;=l[1];l[1]&lt;31)
+    	}each config`frontRunningListLookbackPeriod;
+    
+    //if either are greater than or equal to 31, error message (will be displayed on dashboard)
+    $[not all min each (tal;fr);
+    	'"Please ensure maximum lookback is less than 31 days";
+    	:1b
+    ];
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

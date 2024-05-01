@@ -1,0 +1,51 @@
+<analytic>
+	<analytic>.daas.udf.infoUDF</analytic>
+	<code_text>{[params]
+
+    //params dict set
+    //`funcName
+    
+    //If the call has come from getUDFinfo rather than CLI it only has `info in the key
+    isCmdLine:`info in key params;
+	
+    funcNames:$[`funcName in key params;
+        (),`$raze string params`funcName;
+        `
+        ];
+ 
+    /if we have ` we want to print all udfs, but do not include func code unless the func is named.
+    out:$[any ` in funcNames;
+        select funcName, funcExists:1b,funcType,funcLang, description from 1 _ .daas.udf.udfFuncStore;
+        select funcName,funcExists:(funcNames in  exec funcName from  .daas.udf.udfFuncStore),funcType,funcLang,func, description from ([]funcName:funcNames)#1 _ .daas.udf.udfFuncStore
+        ];
+    
+    /format it if we are printing on cmd line
+    $[not isCmdLine;
+        out;
+      not 1=count out;
+        .Q.s out;
+      first out`funcExists;
+        .daas.udf.printSingleUDF[out];
+        "Function does not exist"
+        ]
+        
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>0</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

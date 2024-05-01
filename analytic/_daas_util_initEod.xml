@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.util.initEod</analytic>
+	<code_text>{[time;eodFn]
+	.ds.cfg.eodTime:time;
+	.daas.util.eodFn:eodFn;
+	.daas.util.EodTrigger:.ds.cfg.eodTime+`datetime$$[.z.T&lt;.ds.cfg.eodTime;.z.D;.z.D+1];
+	.daas.util.EodCheck:{[]
+	    // Check to see if day roll has occured. 
+	    $[.daas.util.EodTrigger&lt;.z.P;
+	        [get(.daas.util.eodFn;`date$.daas.util.EodTrigger);.daas.util.EodTrigger:`datetime$(.daas.util.EodTrigger.date+1)+.ds.cfg.eodTime];    
+	        ()];
+    	};
+    .d.prcl.removeFuncFromTimer[`.daas.util.EodCheck;1b];
+    .d.prcl.addFunctToTimer[`.daas.util.EodCheck;();.z.Z;0Wz;1000i;1b];
+ }</code_text>
+	<description>initializes a timer function that checks for day rollover at the specified time; when rollover occurs, eodFn is executed.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>time</parameter>
+		<default>23:59:59.999</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Time</datatype>
+	</param>
+	<param>
+		<parameter>eodFn</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,71 @@
+<analytic>
+	<analytic>.daas.merge.eodMoveToMain</analytic>
+	<code_text>{[]
+	.log.out[.z.h;"Starting EOD HDB date swaps for merge";()];
+	/pick out jobs that are currently in progress.
+	/if we move a date that is currently being merged into that is going to be bad
+	/any targetDir/date that is currently under merge will not be written.
+	if[count inprog:exec (string[targetDir],'string[date]) from .daas.merge.mergeJobs where not state=`queued;
+		{.log.out[.z.h;"Jobs currently in progress, not merging any of ";x]}each inprog;
+		];
+
+
+
+
+	/pick out jobs to finish
+	eodJobs:select distinct partitionDate by copy,target from .daas.merge.completed where not merged,not (string[target],'string[partitionDate]) in inprog;
+	eodJobs:`copy`target`sourceDir`partitionDate xcols 0!update sourceDir:{`$ssr[string[x];"hdblog";"mergeHdblog"]}each target from eodJobs;
+	
+	/run each (per path) of them
+	{
+		.log.out[.z.h;"Attempting eod date swap to main HDB for ";x`target];
+		.merge.fail:0b;
+		.[.daas.merge.moveToMain;(x`target;x`sourceDir;x`partitionDate);{.log.out[.z.h;"failed eod HDB date swap ";x];.merge.fail:1b}];
+		
+		if[.merge.fail;
+            if[.handles.blocked;
+                .log.out[.z.h;"Unblocking all hdbs and calling reload";()];	
+	            .daas.processing.unlockHDB[.handles.hdbs];
+	            .log.out[.z.h;"hdbs unblocked and reloaded";()];
+	            .handles.blocked:0b;
+                ];
+			:();
+			];
+		
+		
+		if[x`copy;
+			/Copy data to the other side if FT system
+			.[.daas.merge.copyToRemote;(last "hdblog" vs string x`target;x`partitionDate);{.log.out[.z.h;"failed to copy to remote";x]}];
+			];
+
+		update merged:1b from `.daas.merge.completed where target=x`target;
+		}each eodJobs;
+	
+	/update table
+	.log.out[.z.h;"completed eod date swap jobs ";()];
+	/we should save the log to hdb here
+	
+	
+	.log.out[.z.h;"flushing succesful jobs";()];
+	.daas.merge.clearCompleted[];
+	/delete from `.daas.merge.completed where merged;
+	
+	$[num:count .daas.merge.completed;
+		.log.out[.z.h;raze string[num]," jobs that did not complete. Consult .daas.merge.completed";()];
+		.log.out[.z.h;"All jobs completed sucessfully";()]
+		];
+		
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

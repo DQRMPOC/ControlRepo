@@ -1,0 +1,20 @@
+<analytic>
+	<analytic>.daas.trth.request</analytic>
+	<code_text>{[]	
+ .log.out[.z.h;"Entered: .daas.trth.request";()];
+ /return  empty table to allow function to enter reportAction
+ /this is what gets passed through to the report action as the reportData parameter
+ :([]c:enlist `);
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+</analytic>

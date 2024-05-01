@@ -1,0 +1,59 @@
+<analytic>
+	<analytic>.daas.admin.triggerAdhocHDBCopy_dashboard</analytic>
+	<code_text>{[asset;fromEnv;startDate;endDate;dataCopyRun]
+
+if[dataCopyRun;
+if[any null a:(asset;fromEnv;startDate;endDate);.log.out[.z.h;"The adhoc datacopy was run with the following nulls:";(`asset`fromEnv`startDate`endDate) where null a];:()];
+dates:startDate+til 1+(endDate-startDate);
+.daas.events.pubEventMessage[`adhocHDBCopy;`;`;`;`asset`fromEnv`dates!(asset;fromEnv;dates)];
+`.daas.admin.hdbCopyHistory upsert (.z.P;`start;`manual;asset;fromEnv;`$string each dates;`all;`all);
+];
+:([] (`boolValue,`counter);(0b,.z.P))
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>asset</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>fromEnv</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>startDate</parameter>
+		<default>1970.01.01</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>endDate</parameter>
+		<default>1970.01.01</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>dataCopyRun</parameter>
+		<default>false</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

@@ -1,0 +1,25 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.trth.frameworkSettings</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>.daas.trth.runTrthEodIntraday</element>
+		<elementType>Boolean</elementType>
+		<elementValue>false</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>.daas.trth.rteTimerValue</element>
+		<elementType>String</elementType>
+		<elementValue>5000</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>.daas.trth.runhdbCopyToSecondary</element>
+		<elementType>Boolean</elementType>
+		<elementValue>false</elementValue>
+	</param>
+</configparam>

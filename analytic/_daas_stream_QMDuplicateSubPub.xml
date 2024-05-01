@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.stream.QMDuplicateSubPub</analytic>
+	<code_text>{[ID;data]
+//The ID in the RTE is the combined ID so need to get the actual ID to publish to
+combinedIDTab:select id,combined,combinedID from saSubscriptions where active;
+cMap:exec id by combinedID from combinedIDTab where combined, id=ID;
+id:key cMap;
+//Get the device handle to publish to
+subs:first saClientSubMap[id];
+/Edit the subscription IDs to only have the last value
+vals:@[value subs;0;:;last last value subs];
+pubDevice[;;data]'[key subs;enlist vals];
+ }</code_text>
+	<description>Analytic that the RTE will run in the snapshot function for streaming analytic subscriptions. 
+In the snapshot function, if a duplicate subscription is made, the user can't receive an update of the current state of the RIC as publishing an update to them would mean publishing a duplicate update to the other subscribers.
+This gets around that by telling the QM to only publish to the last ID to subscribe to that subscription</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>ID</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

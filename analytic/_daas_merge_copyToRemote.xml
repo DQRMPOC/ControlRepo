@@ -1,0 +1,52 @@
+<analytic>
+	<analytic>.daas.merge.copyToRemote</analytic>
+	<code_text>{[dataPath;date]
+	dmds:select instance_name,host,port from .ex.prh".pl.getRunningInformation[]" where name like "daas_dataMergeDaemon_*";
+	trgs:select from dmds where not instance_name~\:.ex.getInstanceName[];
+	
+	if[not count trgs;
+		.log.out[.z.h;"No available remote merge daemon. Not copying data.";date];
+		:();
+		];
+
+	/ping other side MD to get dropdir
+	hps:`$":",/:":" sv/:string flip value exec host,port from trgs;
+	h:@[hopen;;{0}] each hps;
+	h except 0;
+	if[not count h;
+		.log.out[.z.h;"No available remote merge daemon. Not copying data.";date];
+		:();
+		];
+	
+	targets:(string exec host from trgs),'":",/:h @\: "getenv `DATACOPY_HDBDROPS";
+	hclose each h;
+	
+	@[{.daas.hdbcopy.oldLog:.log.out};::;{}];
+	.daas.dataCopy.zipData[dataPath;date;targets;1b];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dataPath</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>date</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

@@ -1,0 +1,129 @@
+<analytic>
+	<analytic>.daas.util.l2genPreBookDict</analytic>
+	<code_text>{[filteredTb;timeCol;symList;params]
+
+	if[count filteredTb;
+		/ DELETE entries BY id/side FROM filteredTb WHERE most recent action (before startTime) was delete
+        / updating side because deletes don't have it, it's the last char in the id 
+
+        filteredTb:update side:(.daas.util.l2idToSide each id) from filteredTb where null side;
+
+        / TODO: At this point, will filteredTb ever have anything after the startTime?
+        / TODO: why do we select adds as well?
+
+		/ by clause with no constraint gives the last per sym,id
+        / If same id/side was re-added after queried startTime, only delete up to the re-added entry
+        delId:select from (0!select by id,side from (?[filteredTb;((&gt;=;timeCol;params[`startTime]);(in;`action;"AD"));0b;(`id`side`action,timeCol)!(`id`side`action,timeCol)])) where action="D";
+		delId:0!upsert[
+			?[filteredTb;enlist(in;`id;enlist delId[`id]);`id`side!`id`side;(enlist timeCol)!enlist(0Wp)];
+			?[filteredTb;((&gt;;`time;params[`startTime]);(in;`id;enlist delId[`id]);(=;`action;"A"));`id`side!`id`side;(enlist timeCol)!enlist(min;timeCol)]
+		];
+		
+		
+        / Assemble constraints by running AND over the values in delID followed by OR over each result of the ANDs
+        / TODO: Do we need to check by id and  side when id contains the side?
+
+        / Constraints:
+        / time less than timeCol from delId  (i.e it's before it has been readded) 
+        / AND side = the side of the delID
+        / AND id = delete id 
+
+        / 1. running (/) over each delId will return a list of booleans with each row matching per id
+        / 2. running ((or;x;y)/) will collapse with into one list 
+        / TODO: if this is what it does, then can be replaced with max operator
+
+        if[not count delId ~ 0;
+			$[.ex.getProcessName[]~`DS_RDB;
+				filteredTb:?[filteredTb;enlist(not;({(or;x;y)}/){[x;timeCol](and;(&lt;;timeCol;x[timeCol]);(and;(=;`side;enlist x[`side]);(in;`id;enlist enlist x[`id])))}[;timeCol]each delId);0b;()];
+				filteredTb:?[filteredTb;enlist(not;({(or;x;y)}/){[x;timeCol](and;(&lt;;timeCol;x[timeCol]);(and;(=;`side;enlist value x[`side]);(in;`id;enlist enlist x[`id])))}[;timeCol]each delId);0b;()]
+			];
+		];
+	];
+	
+	
+    / Select all entries after the *LAST* indication that is 1 (indication 1 means clear cache, so we start from scratch)
+    / where it's not an MKO (market order) nor has zero price
+    / NOTE: its by sym, id  
+    / when not "delete" and drop off the condition col 
+    preBookDict:select max time, max exchTime, price, size, numOrders, id
+		by sym,side
+		from `sym`side`price xasc(
+			select sym, time, exchTime, price, side, size, numOrders, id
+			from(
+				select max time, max exchTime, last price, last side, last size, last numOrders, last action, last condition
+                by sym, id
+                from filteredTb
+                where ({(til count x) &gt; last where x=1};indication) fby sym, price&gt;0, not condition~\:"MKO"
+			)
+			where action&lt;&gt;"D"
+		);
+	
+	$[` in symList;
+		symList:exec distinct sym from preBookDict;
+	];
+	
+    / Return preBookDict as table
+    / This will be returned as `sym`side`price`size`numOrders`id`time`exchTime
+    / with a row per sym and side 
+    / with price,size,numOrders,id being nested lists
+    / time and exchTime will be the max's before start time 
+
+    :(
+		update
+			price:count[i]#enlist enlist 0n,
+			size:count[i]#enlist enlist 0Ni,
+			numOrders:count[i]#enlist enlist 0Ni,
+			id:count[i]#enlist enlist "" 
+		from 
+			flip `sym`side!flip symList cross `ASK`BID
+	) lj preBookDict;
+		
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>filteredTb</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>timeCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>symList</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

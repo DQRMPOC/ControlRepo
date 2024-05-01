@@ -1,0 +1,7 @@
+<analyticgroup>
+	<name>.daas.admin.failover</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.admin.failover.failStack</analytic>
+	<analytic>.daas.admin.failover.makePrimary</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

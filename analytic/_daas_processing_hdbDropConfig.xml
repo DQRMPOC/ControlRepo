@@ -1,0 +1,59 @@
+<analytic>
+	<analytic>.daas.processing.hdbDropConfig</analytic>
+	<code_text>{[dir;file]
+
+
+	/insert into log	
+	.log.out[.z.h;"Picked up new config file";file];
+    cfg:(!).`$csv vs/: read0 (` sv (dir;file));
+    cfg[`filePath]:`$":",getenv`DATACOPY_HDBDROPS;
+    /cfg[`filePath]:`$":/data02/trva8.4.0.0P4.linux.drop.FT_angus/delta-data/fileStore/hdbDrops";
+    
+    
+    script:(first loc where not null `$loc:getenv `DAASSANDBOX_HOME`DAASCORE_HOME),"/interfaces/dataCopy/./unzipCopy.sh";
+    
+	z:$[t:cfg[`file] like "*.tgz";
+		/unzip and drop merge flag
+		" -z";
+		/just mv and drop merge flag	
+		""];
+	
+	cmd:raze script,z
+	," -h ",((1_"/" sv string (cfg[`filePath];cfg[`file])),$[t;"";".tgz"])
+	," -m ",getenv[`DELTASTREAM_BASE_MNT],"/hdbMerge/"
+	," -w ",getenv[`DELTASTREAM_BASE_MNT],"/mergeTriggers"
+	," -n ",$[t;-4_string cfg`file;string cfg`file]
+	," 2&gt;&amp;1 &amp;";
+	
+	.log.out[.z.h;"unzipping and moving";()];
+	.log.out[.z.h;"calling script";cmd];
+	/system cmd
+	system cmd
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

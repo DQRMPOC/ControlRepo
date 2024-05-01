@@ -1,0 +1,12 @@
+<dataconnectiongroup>
+	<ucname>delta_install_default</ucname>
+	<grpid>ds_gw_alert</grpid>
+	<key>
+		<keyname>DBS</keyname>
+		<val>ds_gw_alert_a,ds_gw_alert_b</val>
+	</key>
+	<key>
+		<keyname>CONN_SELECTOR</keyname>
+		<val>DEFAULT</val>
+	</key>
+</dataconnectiongroup>

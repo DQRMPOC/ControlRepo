@@ -1,0 +1,25 @@
+<analytic>
+	<analytic>.daas.infra.gwEod</analytic>
+	<code_text>{[date]
+// clear logging
+	if[count key`.daas.log.logh; .daas.log.eodGwLogging[.daas.log.logDays;.daas.log.logDir]];
+ }</code_text>
+	<description>eod funct for the gateway. handles rollover for in-memory and on-disk query logging.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>date</parameter>
+		<default>1970.01.01</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

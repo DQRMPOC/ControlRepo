@@ -1,0 +1,34 @@
+<analytic>
+	<analytic>.daas.cmon.rtc</analytic>
+	<code_text>// Refinery (DaaS) Real-Time Consumer Monitoring 2.0
+// Copyright (c) 2019 Kx Systems Inc
+
+.rtc.updStatistics:(`symbol$())!`long$();
+
+
+.daas.cmon.rtc.init:{
+    .rtc.updStatistics[.daas.cmon.common.i.getTables[]]:0;
+    .daas.cmon.addTimerMetric[`consumer.updDayCount; `.daas.cmon.rtc.updDayCount; `timespan$00:00:10; `dict];
+ };
+
+
+.daas.cmon.rtc.eod:{
+    .log.out[`cmon;;()] "Resetting Real-Time Consumer capture statistics at end-of-day";
+    .rtc.updStatistics[.daas.cmon.common.i.getTables[]]:0;
+ };
+
+.daas.cmon.rtc.updDayCount:{
+    .daas.cmon.sendMetrics[`consumer.updDayCount; .rtc.updStatistics];
+ };
+    </code_text>
+	<description>Refinery (DaaS) Real-Time Consumer Monitoring 2.0</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

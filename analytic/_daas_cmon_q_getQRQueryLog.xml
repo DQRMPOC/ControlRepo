@@ -1,0 +1,29 @@
+<analytic>
+	<analytic>.daas.cmon.q.getQRQueryLog</analytic>
+	<code_text>{[]
+   
+    qrJoined:0!select by requestID from QueryDispatch lj `requestID xkey QueryResponse;
+
+    toReturn:`generatedTime`processName`requestID`dispatched`status`user`database`gateway`client`request#qrJoined;
+    toReturn:`time`qr`requestID`sent`status`user`targetProcesses`qp`client`request xcol toReturn;
+
+    toReturn:update function:first each request, arguments:.Q.s1 each 1_/:request from toReturn where 0h &lt;= type each request;
+    toReturn:update function:request from toReturn where 0h &gt; type each request;
+    toReturn:update function:((.Q.s1; ::) 10h = type each function) @' function from toReturn;
+    toReturn:enlist[`request]_ toReturn;
+
+    :toReturn;
+ }
+    </code_text>
+	<description>Refinery Monitoring - QR Query Log</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

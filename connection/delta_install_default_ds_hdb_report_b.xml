@@ -1,0 +1,14 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>ds_hdb_report_b</connection>
+	<host>ENV=ds_hdb_report_b_HOST=</host>
+	<port>ENV=ds_hdb_report_b_PORT=</port>
+	<user></user>
+	<pass></pass>
+	<dbname></dbname>
+	<dbtype>q</dbtype>
+	<tls></tls>
+	<connectiongroup>MyApps</connectiongroup>
+	<dataconnectiongroup>ds_hdb_report</dataconnectiongroup>
+	<primarystatus>backup</primarystatus>
+</connection>

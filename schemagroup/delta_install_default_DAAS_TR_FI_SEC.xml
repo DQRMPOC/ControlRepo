@@ -1,0 +1,7 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_TR_FI_SEC</tablegroup>
+	<tablename>dividendRecord</tablename>
+	<tablename>splitRecord</tablename>
+	<tablename>symRefData</tablename>
+</schemagroup>

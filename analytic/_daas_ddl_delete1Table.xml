@@ -1,0 +1,107 @@
+<analytic>
+	<analytic>.daas.ddl.delete1Table</analytic>
+	<code_text>{[params]
+
+	// Copy affected table partition to secondary DB
+  	$[(not .daas.ddl.modifiedDB like "*tmp*") or (not params[`date] in .daas.ddl.prevModDt);
+		.daas.ddl.srcTab:1_string params[`tabledir];
+    	// Copy from modified DB if this table partition has been previously modified
+    	.daas.ddl.srcTab:1_string .Q.par[`$raze "/" sv -1_"/" vs string .daas.ddl.modifiedDB;params[`date];params[`dataType]]
+    ];
+  
+	//Copy from srcTab if not done previously
+	if[not count key .daas.ddl.dstTab;
+		.daas.util.sysCmd["rsync -a";(.daas.ddl.srcTab;1_string .Q.par[.daas.ddl.modifiedDB;params[`date];`])]
+    ];
+	
+	//Rewrite individual columns
+  	.log.out[.z.h;"Removing data from copied partition";(.Q.par[`:;params[`date];params[`dataType]];count .daas.ddl.ii[params[`date]][`ii])];
+	{
+		//Get column data and attribute
+		a:attr v:get y;
+		
+		//Remove where deleted &amp; reapply attributes
+		v:v[(til count v) except x];
+		if[not null a;
+			v:a#v
+		];
+		y set v;
+
+	}[.daas.ddl.ii[params[`date]][`ii];]peach ` sv' .daas.ddl.dstTab,'get ` sv .daas.ddl.dstTab,`.d;
+	
+	.Q.gc[];
+	
+	//Block HDB while partition is removed &amp; replaced w/ link
+	.log.out[.z.h;"Blocking HDB and replacing partition";.daas.ddl.hdb];
+	@[
+    	.daas.processing.blockHDB;
+    	.daas.ddl.hdbH;
+    	{
+      		.log.warn[.z.h;"Connection to HDB dropped. Reconnecting and trying again.";()];
+      		connectDb each .daas.ddl.hdb;
+      		.daas.processing.blockHDB[.daas.ddl.hdbH]
+      	}
+    ];
+	
+  
+	$[not .daas.ddl.modifiedDB like "*tmp*";
+    	[
+      		// Remove partition from src
+  			.daas.util.sysCmd["rm -r";.daas.ddl.srcTab];
+      		// Link src to modified DB
+      		.daas.util.sysCmd["ln -s";(1_string .daas.ddl.dstTab;.daas.ddl.srcTab)];
+      	];
+    
+    	[
+      		// Move updated partition from tmp into modified DB
+      		newDst:1_string .Q.par[`$raze "/" sv -1_"/" vs string .daas.ddl.modifiedDB;params[`date];`];
+      
+           	// If this partition hasn't been modified before...
+      		$[not params[`date] in .daas.ddl.prevModDt;
+        		[
+        			// Create partition in modified DB
+        			.daas.util.sysCmd["mkdir -p";newDst];
+        			newSrc:1_string params[`tabledir];
+        			// Remove partition from src and create link to modified DB
+        			.daas.util.sysCmd["rm -r";newSrc];
+        			.daas.util.sysCmd["ln -s";(newDst,string[params[`dataType]];newSrc)];
+          		];
+        
+        		.daas.util.sysCmd["rm -r";newDst,string[params[`dataType]]]
+        	];
+      
+      		.daas.util.sysCmd["mv";(1_string .daas.ddl.dstTab;newDst)];
+      
+      	]
+    ];
+	
+	.daas.processing.unlockHDB[.daas.ddl.hdbH];
+	.log.out[.z.h;"HDB unlocked";.daas.ddl.hdb];
+ }</code_text>
+	<description>Delete records from a table partition where indices are in .daas.ddl.ii</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description></description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasDDL</analyticgroup>
+</analytic>

@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.daas.util.getDayBarStart</analytic>
+	<code_text>{[dt;timeParam]
+	
+    // midnight in the timezone of the default query timezone
+    defaultStart:dt+00:00:00.000;
+    
+    timeCol:.daas.util.mapTimeParamToCol[timeParam];
+    outTZ:.daas.util.getOnDiskTZ[`;timeCol];
+    
+    // adjust midnight in query timezone to the on disk timezone of the time parameter we are querying by
+    adjStart:.daas.util.convertBetweenTZ[defaultStart; .daas.cfg.regionConfig[`timeZone]; outTZ];
+    
+    adjStart
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dt</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>timeParam</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

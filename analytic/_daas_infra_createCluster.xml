@@ -1,0 +1,69 @@
+<analytic>
+	<analytic>.daas.infra.createCluster</analytic>
+	<code_text>{[clProcs;clPorts;doNotMake]
+
+	//getClusterParams
+	//Take in list of process names and return dictionary of process parameters
+	//Parameters are copied from procNum 0
+	getClusterParams:{[pnames]
+		{((`procName`procType)!(y;`DS_HDB)),(((key l)except r)!first each l ((key l)except r)),(r!l r:where (type each l:.ex.getdetails[x]`paramvalues)&lt;&gt;99)} ./: (first pnames),/:1_pnames};
+
+	.log.out[.z.h;"Reading process parameters";()];
+
+	//Construct table of process parameters
+	clProcDetails:getClusterParams clProcs;
+
+	.log.out[.z.h;"Updating port numbers";()];
+
+	//Update port numbers to those provided by GW
+	clProcDetails:update dc_port:clPorts from clProcDetails;
+	
+	
+	.log.out[.z.h;"Creating new process instances";()];
+	
+	//Create instance of each process
+	//EXCLUDING those for which a process instance already exists!
+	.daas.infra.processCreation each (select from clProcDetails where not procName in doNotMake);
+	
+	.log.out[.z.h;"Process instances created. Running processes";()];
+	
+	//Run all the processes
+	{.ex.prh(".ts.runinstance";x;("s"$())!())}each clProcDetails`procName;
+	
+	.log.out[.z.h;"Successfully created cluster";()];
+	
+	.daas.events.pubEventMessage[`hdbCluster;`connectCluster;`;`;clProcs];
+ }</code_text>
+	<description>Create a set of process instances based on the running process</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>clProcs</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<param>
+		<parameter>clPorts</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer[]</datatype>
+	</param>
+	<param>
+		<parameter>doNotMake</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

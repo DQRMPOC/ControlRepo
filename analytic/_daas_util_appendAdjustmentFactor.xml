@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.util.appendAdjustmentFactor</analytic>
+	<code_text>{[res;params]
+	get"k)ajnew:{.Q.ft[{d:x_z;$[&amp;/j:-1&lt;i:(x#z)binr x#y;y,'d i;+.[+.Q.ff[y]d;(!+d;j);:;.+d i j:&amp;j]]}[x,();;0!z]]y}";
+    filteredSplitRecord:(`time) xasc ?[coraxCapChange;((within;`exDate;(params`sd;.z.D-1));(in;`eventTypeNum;enlist `11`12`13`14`15`16`21`22`23`31`32`41`42`43`44`61`71`72`73`75`76`77`78`80`81`83`84);(in;`sym;enlist params`symList));0b;((`time),`sym`splitFactor)!(($;"p";`exDate);`sym;`adjustmentFactor)];
+    stockDiv:(`time) xasc ?[coraxCapChange;((within;`exDate;(params`sd;.z.D-1));(in;`eventTypeNum;enlist `33`74`82);(in;`sym;enlist params`symList));0b;((`time),`sym`stockFactor)!(($;"p";`exDate);`sym;`adjustmentFactor)];
+    filteredSplitRecord:update splitFactor:reverse prds reverse splitFactor by sym from filteredSplitRecord;
+    stockDiv:update stockFactor:reverse prds reverse stockFactor by sym from stockDiv;
+    if[params[`granularityUnit] ~ `day;
+	    filteredSplitRecord:update time:time - 00:00:00.000000001 from filteredSplitRecord;
+        stockDiv:update time:time - 00:00:00.000000001 from stockDiv
+	];
+    tab:update 1^splitFactor from ajnew[`sym,`time;res;filteredSplitRecord];
+    tab:update 1^stockFactor from ajnew[`sym,`time;tab;stockDiv]
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

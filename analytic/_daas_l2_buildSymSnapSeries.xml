@@ -1,0 +1,51 @@
+<analytic>
+	<analytic>.daas.l2.buildSymSnapSeries</analytic>
+	<code_text>{[buildDate;startSnap;curSym]
+	updates:select from .daas.l2.updateTb where date=buildDate,sym=curSym;
+	
+	// make sure we don't cut in the middle of a refresh burst
+	r:exec sums not ( (action="A") and (indication=0) ) or indication=1 from updates;
+	cutInds:0, where (r&gt;0) and not mod[r;.daas.l2.snapTickThreshold];
+	
+	res: .daas.l2.updateSnap\[select from startSnap where sym=curSym;cutInds cut updates];
+	res:raze {[x;y]update blockNum:(count x)#y from x}'[res;til count res];
+	if[count res;
+		res: `blockNum`side`price xasc res;
+		res: delete blockNum from 0! select last sym,last time,last exchTime, price,size,numOrders,id by blockNum,side from res;
+		: update price:reverse each price,size: reverse each size,numOrders:reverse each numOrders,id:reverse each id from res where side=`BID];
+		
+	: 0! select last sym,last time,last exchTime, price,size,numOrders,id by side from delete from updates;
+ }</code_text>
+	<description>use a starting snapshot table to build a daily snapshot time series for the given symbol</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>buildDate</parameter>
+		<default>1970.01.01</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>startSnap</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>curSym</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasL2</analyticgroup>
+</analytic>

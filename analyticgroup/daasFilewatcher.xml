@@ -1,0 +1,13 @@
+<analyticgroup>
+	<name>daasFilewatcher</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.infra.clientFileUploadInit</analytic>
+	<analytic>.daas.infra.csvLoader</analytic>
+	<analytic>.daas.infra.csvUnzip</analytic>
+	<analytic>.daas.infra.dspLoader</analytic>
+	<analytic>.daas.infra.dssStatsLoader</analytic>
+	<analytic>.daas.infra.orderExecCsvLoader</analytic>
+	<analytic>.daas.infra.regMatch</analytic>
+	<analytic>.daas.infra.symMapCSVLoader</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

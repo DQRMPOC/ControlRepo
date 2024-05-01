@@ -1,0 +1,29 @@
+<analytic>
+	<analytic>.daas.udf.checkAllowedFunctions</analytic>
+	<code_text>{[funcCode]
+	// function must start with "{[params]" header
+	if[not funcCode like "{[[]params[]]*";
+		'"Function code must start with header \"{[params]\"" ];
+		
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>funcCode</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>String</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

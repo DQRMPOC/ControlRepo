@@ -1,0 +1,19 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>global_pdb_udf_0_a</override>
+	<parameter>.daas.cfg.pdbDataProcs</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>rdbList</element>
+		<elementType>Symbol</elementType>
+		<elementValue>global_rdb_udf_0_a</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>hdbList</element>
+		<elementType>Symbol</elementType>
+		<elementValue>global_hdb_udf_0_a</elementValue>
+	</param>
+</configparam>

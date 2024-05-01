@@ -1,0 +1,96 @@
+<analytic>
+	<analytic>getInstrumentTaxonomy</analytic>
+	<code_text>{[params]
+
+whereClause:enlist (in;params`idType;enlist params`symList);
+
+col:mifidInstrGrouping params`module;
+
+colClause:(`sym,value col`colnames)!params[`idType],value col`groupings;
+
+res:?[instrTaxonomy;whereClause;0b;colClause];
+
+updateCol:value col`updateCol;
+
+if[()~updateCol;:res];
+
+{[res;updateCol]![res;();0b;updateCol]}[res;updateCol]
+
+}</code_text>
+	<description>Extract data from a table</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias>getRef_copy_copy</alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>symList</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>dataType</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>startDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>endDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>corAxType</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>identifier</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>sortCols</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>systemDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>data to aggregate</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasQR</analyticgroup>
+	<analyticgroup>daasQS</analyticgroup>
+</analytic>

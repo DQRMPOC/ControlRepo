@@ -1,0 +1,2795 @@
+<ui>
+	<name>507d1ce-645c-5b0a-ad93-858629d85109</name>
+	<displayName>Watchlist Configuration</displayName>
+	<description>{
+  "creationDate": "Thu, 15 Feb 2018 17:24:12 GMT",
+  "lastUpdateDate": "Wed, 11 Mar 2020 13:53:55 GMT",
+  "tags": []
+}</description>
+	<data>{
+  "id": "507d1ce-645c-5b0a-ad93-858629d85109",
+  "name": "Watchlist Configuration",
+  "creationDate": "Thu, 15 Feb 2018 17:24:12 GMT",
+  "lastUpdateDate": "Wed, 11 Mar 2020 13:53:55 GMT",
+  "thumb": "data:image/png;base64,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",
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "ac081c1-44af-1a85-1734-7ec683fdb49"
+    }
+  ],
+  "screens": [
+    {
+      "id": "ac081c1-44af-1a85-1734-7ec683fdb49",
+      "name": "Screen 1",
+      "thumb": "data:image/png;base64,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",
+      "widgets": [
+        {
+          "id": "b0a46f8d-dfb3-8d2f-323f-b9a235446238",
+          "layout": {
+            "row": 0,
+            "column": 0,
+            "rowSpan": 32,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_5270",
+            "key": "Tabs",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 5,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "Selection": {
+                "target_tab": 3,
+                "SetViewStateOnSelect": {
+                  "Value": "",
+                  "ViewState": ""
+                },
+                "unloadInactive": false
+              },
+              "dropdownPossibleValues": [
+                {
+                  "Id": 0,
+                  "Name": "Watchlist Status"
+                },
+                {
+                  "Id": 1,
+                  "Name": "Watchlist Editor"
+                },
+                {
+                  "Id": 2,
+                  "Name": "Watchlist Uploader"
+                },
+                {
+                  "Id": 3,
+                  "Name": "Tick Loss Checks"
+                }
+              ],
+              "format": {
+                "widgetTitle": "WatchList Management",
+                "titleFontSize": 25,
+                "titleHorizontal": "Left",
+                "titleColor": "#ffffff",
+                "titleBottomBorderWidth": 0,
+                "titleFontBold": true,
+                "titleShadow": false,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 3,
+                "tileBorderColor": "#7f8c8d",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "ComponentName": "tabs"
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "Items": [
+                {
+                  "Id": "62c32a3c-2c11-494e-a960-592b7596f1bc",
+                  "Name": "Watchlist Status",
+                  "Tooltip": "",
+                  "HideTab": false
+                },
+                {
+                  "Id": "81769018-53a9-5547-3b83-19dca2ae8a35",
+                  "Name": "Watchlist Editor",
+                  "Tooltip": "",
+                  "HideTab": false
+                },
+                {
+                  "Id": "621429ce-5cb5-7c46-5234-e770d01bf94",
+                  "Name": "Watchlist Uploader",
+                  "Tooltip": "",
+                  "HideTab": false
+                },
+                {
+                  "Id": "99dff022-f8d8-95ac-715-9ceab0f6b5c4",
+                  "Name": "Tick Loss Checks",
+                  "Tooltip": "",
+                  "HideTab": false
+                }
+              ],
+              "version": "4.2.0s2"
+            },
+            "containerId": null,
+            "components": [
+              {
+                "id": "component_5288",
+                "key": "ConfigManager",
+                "options": {
+                  "profileName": "delta_install_default",
+                  "GridOptions": {
+                    "import": false,
+                    "edit": true,
+                    "insert": true,
+                    "reorder": false,
+                    "duplicate": false,
+                    "dictionaryView": false,
+                    "delete": true,
+                    "export": true,
+                    "promptBeforeSave": true
+                  },
+                  "ParameterGroups": [
+                    {
+                      "GroupName": "rfasubscriptions: FuturesL1",
+                      "Parameters": [
+                        {
+                          "DictionaryView": false,
+                          "DisplayName": "FuturesL1",
+                          "ParameterName": "rfasubscription:emea_tr_fut_rfavelocity_a"
+                        }
+                      ],
+                      "LoadExpanded": true,
+                      "duplicate": false
+                    },
+                    {
+                      "GroupName": "rfasubscriptions: FuturesL2",
+                      "Parameters": [
+                        {
+                          "DictionaryView": false,
+                          "DisplayName": "FuturesL2",
+                          "ParameterName": "rfasubscription:emea_tr_futL2_rfavelocity_a"
+                        }
+                      ],
+                      "LoadExpanded": true,
+                      "duplicate": false
+                    },
+                    {
+                      "GroupName": "rfasubscriptions: FuturesL2Legacy",
+                      "Parameters": [
+                        {
+                          "DictionaryView": false,
+                          "DisplayName": "FuturesL2Legacy",
+                          "ParameterName": "rfasubscription:emea_tr_futL2Legacy_rfavelocity_a"
+                        }
+                      ],
+                      "LoadExpanded": true,
+                      "duplicate": false
+                    },
+                    {
+                      "GroupName": "rfasubscriptions: FixedIncome",
+                      "Parameters": [
+                        {
+                          "DictionaryView": false,
+                          "DisplayName": "FixedIncome",
+                          "ParameterName": "rfasubscription:emea_tr_fi_rfavelocity_a"
+                        }
+                      ],
+                      "LoadExpanded": true,
+                      "duplicate": false
+                    },
+                    {
+                      "GroupName": "rfasubscriptions: EquitiesL1",
+                      "Parameters": [
+                        {
+                          "DictionaryView": false,
+                          "DisplayName": "EquitiesL1",
+                          "ParameterName": "rfasubscription:emea_tr_eq_rfavelocity_a"
+                        }
+                      ],
+                      "LoadExpanded": true,
+                      "duplicate": false
+                    },
+                    {
+                      "GroupName": "rfasubscriptions: EquitiesL2",
+                      "Parameters": [
+                        {
+                          "DictionaryView": false,
+                          "DisplayName": "EquitiesL2",
+                          "ParameterName": "rfasubscription:emea_tr_eqL2_rfavelocity_a"
+                        }
+                      ],
+                      "LoadExpanded": true,
+                      "duplicate": false
+                    },
+                    {
+                      "GroupName": "rfasubscriptions: EquitiesL2Legacy",
+                      "Parameters": [
+                        {
+                          "DictionaryView": false,
+                          "DisplayName": "EquitiesL2Legacy",
+                          "ParameterName": "rfasubscription:emea_tr_eqL2Legacy_rfavelocity_a"
+                        }
+                      ],
+                      "LoadExpanded": true,
+                      "duplicate": false
+                    },
+                    {
+                      "GroupName": "rfasubscriptions: ForeignExchange",
+                      "Parameters": [
+                        {
+                          "DictionaryView": false,
+                          "DisplayName": "ForeignExchange",
+                          "ParameterName": "rfasubscription:emea_tr_fx_rfavelocity_a"
+                        }
+                      ],
+                      "LoadExpanded": true,
+                      "duplicate": false
+                    },
+                    {
+                      "GroupName": "rfasubscriptions: Indicies",
+                      "Parameters": [
+                        {
+                          "DictionaryView": false,
+                          "DisplayName": "Indicies",
+                          "ParameterName": "rfasubscription:emea_tr_idx_rfavelocity_a"
+                        }
+                      ],
+                      "LoadExpanded": true,
+                      "duplicate": false
+                    }
+                  ],
+                  "Alignment": {
+                    "titlePaddingRight": 5,
+                    "innerPaddingBottom": 5,
+                    "titlePaddingLeft": 5,
+                    "paddingBottom": 5,
+                    "innerPaddingRight": 5,
+                    "paddingRight": 5,
+                    "innerPaddingLeft": 5,
+                    "paddingTop": 5,
+                    "titlePaddingBottom": 5,
+                    "innerPaddingTop": 5,
+                    "titlePaddingTop": 5,
+                    "paddingLeft": 5
+                  },
+                  "dynamicParameters": [
+                    ".daas.admin.adminServers:DEFAULT",
+                    ".daas.admin.compress:DEFAULT",
+                    ".daas.admin.diskM.fileAllocationTable:DEFAULT",
+                    ".daas.admin.diskM.hdbAllocationTable:DEFAULT",
+                    ".daas.admin.scriptsForBash:DEFAULT",
+                    ".daas.admin.serverDetails:DEFAULT",
+                    ".daas.admin.um.userTable:DEFAULT",
+                    ".daas.cfg.FATVAR:DEFAULT",
+                    ".daas.cfg.FATVAR:Hist.csv",
+                    ".daas.cfg.FATVAR:MIC.csv",
+                    ".daas.cfg.FATVAR:MICInfo.csv",
+                    ".daas.cfg.FATVAR:MICInfo2.csv",
+                    ".daas.cfg.FATVAR:RefData.csv",
+                    ".daas.cfg.FATVAR:TRTH_TAS.csv",
+                    ".daas.cfg.FATVAR:Taxonomy.csv",
+                    ".daas.cfg.FATVAR:corax.csv",
+                    ".daas.cfg.FATVAR:depth.csv",
+                    ".daas.cfg.FATVAR:emea_tr_eq_fw",
+                    ".daas.cfg.FATVAR:emea_tr_eq_fw_a",
+                    ".daas.cfg.FATVAR:emea_tr_fi_fw_a",
+                    ".daas.cfg.FATVAR:emea_tr_filewatcher",
+                    ".daas.cfg.FATVAR:emea_tr_filewatcherCorp",
+                    ".daas.cfg.FATVAR:emea_tr_filewatcherRef",
+                    ".daas.cfg.FATVAR:emea_tr_fut_fw&gt;",
+                    ".daas.cfg.FATVAR:emea_tr_fx_fw_a",
+                    ".daas.cfg.FATVAR:emea_tr_idx_fw_a",
+                    ".daas.cfg.FATVAR:execution",
+                    ".daas.cfg.FATVAR:order",
+                    ".daas.cfg.TickStatsAggregationFunctions:DEFAULT",
+                    ".daas.cfg.TickStatsColumns:DEFAULT",
+                    ".daas.cfg.aggregationFunctions:DEFAULT",
+                    ".daas.cfg.aggregationFunctions:override",
+                    ".daas.cfg.aggregationOperators:DEFAULT",
+                    ".daas.cfg.assetPrefixes:DEFAULT",
+                    ".daas.cfg.assetTableMap:DEFAULT",
+                    ".daas.cfg.barAggregationFunctions:DEFAULT",
+                    ".daas.cfg.barTableAggregationColumns:DEFAULT",
+                    ".daas.cfg.canCorColumnMap:DEFAULT",
+                    ".daas.cfg.canCorParams:DEFAULT",
+                    ".daas.cfg.canCorTargets:DEFAULT",
+                    ".daas.cfg.columnDefaults:DEFAULT",
+                    ".daas.cfg.complexAggregationFunctions:DEFAULT",
+                    ".daas.cfg.complexBarAggregationFunctions:DEFAULT",
+                    ".daas.cfg.condCol:DEFAULT",
+                    ".daas.cfg.corAxAggregations:DEFAULT",
+                    ".daas.cfg.depth:DEFAULT",
+                    ".daas.cfg.dspConnectionDetails:DEFAULT",
+                    ".daas.cfg.eqSymMap:DEFAULT",
+                    ".daas.cfg.eventResponses:DEFAULT",
+                    ".daas.cfg.eventResponsesByTopic:DEFAULT",
+                    ".daas.cfg.eventSubscriptions:DEFAULT",
+                    ".daas.cfg.fiSymMap:DEFAULT",
+                    ".daas.cfg.fileLoader:DEFAULT",
+                    ".daas.cfg.fileLoader:DSP",
+                    ".daas.cfg.fileLoaderParams:DEFAULT",
+                    ".daas.cfg.filterRuleConfig:DEFAULT",
+                    ".daas.cfg.futSymMap:DEFAULT",
+                    ".daas.cfg.fwTargetDB:DEFAULT",
+                    ".daas.cfg.fwTargetDB:DSP",
+                    ".daas.cfg.fwTargetDB:Hist.csv",
+                    ".daas.cfg.fwTargetDB:MIC.csv",
+                    ".daas.cfg.fwTargetDB:MICInfo.csv",
+                    ".daas.cfg.fwTargetDB:RefData.csv",
+                    ".daas.cfg.fwTargetDB:TRTH_TAS_EQUITY.csv",
+                    ".daas.cfg.fwTargetDB:TRTH_TAS_FIXED.csv",
+                    ".daas.cfg.fwTargetDB:TRTH_TAS_FOREX.csv",
+                    ".daas.cfg.fwTargetDB:TRTH_TAS_FUTURE.csv",
+                    ".daas.cfg.fwTargetDB:TRTH_TAS_INDEX.csv",
+                    ".daas.cfg.fwTargetDB:Taxonomy.csv",
+                    ".daas.cfg.fwTargetDB:corax.csv",
+                    ".daas.cfg.fwTargetDB:depth.csv",
+                    ".daas.cfg.fxSymMap:DEFAULT",
+                    ".daas.cfg.getStatsMaxWidths:DEFAULT",
+                    ".daas.cfg.hdbDir:DEFAULT",
+                    ".daas.cfg.hdbDirectories:DEFAULT",
+                    ".daas.cfg.help:DEFAULT",
+                    ".daas.cfg.idTypeDescription:DEFAULT",
+                    ".daas.cfg.idxSymMap:DEFAULT",
+                    ".daas.cfg.instanceAssetClasses:DEFAULT",
+                    ".daas.cfg.masterSlaveInstances:DEFAULT",
+                    ".daas.cfg.mifidAssetClass:DEFAULT",
+                    ".daas.cfg.mifidInstrGrouping:DEFAULT",
+                    ".daas.cfg.mifidSubAssetClass:DEFAULT",
+                    ".daas.cfg.mifidSubClass:DEFAULT",
+                    ".daas.cfg.modules:DEFAULT",
+                    ".daas.cfg.mrComponentAggregationFunctions:DEFAULT",
+                    ".daas.cfg.mrReductionAggregationFunctions:DEFAULT",
+                    ".daas.cfg.orderExecFileLoaderParams:DEFAULT",
+                    ".daas.cfg.paramOptionDict:DEFAULT",
+                    ".daas.cfg.paramscfg:DEFAULT",
+                    ".daas.cfg.quoteFilterRuleConfig:DEFAULT",
+                    ".daas.cfg.refTables:DEFAULT",
+                    ".daas.cfg.regionConfig:DEFAULT",
+                    ".daas.cfg.reqParamExceptions:DEFAULT",
+                    ".daas.cfg.respStatusConversion:DEFAULT",
+                    ".daas.cfg.rteAggregations:DEFAULT",
+                    ".daas.cfg.rteCalculationAggregations:DEFAULT",
+                    ".daas.cfg.rteCompositeAggregations:DEFAULT",
+                    ".daas.cfg.secMasterFaTVar:DEFAULT",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_eq_secMaster_fw",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_eq_secMaster_fw_CorAx",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_fi_secMaster_fw",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_fut_secMaster_fw",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_fx_secMaster_fw",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_idx_secMaster_fw",
+                    ".daas.cfg.secMasterPub:DEFAULT",
+                    ".daas.cfg.secMasterSub:DEFAULT",
+                    ".daas.cfg.secMasterWhereClause:DEFAULT",
+                    ".daas.cfg.statsDirectories:DEFAULT",
+                    ".daas.cfg.statsDirectories:equity",
+                    ".daas.cfg.statsDirectories:fixedIncome",
+                    ".daas.cfg.statsDirectories:foreignExchange",
+                    ".daas.cfg.statsDirectories:future",
+                    ".daas.cfg.statsDirectories:index",
+                    ".daas.cfg.statsFilterRules:DEFAULT",
+                    ".daas.cfg.statsFilterRules:EQ",
+                    ".daas.cfg.statsFilterRules:FI",
+                    ".daas.cfg.statsFilterRules:FUT",
+                    ".daas.cfg.statsFilterRules:FX",
+                    ".daas.cfg.statsFilterRules:IDX",
+                    ".daas.cfg.statsFilterRules:equity",
+                    ".daas.cfg.statsFilterRules:fixedIncome",
+                    ".daas.cfg.statsFilterRules:foreignExchange",
+                    ".daas.cfg.statsFilterRules:future",
+                    ".daas.cfg.statsFilterRules:index",
+                    ".daas.cfg.statsGenLrMap:DEFAULT",
+                    ".daas.cfg.statsHDB:DEFAULT",
+                    ".daas.cfg.statsProcesses:DEFAULT",
+                    ".daas.cfg.symExchangeMapConfig:DEFAULT",
+                    ".daas.cfg.symLiquidity:DEFAULT",
+                    ".daas.cfg.symLiquidity_test:DEFAULT",
+                    ".daas.cfg.symLiquidity_test:equity",
+                    ".daas.cfg.symLiquidity_test:fixedIncome",
+                    ".daas.cfg.symLiquidity_test:foreignExchange",
+                    ".daas.cfg.symLiquidity_test:future",
+                    ".daas.cfg.symLiquidity_test:index",
+                    ".daas.cfg.tableAggregationColumns:DEFAULT",
+                    ".daas.cfg.tableMap:DEFAULT",
+                    ".daas.cfg.targetFunctionDict:DEFAULT",
+                    ".daas.cfg.targetStatsHDBDict:DEFAULT",
+                    ".daas.cfg.taxonomyParams:DEFAULT",
+                    ".daas.cfg.trackSymState:DEFAULT",
+                    ".daas.cfg.trth.credentials:DEFAULT",
+                    ".daas.cfg.trth.frameworkSettings:DEFAULT",
+                    ".daas.cfg.trth.rfaVelocityFeed:DEFAULT",
+                    ".daas.cfg.writedownAggregationFunctions:DEFAULT",
+                    ".daas.infra.createHDBDefaultParams:DEFAULT",
+                    ".daas.infra.createHDBList:DEFAULT",
+                    ".daas.infra.createLRDefaultParams:DEFAULT",
+                    ".daas.infra.createLRList:DEFAULT",
+                    ".daas.infra.createRDBDefaultParams:DEFAULT",
+                    ".daas.infra.createRDBList:DEFAULT",
+                    ".daas.infra.createRFADefaultParams:DEFAULT",
+                    ".daas.infra.createRFAList:DEFAULT",
+                    ".daas.infra.createRTEDefaultParams:DEFAULT",
+                    ".daas.infra.createRTEList:DEFAULT",
+                    ".daas.infra.createSTATSDefaultParams:DEFAULT",
+                    ".daas.infra.createStatsGenDefaultParams:DEFAULT",
+                    ".daas.infra.createTPDefaultParams:DEFAULT",
+                    ".daas.infra.createTPList:DEFAULT",
+                    ".daas.infra.rdbShards:DEFAULT",
+                    ".daas.infra.rdbShards:emea_tr_eq",
+                    ".daas.module.cfg.moduleCfg:DEFAULT",
+                    ".daas.mon.flowCheckInstances:DEFAULT",
+                    ".daas.mon.hdbDataCheckInstances:DEFAULT",
+                    ".daas.mon.pingCheckInstances:DEFAULT",
+                    ".daas.mon.rdbDateCheckInstances:DEFAULT",
+                    ".daas.mon.rdbFlushCheckInstances:DEFAULT",
+                    ".daas.mon.slowConsumerCheckInstances:DEFAULT",
+                    ".daas.mon.timeoutCheckInstances:DEFAULT",
+                    ".daas.orderExec.fwRequiredFieldTypes:DEFAULT",
+                    ".daas.orderExec.fwRequiredFieldTypes:execution",
+                    ".daas.orderExec.fwRequiredFieldTypes:order",
+                    ".daas.orderExec.fwTargetDB:DEFAULT",
+                    ".daas.orderExec.fwTargetDB:executions",
+                    ".daas.orderExec.fwTargetDB:orders",
+                    ".daas.orderExec.instrumentDescriptionMapping:DEFAULT",
+                    ".daas.orderExec.validateISOCurrencyFormat:DEFAULT",
+                    ".daas.trth.fw.connections:DEFAULT",
+                    ".dtools.instanceInstructions:DEFAULT",
+                    ".dtools.userfilters:DEFAULT",
+                    "CONTROL_HEARTBEATS:DEFAULT",
+                    "DAAS_LOG_SCRAPE_IGNORE:DEFAULT",
+                    "DASHBOARD_ALERT_PROCESSES:DEFAULT",
+                    "DASHDatabaseDrivers:DEFAULT",
+                    "DASHconfigBundle:DEFAULT",
+                    "DASHdashlist:DEFAULT",
+                    "DASHdashlist:DeltaMonAdministrator",
+                    "DASHproperties:DEFAULT",
+                    "DASHsessionTimeout:DEFAULT",
+                    "DC_ARCHIVE_FILES:DEFAULT",
+                    "DC_AUDIT:DEFAULT",
+                    "DC_DAEMON_LAUNCH_TEMPLATES:DEFAULT",
+                    "DC_EXCLUDE_UNPACKAGED_ENTITIES:DEFAULT",
+                    "DC_EXPORT:DEFAULT",
+                    "DC_EXPORT_FILES:DEFAULT",
+                    "DC_EXPORT_FILES:DeltaStream",
+                    "DC_FILEMONITOR:DEFAULT",
+                    "DC_LOGGING:DEFAULT",
+                    "DC_LOG_PUBLISH:DEFAULT",
+                    "DC_MEMORY:DEFAULT",
+                    "DC_PASSWORD_RESET:DEFAULT",
+                    "DM_ALERT_FILEMON_LOOKUP:DEFAULT",
+                    "DM_ALERT_MONITOR_COLUMNS:DEFAULT",
+                    "DM_ALERT_PARAMETERS:DEFAULT",
+                    "DM_ALERT_PARAMETERS:MemoryUsage",
+                    "DM_ALERT_PARAMETERS:Server1MinLoad",
+                    "DM_ALERT_PARAMETERS:ServerCPU",
+                    "DM_AlertsConfiguration:DEFAULT",
+                    "DM_ColourThresholds:DEFAULT",
+                    "DM_ColourThresholds:ProcessCPU",
+                    "DM_ColourThresholds:ProcessMemory",
+                    "DM_ColourThresholds:ServerCPU",
+                    "DM_ColourThresholds:ServerFileSystem",
+                    "DM_ColourThresholds:ServerMemory",
+                    "DM_Config_Log_Scraper:DEFAULT",
+                    "DM_Configuration:DEFAULT",
+                    "DM_FILE_CHANGE_ALERT:DEFAULT",
+                    "DM_FILE_POLL:DEFAULT",
+                    "DM_FileMonitorConfiguration:DEFAULT",
+                    "DM_FileSizeAlert:DEFAULT",
+                    "DM_FileSystemUsageAlert:DEFAULT",
+                    "DM_HDB_SAMPLING:DEFAULT",
+                    "DM_INSTANCE_ALERT:DEFAULT",
+                    "DM_JobScheduleAlert:DEFAULT",
+                    "DM_LOG_ALERT:DEFAULT",
+                    "DM_LOG_ALERT:DM_FILE_MON_FILE_PATH_ALERT",
+                    "DM_LOG_SCRAPING:DEFAULT",
+                    "DM_Log_Context:DEFAULT",
+                    "DM_Log_Context:DM_GC_Context",
+                    "DM_ProcessAlias:DEFAULT",
+                    "DM_ProcessDetails_DetailView:DEFAULT",
+                    "DM_ProcessDetails_GraphicalNICDetails:DEFAULT",
+                    "DM_ProcessDetails_GraphicalNetConnDetails:DEFAULT",
+                    "DM_ProcessDetails_NetworkConnectionSummary:DEFAULT",
+                    "DM_ProcessDetails_PerconnectionDetails:DEFAULT",
+                    "DM_ProcessDetails_ProcessDetails:DEFAULT",
+                    "DM_ProcessSpecificAlert:DEFAULT",
+                    "DM_ProcessSpecificAlert:DM_PIDResidentMemoryAlert",
+                    "DM_ProcessSpecificAlert:DM_ProcessCpuAlert",
+                    "DM_QPING_CONFIG:DEFAULT",
+                    "DM_QueryBuilder_LatestAmmendments:DEFAULT",
+                    "DM_QueryBuilder_QueryViews:DEFAULT",
+                    "DM_RECOVERY:DEFAULT",
+                    "DM_SERVER_ALERT:DEFAULT",
+                    "DM_SYSMON_CONFIG:DEFAULT",
+                    "DM_SYSMON_CONFIG_COLLECTORS:DEFAULT",
+                    "DM_SYSMON_CONFIG_PROC:DEFAULT",
+                    "DM_SYSMON_FILESIZE_CONFIG:DEFAULT",
+                    "DM_SYSMON_SERVERGROUPS:DEFAULT",
+                    "DM_SYSPING_CONFIG:DEFAULT",
+                    "DM_ServerLoadAlert:DEFAULT",
+                    "DM_TABLE_RELATIONS:DEFAULT",
+                    "DM_TOP_AlertsMonitor:DEFAULT",
+                    "DM_TOP_CPUCoreLeagueTable:DEFAULT",
+                    "DM_TOP_CPUMemoryGraph:DEFAULT",
+                    "DM_TOP_CPUTable:DEFAULT",
+                    "DM_TOP_FileSystemLeagueTable:DEFAULT",
+                    "DM_TOP_NetworkConnectionsTable:DEFAULT",
+                    "DM_TOP_ServerDetailsGraph:DEFAULT",
+                    "DM_TOP_ServerMemoryLeagueTable:DEFAULT",
+                    "DM_WEBPING_CONFIG:DEFAULT",
+                    "DRVT_ProjectMappings:DEFAULT",
+                    "DRVT_Properties:DEFAULT",
+                    "DS_AF_CCY_PIPS:DEFAULT",
+                    "DS_AF_FUNCTIONS:DEFAULT",
+                    "DS_AF_SAVEDOWN:DEFAULT",
+                    "DS_AF_TRADING_SESSIONS:DEFAULT",
+                    "DS_AF_TRADING_SESSIONS_CONTIGUOUS:DEFAULT",
+                    "DS_AF_TRADING_WEEK:DEFAULT",
+                    "DS_ALERT_FRAMEWORK:DEFAULT",
+                    "DS_AT_DDF_FUNCTIONS:DEFAULT",
+                    "DS_CHARTS_CFG:DEFAULT",
+                    "DS_CHARTS_REFDATA:DEFAULT",
+                    "DS_COMPRESS:DEFAULT",
+                    "DS_EMAIL_ADDRESSES:DEFAULT",
+                    "DS_EMAIL_SERVER:DEFAULT",
+                    "DS_EOD_Servers:DEFAULT",
+                    "DS_EXEC_ANALYTIC_LOGIN:DEFAULT",
+                    "DS_FILEWATCHER_MATCHTABLE:CORP",
+                    "DS_FILEWATCHER_MATCHTABLE:DAAS",
+                    "DS_FILEWATCHER_MATCHTABLE:DEFAULT",
+                    "DS_FILEWATCHER_MATCHTABLE:REF",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_orderExec_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_clientFileUpload",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_eq_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_eq_secMaster_fw",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fi_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fi_secMaster_fw",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_filewatcher",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_filewatcherCorp",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_filewatcherRef",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fut_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fut_secMaster_fw",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fx_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fx_secMaster_fw",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_idx_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_idx_secMaster_fw",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_trth",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_watchListUpload",
+                    "DS_FILEWATCHER_MATCHTABLE:eq_depth",
+                    "DS_FILEWATCHER_MATCHTABLE:fi_depth",
+                    "DS_FILEWATCHER_MATCHTABLE:fut_depth",
+                    "DS_FILEWATCHER_MATCHTABLE:fx_depth",
+                    "DS_FILEWATCHER_MATCHTABLE:idx_depth",
+                    "DS_GW_AnalyticMap:DEFAULT",
+                    "DS_GW_AnalyticMap:ds_gw_alert",
+                    "DS_GW_AnalyticMap:ds_gw_ops",
+                    "DS_GW_Servers:DEFAULT",
+                    "DS_GW_Servers:daas_admin",
+                    "DS_GW_Servers:daas_mon_procList",
+                    "DS_GW_Servers:ds_gw_action_tracker_a",
+                    "DS_GW_Servers:ds_gw_action_tracker_b",
+                    "DS_GW_Servers:ds_gw_alert_a",
+                    "DS_GW_Servers:ds_gw_alert_b",
+                    "DS_GW_Servers:ds_gw_ops_a",
+                    "DS_GW_Servers:ds_gw_ops_b",
+                    "DS_GW_Servers:ds_gw_report_a",
+                    "DS_GW_Servers:ds_gw_report_b",
+                    "DS_GW_Servers:emea_tr_gw_a",
+                    "DS_GW_Servers:emea_tr_gw_b",
+                    "DS_INTRADAY:DEFAULT",
+                    "DS_JEMAIL_SERVER:DEFAULT",
+                    "DS_JEMAIL_SERVER:exchangeAnonymous",
+                    "DS_JEMAIL_SERVER:exchangeAuthenticated",
+                    "DS_JEMAIL_SERVER:gmail",
+                    "DS_JEMAIL_SETUP:DEFAULT",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:DEFAULT",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:ds_appServer",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:ds_jemail",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:ds_report_doc_generator_a",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:ds_report_doc_generator_b",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:trthClient",
+                    "DS_MASTERED_PROCESS:DEFAULT",
+                    "DS_MASTERED_PROCESS:DS",
+                    "DS_MASTERED_PROCESS:DS_REPORT_FRAMEWORK",
+                    "DS_MESSAGING_SERVER:DEFAULT",
+                    "DS_MESSAGING_SERVER:DS",
+                    "DS_MESSAGING_SERVER:emea_tr_a",
+                    "DS_MESSAGING_SERVER:emea_tr_b",
+                    "DS_OPS_CONNECTIONS:DEFAULT",
+                    "DS_OPS_DISTINCT_COLS:DEFAULT",
+                    "DS_OPS_DISTINCT_COLS:DeltaOps",
+                    "DS_OPS_FILTERS:DEFAULT",
+                    "DS_OPS_FILTERS:DeltaOps",
+                    "DS_OPS_HDBCLEANSING:DEFAULT",
+                    "DS_OPS_HDBCLEANSING:DeltaOps",
+                    "DS_OPS_INST_LAYER_MAP:DEFAULT",
+                    "DS_OPS_INST_LAYER_MAP:DeltaOps",
+                    "DS_OPS_QBTABLES:DEFAULT",
+                    "DS_OPS_QBTABLES:DeltaOps",
+                    "DS_OPS_QUERYGROUPS:DEFAULT",
+                    "DS_OPS_QUERYGROUPS:DeltaOps",
+                    "DS_OPS_SELECTIONS:DEFAULT",
+                    "DS_OPS_SELECTIONS:DeltaOps",
+                    "DS_PAGING:DEFAULT",
+                    "DS_QR_EXCLUDE:DEFAULT",
+                    "DS_QR_ROUTINGS:DEFAULT",
+                    "DS_QR_ROUTINGS:DaaS",
+                    "DS_Report_Instance_Editor:DEFAULT",
+                    "DS_Report_Run_Info:DEFAULT",
+                    "DS_Report_Template_Management:DEFAULT",
+                    "DS_SYSTEM_CONFIGURATION:DEFAULT",
+                    "DS_TABLES_EOD_LIST:DEFAULT",
+                    "DS_TABLES_EOD_LIST:alert",
+                    "DS_TERMINATE_PRCL_NAME:DEFAULT",
+                    "DS_TERMINATE_PRCL_NAME:ds_terminate_prcl_alert",
+                    "DeltaAuthentication:DEFAULT",
+                    "DeltaOps_AccessLog:DEFAULT",
+                    "DeltaOps_AuditList:DEFAULT",
+                    "DeltaOps_AuditLog:DEFAULT",
+                    "DeltaOps_AuditUpdates:DEFAULT",
+                    "DeltaOps_Overview_Controller:DEFAULT",
+                    "DeltaOps_ProcLayers_Container:DEFAULT",
+                    "DeltaOps_QueryGroupsGeneral:DEFAULT",
+                    "DeltaOps_QueryGroupsGeneralDrillDown:DEFAULT",
+                    "DeltaOps_QueryLog:DEFAULT",
+                    "DeltaOps_StatLatencyGeneral:DEFAULT",
+                    "DeltaOps_StatLatencyGeneralDrillDown:DEFAULT",
+                    "DeltaOps_dxLogContainer:DEFAULT",
+                    "DeltaOps_dxLogFilter:DEFAULT",
+                    "DeltaOps_dxLogSummary:DEFAULT",
+                    "DeltaReportDocDefinitions:DEFAULT",
+                    "DeltaReportFormatPDFcols:DEFAULT",
+                    "DeltaReportHiddenPDFcols:DEFAULT",
+                    "DeltaReportPDFBlockFunctions:DEFAULT",
+                    "DeltaReportResources:DEFAULT",
+                    "GeoTags:DEFAULT",
+                    "INSTANCE_CONFIG:DEFAULT",
+                    "INSTANCE_GROUPING:DEFAULT",
+                    "SAMLAuthentication:DEFAULT",
+                    "StratController:DEFAULT",
+                    "daas.mon.processCpuAlert:DEFAULT",
+                    "deltacontrol:DEFAULT",
+                    "deltacontrol:emea_tr_eqL2Legacy_rfavelocity_a",
+                    "deltacontrol:emea_tr_eqL2Legacy_rfavelocity_b",
+                    "deltacontrol:emea_tr_eqL2Legacy_trdfd_rfavelocity_a",
+                    "deltacontrol:emea_tr_eqL2Legacy_trdfd_rfavelocity_b",
+                    "deltacontrol:emea_tr_eqL2_rfavelocity_a",
+                    "deltacontrol:emea_tr_eqL2_rfavelocity_b",
+                    "deltacontrol:emea_tr_eq_rfavelocity_a",
+                    "deltacontrol:emea_tr_eq_rfavelocity_b",
+                    "deltacontrol:emea_tr_eq_trdfd_rfavelocity_a",
+                    "deltacontrol:emea_tr_eq_trdfd_rfavelocity_b",
+                    "deltacontrol:emea_tr_fi_rfavelocity_a",
+                    "deltacontrol:emea_tr_fi_rfavelocity_b",
+                    "deltacontrol:emea_tr_fi_trdfd_rfavelocity_a",
+                    "deltacontrol:emea_tr_fi_trdfd_rfavelocity_b",
+                    "deltacontrol:emea_tr_futL2Legacy_rfavelocity_a",
+                    "deltacontrol:emea_tr_futL2Legacy_rfavelocity_b",
+                    "deltacontrol:emea_tr_futL2Legacy_trdfd_rfavelocity_a",
+                    "deltacontrol:emea_tr_futL2Legacy_trdfd_rfavelocity_b",
+                    "deltacontrol:emea_tr_futL2_rfavelocity_a",
+                    "deltacontrol:emea_tr_futL2_rfavelocity_b",
+                    "deltacontrol:emea_tr_fut_rfavelocity_a",
+                    "deltacontrol:emea_tr_fut_rfavelocity_b",
+                    "deltacontrol:emea_tr_fut_trdfd_rfavelocity_a",
+                    "deltacontrol:emea_tr_fut_trdfd_rfavelocity_b",
+                    "deltacontrol:emea_tr_fx_rfavelocity_a",
+                    "deltacontrol:emea_tr_fx_rfavelocity_b",
+                    "deltacontrol:emea_tr_fx_trdfd_rfavelocity_a",
+                    "deltacontrol:emea_tr_fx_trdfd_rfavelocity_b",
+                    "deltacontrol:emea_tr_idx_rfavelocity_a",
+                    "deltacontrol:emea_tr_idx_rfavelocity_b",
+                    "deltacontrol:emea_tr_idx_trdfd_rfavelocity_a",
+                    "deltacontrol:emea_tr_idx_trdfd_rfavelocity_b",
+                    "deltacontrol:emea_tr_mn_rfavelocity_a",
+                    "deltacontrol:emea_tr_mn_rfavelocity_b",
+                    "eqBarProcesses:DEFAULT",
+                    "fiBarProcesses:DEFAULT",
+                    "fix:DEFAULT",
+                    "futBarProcesses:DEFAULT",
+                    "fxBarProcesses:DEFAULT",
+                    "housekeeping:DEFAULT",
+                    "idxBarProcesses:DEFAULT",
+                    "kdbpublisher:DEFAULT",
+                    "kdbpublisher:emea_tr_eqL2Legacy_rfavelocity_a",
+                    "kdbpublisher:emea_tr_eqL2Legacy_rfavelocity_b",
+                    "kdbpublisher:emea_tr_eqL2Legacy_trdfd_rfavelocity_a",
+                    "kdbpublisher:emea_tr_eqL2Legacy_trdfd_rfavelocity_b",
+                    "kdbpublisher:emea_tr_eqL2_rfavelocity_a",
+                    "kdbpublisher:emea_tr_eqL2_rfavelocity_b",
+                    "kdbpublisher:emea_tr_eq_rfavelocity_a",
+                    "kdbpublisher:emea_tr_eq_rfavelocity_b",
+                    "kdbpublisher:emea_tr_eq_trdfd_rfavelocity_a",
+                    "kdbpublisher:emea_tr_eq_trdfd_rfavelocity_b",
+                    "kdbpublisher:emea_tr_fi_rfavelocity_a",
+                    "kdbpublisher:emea_tr_fi_rfavelocity_b",
+                    "kdbpublisher:emea_tr_fi_trdfd_rfavelocity_a",
+                    "kdbpublisher:emea_tr_fi_trdfd_rfavelocity_b",
+                    "kdbpublisher:emea_tr_futL2Legacy_rfavelocity_a",
+                    "kdbpublisher:emea_tr_futL2Legacy_rfavelocity_b",
+                    "kdbpublisher:emea_tr_futL2Legacy_trdfd_rfavelocity_a",
+                    "kdbpublisher:emea_tr_futL2Legacy_trdfd_rfavelocity_b",
+                    "kdbpublisher:emea_tr_futL2_rfavelocity_a",
+                    "kdbpublisher:emea_tr_futL2_rfavelocity_b",
+                    "kdbpublisher:emea_tr_fut_rfavelocity_a",
+                    "kdbpublisher:emea_tr_fut_rfavelocity_b",
+                    "kdbpublisher:emea_tr_fut_trdfd_rfavelocity_a",
+                    "kdbpublisher:emea_tr_fut_trdfd_rfavelocity_b",
+                    "kdbpublisher:emea_tr_fx_rfavelocity_a",
+                    "kdbpublisher:emea_tr_fx_rfavelocity_b",
+                    "kdbpublisher:emea_tr_fx_trdfd_rfavelocity_a",
+                    "kdbpublisher:emea_tr_fx_trdfd_rfavelocity_b",
+                    "kdbpublisher:emea_tr_idx_rfavelocity_a",
+                    "kdbpublisher:emea_tr_idx_rfavelocity_b",
+                    "kdbpublisher:emea_tr_idx_trdfd_rfavelocity_a",
+                    "kdbpublisher:emea_tr_idx_trdfd_rfavelocity_b",
+                    "kdbpublisher:emea_tr_mn_rfavelocity_a",
+                    "kdbpublisher:emea_tr_mn_rfavelocity_b",
+                    "kdbsubscriber:DEFAULT",
+                    "kdbsubscriber:emea_tr_eqL2Legacy_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_eqL2Legacy_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_eqL2Legacy_trdfd_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_eqL2Legacy_trdfd_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_eqL2_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_eqL2_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_eq_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_eq_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_eq_trdfd_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_eq_trdfd_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_fi_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_fi_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_fi_trdfd_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_fi_trdfd_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_futL2Legacy_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_futL2Legacy_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_futL2Legacy_trdfd_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_futL2Legacy_trdfd_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_futL2_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_futL2_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_fut_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_fut_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_fut_trdfd_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_fut_trdfd_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_fx_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_fx_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_fx_trdfd_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_fx_trdfd_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_idx_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_idx_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_idx_trdfd_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_idx_trdfd_rfavelocity_b",
+                    "kdbsubscriber:emea_tr_mn_rfavelocity_a",
+                    "kdbsubscriber:emea_tr_mn_rfavelocity_b",
+                    "linehandler:DEFAULT",
+                    "logging:DEFAULT",
+                    "rfa:DEFAULT",
+                    "rfa:emea_tr_eqL2Legacy_rfavelocity_a",
+                    "rfa:emea_tr_eqL2Legacy_rfavelocity_b",
+                    "rfa:emea_tr_eqL2Legacy_trdfd_rfavelocity_a",
+                    "rfa:emea_tr_eqL2Legacy_trdfd_rfavelocity_b",
+                    "rfa:emea_tr_eqL2_rfavelocity_a",
+                    "rfa:emea_tr_eqL2_rfavelocity_b",
+                    "rfa:emea_tr_eq_rfavelocity_a",
+                    "rfa:emea_tr_eq_rfavelocity_b",
+                    "rfa:emea_tr_eq_trdfd_rfavelocity_a",
+                    "rfa:emea_tr_eq_trdfd_rfavelocity_b",
+                    "rfa:emea_tr_fi_rfavelocity_a",
+                    "rfa:emea_tr_fi_rfavelocity_b",
+                    "rfa:emea_tr_fi_trdfd_rfavelocity_a",
+                    "rfa:emea_tr_fi_trdfd_rfavelocity_b",
+                    "rfa:emea_tr_futL2Legacy_rfavelocity_a",
+                    "rfa:emea_tr_futL2Legacy_rfavelocity_b",
+                    "rfa:emea_tr_futL2Legacy_trdfd_rfavelocity_a",
+                    "rfa:emea_tr_futL2Legacy_trdfd_rfavelocity_b",
+                    "rfa:emea_tr_futL2_rfavelocity_a",
+                    "rfa:emea_tr_futL2_rfavelocity_b",
+                    "rfa:emea_tr_fut_rfavelocity_a",
+                    "rfa:emea_tr_fut_rfavelocity_b",
+                    "rfa:emea_tr_fut_trdfd_rfavelocity_a",
+                    "rfa:emea_tr_fut_trdfd_rfavelocity_b",
+                    "rfa:emea_tr_fx_rfavelocity_a",
+                    "rfa:emea_tr_fx_rfavelocity_b",
+                    "rfa:emea_tr_fx_trdfd_rfavelocity_a",
+                    "rfa:emea_tr_fx_trdfd_rfavelocity_b",
+                    "rfa:emea_tr_idx_rfavelocity_a",
+                    "rfa:emea_tr_idx_rfavelocity_b",
+                    "rfa:emea_tr_idx_trdfd_rfavelocity_a",
+                    "rfa:emea_tr_idx_trdfd_rfavelocity_b",
+                    "rfa:emea_tr_mn_rfavelocity_a",
+                    "rfa:emea_tr_mn_rfavelocity_b",
+                    "rfaconditions:DEFAULT",
+                    "rfaconfig:DEFAULT",
+                    "rfaconfig:emea_tr_eqL2Legacy_trdfd_rfavelocity_a",
+                    "rfaconfig:emea_tr_eqL2Legacy_trdfd_rfavelocity_b",
+                    "rfaconfig:emea_tr_eq_trdfd_rfavelocity_a",
+                    "rfaconfig:emea_tr_eq_trdfd_rfavelocity_b",
+                    "rfaconfig:emea_tr_fi_trdfd_rfavelocity_a",
+                    "rfaconfig:emea_tr_fi_trdfd_rfavelocity_b",
+                    "rfaconfig:emea_tr_futL2Legacy_trdfd_rfavelocity_a",
+                    "rfaconfig:emea_tr_futL2Legacy_trdfd_rfavelocity_b",
+                    "rfaconfig:emea_tr_fut_trdfd_rfavelocity_a",
+                    "rfaconfig:emea_tr_fut_trdfd_rfavelocity_b",
+                    "rfaconfig:emea_tr_fx_trdfd_rfavelocity_a",
+                    "rfaconfig:emea_tr_fx_trdfd_rfavelocity_b",
+                    "rfaconfig:emea_tr_idx_trdfd_rfavelocity_a",
+                    "rfaconfig:emea_tr_idx_trdfd_rfavelocity_b",
+                    "rfasubscription:DEFAULT",
+                    "rfasubscription:emea_tr_eqL2Legacy_rfavelocity_a",
+                    "rfasubscription:emea_tr_eqL2Legacy_rfavelocity_b",
+                    "rfasubscription:emea_tr_eqL2Legacy_trdfd_rfavelocity_a",
+                    "rfasubscription:emea_tr_eqL2Legacy_trdfd_rfavelocity_b",
+                    "rfasubscription:emea_tr_eqL2_rfavelocity_a",
+                    "rfasubscription:emea_tr_eqL2_rfavelocity_b",
+                    "rfasubscription:emea_tr_eq_rfavelocity_a",
+                    "rfasubscription:emea_tr_eq_rfavelocity_b",
+                    "rfasubscription:emea_tr_eq_trdfd_rfavelocity_a",
+                    "rfasubscription:emea_tr_eq_trdfd_rfavelocity_b",
+                    "rfasubscription:emea_tr_fi_rfavelocity_a",
+                    "rfasubscription:emea_tr_fi_rfavelocity_b",
+                    "rfasubscription:emea_tr_fi_trdfd_rfavelocity_a",
+                    "rfasubscription:emea_tr_fi_trdfd_rfavelocity_b",
+                    "rfasubscription:emea_tr_futL2Legacy_rfavelocity_a",
+                    "rfasubscription:emea_tr_futL2Legacy_rfavelocity_b",
+                    "rfasubscription:emea_tr_futL2Legacy_trdfd_rfavelocity_a",
+                    "rfasubscription:emea_tr_futL2Legacy_trdfd_rfavelocity_b",
+                    "rfasubscription:emea_tr_futL2_rfavelocity_a",
+                    "rfasubscription:emea_tr_futL2_rfavelocity_b",
+                    "rfasubscription:emea_tr_fut_rfavelocity_a",
+                    "rfasubscription:emea_tr_fut_rfavelocity_b",
+                    "rfasubscription:emea_tr_fut_trdfd_rfavelocity_a",
+                    "rfasubscription:emea_tr_fut_trdfd_rfavelocity_b",
+                    "rfasubscription:emea_tr_fx_rfavelocity_a",
+                    "rfasubscription:emea_tr_fx_rfavelocity_b",
+                    "rfasubscription:emea_tr_fx_trdfd_rfavelocity_a",
+                    "rfasubscription:emea_tr_fx_trdfd_rfavelocity_b",
+                    "rfasubscription:emea_tr_idx_rfavelocity_a",
+                    "rfasubscription:emea_tr_idx_rfavelocity_b",
+                    "rfasubscription:emea_tr_idx_trdfd_rfavelocity_a",
+                    "rfasubscription:emea_tr_idx_trdfd_rfavelocity_b",
+                    "tcp:DEFAULT",
+                    "timeval:DEFAULT",
+                    "timeval:emea_tr_eqL2Legacy_rfavelocity_a",
+                    "timeval:emea_tr_eqL2Legacy_rfavelocity_b",
+                    "timeval:emea_tr_eqL2Legacy_trdfd_rfavelocity_a",
+                    "timeval:emea_tr_eqL2Legacy_trdfd_rfavelocity_b",
+                    "timeval:emea_tr_eqL2_rfavelocity_a",
+                    "timeval:emea_tr_eqL2_rfavelocity_b",
+                    "timeval:emea_tr_eq_rfavelocity_a",
+                    "timeval:emea_tr_eq_rfavelocity_b",
+                    "timeval:emea_tr_eq_trdfd_rfavelocity_a",
+                    "timeval:emea_tr_eq_trdfd_rfavelocity_b",
+                    "timeval:emea_tr_fi_rfavelocity_a",
+                    "timeval:emea_tr_fi_rfavelocity_b",
+                    "timeval:emea_tr_fi_trdfd_rfavelocity_a",
+                    "timeval:emea_tr_fi_trdfd_rfavelocity_b",
+                    "timeval:emea_tr_futL2Legacy_rfavelocity_a",
+                    "timeval:emea_tr_futL2Legacy_rfavelocity_b",
+                    "timeval:emea_tr_futL2Legacy_trdfd_rfavelocity_a",
+                    "timeval:emea_tr_futL2Legacy_trdfd_rfavelocity_b",
+                    "timeval:emea_tr_futL2_rfavelocity_a",
+                    "timeval:emea_tr_futL2_rfavelocity_b",
+                    "timeval:emea_tr_fut_rfavelocity_a",
+                    "timeval:emea_tr_fut_rfavelocity_b",
+                    "timeval:emea_tr_fut_trdfd_rfavelocity_a",
+                    "timeval:emea_tr_fut_trdfd_rfavelocity_b",
+                    "timeval:emea_tr_fx_rfavelocity_a",
+                    "timeval:emea_tr_fx_rfavelocity_b",
+                    "timeval:emea_tr_fx_trdfd_rfavelocity_a",
+                    "timeval:emea_tr_fx_trdfd_rfavelocity_b",
+                    "timeval:emea_tr_idx_rfavelocity_a",
+                    "timeval:emea_tr_idx_rfavelocity_b",
+                    "timeval:emea_tr_idx_trdfd_rfavelocity_a",
+                    "timeval:emea_tr_idx_trdfd_rfavelocity_b",
+                    "timeval:emea_tr_mn_rfavelocity_a",
+                    "timeval:emea_tr_mn_rfavelocity_b"
+                  ],
+                  "format": {
+                    "tileBorderColor": "#000000",
+                    "titleHorizontal": "Left",
+                    "tileBackgroundColor": "#000000",
+                    "titleBottomBorderWidth": 10,
+                    "widgetTitle": "*To modify a watch list, please download the file and then upload the .csv after editing locally.",
+                    "titleColor": "#16a084",
+                    "titleFontSize": 15,
+                    "tileBorderRounding": 0,
+                    "titleShadow": false,
+                    "tileShadow": false,
+                    "titleFontBold": false,
+                    "tileBorderWidth": 0,
+                    "tileTransparentBackground": true
+                  },
+                  "Style": {
+                    "advanced": ""
+                  },
+                  "View": {
+                    "showDescription": false,
+                    "tabbed": true,
+                    "tabSource": "Children"
+                  },
+                  "version": "4.0.0d2"
+                },
+                "containerId": "e52ef897-c261-591e-5ece-ee3336ef17c7",
+                "components": [],
+                "widgets": [],
+                "prevVersion": 169,
+                "optionsVersion": 169,
+                "definitionId": "99"
+              },
+              {
+                "id": "component_5587",
+                "key": "Upload",
+                "options": {
+                  "Alignment": {
+                    "titlePaddingRight": 5,
+                    "innerPaddingBottom": 5,
+                    "titlePaddingLeft": 5,
+                    "paddingBottom": 5,
+                    "innerPaddingRight": 5,
+                    "paddingRight": 5,
+                    "innerPaddingLeft": 5,
+                    "paddingTop": 5,
+                    "titlePaddingBottom": 5,
+                    "innerPaddingTop": 5,
+                    "titlePaddingTop": 5,
+                    "paddingLeft": 5
+                  },
+                  "format": {
+                    "widgetTitle": "*The new upload Watch List Config names postfix must be a *.csv and match the name of the associated feedhandler e.g.: {MySampleList_emea_tr_eq_rfavelocity.csv}",
+                    "titleFontSize": 15,
+                    "titleHorizontal": "Left",
+                    "titleColor": "#16a084",
+                    "titleBottomBorderWidth": 0,
+                    "titleFontBold": false,
+                    "titleShadow": false,
+                    "titleBackgroundColor": "",
+                    "titleTransparentBackground": "",
+                    "tileBorderWidth": 0,
+                    "tileBorderRounding": 0,
+                    "tileBorderColor": "#000000",
+                    "tileBackgroundColor": "#000000",
+                    "tileTransparentBackground": true,
+                    "tileShadow": false
+                  },
+                  "Basics": {
+                    "AcceptFileName": "",
+                    "Server": "ds_daemon_local",
+                    "DownloadEnabled": true,
+                    "UploadEnabled": true,
+                    "RefreshInterval": 0,
+                    "AcceptFileType": ".csv",
+                    "Directory": "watchListUpload"
+                  },
+                  "Style": {
+                    "DisplayType": "Table",
+                    "advanced": "",
+                    "Theme": "Dark",
+                    "DashboardTheme": "",
+                    "cssClasses": ""
+                  },
+                  "possible_servers": [
+                    "&lt;default&gt;",
+                    "ds_daemon_local"
+                  ],
+                  "version": "4.3.0",
+                  "Actions": []
+                },
+                "containerId": "621429ce-5cb5-7c46-5234-e770d01bf94",
+                "components": [],
+                "widgets": [],
+                "prevVersion": 169,
+                "optionsVersion": 169,
+                "hasOnSettingsChange": true,
+                "definitionId": "1003"
+              },
+              {
+                "id": "component_1066",
+                "key": "Panel",
+                "options": {
+                  "Alignment": {
+                    "titlePaddingRight": 0,
+                    "innerPaddingBottom": 0,
+                    "titlePaddingLeft": 0,
+                    "paddingBottom": 0,
+                    "innerPaddingRight": 0,
+                    "paddingRight": 0,
+                    "innerPaddingLeft": 0,
+                    "paddingTop": 0,
+                    "titlePaddingBottom": 7,
+                    "innerPaddingTop": 0,
+                    "titlePaddingTop": 7,
+                    "paddingLeft": 0
+                  },
+                  "format": {
+                    "titleFontSize": "16",
+                    "titleHorizontal": "Center",
+                    "titleColor": "#FFFFFF",
+                    "titleShadow": true,
+                    "tileBorderWidth": 0,
+                    "tileBorderRounding": 0,
+                    "tileBorderColor": "#000000",
+                    "tileBackgroundColor": "#000000",
+                    "tileTransparentBackground": true,
+                    "tileShadow": false
+                  },
+                  "Basics": {
+                    "Advanced": false,
+                    "RelativeHeight": false,
+                    "UserLayout": false,
+                    "ComponentName": "panel",
+                    "ColCount": 12,
+                    "Floatable": false,
+                    "RowHeight": 25
+                  },
+                  "Style": {
+                    "advanced": "",
+                    "cssClasses": ""
+                  },
+                  "version": "4.4.0"
+                },
+                "containerId": "62c32a3c-2c11-494e-a960-592b7596f1bc",
+                "components": [],
+                "widgets": [
+                  {
+                    "id": "fc5c41bf-d4d7-838-a75b-cddb7fc9dca",
+                    "layout": {
+                      "row": 0,
+                      "column": 0,
+                      "rowSpan": 27,
+                      "colSpan": 12
+                    },
+                    "component": {
+                      "id": "component_2501",
+                      "key": "Datagrid",
+                      "options": {
+                        "sortingPossibleValues": [
+                          "",
+                          "time",
+                          "sym",
+                          "serviceName",
+                          "serviceID",
+                          "msgModelType",
+                          "streamState",
+                          "dataState",
+                          "statusCode",
+                          "srcProcess"
+                        ],
+                        "highlightTargetPossibleValues": [
+                          "time",
+                          "sym",
+                          "serviceName",
+                          "serviceID",
+                          "msgModelType",
+                          "streamState",
+                          "dataState",
+                          "statusCode",
+                          "srcProcess",
+                          "*"
+                        ],
+                        "format": {
+                          "widgetTitle": "",
+                          "titleFontSize": 14,
+                          "titleColor": "#FFFFFF",
+                          "titleBottomBorderWidth": 0,
+                          "titleFontBold": true,
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "ShowPagingControl": false,
+                          "Filtering": "Column Filters",
+                          "GroupingAutoCollapse": true,
+                          "Data": {
+                            "_dashboardsType": "data",
+                            "value": "watchlistStatus"
+                          }
+                        },
+                        "datagridPossibleColumns": [
+                          "time",
+                          "sym",
+                          "serviceName",
+                          "serviceID",
+                          "msgModelType",
+                          "streamState",
+                          "dataState",
+                          "statusCode",
+                          "srcProcess"
+                        ],
+                        "version": "4.4.1",
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "innerPaddingTop": 0,
+                          "paddingLeft": 0
+                        },
+                        "GroupingConfiguration": [
+                          {
+                            "ColumnProperty": "feedHandler"
+                          }
+                        ],
+                        "FileExport": {
+                          "ShowExportCsvButton": false,
+                          "ShowExportExcelButton": false
+                        },
+                        "HighlightRules": [
+                          {
+                            "Target": "streamState",
+                            "ConditionOperator": "==",
+                            "ConditionValue": "Closed",
+                            "ConditionSource": "streamState",
+                            "Color": "#ffffff",
+                            "Name": "streamState:Closed",
+                            "BackgroundColor": "#c70000"
+                          },
+                          {
+                            "Target": "streamState",
+                            "ConditionOperator": "==",
+                            "ConditionValue": "Open",
+                            "ConditionSource": "streamState",
+                            "Name": "streamState:Open",
+                            "BackgroundColor": "#009500"
+                          },
+                          {
+                            "Target": "streamState",
+                            "ConditionOperator": "==",
+                            "ConditionValue": "Unspecified",
+                            "ConditionSource": "streamState",
+                            "Name": "streamState:Unspecified",
+                            "BackgroundColor": "#4f4d48"
+                          },
+                          {
+                            "Target": "dataState",
+                            "ConditionOperator": "==",
+                            "ConditionValue": "Ok",
+                            "ConditionSource": "dataState",
+                            "Name": "dataState:Ok",
+                            "BackgroundColor": "#009500"
+                          },
+                          {
+                            "Target": "dataState",
+                            "ConditionOperator": "==",
+                            "ConditionValue": "Suspect",
+                            "ConditionSource": "dataState",
+                            "Name": "dataState:Suspect",
+                            "BackgroundColor": "#c70000"
+                          },
+                          {
+                            "Target": "statusCode",
+                            "ConditionOperator": "==",
+                            "ConditionValue": "Not Found",
+                            "ConditionSource": "statusCode",
+                            "Name": "statusCode:Not Found",
+                            "BackgroundColor": "#595751"
+                          },
+                          {
+                            "Target": "statusCode",
+                            "ConditionOperator": "==",
+                            "ConditionValue": "Not Authorised",
+                            "ConditionSource": "statusCode",
+                            "Name": "statusCode:Not Authorised",
+                            "BackgroundColor": "#c70000"
+                          },
+                          {
+                            "Target": "statusCode",
+                            "ConditionOperator": "==",
+                            "ConditionValue": "None",
+                            "ConditionSource": "statusCode",
+                            "Name": "statusCode:None",
+                            "BackgroundColor": "#009500"
+                          },
+                          {
+                            "Target": "statusCode",
+                            "ConditionOperator": "==",
+                            "ConditionSource": "statusCode",
+                            "Name": "statusCode:Invalid",
+                            "BackgroundColor": "#ff0000"
+                          }
+                        ],
+                        "ColumnsConfiguration": [
+                          {
+                            "Field": "sym",
+                            "DisplayName": "sym"
+                          },
+                          {
+                            "Field": "feedHandler",
+                            "DisplayName": "feedHandler"
+                          },
+                          {
+                            "Field": "lastUpdateTime",
+                            "Format": "DateTime",
+                            "DisplayName": "lastUpdateTime"
+                          },
+                          {
+                            "Field": "serviceName",
+                            "DisplayName": "serviceName"
+                          },
+                          {
+                            "Field": "serviceID",
+                            "Format": "Number",
+                            "Precision": 0,
+                            "TextAlign": "right",
+                            "DisplayName": "serviceID",
+                            "MinWidthAbsolute": 85
+                          },
+                          {
+                            "Field": "msgModelType",
+                            "DisplayName": "msgModelType"
+                          },
+                          {
+                            "Field": "streamState",
+                            "DisplayName": "streamState"
+                          },
+                          {
+                            "Field": "dataState",
+                            "DisplayName": "dataState"
+                          },
+                          {
+                            "Field": "statusCode",
+                            "DisplayName": "statusCode"
+                          }
+                        ],
+                        "SummaryRow_Groupings": [
+                          {}
+                        ],
+                        "Style": {
+                          "RowHeight": 22
+                        },
+                        "selectedColumnPossibleValues": [
+                          "time",
+                          "sym",
+                          "serviceName",
+                          "serviceID",
+                          "msgModelType",
+                          "streamState",
+                          "dataState",
+                          "statusCode",
+                          "srcProcess"
+                        ],
+                        "Tooltip": {
+                          "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\r\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\r\n&lt;/div&gt;"
+                        }
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 388,
+                      "optionsVersion": 390,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "21"
+                    }
+                  }
+                ],
+                "prevVersion": 654,
+                "optionsVersion": 656,
+                "hasOnSettingsChange": true,
+                "rowCount": 27,
+                "definitionId": "50"
+              },
+              {
+                "id": "component_590",
+                "key": "Panel",
+                "options": {
+                  "Alignment": {
+                    "titlePaddingRight": 0,
+                    "innerPaddingBottom": 0,
+                    "titlePaddingLeft": 0,
+                    "paddingBottom": 0,
+                    "innerPaddingRight": 0,
+                    "paddingRight": 0,
+                    "innerPaddingLeft": 0,
+                    "paddingTop": 0,
+                    "titlePaddingBottom": 7,
+                    "innerPaddingTop": 0,
+                    "titlePaddingTop": 7,
+                    "paddingLeft": 0
+                  },
+                  "format": {
+                    "titleFontSize": "16",
+                    "titleHorizontal": "Center",
+                    "titleColor": "#FFFFFF",
+                    "titleShadow": true,
+                    "tileBorderWidth": 0,
+                    "tileBorderRounding": 0,
+                    "tileBorderColor": "#000000",
+                    "tileBackgroundColor": "#000000",
+                    "tileTransparentBackground": true,
+                    "tileShadow": false
+                  },
+                  "Basics": {
+                    "Advanced": false,
+                    "RelativeHeight": false,
+                    "UserLayout": false,
+                    "ComponentName": "panel",
+                    "ColCount": 12,
+                    "Floatable": false,
+                    "RowHeight": 25
+                  },
+                  "Style": {
+                    "advanced": "",
+                    "cssClasses": ""
+                  },
+                  "version": "4.4.0"
+                },
+                "containerId": "99dff022-f8d8-95ac-715-9ceab0f6b5c4",
+                "components": [],
+                "widgets": [
+                  {
+                    "id": "7dc41492-65b4-769f-1622-c416e0d8fcff",
+                    "layout": {
+                      "row": 0,
+                      "column": 0,
+                      "rowSpan": 26,
+                      "colSpan": 12
+                    },
+                    "component": {
+                      "id": "component_609",
+                      "key": "Accordion",
+                      "options": {
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "titlePaddingBottom": 7,
+                          "innerPaddingTop": 0,
+                          "titlePaddingTop": 7,
+                          "paddingLeft": 0
+                        },
+                        "format": {
+                          "widgetTitle": "",
+                          "titleFontSize": 0,
+                          "titleHorizontal": "Center",
+                          "titleColor": "#FFFFFF",
+                          "titleBottomBorderWidth": 0,
+                          "titleFontBold": "",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "Sections": [
+                            {
+                              "HideTitle": false,
+                              "Title": "Tick Loss Summary",
+                              "Resizeable": false,
+                              "SectionId": "section_639",
+                              "Weight": 300,
+                              "Expanded": true,
+                              "TitleAlign": "Left"
+                            },
+                            {
+                              "HideTitle": false,
+                              "Title": "Tick Loss Details",
+                              "Resizeable": false,
+                              "SectionId": "section_5102",
+                              "Weight": 200,
+                              "Expanded": true,
+                              "TitleAlign": "Left"
+                            }
+                          ],
+                          "ComponentName": "accordion",
+                          "Direction": "Vertical"
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "Theme": "Dark",
+                          "cssClasses": ""
+                        },
+                        "version": "4.0.0S13"
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [
+                        {
+                          "id": "fade754b-7e88-4334-4349-9653d714de",
+                          "layout": {
+                            "row": null,
+                            "column": null,
+                            "rowSpan": 12,
+                            "colSpan": 6
+                          },
+                          "component": {
+                            "id": "component_729",
+                            "key": "Panel",
+                            "options": {
+                              "Alignment": {
+                                "titlePaddingRight": 0,
+                                "innerPaddingBottom": 0,
+                                "titlePaddingLeft": 0,
+                                "paddingBottom": 0,
+                                "innerPaddingRight": 0,
+                                "paddingRight": 0,
+                                "innerPaddingLeft": 0,
+                                "paddingTop": 0,
+                                "titlePaddingBottom": 7,
+                                "innerPaddingTop": 0,
+                                "titlePaddingTop": 7,
+                                "paddingLeft": 0
+                              },
+                              "format": {
+                                "titleFontSize": "16",
+                                "titleHorizontal": "Center",
+                                "titleColor": "#FFFFFF",
+                                "titleShadow": true,
+                                "tileBorderWidth": 0,
+                                "tileBorderRounding": 0,
+                                "tileBorderColor": "#000000",
+                                "tileBackgroundColor": "#000000",
+                                "tileTransparentBackground": true,
+                                "tileShadow": false
+                              },
+                              "Basics": {
+                                "Advanced": false,
+                                "RelativeHeight": false,
+                                "UserLayout": false,
+                                "ComponentName": "panel",
+                                "ColCount": 12,
+                                "Floatable": false,
+                                "RowHeight": 25
+                              },
+                              "Style": {
+                                "advanced": "",
+                                "cssClasses": ""
+                              },
+                              "version": "4.4.0"
+                            },
+                            "containerId": null,
+                            "components": [],
+                            "widgets": [
+                              {
+                                "id": "f3a37c1d-7cea-24fd-1d8c-944fe92a2a0e",
+                                "layout": {
+                                  "row": 0,
+                                  "column": 0,
+                                  "rowSpan": 23,
+                                  "colSpan": 12
+                                },
+                                "component": {
+                                  "id": "component_744",
+                                  "key": "Datagrid",
+                                  "options": {
+                                    "sortingPossibleValues": [
+                                      "",
+                                      "srcProcess",
+                                      "srcTbl",
+                                      "sym",
+                                      "invalidTickCounts"
+                                    ],
+                                    "highlightTargetPossibleValues": [
+                                      "srcProcess",
+                                      "srcTbl",
+                                      "sym",
+                                      "invalidTickCounts",
+                                      "*"
+                                    ],
+                                    "Selection": {
+                                      "FollowSelectedValue": true,
+                                      "RowSelectionColumn": "srcProcess",
+                                      "Mode": "Multi Row",
+                                      "Actions": {
+                                        "0": {
+                                          "Current": "sym",
+                                          "Target": {
+                                            "_dashboardsType": "viewstate",
+                                            "value": "tickLoss/selectedSym"
+                                          },
+                                          "_Type": "map",
+                                          "TriggerColumn": "*",
+                                          "Trigger": "Click"
+                                        },
+                                        "1": {
+                                          "Current": "srcProcess",
+                                          "Target": {
+                                            "_dashboardsType": "viewstate",
+                                            "value": "tickLoss/selectedSrcProcess"
+                                          },
+                                          "_Type": "map",
+                                          "TriggerColumn": "*",
+                                          "Trigger": "Click"
+                                        },
+                                        "2": {
+                                          "Current": "srcTbl",
+                                          "Target": {
+                                            "_dashboardsType": "viewstate",
+                                            "value": "tickLoss/selectedSrcTbl"
+                                          },
+                                          "_Type": "map",
+                                          "TriggerColumn": "*",
+                                          "Trigger": "Click"
+                                        },
+                                        "3": {
+                                          "Current": "invalidTickCounts",
+                                          "Target": {
+                                            "_dashboardsType": "viewstate",
+                                            "value": "tickLoss/selectedInvalidTickCounts"
+                                          },
+                                          "_Type": "map",
+                                          "TriggerColumn": "*",
+                                          "Trigger": "Click"
+                                        }
+                                      }
+                                    },
+                                    "format": {
+                                      "widgetTitle": "",
+                                      "titleColor": "#FFFFFF",
+                                      "titleBottomBorderWidth": 0,
+                                      "titleFontBold": false,
+                                      "titleShadow": true,
+                                      "titleTransparentBackground": false,
+                                      "tileBorderWidth": 0,
+                                      "tileBorderRounding": 0,
+                                      "tileBorderColor": "#000000",
+                                      "tileBackgroundColor": "#000000",
+                                      "tileTransparentBackground": true,
+                                      "tileShadow": false
+                                    },
+                                    "Basics": {
+                                      "GroupingAutoCollapse": true,
+                                      "Data": {
+                                        "_dashboardsType": "data",
+                                        "value": "tickLossGaps"
+                                      }
+                                    },
+                                    "datagridPossibleColumns": [
+                                      "srcProcess",
+                                      "srcTbl",
+                                      "sym",
+                                      "invalidTickCounts"
+                                    ],
+                                    "version": "4.4.1",
+                                    "Alignment": {
+                                      "titlePaddingRight": 0,
+                                      "innerPaddingBottom": 0,
+                                      "titlePaddingLeft": 0,
+                                      "paddingBottom": 0,
+                                      "innerPaddingRight": 0,
+                                      "paddingRight": 0,
+                                      "innerPaddingLeft": 0,
+                                      "paddingTop": 0,
+                                      "innerPaddingTop": 0,
+                                      "paddingLeft": 0
+                                    },
+                                    "FileExport": {
+                                      "ShowExportCsvButton": false,
+                                      "ShowExportExcelButton": false
+                                    },
+                                    "ColumnsConfiguration": [
+                                      {
+                                        "HideTrailingZeroes": true,
+                                        "Field": "time",
+                                        "Format": "DateTime",
+                                        "DisplayName": "time",
+                                        "TimeFormat": "HH:mm:ss.SSS"
+                                      },
+                                      {
+                                        "Field": "tableName",
+                                        "DisplayName": "tableName"
+                                      },
+                                      {
+                                        "Field": "sym",
+                                        "DisplayName": "sym"
+                                      },
+                                      {
+                                        "Field": "ticks",
+                                        "DisplayName": "ticks",
+                                        "Hidden": true
+                                      }
+                                    ],
+                                    "Style": {
+                                      "RowHeight": 20
+                                    },
+                                    "selectedColumnPossibleValues": [
+                                      "srcProcess",
+                                      "srcTbl",
+                                      "sym",
+                                      "invalidTickCounts"
+                                    ]
+                                  },
+                                  "containerId": null,
+                                  "components": [],
+                                  "widgets": [],
+                                  "prevVersion": 92,
+                                  "optionsVersion": 92,
+                                  "hasOnSettingsChange": true,
+                                  "definitionId": "21"
+                                }
+                              }
+                            ],
+                            "prevVersion": 116,
+                            "optionsVersion": 116,
+                            "hasOnSettingsChange": true,
+                            "rowCount": 23,
+                            "definitionId": "50"
+                          },
+                          "sectionId": "section_639"
+                        },
+                        {
+                          "id": "236995f9-66c7-9def-893b-94ae99feeef0",
+                          "layout": {
+                            "row": null,
+                            "column": null,
+                            "rowSpan": 12,
+                            "colSpan": 6
+                          },
+                          "component": {
+                            "id": "component_1037",
+                            "key": "Panel",
+                            "options": {
+                              "Alignment": {
+                                "titlePaddingRight": 0,
+                                "innerPaddingBottom": 0,
+                                "titlePaddingLeft": 0,
+                                "paddingBottom": 0,
+                                "innerPaddingRight": 0,
+                                "paddingRight": 0,
+                                "innerPaddingLeft": 0,
+                                "paddingTop": 0,
+                                "titlePaddingBottom": 7,
+                                "innerPaddingTop": 0,
+                                "titlePaddingTop": 7,
+                                "paddingLeft": 0
+                              },
+                              "format": {
+                                "titleFontSize": "16",
+                                "titleHorizontal": "Center",
+                                "titleColor": "#FFFFFF",
+                                "titleShadow": true,
+                                "tileBorderWidth": 0,
+                                "tileBorderRounding": 0,
+                                "tileBorderColor": "#000000",
+                                "tileBackgroundColor": "#000000",
+                                "tileTransparentBackground": true,
+                                "tileShadow": false
+                              },
+                              "Basics": {
+                                "Advanced": false,
+                                "RelativeHeight": false,
+                                "UserLayout": false,
+                                "ComponentName": "panel",
+                                "ColCount": 12,
+                                "Floatable": false,
+                                "RowHeight": 25
+                              },
+                              "Style": {
+                                "advanced": "",
+                                "cssClasses": ""
+                              },
+                              "version": "4.4.0"
+                            },
+                            "containerId": null,
+                            "components": [],
+                            "widgets": [
+                              {
+                                "id": "9f05fa82-64b-17ba-414d-29d739852610",
+                                "layout": {
+                                  "row": 0,
+                                  "column": 0,
+                                  "rowSpan": 11,
+                                  "colSpan": 12
+                                },
+                                "component": {
+                                  "id": "component_1052",
+                                  "key": "Datagrid",
+                                  "options": {
+                                    "sortingPossibleValues": [
+                                      ""
+                                    ],
+                                    "highlightTargetPossibleValues": [
+                                      "*"
+                                    ],
+                                    "format": {
+                                      "titleFontSize": "16",
+                                      "titleColor": "#FFFFFF",
+                                      "titleShadow": true,
+                                      "tileBorderWidth": 0,
+                                      "tileBorderRounding": 0,
+                                      "tileBorderColor": "#000000",
+                                      "tileBackgroundColor": "#000000",
+                                      "tileTransparentBackground": true,
+                                      "tileShadow": false
+                                    },
+                                    "Basics": {
+                                      "Data": {
+                                        "_dashboardsType": "data",
+                                        "value": "tickLossSummary"
+                                      }
+                                    },
+                                    "version": "4.4.1",
+                                    "Alignment": {
+                                      "titlePaddingRight": 0,
+                                      "innerPaddingBottom": 0,
+                                      "titlePaddingLeft": 0,
+                                      "paddingBottom": 0,
+                                      "innerPaddingRight": 0,
+                                      "paddingRight": 0,
+                                      "innerPaddingLeft": 0,
+                                      "paddingTop": 0,
+                                      "innerPaddingTop": 0,
+                                      "paddingLeft": 0
+                                    },
+                                    "FileExport": {
+                                      "ShowExportExcelButton": false
+                                    },
+                                    "HighlightRules": [
+                                      {
+                                        "Target": "tickCount",
+                                        "ConditionOperator": "&gt;=",
+                                        "ConditionValue": "0",
+                                        "ConditionSource": "tickCount",
+                                        "Name": "tickCount",
+                                        "BackgroundColor": "#b53535"
+                                      }
+                                    ],
+                                    "Style": {
+                                      "RowHeight": 20
+                                    }
+                                  },
+                                  "containerId": null,
+                                  "components": [],
+                                  "widgets": [],
+                                  "prevVersion": 84,
+                                  "optionsVersion": 84,
+                                  "hasOnSettingsChange": true,
+                                  "definitionId": "21"
+                                }
+                              }
+                            ],
+                            "prevVersion": 104,
+                            "optionsVersion": 104,
+                            "hasOnSettingsChange": true,
+                            "rowCount": 11,
+                            "definitionId": "50"
+                          },
+                          "sectionId": "section_5102"
+                        }
+                      ],
+                      "prevVersion": 508,
+                      "optionsVersion": 508,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "56"
+                    }
+                  }
+                ],
+                "prevVersion": 529,
+                "optionsVersion": 529,
+                "hasOnSettingsChange": true,
+                "rowCount": 26,
+                "definitionId": "50"
+              },
+              {
+                "id": "component_8623",
+                "key": "Panel",
+                "options": {
+                  "Alignment": {
+                    "titlePaddingRight": 0,
+                    "innerPaddingBottom": 0,
+                    "titlePaddingLeft": 0,
+                    "paddingBottom": 0,
+                    "innerPaddingRight": 0,
+                    "paddingRight": 0,
+                    "innerPaddingLeft": 0,
+                    "paddingTop": 0,
+                    "titlePaddingBottom": 7,
+                    "innerPaddingTop": 0,
+                    "titlePaddingTop": 7,
+                    "paddingLeft": 0
+                  },
+                  "format": {
+                    "widgetTitle": "*To modify a watch list, please download the file and then upload the .csv after editing locally.",
+                    "titleFontSize": 15,
+                    "titleHorizontal": "Left",
+                    "titleColor": "#16a284",
+                    "titleBottomBorderWidth": 0,
+                    "titleFontBold": "",
+                    "titleShadow": true,
+                    "titleBackgroundColor": "",
+                    "titleTransparentBackground": "",
+                    "tileBorderWidth": 0,
+                    "tileBorderRounding": 0,
+                    "tileBorderColor": "#000000",
+                    "tileBackgroundColor": "#000000",
+                    "tileTransparentBackground": true,
+                    "tileShadow": false
+                  },
+                  "Basics": {
+                    "Advanced": false,
+                    "RelativeHeight": false,
+                    "UserLayout": false,
+                    "ComponentName": "panel",
+                    "ColCount": 12,
+                    "Floatable": false,
+                    "RowHeight": 25
+                  },
+                  "Style": {
+                    "advanced": "",
+                    "cssClasses": ""
+                  },
+                  "version": "4.4.0"
+                },
+                "containerId": "81769018-53a9-5547-3b83-19dca2ae8a35",
+                "components": [],
+                "widgets": [
+                  {
+                    "id": "391d8543-eb58-432a-11ed-b8c7831770",
+                    "layout": {
+                      "row": 2,
+                      "column": 0,
+                      "rowSpan": 24,
+                      "colSpan": 12
+                    },
+                    "component": {
+                      "id": "component_8650",
+                      "key": "Datagrid",
+                      "options": {
+                        "sortingPossibleValues": [
+                          "",
+                          "i",
+                          "market-price",
+                          "market-by-price"
+                        ],
+                        "highlightTargetPossibleValues": [
+                          "i",
+                          "market-price",
+                          "market-by-price",
+                          "*"
+                        ],
+                        "format": {
+                          "widgetTitle": "",
+                          "titleColor": "#FFFFFF",
+                          "titleBottomBorderWidth": 0,
+                          "titleFontBold": "",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "IsEditable": true,
+                          "Filtering": "disabled",
+                          "Data": {
+                            "_dashboardsType": "data",
+                            "value": "rfaEquityL1"
+                          },
+                          "IsInsertable": true
+                        },
+                        "datagridPossibleColumns": [
+                          "i",
+                          "market-price",
+                          "market-by-price"
+                        ],
+                        "version": "4.4.1",
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "innerPaddingTop": 0,
+                          "paddingLeft": 0
+                        },
+                        "FileExport": {
+                          "FileName": [
+                            {
+                              "FileNamePart": {
+                                "_dashboardsType": "viewstate",
+                                "value": "assetName"
+                              }
+                            }
+                          ],
+                          "ShowExportExcelButton": false
+                        },
+                        "HighlightRules": [
+                          {}
+                        ],
+                        "ColumnsConfiguration": [
+                          {
+                            "WidthWeight": 165,
+                            "Field": "i",
+                            "Format": "Formatted Number",
+                            "Precision": 0,
+                            "TextAlign": "right",
+                            "DisplayName": "i",
+                            "Hidden": true,
+                            "MinWidthAbsolute": 165
+                          },
+                          {
+                            "WidthWeight": 100,
+                            "Field": "market-price",
+                            "DisplayName": "market-price",
+                            "MinWidthAbsolute": 100
+                          },
+                          {
+                            "WidthWeight": 100,
+                            "Field": "market-by-price",
+                            "DisplayName": "market-by-price",
+                            "MinWidthAbsolute": 100
+                          }
+                        ],
+                        "SummaryRow_Groupings": [
+                          {}
+                        ],
+                        "selectedColumnPossibleValues": [
+                          "i",
+                          "market-price",
+                          "market-by-price"
+                        ],
+                        "Tooltip": {
+                          "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\r\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\r\n&lt;/div&gt;"
+                        }
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 124,
+                      "optionsVersion": 124,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "21"
+                    }
+                  },
+                  {
+                    "id": "a748963b-961c-4bc6-d23c-529f289f8200",
+                    "layout": {
+                      "row": 0,
+                      "column": 0,
+                      "rowSpan": 2,
+                      "colSpan": 6
+                    },
+                    "component": {
+                      "id": "component_2570",
+                      "key": "BasicComponents",
+                      "options": {
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "titlePaddingBottom": 7,
+                          "innerPaddingTop": 0,
+                          "titlePaddingTop": 7,
+                          "paddingLeft": 0
+                        },
+                        "dropdownPossibleValues": [
+                          "",
+                          "Property",
+                          "Value",
+                          "Name"
+                        ],
+                        "format": {
+                          "widgetTitle": "",
+                          "titleFontSize": 16,
+                          "titleHorizontal": "Center",
+                          "titleColor": "#FFFFFF",
+                          "titleBottomBorderWidth": 0,
+                          "titleFontBold": "",
+                          "titleShadow": true,
+                          "titleBackgroundColor": "",
+                          "titleTransparentBackground": "",
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "MultiSelect": false,
+                          "ShowSearch": false,
+                          "Label": "Select List:",
+                          "ForceSelectedValue": true,
+                          "tooltip": "",
+                          "Data": {
+                            "_dashboardsType": "data",
+                            "value": "assetTypes"
+                          },
+                          "vertical": "Middle",
+                          "DataSourceMapping": {
+                            "Value": "Value",
+                            "Text": "Property"
+                          },
+                          "FieldSummaryThreshold": 5,
+                          "horizontal": "Center",
+                          "AcceptEmptyValues": false,
+                          "LabelWidth": 75,
+                          "Theme": "Dark",
+                          "ComponentName": "dropdown",
+                          "Items": [
+                            {
+                              "Value": "",
+                              "Text": "",
+                              "DropdownValue": ""
+                            }
+                          ],
+                          "TooltipSummaryThreshold": 10,
+                          "Width": 250,
+                          "SelectAllValue": "",
+                          "SelectedValue": {
+                            "_dashboardsType": "viewstate",
+                            "value": "selectedAssetClass"
+                          }
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "version": "4.4.1",
+                        "Actions": [
+                          {
+                            "_Type": "map",
+                            "Current": "",
+                            "Target": {
+                              "_dashboardsType": "viewstate",
+                              "value": "assetName"
+                            }
+                          }
+                        ]
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 80,
+                      "optionsVersion": 80,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "16"
+                    }
+                  },
+                  {
+                    "id": "3128aa50-45c0-250a-aaaa-38c264b0e249",
+                    "layout": {
+                      "row": 0,
+                      "column": 7,
+                      "rowSpan": 2,
+                      "colSpan": 3
+                    },
+                    "component": {
+                      "id": "component_2503",
+                      "key": "BasicComponents",
+                      "options": {
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "titlePaddingBottom": 7,
+                          "innerPaddingTop": 0,
+                          "titlePaddingTop": 7,
+                          "paddingLeft": 0
+                        },
+                        "format": {
+                          "widgetTitle": "Search RIC",
+                          "titleFontSize": 8,
+                          "titleHorizontal": "Left",
+                          "titleColor": "",
+                          "titleBottomBorderWidth": 0,
+                          "titleFontBold": "",
+                          "titleShadow": true,
+                          "titleBackgroundColor": "",
+                          "titleTransparentBackground": "",
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "horizontal": "Center",
+                          "fixedWidth": false,
+                          "FontSize": 16,
+                          "width": 100,
+                          "Theme": "Dark",
+                          "ComponentName": "textBox",
+                          "Text": {
+                            "_dashboardsType": "viewstate",
+                            "value": "assetRIC"
+                          },
+                          "vertical": "Middle",
+                          "fixedHeight": false,
+                          "height": 100,
+                          "Type": "text"
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "version": "4.3.1",
+                        "Actions": []
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 26,
+                      "optionsVersion": 26,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "33"
+                    }
+                  }
+                ],
+                "prevVersion": 245,
+                "optionsVersion": 245,
+                "hasOnSettingsChange": true,
+                "rowCount": 26,
+                "definitionId": "50"
+              }
+            ],
+            "widgets": [],
+            "prevVersion": 2716,
+            "optionsVersion": 2720,
+            "hasOnSettingsChange": true,
+            "definitionId": "26"
+          }
+        }
+      ],
+      "relativeHeight": false,
+      "rowHeight": 25,
+      "colCount": 12,
+      "floatable": false,
+      "isDefault": true
+    }
+  ],
+  "popups": [],
+  "tags": [],
+  "dashboardTheme": "Dark",
+  "themeSwitchable": true,
+  "saveTimestamp": null,
+  "relativeHeight": false,
+  "rowHeight": 25,
+  "colCount": 12,
+  "floatable": false,
+  "viewState": {
+    "assetWatchLists": {
+      "assetType": {
+        "_default": "",
+        "_viewType": true,
+        "_rolling": false,
+        "_type": "symbol",
+        "value": ""
+      }
+    },
+    "assetName": {
+      "_default": "",
+      "_viewType": true,
+      "_type": "symbol",
+      "value": ""
+    },
+    "assetRIC": {
+      "_default": "",
+      "_viewType": true,
+      "_type": "symbol",
+      "value": ""
+    },
+    "tickLoss": {
+      "selectedSym": {
+        "_default": "",
+        "_viewType": true,
+        "_type": "symbol",
+        "value": ""
+      },
+      "expandedTickGaps": {
+        "_default": true,
+        "_viewType": true,
+        "_type": "boolean",
+        "value": true
+      },
+      "selectedSrcProcess": {
+        "_viewType": true,
+        "_default": "",
+        "value": "",
+        "_type": "symbol"
+      },
+      "selectedSrcTbl": {
+        "_viewType": true,
+        "_default": "",
+        "value": "",
+        "_type": "symbol"
+      },
+      "selectedInvalidTickCounts": {
+        "_viewType": true,
+        "_default": "",
+        "value": "",
+        "_type": "symbol"
+      }
+    },
+    ".settings": {
+      "component_1052": {
+        "UsersColumnsConfiguration": null,
+        "GroupingConfiguration": [],
+        "version": 99
+      },
+      "component_5270": {
+        "version": 160,
+        "Selection_target_tab": 3
+      },
+      "component_2501": {
+        "UsersColumnsConfiguration": null,
+        "Grid.Basics.Filtering": {
+          "version": 1,
+          "type": "Column Filters",
+          "value": {
+            "feedHandler1": "",
+            "sym0": ""
+          }
+        },
+        "GroupingConfiguration": [
+          {
+            "ColumnProperty": "feedHandler"
+          }
+        ],
+        "version": 85
+      },
+      "component_8650": {
+        "UsersColumnsConfiguration": null,
+        "Grid.Basics.Filtering": null,
+        "GroupingConfiguration": [],
+        "version": 81
+      },
+      "component_4215": {
+        "GroupingConfiguration": [],
+        "version": 105
+      },
+      "component_647": {
+        "GroupingConfiguration": [
+          {
+            "ColumnProperty": "sym"
+          }
+        ],
+        "version": 106
+      },
+      "component_744": {
+        "GroupingConfiguration": [],
+        "version": 101
+      },
+      "component_5288": {
+        "version": 0,
+        "GroupingConfiguration": []
+      },
+      "component_2256": {
+        "version": 0,
+        "GroupingConfiguration": [],
+        "Grid.Basics.Filtering": {
+          "version": 1,
+          "type": "Column Filters",
+          "value": {
+            "name0": "updateWatchlist"
+          }
+        }
+      }
+    },
+    "selectedAssetClass": {
+      "_default": "eq",
+      "_viewType": true,
+      "_type": "symbol",
+      "value": "eq"
+    },
+    "HomeScreen": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "rfaEquityL1": {
+      "asset": {
+        "_viewType": true,
+        "_type": "symbol",
+        "_default": "",
+        "value": ""
+      }
+    }
+  },
+  "data": {
+    "assetTypes": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "Property",
+        "Value",
+        "Name"
+      ],
+      "_dataType": "analytic",
+      "_dataSource": "kdb",
+      "_connection": "daas_admin_connectionGrp",
+      "_mappings": {
+        "key": "Property",
+        "mappings": {},
+        "value": "Value"
+      },
+      "_maxRows": 100,
+      "_forceReset": true,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_selectedAnalytic": ".daas.admin.getRfaAssetTypes",
+      "_analyticParams": [],
+      "_subscriptionKey": "",
+      "_isStreamingSubscription": false,
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_updateType": "query",
+      "_pageSize": 2000,
+      "_serverPaging": false
+    },
+    "watchlistStatus": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "time",
+        "sym",
+        "serviceName",
+        "serviceID",
+        "msgModelType",
+        "streamState",
+        "dataState",
+        "statusCode",
+        "srcProcess"
+      ],
+      "_dataType": "analytic",
+      "_dataSource": "kdb",
+      "_connection": "daas_admin_connectionGrp",
+      "_mappings": {
+        "key": "time",
+        "mappings": {},
+        "value": "sym"
+      },
+      "_maxRows": "20000",
+      "_forceReset": true,
+      "_subscriptionType": "polling",
+      "_subscriptionInterval": 10,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_selectedAnalytic": ".daas.admin.getRdbRespStatus",
+      "_analyticParams": [],
+      "_subscriptionKey": "",
+      "_isStreamingSubscription": false,
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_updateType": "query",
+      "_pageSize": "10000",
+      "_serverPaging": false
+    },
+    "tickLossGaps": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "srcProcess",
+        "srcTbl",
+        "sym",
+        "invalidTickCounts"
+      ],
+      "_dataType": "analytic",
+      "_dataSource": "kdb",
+      "_connection": "daas_admin_connectionGrp",
+      "_mappings": {
+        "key": "srcProcess",
+        "mappings": {},
+        "value": "srcTbl"
+      },
+      "_maxRows": 2000,
+      "_forceReset": true,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_selectedAnalytic": ".daas.admin.getTickLossStatus",
+      "_analyticParams": [],
+      "_subscriptionKey": "",
+      "_isStreamingSubscription": false,
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_updateType": "query",
+      "_updateAnalytic": ".daas.admin.updateWatchlist",
+      "_pageSize": 2000,
+      "_serverPaging": false
+    },
+    "tickLossSummary": {
+      "_autoExec": true,
+      "_columns": [],
+      "_dataType": "analytic",
+      "_dataSource": "kdb",
+      "_connection": "daas_admin_connectionGrp",
+      "_mappings": {
+        "key": "",
+        "mappings": {},
+        "value": ""
+      },
+      "_maxRows": 2000,
+      "_forceReset": true,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_selectedAnalytic": ".daas.admin.getTickLossDetail",
+      "_analyticParams": [
+        {
+          "id": "srcProcess",
+          "name": "srcProcess",
+          "type": "symbol",
+          "description": "",
+          "required": true,
+          "value": "&lt;%tickLoss/selectedSrcProcess%&gt;",
+          "isViewState": true
+        },
+        {
+          "id": "srcTable",
+          "name": "srcTable",
+          "type": "symbol",
+          "description": "",
+          "required": true,
+          "value": "&lt;%tickLoss/selectedSrcTbl%&gt;",
+          "isViewState": true
+        },
+        {
+          "id": "sym",
+          "name": "sym",
+          "type": "symbol",
+          "description": "",
+          "required": true,
+          "value": "&lt;%tickLoss/selectedSym%&gt;",
+          "isViewState": true
+        },
+        {
+          "id": "tickCounts",
+          "name": "tickCounts",
+          "type": "symbol",
+          "description": "",
+          "required": true,
+          "value": "&lt;%tickLoss/selectedInvalidTickCounts%&gt;",
+          "isViewState": true
+        }
+      ],
+      "_subscriptionKey": "",
+      "_isStreamingSubscription": false,
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_updateType": "query",
+      "_updateAnalytic": ".daas.admin.updateWatchlist",
+      "_pageSize": 2000,
+      "_serverPaging": false
+    },
+    "rfaEquityL1": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "i",
+        "market-price",
+        "market-by-price"
+      ],
+      "_dataType": "analytic",
+      "_dataSource": "kdb",
+      "_connection": "daas_admin_connectionGrp",
+      "_mappings": {
+        "key": "statusCode",
+        "mappings": {},
+        "value": "x"
+      },
+      "_maxRows": "10000",
+      "_forceReset": true,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 10,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_selectedAnalytic": ".daas.admin.getWatchlist",
+      "_analyticParams": [
+        {
+          "id": "asset",
+          "name": "asset",
+          "type": "symbol",
+          "description": "",
+          "required": true,
+          "value": "&lt;%selectedAssetClass%&gt;",
+          "isViewState": true
+        },
+        {
+          "id": "assetRIC",
+          "name": "assetRIC",
+          "type": "symbol",
+          "description": "",
+          "required": true,
+          "value": "&lt;%assetRIC%&gt;",
+          "isViewState": true
+        }
+      ],
+      "_subscriptionKey": "",
+      "_isStreamingSubscription": false,
+      "_hasUpdateQuery": true,
+      "_updateQueryString": "{[add;upd;del]\n    .dw.par:add;\n.cm.upd:upd;\n    table:.uc.getActiveParamValue[`rfasubscription;`$((string .daas.admin.rfaAsset),\"_a\")];\n    .dw.table:table;\n\tc:cols table;\n\ttable:(`i xkey (?[table;();0b;((`i,c)!(`i,c))]));\n    $[((count upd)&gt;0);table:table upsert flip upd;];     \n    $[((count del)&gt;0);table:![table;enlist (in;`i;enlist del[`i]);0b;`symbol$()];];\n    $[((count add)&gt;0);table:((() xkey table) upsert flip add);];\n\ttable:(?[table; (); 0b; ((c)!(c))]);\n\t.daas.events.pubEventMessage[`setRfaSubs;`DashboardUpdate;`;`;((`assetClass`rfaSub`table)!(.daas.mon.dash.assetType;.daas.admin.rfaAsset;table))];\n}",
+      "_updateType": "analytic",
+      "_updateAnalytic": ".daas.admin.updateWatchlist",
+      "_pageSize": 2000,
+      "_serverPaging": true
+    },
+    "statusCodeSummary": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "statusCode",
+        "x"
+      ],
+      "_dataType": "analytic",
+      "_dataSource": "kdb",
+      "_connection": "daas_admin_connectionGrp",
+      "_mappings": {
+        "key": "statusCode",
+        "mappings": {},
+        "value": "x"
+      },
+      "_maxRows": 2000,
+      "_forceReset": true,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_selectedAnalytic": ".daas.admin.getStatusCodeSummary",
+      "_analyticParams": [],
+      "_subscriptionKey": "",
+      "_isStreamingSubscription": false,
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_updateType": "query",
+      "_pageSize": 2000,
+      "_serverPaging": false
+    }
+  },
+  "permissionEntity": {
+    "class": "api.entity.PermissionEntity",
+    "permissions": {
+      "DeltaMonAdmin": [
+        false,
+        false
+      ],
+      "all": [
+        false,
+        false
+      ],
+      "ActionTrackerAdmins": [
+        false,
+        false
+      ],
+      "DeltaMonUsers": [
+        false,
+        false
+      ],
+      "ActionTrackerUsers": [
+        false,
+        false
+      ],
+      "daasSuperUsers": [
+        true,
+        true
+      ],
+      "Administrators": [
+        true,
+        true
+      ],
+      "DashboardUsers": [
+        false,
+        false
+      ],
+      "DeltaDocGenRestrictions": [
+        false,
+        false
+      ],
+      "daasAdministrators": [
+        false,
+        false
+      ],
+      "ReportAdminUserGroup": [
+        false,
+        false
+      ],
+      "daasMonitoring": [
+        false,
+        false
+      ],
+      "daasApplication": [
+        false,
+        false
+      ],
+      "daasSandbox": [
+        false,
+        false
+      ]
+    }
+  },
+  "worksheetPadding": 10,
+  "widgetsSpacing": 0,
+  "borderColor": "000000",
+  "borderBackground": "000000",
+  "transparentBackground": true,
+  "borderWidth": 0,
+  "borderRounding": 0,
+  "borderSpacing": 0,
+  "borderShadow": false,
+  "enableShareDashboard": false,
+  "notifications": {
+    "Notifications": {
+      "_Version": "4.2.0s2",
+      "Enabled": true,
+      "InBrowserNotifications": false,
+      "Position": "Bottom Right",
+      "MaxVisibleCount": 3,
+      "FadeOut": 5,
+      "Icon": "bell-o",
+      "Sound": "beep",
+      "SoundVolume": 100,
+      "Grouping": false,
+      "GroupingInterval": 1,
+      "triggers": []
+    }
+  },
+  "showLoadingIndicators": true,
+  "unsavedViewerPrompt": false,
+  "advancedCss": "",
+  "cssClasses": "",
+  "viewStateBinding": false,
+  "wasChanged": false,
+  "version": "4.4.0p7"
+}</data>
+</ui>

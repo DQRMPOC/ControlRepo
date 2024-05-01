@@ -1,0 +1,96 @@
+<analytic>
+	<analytic>.daas.util.convertBetweenTZ</analytic>
+	<code_text>{[timestamp;inputTZ;outputTZ]
+    // timestamp input can be atom or vector 
+    // this allows us to call on conversion from query time &gt; on disk time for input parameters
+    // and on return timestamp columns when converting on diks &gt; query output time 
+    
+    // if timezones match, no need for conversion
+    if[inputTZ~outputTZ;
+        :timestamp
+        ];
+
+    
+    // throw an exception if the timezone we ask for doesnt exist in .tz.tzinfo
+    if[any invalidTZ:not (timezones:inputTZ,outputTZ) in .tz.tzinfo`timezoneID;
+        '"Unsupported timezone identifier(s) : ",", " sv string timezones where invalidTZ
+        ];
+    
+    nTimestamps:count timestamp;
+    
+    // if the inputTZ is not GMT/UTC we need to convert to GMT
+    timestampInUTC:$[not inputTZ in `UTC`GMT;
+                       [
+                           // join on adjustment factor to convert to GMT 
+                           // adjustment column in .tz.tzinfo accounts for gmtOffset and dstOffset
+                           // e.g if inputTZ = America/New_York and we are currently in DST 
+                           //     time is 10am, gmtOffset is -5hr, dstOffset is +1hr
+                           //     adjustment is -4hr to convert our queryTime of 10am to 6am GMT
+                           timeData:([]timezoneID:(),nTimestamps#inputTZ;localDateTime:(),timestamp);
+                           timeMeta:aj[`timezoneID`localDateTime;timeData;.tz.tzinfo];
+   
+                           // adjustment is signed in .tz.tzinfo so its always subtracted
+                           // i.e adjustment for EST is -5hr, adjustment for Asia/Tokyo is +9hr
+                           exec localDateTime-adjustment from timeMeta
+                       ];
+                       timestamp
+                     ];
+
+
+    // if the data we want to query is not in GMT on disk we now need to go from 
+    // GMT -&gt; on disk timezone
+    outboundTimestamp:$[not outputTZ in `UTC`GMT;
+                        [
+                            // aj on gmtDateTime col now to pick out the correct adjustment
+                            timeData:([]timezoneID:(),nTimestamps#outputTZ;gmtDateTime:(),timestampInUTC);
+                            timeMeta:aj[`timezoneID`gmtDateTime;timeData;.tz.tzinfo];
+
+                            // adjustment is signed in .tz.tzinfo so its always subtracted
+                            // i.e adjustment for EST is -5hr, adjustment for Asia/Tokyo is +9hr
+                            exec gmtDateTime+adjustment from timeMeta
+                         ];
+                         timestampInUTC
+                       ];
+    
+    // return atom if its a one item list
+    if[(1=count outboundTimestamp) &amp; 0h&lt;type outboundTimestamp;
+        outboundTimestamp:first outboundTimestamp
+        ];   
+            
+    outboundTimestamp
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>timestamp</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>inputTZ</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>outputTZ</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+	<analyticgroup>SurveillanceUtils</analyticgroup>
+</analytic>

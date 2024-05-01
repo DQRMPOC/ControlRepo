@@ -1,0 +1,126 @@
+<analytic>
+	<analytic>getRef</analytic>
+	<code_text>{[params]
+
+	//Adjust date params for calendar queries
+	if[`calendar=params[`dataType];
+		$[all `startDate`endDate in key params;
+			[params[`systemDate]:params[`endDate];
+			params[`date]:params[`startDate];
+			params[`startDate]:0Nd];
+		`date in key params;
+			params[`systemDate]:params[`date];
+		`systemDate in key params;
+			params[`date]:params[`systemDate];
+		];
+	];
+
+    // can't update elements in a dict with values all the same type; 
+    //eg. params:(`identifier`symList`idType`dataType)!(`instrument;`GB00BH4HKS39; `ISIN; `refData); params[`symList]:enlist[`MSFT] won't work
+    params:(enlist[::]!enlist[::]),params;
+   
+    
+   
+    // adjust symList to RIC
+    if[`idType in key params;
+        if[`idMap~.daas.meta.idTypeUsage[args];
+            dict:.daas.cfg.secMasterPub[`symRefData];
+            t:?[`symRefData;(value dict`whereClause);(value dict`byClause);(value dict`colClause)];
+            params[`symList]:?[t;enlist (in;.daas.cfg.idTypeDescription params`idType;enlist params`symList);();`sym];
+        ];
+    ];
+    
+    if[not `source in key params;
+       params[`source]:`
+   		];  
+   
+    params[`dataType]:.daas.util.refTableSelect[params];
+	
+    whereClause:.daas.util.genRefWhereClause[params];
+    if[not `date in cols params[`dataType]; whereClause:1_whereClause];
+    res:?[params`dataType;whereClause;0b;()];
+
+    //Calendar processing
+    if[(params[`dataType] like "*[cC]alendar*") and count res;
+    	res:.daas.util.calendarFilter[params;res]
+    ];
+	
+    :0!.daas.util.sortCols[res;params];
+}</code_text>
+	<description>Extract data from a table</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias>getRef</alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>symList</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>dataType</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>startDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>endDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>corAxType</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>identifier</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>sortCols</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>systemDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>data to aggregate</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasQR</analyticgroup>
+	<analyticgroup>daasQS</analyticgroup>
+</analytic>

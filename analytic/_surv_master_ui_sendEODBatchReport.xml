@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.surv.master.ui.sendEODBatchReport</analytic>
+	<code_text>{[Date;batchName]
+	thisFunc:".surv.master.ui.sendEODBatchReport";
+
+    if[null Date;
+        msg:"Date must be non-empty";
+        .log.err[.z.h;thisFunc;msg];
+        'msg
+        ];
+    
+    cid:first exec cloneID from masterServiceWFs where instanceType=`logging;
+    .surv.master.runBatchOnClone `dt`batchName`instanceType`cloneID`batchJobs!(Date;batchName;`logging;cid;.surv.util.getParamValue[`SURV_BATCH_JOBS;`sendEODBatchReport]);
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>Date</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>batchName</parameter>
+		<default>EOD_BATCH_REPORT</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatchUI</analyticgroup>
+</analytic>

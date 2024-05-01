@@ -1,0 +1,93 @@
+<analytic>
+	<analytic>.daas.util.tradeStatsWriteDown</analytic>
+	<code_text>{[dt;args;region]
+    
+    assetClass:args`assetClass;
+    hdbParams:"_"vs .daas.cfg.hdbDir assetClass;
+    hdbParams[2]:upper string region;
+    hdbDir:string .utils.checkForEnvVar "_" sv hdbParams;
+    system"l ",hdbDir;
+    
+    / the assumption that getStats is the access api is 
+    / further down at the definition of the "MinStats"
+    syms:value raze exec sym from ?[.daas.meta.getSchemaFromArgs[args;`trade;assetClass;`getStats];enlist(=;`date;dt);0b;(enlist `sym)!enlist (distinct;`sym)];  
+
+    colClause:.daas.cfg.columnDefaults[`barTrade];
+
+    system "l ",hdbDir;
+
+    paramsDict:(!) . flip (
+        (`symList;          syms);
+        (`assetClass;       assetClass);
+        (`startDate;        dt);
+        (`endDate;          dt);
+        (`analytics;        colClause);
+        (`filterRule;       args`tradeFilter);
+        (`time;             args`timeCol);
+        (`applyCanCor;      0b);
+        (`granularityUnit;  `minute);
+        (`granularity;      1i);
+        (`dataType;         `trade)
+        );
+
+
+    MinStats:update `p#sym from `sym`time xasc 0!first getStats[paramsDict];
+    .daas.tradeMinStats:{[t]columns:exec c from meta[t] where t = "s";@[t;columns;value]}[MinStats];
+    `tradeMinStats upsert .daas.tradeMinStats;
+    .daas.util.statsUpsert[dt;`.daas.tradeMinStats;`minute;args];
+
+    system "l ",hdbDir;
+    colClause:a!.daas.cfg.writedownAggregationFunctions[]a:`time,.daas.cfg.columnDefaults[`barTrade];
+
+    // roll up the minute buckets and set the correct bucket start time
+    .daas.tradeDayStats:update `p#sym from `sym`time xasc 0!?[tradeMinStats;();(enlist `sym)!enlist `sym ;colClause];
+    .daas.tradeDayStats:update time:.daas.util.getDayBarStart[dt;args`timeCol] from .daas.tradeDayStats;
+    
+    .daas.util.statsUpsert[dt;`.daas.tradeDayStats;`day;args];
+
+    .[`tradeMinStats;();:;.ds.schema[`tradeMinStats]];
+    .Q.gc[];
+    .log.out[.z.h;"Trade stats complete";.Q.w[]%1e9];
+    
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dt</parameter>
+		<default></default>
+		<description>symbol</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>symbol</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>region</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

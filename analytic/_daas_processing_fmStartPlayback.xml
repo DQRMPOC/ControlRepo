@@ -1,0 +1,94 @@
+<analytic>
+	<analytic>.daas.processing.fmStartPlayback</analytic>
+	<code_text>{[info]
+
+    .log.out[.z.h;"TRTH Stack Loaded, info dictionary: ";info];
+    
+    /info needed to boot
+    filePath:info`filePath;
+    file:info`file;
+    
+    assetClass:info`assetClass;
+    processingFilePath:info`processingFilePath;
+    
+    .daas.trth.fileDict:info`fileDict;
+    
+    /move file to processing
+    system "mv ",1_string[` sv info[`filePath],info[`file]]," ",1_string[info[`processingFilePath]];
+    
+    
+    /*** OLD CODE (unmodified) ***/
+    
+    /create feed cmd line args
+    .log.out[.z.h;"FilePath | TpPort | AssetClass :";(filePath;.daas.trth.tp;assetClass)];
+    
+    exchangeMapDir: raze string .utils.checkForEnvVar["ENV=TRTHEXCHANGEMAPS_HOME="],(`$"/ExchangeMaps/"),`$("_" vs string file)[3];
+    system "cd ",(string .utils.checkForEnvVar["ENV=DELTARFAVELOCITY_HOME="]),"/cbin/";
+    
+    a1:"--kdbpublisher-schema-filename=../schema/rfavTR",assetClass[`upShort],"Schema.xml";
+    a2:"--rfa-fieldmap-filename=../config/",assetClass[`short],"fieldmap.txt --rfa-asset-class=",assetClass[`long];
+    a3:"--rfa-enumdef-filename=",exchangeMapDir,"/enumtype.def --rfa-exchangemap-filename=",exchangeMapDir,"/exchgmap.txt";
+    a4:"--playback-filename=",(1_string processingFilePath)," --kdbpublisher-port=",string .daas.trth.tpPort;
+    a5:"--deltacontrol-license=", (string .utils.checkForEnvVar["ENV=DELTA_CONFIG="]),"/.delta.lic";
+    a6:"--logging-filename=",(getenv `FD_LOGDIR),"/daas_processing_feedReplay_",(raze string .daas.trth.fileDict[`reportID]),"_",(.daas.trth.fileDict[`reportName]),"_",(ssr[string .z.z;":";"."]),".log";
+    a7:"--rfa-dict-path=",("/" sv ((count "/" vs exchangeMapDir)-2)#"/" vs exchangeMapDir),"/RDMFieldDict/RDMFieldDictionary";
+    
+    timeZone:" "sv "--timeval-",/: "=" sv/: string flip (enlist key timeval),enlist first each value timeval:flip  .uc.getActiveParamValue[`timeval;`];  
+    
+    cfg:raze {:" --",x[`cfgParam],"=",x[`cfgValue];} each .uc.getActiveParamValue[`.daas.cfg.trth.rfaVelocityFeed;`]; /read params/values from config
+    
+    cmdArgs:: " " sv ("./rfavelocity";cfg;a1;a2;a3;a4;a5;a6;a7;timeZone);
+    
+    /get PE ready to start playback
+    .daas.trth.rte(".daas.processing.peInitialisePlayback";info);
+	
+	/start feed
+    .log.out[.z.h;"Booting feed with command line arguments ";cmdArgs];
+    startTime:.z.p;
+    @[system;cmdArgs;{.log.out[.z.h;"feed failed to replay data with the error";x];.daas.processing.feedFail:1b}];
+    
+    
+    /***	***/
+    
+    //###
+    //
+    //Process is now locked while the feed is playing to the TP
+    //once feed finishes the function will continue executing.
+    //
+    //###
+    
+    .log.out[.z.h;"Play back complete. Elapsed time";.z.p-startTime];
+    
+    /tell tp that we're done
+    .log.out[.z.h;"Sending complete message to TP";::];
+    .daas.trth.tp".ds.tp.pub[]; .d.prcl.addFunctToTimer[`.daas.processing.tpComplete;();0Nz;0Wz;1000i;1b]";
+
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>info</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

@@ -1,0 +1,64 @@
+<analytic>
+	<analytic>.daas.l2.buildSnapshotOnDisk</analytic>
+	<code_text>{[buildDate]
+  .log.out[.z.h;"Building daily L2 snapshot table for ",string[buildDate];()];
+    
+    system"l ", 1 _ string .ds.cfg.hdbDir;
+    
+    res:.daas.l2.buildDailySnapSeries[buildDate;`;0b];
+
+	.log.out[.z.h;"Writing snapshots to disk";()];
+	
+	if[exec count i from res;update price:"f"$price, size:"j"$size,numOrders:"j"$numOrders from res];
+
+	h:`long$ 2 sv 2,30#0;
+	res:update matchInd:i + h*`long$buildDate from res;
+	.daas.l2.snapshotIdTb set ungroup select matchInd,id,sym from res;
+	.daas.l2.snapshotTb set delete id from res;
+
+	.Q.dpft[.ds.cfg.hdbDir;buildDate;`sym; .daas.l2.snapshotIdTb];
+	.Q.dpft[.ds.cfg.hdbDir;buildDate;`sym; .daas.l2.snapshotTb];
+	
+	.log.out[.z.h;"Calling HDB reload Function";()];
+    reloadRES:{[hdb]
+        cmd:$[`yes~hdb`dc_nosystem; "\\l ."; ".ds.hdb.reloadDB[]"];
+        .log.out[.z.h;"Running command on intraday HDB ",string hdb`instancename;cmd];
+        h:.ds.cfg.getHandle[hdb];
+        if[null h; :`err];
+        neg[h]@cmd;
+        neg[h][];
+        :`ok;
+    } each .ds.cfg.hdbProcessList;
+	
+	.log.out[.z.h;"Deleting built snapshot tables from memory";()];
+
+    ![`.; (); 0b; `$string[.daas.cfg.asset],"Summary"];
+    ![`.daas.l2; (); 0b; `snapshotIdTb`snapshotTb`updateTb];
+	
+    .tbl.gettable each .daas.l2.updateTb,`$string[.daas.cfg.asset],"Summary";
+	.Q.gc[];
+	
+	//change directory back to LR home
+	system"cd ",(getenv `DELTACONTROL_HOME),"/centralconfig";
+	
+	.log.out[.z.h;"Finished writing snapshots for ", string[buildDate];()];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>buildDate</parameter>
+		<default>1970.01.01</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<analyticgroup>daasL2</analyticgroup>
+</analytic>

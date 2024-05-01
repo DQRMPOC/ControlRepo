@@ -1,0 +1,26 @@
+<analytic>
+	<analytic>.daas.stream.qrConnectGWs</analytic>
+	<code_text>{[]
+if[count .qr.gateways;
+	.log.out[.z.h;"running connectGWs";()];
+	hn:@[hopen;;{0N!raze "failed to connect to QR ",string x}] each exec hostport from .qr.gateways where null handle;
+        hn:@[hn;where -6&lt;&gt;type each hn;:;0ni];
+    update handle:hn from `.qr.gateways where null handle;
+    hn:hn where not null hn;
+    { neg[x](`.qr.registerClient; .qr.clientID; .qr.heartbeatF; string[first -1?0Ng]) } each hn;
+	.z.ts:{.trep.dispatch[]};
+	];
+:()
+ }</code_text>
+	<description>Function to connect trep publishers to QPs, it runs on a timer. Checks until it can connect and once it can it removes itself</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

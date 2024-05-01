@@ -1,0 +1,5 @@
+<analyticgroup>
+	<name>.daas.serverAnalytics</name>
+	<parameter>ignore</parameter>
+	<visibility>private</visibility>
+</analyticgroup>

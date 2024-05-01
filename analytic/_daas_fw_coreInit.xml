@@ -1,0 +1,26 @@
+<analytic>
+	<analytic>.daas.fw.coreInit</analytic>
+	<code_text>{[]
+	.daas.init.setMetaAndEventBusConn[];
+
+    / Monitoring 2.0
+    .al.loadinstruction each `.daas.cmon.conn`.daas.cmon.common;
+    .daas.cmon.init[];
+    .daas.cmon.common.init[];
+    
+    //hack to show status of a file in upload
+    .tmp.status:flip `time`file`status!();
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

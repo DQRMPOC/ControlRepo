@@ -1,0 +1,23 @@
+<analytic>
+	<analytic>.daas.events.resp.filterRule</analytic>
+	<code_text>{[]
+ .daas.cfg.tradeFilterRules:`exch`cond xkey .uc.getActiveParamValue[`.daas.cfg.filterRuleConfig;`];
+ .daas.cfg.tradeFilterRulesDict:((enlist`)!enlist`),c!{tab:value"select cond by exch from .daas.cfg.tradeFilterRules where ",string x;(exec exch from tab)!exec cond from tab}each c:(cols .daas.cfg.tradeFilterRules) except `exch`cond;
+
+ .daas.cfg.quoteFilterRules:`exch`cond xkey .uc.getActiveParamValue[`.daas.cfg.quoteFilterRuleConfig;`];
+ .daas.cfg.quoteFilterRulesDict:((enlist`)!enlist`),c!{tab:value"select cond by exch from .daas.cfg.quoteFilterRules where ",string x;(exec exch from tab)!exec cond from tab}each c:(cols .daas.cfg.quoteFilterRules) except `exch`cond;
+
+.daas.cfg.filterRulesDict:`trade`quote!(.daas.cfg.tradeFilterRulesDict;.daas.cfg.quoteFilterRulesDict)
+ }</code_text>
+	<description>Function to run on hdb's and rdb's when new filter rules are found</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

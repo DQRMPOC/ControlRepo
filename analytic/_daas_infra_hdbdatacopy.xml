@@ -1,0 +1,146 @@
+<analytic>
+	<analytic>.daas.infra.hdbdatacopy</analytic>
+	<code_text>{[p]
+// Table to cache handles
+/.ds.cfg.connections:([instance:`$()] handle:`int$());
+
+// Function the Gateway can call to give the RTE its connection handles.
+/.ds.cfg.getHandle:{[instance]
+/	instanceName:$[-11h=type instance; instance; instance`instancename];
+/	if[not null h:.ds.cfg.connections[instanceName;`handle]; :h];
+/	hp:$[-11h=type instance; .pl.gethostport instance; hsym`$":" sv string instance`dc_host`dc_port];
+/	.log.out[.z.h;"Connecting to ",string[instanceName]," at ",string hp;()];
+/	h:.utils.dcc[hp;60000;.log.warn[.z.h;"Unable to connect to ",string[instanceName]," at ",string hp]];
+/   	if[not -6h=type h; :0Ni];
+/        .ds.cfg.connections,:(instanceName;h);
+/        .log.out[.z.h;"Connected and details added to .ds.cfg.connections";first 0!select from .ds.cfg.connections where handle=h];
+/        :h;
+/        };
+
+/defining variables
+hdb1:p`hdb1;
+hdb2:p`hdb2;
+date:(),p`date;
+tablist:(),p`tablist;
+procInfo:.ex.prh(`.pl.getRunningInformation;::);
+    hdb1info:first select from procInfo where instance_name=hdb1;
+    hdb2info:first select from procInfo where instance_name=hdb2;
+    hdb1h: .utils.dcc[;0;{}] exec (` $":",string[ipaddress],":" ,string port)from hdb1info; 
+.log.out[.z.h;((("Starting hdb copy of date ", string date), " from "), string hdb1)," to ", string hdb2;()];
+/Define directories
+hdb1dir:hsym .utils.checkForEnvVar (.ex.getdetails[hdb1]`paramvalues)`directory;
+.log.out[.z.h;"Directory to copy from defined as ";hdb1dir];
+hdb1symdir:` sv (hdb1dir;`sym);
+.log.out[.z.h;"Path to copy sym file from defined as ";hdb1symdir];
+hdb1host:exec host from hdb1info;
+.log.out[.z.h;"Host to copy data from defined as ";hdb1host];
+hdb1ip:exec ipaddress from hdb1info;
+/hdb1user:exec first deltaUser from .daas.cfg.masterSlaveInstances where host=hdb1host;
+hdb2dir:` sv (hsym .utils.checkForEnvVar (.ex.getdetails[hdb2]`paramvalues)`directory;`);
+.log.out[.z.h;"Directory to copy data to defined as ";hdb2dir];
+.log.out[.z.h;"Creating tmp directory.";()];
+tmpdir: ` sv (hsym .utils.checkForEnvVar "ENV=DAASDATA_TMPDIR=";`$raze upper "_" vs string hdb1);
+if[not ()~key tmpdir; system"rm -r ", 1_string tmpdir];
+system"mkdir ",1_string tmpdir;
+.log.out[.z.h;"Tmp directory created:";1_string tmpdir];
+/Copy date and sym file.
+.log.out[.z.h;"Moving date partition to tmp directory.";()];
+{[hdb1dir;hdb1host;hdb1ip;tmpdir;date]
+    hdb1datedir:` sv (hdb1dir;`$string date);
+    tmpDateDir:` sv tmpdir,`$string date;
+    /@[system;("cp -r ", 1_string hdb1datedir), " " , 1_string tmpdir ;.daas.log.logErrorAndSignal["Failed to copy ",1_string hdb1datedir]];
+    /system"scp -r ",string[hdb1user],"@",string[hdb1ip],string[hdb1datedir], " ",1_string[tmpDateDir];
+    system"scp -r ",string[hdb1host],":",1_string[hdb1datedir], " ",1_string[tmpDateDir];
+        }[hdb1dir;hdb1host;hdb1ip;tmpdir;] each date;
+.log.out[.z.h;"Finished moving date partition to tmp directory.";()];
+.log.out[.z.h;"Moving sym file to tmp directory.";()];
+/@[system;("cp -r ", 1_string hdb1symdir), " " , 1_string tmpdir ;.log.err[.z.h;"Failed to copy ",1_string hdb1symdir]];
+system"scp -r ",string[hdb1host],":",1_string[hdb1symdir], " ",1_string[tmpdir];
+.log.out[.z.h;"Finished moving sym file to tmp directory.";()];
+/Loading in data
+.log.out[.z.h;"Loading tmp directory.";()];
+value "\\l ", 1_string tmpdir;
+tablist:$[null first tablist; `$system "ls " ,1_ string[` sv (tmpdir;`$string first date;`)]; tablist];
+.log.out[.z.h;"Table list defined as:";tablist];
+/Copying data to hdb2 
+.log.out[.z.h;"Saving data to ",string[hdb2dir];()];
+{[hdb2dir;tmpdir;tab;dt]
+    datedir:` sv (hdb2dir;`$string dt);
+    tabDir:` sv (datedir;tab;`);
+    .[{[tabDir;hdb2dir;tab;dt]
+            unenumerateTable:{@[x;;value](exec c from meta[x] where t="s")inter where (type each first x) within -76 -20h};
+            t:delete date from select from tab where date=dt;
+            tabDir set .Q.en[hdb2dir;unenumerateTable[t]];
+            .log.out[.z.h;"Upserted ",string[count value tab]," rows to disk";(dt;tab)];
+            .Q.gc[];
+        };
+        (tabDir;hdb2dir;tab;dt);
+        {.log.err[.z.h;"Error writing to disk";(y;x)]}[tabDir]];
+    value "\\l ", 1_string tmpdir;
+    }' [hdb2dir;tmpdir;tablist;] each date;
+    
+.log.out[.z.h;"Removing tmp directory:";tmpdir];
+value "\\cd ..";
+@[system;"rm -rf ", 1_string tmpdir;.log.err[.z.h;"Failed to remove ",1_string tmpdir]];
+.log.out[.z.h;"Tmp directory removed.";()];
+.Q.gc[];
+.log.out[.z.h;"Data copy finished.";()];
+// hdb reload currently done in hdbcopy process init instead
+/
+/procInfo:.ex.prh(`.pl.getRunningInformation;::);
+/hdbProcs:exec instance_name from procInfo where instance_name like ("*",("_" sv string .daas.cfg.region,.daas.cfg.vendor,.daas.cfg.asset,`hdb,.daas.cfg.env),"*");
+/hdbHandles:.pl.openhandle[;`;`;0] each hdbProcs;
+/{neg[x] ".ds.hdb.reloadDB[]"}each hdbHandles;
+/hclose each hdbHandles;
+/
+/.log.out[.z.h;"hdb reload message sent.";()];
+   
+ }</code_text>
+	<description>Analytic to copy data from one hdb to another</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>p</parameter>
+		<default>
+			<dictkey>
+				<name>hdb1</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description>hdb to copy data from</description>
+			</dictkey>
+			<dictkey>
+				<name>hdb2</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description>hdb to copy data to</description>
+			</dictkey>
+			<dictkey>
+				<name>date</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description>dates to copy day for</description>
+			</dictkey>
+			<dictkey>
+				<name>tablist</name>
+				<datatype>Symbol[]</datatype>
+				<default>`</default>
+				<isrequired>false</isrequired>
+				<description>tables to copy</description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

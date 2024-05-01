@@ -1,0 +1,8 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_EOD_STATS</tablegroup>
+	<tablename>quoteDayStats</tablename>
+	<tablename>quoteMinStats</tablename>
+	<tablename>tradeDayStats</tablename>
+	<tablename>tradeMinStats</tablename>
+</schemagroup>

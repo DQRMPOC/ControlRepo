@@ -1,0 +1,26 @@
+<analytic>
+	<analytic>.daas.merge.clearCompleted</analytic>
+	<code_text>{[]
+    merged:select partitionDate by source,target from .daas.merge.completed where merged;
+    merged:update dropDates:"D"$string each -1_/:key each source from merged;
+    merged:update readyToFlush:all each dropDates in' partitionDate  from merged;
+    
+    s:exec source from merged where readyToFlush;
+    
+    .daas.merge.flushMerged ./:  flip value exec source,first target from merged where readyToFlush;
+    
+    .log.out[.z.h;"deleting entries in the completed table for sources";] each s;
+    delete from `.daas.merge.completed where source in s;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

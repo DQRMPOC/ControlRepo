@@ -1,0 +1,79 @@
+<analytic>
+	<analytic>.daas.util.checkValidApplyFilterClause</analytic>
+	<code_text>{[functionName;args]
+    if[(args`dataType) in distinct exec baseName from .uc.getActiveParamValue[`SURV_TABLE_MAPPING;`];
+        :();
+        ];
+
+    if[not `applyFilter in key args;
+        :();
+        ];
+    
+    
+    //If it is a table that needs to be pivoted to be aggregate, we cannot validate as we don't know the columns at this point
+    //For this purpose we will error trap downstream aggregations on pivoted tables
+    if[(t:.daas.util.applyAssetClassTableName[args]`dataType) in .daas.cfg.pivotSettings[`tableName];
+        :();
+        ];
+    
+    if[not t in tables[];
+        .tbl.gettable[.daas.util.applyAssetClassTableName[args]`dataType;]
+        ];
+
+    filters:args`applyFilter;
+
+    /if not enlisted
+    if[(all 1=count each filters) or (`within~`$string first filters) or (`in~`$string first filters) or (all($[(type f:first filters)in(-10h;10h);`$f;f]) in key .daas.cfg.applyFilterFuncDict);
+        filters:args[`applyFilter]:enlist filters;
+        ];
+    
+    if[(`like~`$string first filters);:args];
+
+    //enlist any value that is symbol
+    filters:args[`applyFilter]:.[filters;((where (abs type each filters[;2])in (10 11h));2);enlist];
+
+    /check if the operator is in the dict
+    if[not all raze{($[(type x[0])in(-10h;10h);`$x[0];x[0]]) in key .daas.cfg.applyFilterFuncDict}each args[`applyFilter];
+        :"The operator specificed is not contained in the accepted applyFilter function dictionary";
+        ];
+    
+    /adjust params - at this point we know the filters contain valid operators so just replace with the functional form - if string cast to sym to avoid multiple values being selected
+    filters:args[`applyFilter]:{x[0]:.daas.cfg.applyFilterFuncDict[ $[(type x[0])in(-10h;10h);`$x[0];x[0]] ];x}each args[`applyFilter];
+
+    /check valid read
+    if[10=type a:@[{[args;t;x] ?[t;x;0b;()]}[args;t;];args`applyFilter;{x}];
+        :a;
+        ];
+
+    /check ops in list
+    if[not all a:(b:`$string each filters . (::;0))in`$string value .daas.cfg.applyFilterFuncDict;
+        :(`operator;b where not a);
+        ];
+    ()
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

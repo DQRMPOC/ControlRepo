@@ -1,0 +1,11 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>mergeDaemon_a</connection>
+	<host>ENV=daas_dataMergeDaemon_a_HOST=</host>
+	<port>ENV=daas_dataMergeDaemon_a_PORT=</port>
+	<user></user>
+	<pass></pass>
+	<dbname></dbname>
+	<dbtype>q</dbtype>
+	<tls></tls>
+</connection>

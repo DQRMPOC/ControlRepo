@@ -1,0 +1,58 @@
+<analytic>
+	<analytic>.daas.datacopy.dropDataLR</analytic>
+	<code_text>{[data]
+	if[not `complete~data`tag1;
+		:();
+		];			
+				
+
+	
+	/if it is the other side that has finished exit
+  	if[not (`$last string data[`process])~env:`$last string .ex.getInstanceName[];
+  		:();
+  		];
+  	
+  	.daas.hdbcopy.oldLog[.z.h;"database ready for copy - ",string data`tag2;()];		
+  	
+  	/if it is not the data master, exit
+  	masterEnv:exec first env from .daas.cfg.masterSlaveInstances where isMaster;
+	if[not masterEnv~`$last string .ex.getInstanceName[];
+		.daas.hdbcopy.oldLog[.z.h;"not data master, not data dropping";()];
+		:();
+		];
+				
+	/lookup data path
+	dp:(last "/hdblog" vs getenv `$4_-1_string data[`tag3]),"/";
+	dt:-1+`date$data[`time];
+				
+	if[not count targets:.uc.getActiveParamValue[`.daas.cfg.dataCopyTargets;`];
+		.daas.hdbcopy.oldLog[.z.h;"no data drop targets, exiting";()];
+		];
+				
+	trgs: ":" sv/:flip targets[`host`dropLocation];
+				
+	.daas.hdbcopy.oldLog[.z.h;"Datapath - ",dp;()];
+	.daas.hdbcopy.oldLog[.z.h;"Dates - ",string dt;()];
+	{.daas.hdbcopy.oldLog[.z.h;"Targets - ",x;()]}each trgs;
+				
+	.daas.dataCopy.zipData[dp;dt;;1b] each trgs;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasDatacopy</analyticgroup>
+</analytic>

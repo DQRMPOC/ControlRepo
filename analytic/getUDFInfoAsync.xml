@@ -1,0 +1,29 @@
+<analytic>
+	<analytic>getUDFInfoAsync</analytic>
+	<code_text>{[params]
+	params: .daas.udf.checkAndAdjustUDF[`getUDFInfo;params];
+
+	queryParams: `handle`user`analytic`input`API`clientMode!(.z.w;.z.u;`getUDFInfo;params;`getUDFInfo;`sync);
+	:.daas.async.run[queryParams]
+ }</code_text>
+	<description>fetches the descriptions of the given UDFs (symbol list or atom). Use ` to get all UDFs.
+
+Returns a table with columns `funcName (symbol) and description (string).</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

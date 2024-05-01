@@ -1,0 +1,106 @@
+<analytic>
+	<analytic>.daas.upd.common</analytic>
+	<code_text>//To run on init to map the funcs
+.daas.upd.init:{    
+    //Get init type for this process
+    initType:.daas.init.getInitType[];
+
+    //Construct names of the custom init functions
+    /To run before core upd
+    preUpd:` sv `.daas.custom,initType,`preUpd;
+    /Runs after core upd
+    customUpd:` sv `.daas.custom,initType,`upd;
+    /map core upd
+    coreUpd:` sv `.daas,initType,`upd;
+
+    //Check if the custom functions exist
+    runPreUpd:.daas.init.checkFuncExists[preUpd];
+    runCustomUpd:.daas.init.checkFuncExists[customUpd];
+    runCoreUpd:.daas.init.checkFuncExists[coreUpd];
+    
+    //Check if the core upd has been set to not run
+    if[`runEnabled in key `.daas.coreUpd;
+        runCoreUpd:.daas.coreUpd.runEnabled;
+        ];
+    
+    //Map the custom upds so not extra work on upd to construct name
+    if[runPreUpd;
+        .daas.custom.preUpd:value preUpd;
+        ];
+    if[runCustomUpd;
+        .daas.custom.upd:value customUpd;
+        ];
+    if[runCoreUpd;
+        .daas.core.upd:value coreUpd;
+        ];
+    
+    //Log out upd setup
+    .log.out[`updMode;"Set upd to run - ",", " sv ("custom pre-upd";"core upd";"custom upd") where (runPreUpd;runCoreUpd;runCustomUpd);()];
+    if[runPreUpd;
+        .log.out[`updMode;"Pre-upd defined as ",string preUpd;()];
+        ];
+    if[runCustomUpd;
+        .log.out[`updMode;"Custom upd defined as ",string customUpd;()];
+        ];
+    
+    //Pick which upd definition based on what is going to be running  
+    updDict:(!). flip (
+     (111b;.daas.upd.preAndCustom       );
+     (101b;.daas.upd.onlyPre            );
+     (011b;.daas.upd.onlyCustom         );
+     (001b;.daas.core.upd                  );
+     (110b;.daas.upd.preAndCustomNoCore );
+     (100b;.daas.upd.onlyPreNoCore      );
+     (010b;.daas.upd.onlyCustomNoCore   ));
+    
+    .daas.upd.function:updDict(runPreUpd;runCustomUpd;runCoreUpd);
+    
+    //TODO: does this need to be set to .u.upd or .fd.upd or something?
+    `upd set .daas.upd.function;
+    }
+
+//-- upd function definitions --//
+.daas.upd.preAndCustom:{[table;data]
+    //Custom pre upds are for modifying inbound data before the core upd
+    data:.daas.custom.preUpd[table;data];
+
+    //Run core upd
+    .daas.core.upd[table;data];
+
+    //Custom upds are for any custom upd calculations and publishes
+    .daas.custom.upd[table;data];
+    }
+
+.daas.upd.onlyPre:{[table;data]
+    data:.daas.custom.preUpd[table;data];
+    .daas.core.upd[table;data]; 
+    };
+
+.daas.upd.onlyCustom:{[table;data]
+    .daas.core.upd[table;data]; 
+    .daas.custom.upd[table;data];
+    };
+
+.daas.upd.preAndCustomNoCore:{[table;data]
+    data:.daas.custom.preUpd[table;data];
+    .daas.custom.upd[table;data];
+    };
+
+.daas.upd.onlyPreNoCore:{[table;data]
+    data:.daas.custom.preUpd[table;data];    
+    };
+
+.daas.upd.onlyCustomNoCore:{[table;data]
+    .daas.custom.upd[table;data];
+    };</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>1</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

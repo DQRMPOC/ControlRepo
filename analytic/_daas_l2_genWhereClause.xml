@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.daas.l2.genWhereClause</analytic>
+	<code_text>{[params;tableName]
+	symList:(),params`symList;
+	whereClause: enlist(within;params`time;(params`startTime;params`endTime));
+	if[not any ` in symList;
+		whereClause: enlist[(in;`sym;enlist raze symList)],whereClause;
+		];
+	/ add date clause if on hdb
+	if[-1h=type .Q.qp get tableName;
+		whereClause: enlist[(within;`date;(params`startDate;params`endDate))],whereClause;
+		];
+	:whereClause;
+	}</code_text>
+	<description>generates the where clause for depth tick data selection</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tableName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasL2</analyticgroup>
+</analytic>

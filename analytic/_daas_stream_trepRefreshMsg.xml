@@ -1,0 +1,44 @@
+<analytic>
+	<analytic>.daas.stream.trepRefreshMsg</analytic>
+	<code_text>{[id;data]
+.ch.chk:data;
+.ch.id:id;
+.daas.stream.trepRefresh[id]:0b;
+values:value first data;
+values[where (type each values)=-12]:"t"$values[where (type each values)=-12];
+values:string each values;
+//All values are strings and the refresh messages can't publish a message with more characters than in the RDMFieldDictionary
+//This will take the min between the length of the value and the max allowed length and only publsh that many characters for each value   
+values:{x#y}'[{x&amp;y}'[count each values;.daas.cfg.RDMLengthColumnsDict[cols data]];values];
+if[any k:(count each values)=0;values[where k]:{x:"NULL"}each values[where k]];
+tab:([] FIDs:`$string each .daas.cfg.RDMFIDColumnsDict[cols data];values:`$values);
+.ch.tab:tab;
+.trep.sendPayload(tab);
+.trep.accept[.daas.stream.trepSubIdMap[id]];
+ }</code_text>
+	<description>Sends a refresh message instead of an update message to a TREP publisher subscriber</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>id</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

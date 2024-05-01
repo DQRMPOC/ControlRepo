@@ -1,0 +1,21 @@
+<analytic>
+	<analytic>.daas.util.allFeeds</analytic>
+	<code_text>{[]
+rawFeedList:1_.ex.prh(`.uc.getActiveParamOverrides;`rfasubscription);
+			feedList:`$last each ":" vs/: string each rawFeedList;
+			feedList where feedList like "*_a"
+}</code_text>
+	<description>Gets all the a WatchLists</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+	<analyticgroup>daasPlatform</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

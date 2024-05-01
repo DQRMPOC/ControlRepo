@@ -1,0 +1,59 @@
+<analytic>
+	<analytic>.daas.stream.tickUpd</analytic>
+	<code_text>{[t;data;id]
+
+//debug statements
+
+//Grab parameters for stream
+params:.daas.stream.streamSubs[id;`params];
+//exit if not subscribed table
+if[not t=params`dataType;:0b];
+
+//Check syms, exit if immediately if not subscribed sym
+newDataInds:$[any ` in params`symList;til count data;exec i from data where sym in (params`symList)];
+if[not count newDataInds; :0b];
+newSyms:distinct data[newDataInds;`sym];
+.[`.daas.stream.streamTabs;(id;`newSyms); union; newSyms]; 
+
+//Select out data
+colClause:params`colClause;
+tab:newData:data newDataInds;
+tab:0!?[tab;params`whereClause;0b;params[`colClause]!params`colClause];
+
+// upsert to streamTabs. return 1b to indicate an update occurred.
+.daas.stream.streamTabs[id;`data]:tab;
+:1b;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>t</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>id</parameter>
+		<default>false</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

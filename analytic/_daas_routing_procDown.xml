@@ -1,0 +1,126 @@
+<analytic>
+	<analytic>.daas.routing.procDown</analytic>
+	<code_text>{[data]
+    procName:data[`info]`instance_name;
+
+    / if it is a gateway
+    if[procName in key .daas.routingGatewayProcs;
+        .daas.routingGatewayProcs[procName; `procUp]:0b;
+        gwFailoverTarget:first .daas.routingGatewayProcs[procName]`failoverTo;
+
+		if[.daas.routingGatewayProcs[first .daas.routingGatewayProcs[procName]`failoverTo]`procUp;
+            .daas.routingGatewayProcs[procName;         `primary]:0b;
+            .daas.routingGatewayProcs[gwFailoverTarget; `primary]:1b;
+		];
+
+		/ if it is the routing table master
+		if[.daas.routingGatewayProcs[procName]`routingTableMaster;
+		 	
+            / if it has a designated failover that is up
+            if[.daas.routingGatewayProcs[gwFailoverTarget]`procUp;
+                if[not gwFailoverTarget = .ex.getInstanceName[];
+  					:();
+                ];
+
+                / make it the new master
+                .daas.routingGatewayProcs[procName;         `routingTableMaster]:0b;
+                .daas.routingGatewayProcs[gwFailoverTarget; `routingTableMaster]:1b;
+
+                .log.warn[`failover;;()] "Routing master down, failing over to configured target [ Process: ",string[procName]," ] [ New Routing Master: ",string[gwFailoverTarget]," ]";
+                .daas.cmon.failover.routingMaster gwFailoverTarget;
+
+  				.daas.routing.publishGatewayTable[];
+  				:();
+            ];
+
+            if[not .ex.getInstanceName[] = exec first procName from .daas.routingGatewayProcs where procUp;
+  				:();
+  			];
+
+            / if no designated failover, make it the first available
+            .daas.routingGatewayProcs[.ex.getInstanceName[];    `routingTableMaster]:1b;
+            .daas.routingGatewayProcs[procName;                 `routingTableMaster]:0b;
+
+            .log.warn[`failover;;()] "Routing master down and no configured target. Picking current process [ Process: ",string[procName]," ] [ New Routing Master: ",string[.ex.getInstanceName[]]," ]";
+            .daas.cmon.failover.routingMaster .ex.getInstanceName[];
+
+  			.daas.routing.publishGatewayTable[];	
+  			:();
+  		];
+
+        :();
+  	];
+
+	/if this proc isn't the routing tab master exit
+    if[not .daas.routingGatewayProcs[.ex.getInstanceName[]]`routingTableMaster;
+        :();
+  	];
+  
+    /if it is a QP that has gone down
+    if[procName in key .daas.routingQPs;
+        .daas.routingQPs[procName; `procUp]:0b;
+        .daas.routing.publishQPTable[];
+    ];
+  
+    /failover for tp down
+    if[not procName in key .daas.routingMetaData;
+        failProc:.daas.routingSysProcs procName;
+
+        if[failProc[`procType] in `rfa`tp;
+            .daas.routing.failoverStack . failProc`stack`env;
+            .daas.routingSysProcs[procName; `procUp`lastFail]:(0b; .z.P);
+
+            .daas.events.pubEventMessage[`routingTableUpdate;`procDown;`;`;.daas.routingMetaData];
+            .daas.events.pubEventMessage[`sysProcsTableUpdate;`procDown;`;`;.daas.routingSysProcs];
+  		]; 
+
+        /failover for rfa down
+        if[procName like "*rfavelocity*";
+            env:last split:`$"_"vs string procName;
+            stack:split 4;
+            .daas.routing.failoverStack[stack;env];
+  	    ]; 	
+
+        :();
+  	];
+  
+	/it is a routingMetaData process - set as down and failover
+    .daas.routingMetaData[procName; `procUp]:0b;
+
+    failoverTo:first .daas.routingMetaData[procName]`failoverTo;
+
+    if[null failoverTo;
+        .log.warn[`failover;;()] "Process down, no failover target [ Process: ",string[procName]," ]";
+        .daas.cmon.failover.process[procName; `];
+    ];
+
+    if[not null failoverTo;
+        .log.warn[`failover;;()] "Process down, failing over individual process [ Process: ",string[procName]," ] [ Failover To: ",string[failoverTo]," ]";
+
+        .daas.routingMetaData[procName;   `primary]:0b;
+        .daas.routingMetaData[failoverTo; `primary]:1b;
+
+        .daas.cmon.failover.process[procName; failoverTo];
+	];
+
+    .daas.events.pubEventMessage[`routingTableUpdate;`procDown;`;`;.daas.routingMetaData];
+  }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

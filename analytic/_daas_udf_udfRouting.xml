@@ -1,0 +1,55 @@
+<analytic>
+	<analytic>.daas.udf.udfRouting</analytic>
+	<code_text>{[functionName;params]
+        
+	if[.daas.cfg.procType~`qm;
+        :1?exec procName from  .daas.routingMetaData where stack=`udf,procType=`ctp,procUp,primary;
+        ];
+    
+    if[not `realtime~params`funcType;    
+    	procs:select from .daas.routingMetaData where procType=`udf_gw, procUp;
+	    ];
+        
+    if[`realtime~params`funcType;
+        dbTypes:$[all `startTime`endTime in key params;`hdb`rdb;`rdb];
+        procs:select from .daas.routingMetaData where procType in dbTypes,stack=`udf,procUp;
+        if[not count procs;'"Gateway cannot find running UDF process"];
+        :exec distinct procName from procs where primary;
+	    ];
+    
+	if[not count procs;'"Gateway cannot find running UDF process"];
+	
+    if[functionName~`saveUDF;
+        /just pick the 0 process for a and b sides
+        :exec distinct procName from procs where procNum=`0;
+        ];
+       
+    :1?exec distinct procName from procs where primary;	
+ }</code_text>
+	<description>route udf query to udf GW proc. handle round-robin routing.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>0</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

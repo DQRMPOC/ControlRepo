@@ -1,0 +1,33 @@
+<analytic>
+	<analytic>.daas.util.timeoutOn</analytic>
+	<code_text>{[]
+	/if no stored timeouts, we will set to zero
+	timeout:0;
+	
+	/if check for timeout left from .daas.util.timeoutOff
+	if[`timeout in key `.daas.original;
+		timeout:.daas.original.timeout;
+	];
+		
+	/if there is a timeout defined in the process, we reset to that instead
+	if[`dc_timeout in key `.fd; 
+        if[not null .fd.dc_timeout; 
+            timeout:.fd.dc_timeout
+        ]
+     ];
+
+    .log.out[.z.h;"Setting timeout back to ";timeout];
+    system "T ",string timeout;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

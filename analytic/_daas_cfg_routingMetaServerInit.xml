@@ -1,0 +1,28 @@
+<analytic>
+	<analytic>.daas.cfg.routingMetaServerInit</analytic>
+	<code_text>.al.loadgroupfunctions`daasRouting;
+/--meta data--/
+.tbl.gettable`.daas.routingMetaData
+.daas.events.resp.procDataRequest:.daas.routing.registerProcess
+.daas.events.resp.procDataResponse:.daas.routing.addRegisteringProcess
+
+/registering the process with the gw
+.daas.events.runOnInitialBusCon[`.daas.routing.registerProcess];
+
+.daas.events.resp.routingTableUpdate:.daas.routing.procPrimaryFromRoutingTableUpdate;
+
+.daas.events.requestMap:.daas.events.pubEventMessage[`symMapRequest;`;`;`;];
+
+/get symbology map
+.daas.events.runOnInitialBusCon[`.daas.events.requestMap];</code_text>
+	<description>Parameters that are defined on startup of a qs process</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

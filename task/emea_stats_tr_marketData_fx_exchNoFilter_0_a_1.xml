@@ -1,0 +1,11 @@
+<task>
+	<taskName>emea_stats_tr_marketData_fx_exchNoFilter_0_a.1</taskName>
+	<taskEnabled>0</taskEnabled>
+	<taskManual>0</taskManual>
+	<taskType>once</taskType>
+	<prInsName>emea_stats_tr_marketData_fx_exchNoFilter_0_a</prInsName>
+	<stDateTime></stDateTime>
+	<endDateTime></endDateTime>
+	<rptFrequency></rptFrequency>
+	<rptInterval></rptInterval>
+</task>

@@ -1,0 +1,14 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_ORDEREXEC</tablegroup>
+	<tablename>clearing</tablename>
+	<tablename>dividendCompensation</tablename>
+	<tablename>execution</tablename>
+	<tablename>fiQuoteLeg</tablename>
+	<tablename>futuresExecution</tablename>
+	<tablename>optionsExecution</tablename>
+	<tablename>order</tablename>
+	<tablename>quote</tablename>
+	<tablename>quoteLeg</tablename>
+	<tablename>settlement</tablename>
+</schemagroup>

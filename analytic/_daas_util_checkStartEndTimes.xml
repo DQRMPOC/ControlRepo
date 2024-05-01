@@ -1,0 +1,58 @@
+<analytic>
+	<analytic>.daas.util.checkStartEndTimes</analytic>
+	<code_text>{[functionName;params]
+if[params[`startDate]&gt;params`endDate;
+	:`startDate`endDate;
+	];
+if[all `startTime`endTime in key params;
+	if[(params[`startDate]=params`endDate) and not params[`startTime]&lt;params`endTime;
+		:`startTime`endTime;
+		];
+	if[not `temporality in key params;
+		if[params[`startTime]=params`endTime;
+			:`startTime`endTime; /as default is slice
+			];
+		:()
+		];
+	if[`slice=params`temporality;
+		if[params[`startTime]=params`endTime;
+			:`startTime`endTime;
+			];
+		];
+	];
+()
+ }</code_text>
+	<description>Check parameter dictionary to ensure all parameters are of the correct type.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

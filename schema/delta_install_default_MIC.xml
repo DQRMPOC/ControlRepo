@@ -1,0 +1,20 @@
+<schema>
+	<ucname>delta_install_default</ucname>
+	<table>MIC</table>
+	<description></description>
+	<keycol>sym</keycol>
+	<column>
+		<column>MIC</column>
+		<coltype>Symbol</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>sym</column>
+		<coltype>Symbol</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+</schema>

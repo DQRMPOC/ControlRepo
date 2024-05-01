@@ -1,0 +1,29 @@
+<analytic>
+	<analytic>.daas.infra.rolloverFinished</analytic>
+	<code_text>{[]
+	.log.out[.z.h;"Rollover completed sucessfully";()];
+    
+    / if an L2 process generate snapshots
+    if[.daas.cfg.asset like "*L2";
+        @[.daas.l2.buildSnapshotOnDisk;.z.D-1;{.log.out[.z.h;raze "Snapshot generation failed: ", string[x];()]}];
+        {value "delete ",string[x]," from `." } each .daas.l2.snapshotIdTb,.daas.l2.snapshotTb, .ds.cfg.replayTableList;
+        .tbl.gettable each .ds.cfg.replayTableList
+        ];
+     	
+    /First event message is for data copy framework to know write is complete         
+    .daas.events.pubEventMessage[`eodLr;`complete;.daas.cfg.asset;first (.pl.getParameters[]`hdbProcessList)`directory;()];
+  	.daas.events.pubAdminMessage[`eodLr;`complete;`;`date`region`vendor`asset`env ! (.z.D-1), value each`.daas.cfg.region`.daas.cfg.vendor`.daas.cfg.asset`.daas.cfg.env];
+ 		
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

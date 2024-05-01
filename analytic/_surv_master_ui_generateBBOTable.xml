@@ -1,0 +1,67 @@
+<analytic>
+	<analytic>.surv.master.ui.generateBBOTable</analytic>
+	<code_text>{[args]
+	thisFunc:".surv.master.ui.generateBBOTable";
+    
+    dt:args`dt;
+    args:`dt`batchName`instanceType`assetClass`region`vendor`product!(dt;`$"create_bestBidOffer_",string dt;`tableCreation;args`assetClass;args`region;args`vendor;args`product);
+    if[.surv.util.isStringTrue[.surv.setting.alertBatch.scheduleOnTrigger];args,:enlist[`schedTriggerFunction]!enlist`.surv.dl.trig.checkIfOrdersLoaded];
+    
+    .surv.master.runBatchOnClone args
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>dt</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>assetClass</name>
+				<datatype>Symbol</datatype>
+				<default>equity</default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>region</name>
+				<datatype>Symbol</datatype>
+				<default>emea</default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>vendor</name>
+				<datatype>Symbol</datatype>
+				<default>core</default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>product</name>
+				<datatype>Symbol</datatype>
+				<default>default</default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatchUI</analyticgroup>
+</analytic>

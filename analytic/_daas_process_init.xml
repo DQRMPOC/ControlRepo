@@ -1,0 +1,46 @@
+<analytic>
+	<analytic>.daas.process.init</analytic>
+	<code_text>{[]
+    
+    .log.out[`RefProcInit;"Initialisation function started";()];
+    
+    initType:.daas.init.getInitType[];
+    
+    .log.out[`RefProcInit;"Initialisation type [ ",string[initType]," ]";()];
+
+    .daas.coreFeaturesInit.loadEnabled:1b;
+    
+    / run the basic refinery core init and terminate on failure
+    coreFunc:` sv `.daas,initType,`coreInit;
+    if[not .daas.init.checkFuncExists[coreFunc];
+        .pl.report_error_and_terminate["Terminating because function [ ",string[coreFunc]," ] doesn't exist";()]
+        ];
+    
+    .daas.init.runFunc[coreFunc;1b];
+    
+    / run a custom pre init if one exists
+    .daas.init.runIfExists[` sv `.daas.custom,initType,`preInit;1b];
+
+    / run any additional refinery features if enabled and terminate on failure
+    if[.daas.coreFeaturesInit.loadEnabled;
+        .daas.init.runIfExists[` sv `.daas,initType,`coreFeaturesInit;1b];
+        ];
+    
+    / run custom init if one exists
+    .daas.init.runIfExists[` sv `.daas.custom,initType,`init;1b];
+    
+    .log.out[`RefProcInit;"Initialisation function complete";()];
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

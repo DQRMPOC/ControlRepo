@@ -1,0 +1,91 @@
+<analytic>
+	<analytic>.daas.util.l2GenOrderBook</analytic>
+	<code_text>{[nLevels;et;timeCol;symList;tableName;params]
+    
+    symList:(),symList;
+    
+    / Select entries from table leading up to params[`startTime]
+    filteredTb:$[` in symList;
+        ?[tableName;$[`date in cols tableName;enlist(within;`date;(params`startDate;params`endDate));()],enlist(&lt;=;timeCol;et);0b;()] ;
+        ?[tableName;$[`date in cols tableName;enlist(within;`date;(params`startDate;params`endDate));()],((in;`sym;enlist symList);(&lt;=;timeCol;et));0b;()]
+    ];
+    
+    / Apply message deletes and generate starting point for book build
+    preBookDict:.daas.util.l2genPreBookDict[filteredTb;timeCol;symList;params];
+
+    / From here onwards, its identical to end of .daas.util.l2GenOrderBookForIntra, merge
+    syms:exec distinct sym from preBookDict;
+    if[not count nLevelCount:exec max count each price from preBookDict;
+        '`noDataEarlyExit;
+    ];
+
+    nLevels:(exec max count each price from preBookDict)^nLevels;
+
+    levelCols:`price`size`numOrders;
+    temp:{
+        enlist each raze (flip (value y)[;til x]),'(flip (value z)[;til x])
+    }[nLevels]'[
+        b:(first each) each select reverse each price, reverse each size,reverse each numOrders by sym from preBookDict where side=`BID;
+        a:(first each) each select price,size,numOrders by sym from preBookDict where side=`ASK
+    ];
+
+    temp:(first each) each (`$("L",'string til nLevels) cross ("bid";"ask") cross @[;0;upper] each string levelCols)!/:temp;
+    startPoint:0!lj[select max time,max exchTime by sym from preBookDict;temp];
+    
+    / not sure if `newTab ever gets used from this dictionary
+    `preBookDict`newTab!(preBookDict;startPoint)
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>nLevels</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<param>
+		<parameter>et</parameter>
+		<default>1970.01.01D00:00:00</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Timestamp</datatype>
+	</param>
+	<param>
+		<parameter>timeCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>symList</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tableName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

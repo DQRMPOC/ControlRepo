@@ -1,0 +1,56 @@
+<analytic>
+	<analytic>.daas.infra.symMapCSVLoader</analytic>
+	<code_text>{[dir;file]
+    
+    .daas.events.pubEventMessage[`fileUpload;`started;file;`;()];
+    .log.out [.z.h;"upload of file STARTING ",string[file],".";()];
+    .log.out [.z.h;"upload of file PROCESSING ",string[file],".";()];
+    
+    // Read csv
+    import:("**BB";enlist",") 0:`$raze string[dir],"/",string file;
+    .daas.cfg.customSymbologyMap: update value each inputSymbol,mappedSymbol:value each mappedSymbol from import;
+    
+    // Filter grouped mappings and ungroup them
+    c:enlist (&lt;;1;(fby;(enlist;count each;`mappedSymbol);`inputSymbol));
+    .daas.cfg.customSymbologyMap:?[`.daas.cfg.customSymbologyMap;enlist(not;raze c);0b;()],ungroup ?[`.daas.cfg.customSymbologyMap;c;0b;()];
+    
+    // Update config
+    .uc.editActiveSingleParamData[`.daas.cfg.customSymbologyMap;`;.daas.cfg.customSymbologyMap];
+
+    .log.out [.z.h;"Renaming file";file];
+    filePath:`$"/" sv (string dir; string file);
+    newFile:string[file],".", raze ":" vs string .z.Z;
+    newPath:"/" sv ( string[dir]; newFile);
+    system "mv ",1_string[filePath] ," ",1_newPath;
+    .log.out [.z.h;"File renamed";newFile];
+    
+    
+    .daas.events.pubEventMessage[`newSymMap;`complete;`;`;`];
+    .log.out [.z.h;"Uploading of file COMPLETED ";newFile];
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasFilewatcher</analyticgroup>
+</analytic>

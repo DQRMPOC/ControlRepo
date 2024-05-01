@@ -1,0 +1,46 @@
+<analytic>
+	<analytic>.daas.python.loadUDFFile</analytic>
+	<code_text>{[filePath]
+	funcName:  `$first "." vs last split:"/" vs 1 _ string filePath;
+    funcType: `$last -1_split;
+    funcLang: `python;
+    
+    //attempt to load each python udf
+    @[system"l ",;1_string filePath;{}] ;
+    new:new where not (new:(.p.eval"dir()")`) like "__*";
+
+    //check the func is named same as .p file
+    if[not funcName in `$new;
+        .log.warn[`pythonUDFload;"function of name ",string[funcName]," does not exist within file";()];
+        '`err
+        ];
+
+    func:@[.p.get;funcName;{.log.warn[`pythonUDfload;"error loading ",string[funcName];x];'`err}];
+
+
+    
+    //upsert to func store
+    `.daas.udf.udfFuncStore upsert `funcName`func`active`permissionType`description`funcType`funcLang!(funcName;func;1b;`;"mypyfunc";`realtime;`python)
+ }</code_text>
+	<description>loads a UDF file on-disk into memory
+
+input: the full file path (as a kdb filepath symbol) for a UDF script file</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>filePath</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPython</analyticgroup>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

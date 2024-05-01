@@ -1,0 +1,50 @@
+<analytic>
+	<analytic>.daas.util.appendOpenClose</analytic>
+	<code_text>{[tab;params]
+timeCol:$[`~params`time;`time;params`time];
+dateCol:` sv timeCol,`date;
+if[(`closePrice in params`analytics)or `openPrice in params`analytics;
+	oc:(`sym,`time.date,oc)!(`sym,dateCol,oc:`openPrice`closePrice where (oc:`openPrice`closePrice) in params`analytics);
+	oc:?[`$string[.daas.cfg.assetPrefixes[params`assetClass]],"OpenClose";enlist(within;dateCol;(params[`sd]-1;params[`ed]));0b;oc];
+	if[all `fDate`eDate in cols tab;
+	    if[`openPrice in params`analytics;
+		    tab:![tab;();0b;(enlist`time.date)!enlist($;enlist`date;`fDate)];	
+		    tab:delete time.date,fDate from aj[`sym`time.date;tab;delete closePrice from oc];
+		    ];
+		if[`closePrice in params`analytics;
+		    tab:![tab;();0b;(enlist`time.date)!enlist($;enlist`date;`eDate)];	
+		    tab:delete time.date,eDate from aj[`sym`time.date;tab;delete openPrice from oc];
+		    ];
+		:tab
+		];
+	tab:![tab;();0b;(enlist`time.date)!enlist($;enlist`date;`time)];	
+	:delete time.date from aj[`sym`time.date;tab;oc];
+	];
+tab
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

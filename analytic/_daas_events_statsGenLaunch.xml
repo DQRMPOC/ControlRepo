@@ -1,0 +1,33 @@
+<analytic>
+	<analytic>.daas.events.statsGenLaunch</analytic>
+	<code_text>{[info]
+	hdbcopyProc:`$"_" sv string (info `region`vendor`asset),`statsGen,info`env;
+	.pl.runProcess hdbcopyProc ;
+ }</code_text>
+	<description>launches a statsGen process upon receipt of an `eodLr `complete admin event message</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>info</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

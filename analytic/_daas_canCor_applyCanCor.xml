@@ -1,0 +1,61 @@
+<analytic>
+	<analytic>.daas.canCor.applyCanCor</analytic>
+	<code_text>{[tb;params]
+	   if[0=count tb;:tb];
+	   
+       canCorTable: `$string[.daas.cfg.asset],"CanCor";
+       
+       symCol:.daas.wc.getSymCol params`idType;
+       
+       $[()~key canCorTable;
+       	:tb;
+       	// canCor records are always later than the start time, and their backscan period should start earlier than the end time. Current default backscan:7 days. backScanPeriod is in hours
+       	canCorData:.daas.util.select[canCorTable;(params `startTime;`timestamp$.z.D+1;params `time);(params`symList;symCol);();();enlist(&lt;;`time;(+;({`timespan$3600*x};((24*7)^;`backScanPeriod));params`endTime))] ];
+       
+       // fetch canCor data from rdb if we're on an HDB (reverse direction isn't needed since cancor records always come after the originals)
+       if[.ex.getProcessName[] ~ `DS_HDB;
+       		rdbHandles:.pl.openhandle[;`;`;0] each .daas.util.getRdbs[.daas.cfg.asset];
+       		rdbCanCorData: (.daas.util.trap[{y@(`.daas.util.select;canCorTable;(params `startTime;`timestamp$.z.D+1;params `time);(params`symList;symCol);();();enlist(&lt;;`time;(+;({`timespan$60*`minute$x};(0Ni^;`backScanPeriod));params`endTime)))} canCorTable;] each enlist each rdbHandles) ;
+            rdbCanCorData:$[count rdbCanCorData; raze exec result from rdbCanCorData where not error;()];
+            if[count rdbCanCorData;canCorData,: rdbCanCorData];
+            ];
+            
+       // get match indices of cancellation and correction records
+       matchIndTb:.daas.canCor.getCanCorMatchInds[tb;canCorData];
+       cancellations:select from matchIndTb where canCorType=`CAN,not null ind;
+       corrections:select from matchIndTb where canCorType=`COR,not null ind;
+		
+       res:$[0&lt;&gt;count corrections;@[tb;exec ind from corrections;,; select price:newPrice,volume:newVolume from corrections];tb];
+       :?[res;enlist(not;(in;`i;exec distinct ind from cancellations));0b;()];
+
+       //:`baseTb`canCorData`correctInds`cancelInds`res!(tb;canCorData;correctInds;cancelInds;res);
+       
+
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tb</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasCanCor</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

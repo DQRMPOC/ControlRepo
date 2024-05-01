@@ -1,0 +1,55 @@
+<analytic>
+	<analytic>.daas.admin.gwCfg</analytic>
+	<code_text>//define selectedClient
+.daas.admin.selectedClient:`;
+
+
+//FILTER MANAGEMENT
+
+// New Condition Codes section
+.al.getfunction`.daas.admin.updateTradeConditionCodes;
+.al.getfunction`.daas.admin.updateQuoteConditionCodes;
+.daas.admin.newTradeConditionCodes:2!0#.uc.getActiveParamValue[`.daas.cfg.filterRuleConfig;`];
+.daas.admin.newQuoteConditionCodes:2!0#.uc.getActiveParamValue[`.daas.cfg.quoteFilterRuleConfig;`];
+
+//import trade filter Rules cfg
+.uc.getAndSaveActiveParamValue[`.daas.cfg.filterRuleConfig;`;`.daas.cfg.filterRuleConfig;(`keyCols`action)!(`exch`cond;".daas.admin.updateTradeConditionCodes[]")];
+
+//import quote filter Rules cfg
+.uc.getAndSaveActiveParamValue[`.daas.cfg.quoteFilterRuleConfig;`;`.daas.cfg.quoteFilterRuleConfig;(`keyCols`action)!(`exch`cond;".daas.admin.updateQuoteConditionCodes[]")];
+
+//type selection dictionary
+.daas.admin.filterConfigSelect:(`trade`quote)!(`.daas.cfg.filterRuleConfig`.daas.cfg.quoteFilterRuleConfig);
+
+//SERVER MANAGEMENT
+.daas.admin.isPrimary:0b;
+.daas.admin.setPrimary:{:0b};
+
+
+//RFA Management
+.daas.admin.rfaAssetTypes:`futuresL1`futuresL2`fixedIncome`equitiesL1`equitiesL2`foreignExchange`indicies!(`fut;`futL2;`fi;`eq;`eqL2;`fx;`idx)
+
+.daas.events.resp.trthEOD:.daas.admin.trthEOD;
+
+//---box details----/
+.daas.hostname:.utils.gethost[];
+.daas.ip:`$"." sv string "h"$0x0 vs .z.a;
+
+
+//--event bus Subscription to routing meta data--/
+.al.loadgroupfunctions`daasRouting;
+.daas.routing.subToMetaTables[];
+
+</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

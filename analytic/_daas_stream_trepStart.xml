@@ -1,0 +1,74 @@
+<analytic>
+	<analytic>.daas.stream.trepStart</analytic>
+	<code_text>// Connect to event bus
+.log.out[.z.h;"running instruction";()];
+ .daas.infra.procParams[];
+ .daas.events.startEventService[];
+ 
+ 
+// Opening a handle to the QR
+  .qr.info:: first select from .ex.prh(`.pl.getRunningInformation;::)  where name like "*qr*",not name like "ds_*";
+  .qr.hostport:: hsym`$":" sv string .qr.info `ipaddress`port;
+  .qr.handle:@[hopen;.qr.hostport;{0N!"opening DR QR connection";hopen .qr.DRhostport}];
+ 
+// Load QR paramters   
+  .qr.clientID:0Ng;
+  .qr.gateways:([process:"s"$()] hostport:"s"$(); handle:"i"$(); validated:"b"$());
+  .qr.requestOk:0b;
+  .qr.requestCounter:-1i;
+  .qr.heartbeatF:0i;
+  .qr.log.normal:{[x;y;z]0N!y;-3!z};
+  .qr.log.error:{0N!y;-3!z};
+  .qr.counter:1; 
+ 
+ 
+  .qr.results:([requestID:"j"$()] runID:"j"$(); status:"s"$(); msg:(); result:());
+ `.qr.results upsert `requestID`msg`result!(-1j; (::); (::));
+  
+//Load the configs needed 
+ .daas.cfg.trepDefaultParams:flip .uc.getActiveParamValue[`.daas.cfg.trepDefaultParams;`];
+ .uc.getAndSaveActiveParamValue[`.daas.cfg.paramscfg;`;`.daas.cfg.paramscfg;()!()];
+ .uc.getAndSaveActiveParamValue[`.daas.cfg.trepPort;`;`.daas.cfg.trepPort;()!()];
+ .uc.getAndSaveActiveParamValue[`.daas.cfg.paramscfg;`;`.daas.cfg.paramscfg;()!()];
+ .daas.cfg.RDMFieldColumnsDict:(a`analytic)!(value each (a:.uc.getActiveParamValue[`.daas.cfg.RDMFieldColumnsDict;`])`RDMColumn);
+ .daas.cfg.RDMFIDColumnsDict:(a`analytic)!(value each (a:.uc.getActiveParamValue[`.daas.cfg.RDMFIDColumnsDict;`])`FID);
+ .daas.cfg.RDMLengthColumnsDict:(a`analytic)!((a:.uc.getActiveParamValue[`.daas.cfg.RDMFIDColumnsDict;`])`length);
+ .daas.cfg.assetPrefixes:`prefix xkey .uc.getActiveParamValue[`.daas.cfg.assetPrefixes;`];
+
+// set up "reply" function for logging QM responses
+ replies::([]respType:enlist[`];clientSubID:enlist[::];dbQueryID:enlist[::];addSub:enlist[0b];reason:enlist[::];queryStatus:enlist[0b]);
+ reply::{[x;y]`replies  upsert (enlist[`respType]!enlist x), y};
+ 
+// Set up subscription table 
+ .daas.stream.subs::([]clientSubID:`u#enlist[::]; analytic:enlist[`];params:enlist[::];period:enlist[0N];callbackFn:enlist[::];deltaUser:enlist[`];status:enlist[`]);
+  
+// upd function for data updates
+
+ upd::{[ids;resTb]
+ 	 .log.out[.z.h;"Publishing Ids:";ids];
+ 	 .log.out[.z.h;"Publishing Ids:";type ids];
+ 	 .log.out[.z.h;"Publishing Ids:";resTb];
+	 if[(type first ids)&lt;&gt;10h;:()]; 
+	 .daas.stream.defaultCallback[;resTb] each ids;
+	 };
+ 
+// Connect to the QM
+ controlAddress::`DC;
+// device id generation; can be defined as a fixed string here if so desired, but should be unique per device 
+ deviceID:"daasTrepPub";
+ .daas.stream.trepRefresh::()!();
+ .daas.stream.trepQRIdMap::()!();
+ .daas.stream.trepSubIdMap::()!();
+system"P 0";</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

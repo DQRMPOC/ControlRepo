@@ -1,0 +1,63 @@
+<analytic>
+	<analytic>.daas.udf.checkFunc</analytic>
+	<code_text>{[func;level]
+	if[10h=type func; func:parse func];
+	if[not 100h=type func; '"Input does not parse to a function"];
+	
+	// retrieve detailed parse info
+	funcInfo: get func;
+	
+	// check argument count
+	if[(not 1=count a:funcInfo 1) and not level; '"Function must take 1 argument: currently takes arguments ", "," sv string a]; 
+	
+	// check global refs
+	forbiddenRefs:.daas.udf.checkGlobalRefs  funcInfo 3; 
+	
+	depthInfo: funcInfo 4 + til -5 + count funcInfo;
+	// this takes care of all referenced lambdas, so .daas.udf.checkParseLines only needs to deal with forbidden inbuilt calls
+	// e.g.: hopen, system, get, value,...
+	upLevelFuncs:depthInfo where 100=type each depthInfo;
+	upLevelFuncs: 	upLevelFuncs where not any each upLevelFuncs ~/:\: value each a where (a:.daas.udf.allowedInternalFuncs) like "*.[zqQ]*";
+	forbiddenRefs: distinct forbiddenRefs, raze .z.s[;level+1] each upLevelFuncs ;
+	
+	localArgs: except[;`]raze funcInfo 1 2;
+	code: last funcInfo;
+	
+	isK: "k"=first code;
+	code :$["["=first code: (1+first ss[code;"{"]) _ -1 _ code; code where (til count code)&gt;first ss[code;"]"]; code];
+	if[isK; code: "k)",code];
+	parsedCode: parse code;
+	forbiddenRefs: distinct forbiddenRefs, .daas.udf.checkParseLines[localArgs; parsedCode];
+	
+	if[(not level) and count forbiddenRefs;
+		'"Forbidden global function/variable reference(s): ", "," sv string forbiddenRefs;
+		];
+		
+	: forbiddenRefs;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>func</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>String</datatype>
+	</param>
+	<param>
+		<parameter>level</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

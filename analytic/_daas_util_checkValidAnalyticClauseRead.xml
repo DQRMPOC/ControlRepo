@@ -1,0 +1,53 @@
+<analytic>
+	<analytic>.daas.util.checkValidAnalyticClauseRead</analytic>
+	<code_text>{[parameters]
+    //if not dict, must be a single clause
+    if[not (t:.daas.util.applyAssetClassTableName[parameters]`dataType) in key `.;
+        .tbl.gettable t;
+        ];
+    
+ 
+    //Check that the analytic paramter is a singular clause if it is not in dict format.
+    /Check if the root of the parse tree is singular, if not, it's multi clause, e.g.
+    /aggClause:(wavg;`volume;(*;2;`price))                   - root wavg, singular clause
+    /aggClause:((avg;`volume);(avg;`volume);(avg;`volume))   -first clause is not singular, multi clause
+    if[not 99=type parameters`analytics;
+        if[1&lt;count first aggClause:parameters`analytics;
+            :"analytics - Multiple aggregations must be in dictionary format with named keys";
+            ];
+        ];
+    
+    //If it is a table that needs to be pivoted to be aggregate, we cannot validate as we don't know the columns at this point
+    //For this purpose we will error trap downstream aggregations on pivoted tables
+    if[t in .daas.cfg.pivotSettings[`tableName];
+        :parameters;
+        ];
+    
+    testRead:.[?;(t;();();parameters`analytics);{(`err;x)}];
+    
+    if[`err~first testRead;
+        :"Invalid analytics clause - ",last testRead;
+        ];
+
+    //Otherwise valid read
+	:parameters
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>parameters</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

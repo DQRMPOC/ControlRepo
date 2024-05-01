@@ -1,0 +1,37 @@
+<analyticgroup>
+	<name>.daas.adminAnalytics</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.admin.ackNewQuoteCondCode</analytic>
+	<analytic>.daas.admin.ackNewTradeCondCode</analytic>
+	<analytic>.daas.admin.adHocHDBCopy</analytic>
+	<analytic>.daas.admin.addConditionCode</analytic>
+	<analytic>.daas.admin.addConditionCode_dashboard</analytic>
+	<analytic>.daas.admin.addFilterRule</analytic>
+	<analytic>.daas.admin.addNewFilter_dashboard</analytic>
+	<analytic>.daas.admin.dashQueryMapper</analytic>
+	<analytic>.daas.admin.editFilterConfigParam</analytic>
+	<analytic>.daas.admin.eodAdminGW</analytic>
+	<analytic>.daas.admin.filterConfigUpdate</analytic>
+	<analytic>.daas.admin.getRdbRespStatus</analytic>
+	<analytic>.daas.admin.getRfaAssetTypes</analytic>
+	<analytic>.daas.admin.getStatusCodeSummary</analytic>
+	<analytic>.daas.admin.getTrRdbHandles</analytic>
+	<analytic>.daas.admin.gwCfg</analytic>
+	<analytic>.daas.admin.logOut</analytic>
+	<analytic>.daas.admin.newConditionCodesUpdate</analytic>
+	<analytic>.daas.admin.queryMapper</analytic>
+	<analytic>.daas.admin.removeConditionCode</analytic>
+	<analytic>.daas.admin.removeConditionCode_dashboard</analytic>
+	<analytic>.daas.admin.removeFilter</analytic>
+	<analytic>.daas.admin.removeFilterRule</analytic>
+	<analytic>.daas.admin.removeFilterRule_dashboard</analytic>
+	<analytic>.daas.admin.triggerAdhocHDBCopy</analytic>
+	<analytic>.daas.admin.triggerAdhocHDBCopy_dashboard</analytic>
+	<analytic>.daas.admin.trthEOD</analytic>
+	<analytic>.daas.admin.viewFilterRules</analytic>
+	<analytic>.daas.admin.writeStringToBash</analytic>
+	<analytic>.daas.adminGw.coreInit</analytic>
+	<analytic>.daas.events.resp.eodAdminGW</analytic>
+	<analyticgroup>.daas.admin.dash.rfaWatchList</analyticgroup>
+	<visibility>private</visibility>
+</analyticgroup>

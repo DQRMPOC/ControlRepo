@@ -1,0 +1,62 @@
+<analytic>
+	<analytic>.daas.cfg.gwCfg</analytic>
+	<code_text>/ Load core configuration 
+.al.loadinstruction `.daas.cfg.coreFeatures
+
+/ Load entrypoint specific configuration
+
+/ api name mapping 
+getTicks:getTicksAsync
+getStats:getStatsAsync
+getBars:getBarsAsync
+getRef:getRefAsync
+getSummary:getSummaryAsync
+getBenchmarks:getTicksSync
+getInstrumentTaxonomy:getInstrumentTaxonomyAsync
+
+if[.daas.cfg.procType=`gw;
+	getUDF:getUDFAsync;
+	getUDFInfo:getUDFInfoAsync;
+	saveUDF:saveUDFAsync;
+	deleteUDF:deleteUDFAsync;
+	];
+
+
+/ gateway registration
+// @see .daas.cfg.routingMetaGWInit
+.uc.getAndSaveActiveParamValue[`.daas.cfg.routingGWs;`; `.daas.cfg.routingGWs; ()!()];
+
+
+/ query logging and caching
+// @see .daas.async.run
+.al.callfunction[`.daas.async.init] 10;
+.daas.hostname:.utils.gethost[];
+.daas.ip:`$"." sv string "h"$0x0 vs .z.a;
+
+
+/ data browser dashboard
+// TODO: Remove these as they cause user sessions to affect eachother
+.daas.dashboards.queryResult:();
+.daas.dashboards.getTicksResult:();
+.daas.dashboards.getStatsResult:();
+.daas.dashboards.getBarsResult:();
+.daas.dashboards.freeformResult:();
+
+
+/ parameter checking
+// @see .daas.util.checkParams
+// @see .daas.util.checkValidParams
+.daas.cfg.eqSummaryCols:.tbl.gettabledetails[`eqSummary]`colnames;
+.daas.cfg.taxonomyParams:.uc.getActiveParamValue[`.daas.cfg.taxonomyParams;`];
+.daas.cfg.defaultSource:first .uc.getActiveParamValue[`.daas.cfg.defaultSource;`]`defaultSource;</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

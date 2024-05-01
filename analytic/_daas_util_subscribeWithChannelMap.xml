@@ -1,0 +1,55 @@
+<analytic>
+	<analytic>.daas.util.subscribeWithChannelMap</analytic>
+	<code_text>{[tabMap;table;identifiers]
+	//Create table map outisde this func and hand in (as requires sync messaging to DC)
+    
+    channels:exec channel from tabMap where table in/: tabs;
+    
+    //If we have two channels we need to filter by env (could be _a or _b)
+    if[1&lt;count channels;
+        env:$[`env in key .daas.cfg;
+            .daas.cfg.env;
+            `$last "_" vs string .ex.getInstanceName[]
+            ];   
+        channelOnEnv:channels where channels like "*_",string env;
+        if[count channelOnEnv;
+            channels:channelOnEnv;
+            ];
+        ];
+    
+    //Channel is going to be list because of exec so do each
+    .daas.util.symSub[;table;identifiers] each channels
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tabMap</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>table</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>identifiers</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,37 @@
+<analyticgroup>
+	<name>daasRouting</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.routing.QPTableUpdate</analytic>
+	<analytic>.daas.routing.addRegisteringGWProcess</analytic>
+	<analytic>.daas.routing.addRegisteringProcess</analytic>
+	<analytic>.daas.routing.addRegisteringQPProcess</analytic>
+	<analytic>.daas.routing.addRegisteringSysProcess</analytic>
+	<analytic>.daas.routing.failoverStack</analytic>
+	<analytic>.daas.routing.failoverStackEvent</analytic>
+	<analytic>.daas.routing.gatewayTableUpdate</analytic>
+	<analytic>.daas.routing.procDown</analytic>
+	<analytic>.daas.routing.procHandleDrop</analytic>
+	<analytic>.daas.routing.procPrimaryFromRoutingTableUpdate</analytic>
+	<analytic>.daas.routing.procStart</analytic>
+	<analytic>.daas.routing.publishGatewayTable</analytic>
+	<analytic>.daas.routing.publishQPTable</analytic>
+	<analytic>.daas.routing.publishRoutingTable</analytic>
+	<analytic>.daas.routing.publishSysProcsTable</analytic>
+	<analytic>.daas.routing.registerGatewayProcess</analytic>
+	<analytic>.daas.routing.registerProcess</analytic>
+	<analytic>.daas.routing.registerQP</analytic>
+	<analytic>.daas.routing.registerSysProcess</analytic>
+	<analytic>.daas.routing.requestGatewayProcsTable</analytic>
+	<analytic>.daas.routing.requestQPProcsTable</analytic>
+	<analytic>.daas.routing.requestRoutingTable</analytic>
+	<analytic>.daas.routing.requestSysProcsTable</analytic>
+	<analytic>.daas.routing.routingTableUpdate</analytic>
+	<analytic>.daas.routing.setPrimary</analytic>
+	<analytic>.daas.routing.setPrimaryEvent</analytic>
+	<analytic>.daas.routing.subToMetaTables</analytic>
+	<analytic>.daas.routing.sysProcsTableUpdate</analytic>
+	<analytic>.daas.udf.checkAllowedFunctions</analytic>
+	<analytic>.daas.udf.checkAndAdjustUDF</analytic>
+	<analytic>.daas.udf.udfRouting</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

@@ -1,0 +1,47 @@
+<analytic>
+	<analytic>.daas.stream.defaultCallback</analytic>
+	<code_text>{[id;data]
+	if[98&lt;&gt;type data;
+		:()
+		];
+	/rename cols
+	id:`$id;
+	if[.daas.stream.trepRefresh[id];.daas.stream.trepRefreshMsg[id;data];:()];
+    newTab::.daas.cfg.RDMFieldColumnsDict[cols data] xcol data;
+    /params for id get
+    .ch.id:id;
+	h:.daas.stream.trepSubIdMap[id];
+	if[null h;:()];
+	/change timestamp type to timespan
+	![`newTab;();0b;(enlist`VTA_PROCESS_TIME)!enlist (mmu;enlist`timespan;`VTA_PROCESS_TIME)];
+	/get the handle and publish
+	.trep.publishFlat[h;newTab];
+	/add a line saying stream is closed once it's passed end time, command not in trep publisher yet
+	/if[first((`$string["j"$.z.P])&gt;params[`end]);.trep.setRICStatus[first params[`symList];2i]];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>id</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

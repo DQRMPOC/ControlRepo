@@ -1,0 +1,74 @@
+<analytic>
+	<analytic>.daas.maint.histStatsGen</analytic>
+	<code_text>{[dataClass;sd;ed]
+	/extend to take region and source
+ 	//Queue schema is extension of .daas.rules, allow schema to be flexible for custom bars
+ 	.daas.statsGen.jobQueue:([]jobID:();slaveNum:();region:();source:();dataClass:();date:();processName:();directoryPath:();args:());
+ 	/ jobID | slaveNum | region | source | dataClass | date | processName | directoryPath | args
+ 	
+ 	//new job meta
+ 	/start with rules, as is current implimentation
+ 	.daas.Rules:?[.uc.getActiveParamValue[`.daas.cfg.statsHDB;`];enlist(=;`assetClass;enlist(dataClass));0b;()];
+ 	
+	/compress bar options into a dict - end state aim is for this to be a getStats argument set tagged to a hdb
+ 	argSet:update args:(![.daas.Rules;();0b;3#cols .daas.Rules]) from select processName,directoryPath,dataClass:assetClass from .daas.Rules;
+ 	
+ 	/expand dates and create full job set
+ 	dates:sd + til ((ed)-sd)+1;
+ 	a:count argSet;
+ 	fullset:update date:(raze a#/:dates) from(b:(count dates)*a)#argSet;
+ 	
+ 	/just going to pull region and source out of process name right now
+ 	/TODO: update rules config to include theses parameters
+ 	new:update jobID:b?0Ng,slaveNum:0n,region:(("_" vs/:string processName)[;0]),source:(("_" vs/:string processName)[;2]) from fullset;
+ 	 	
+ 	/add jobs to queue
+ 	`.daas.statsGen.jobQueue upsert new;
+ 	
+ 	//TODO: Build slave workers to process jobs
+ 	
+ 	/TEMPORARY - until slaves are build
+ 	/Pick top job
+ 	
+ 	@[.daas.statsGen.statsGenJob;
+ 		;
+ 		{.daas.processing.unlockHDB[.handles.hdbs];
+ 			.handles.blocked:0b;
+			.log.out[`statsGen;".daas.maint.histStatsGen failed with error [ ",x," ], unblocked hdbs";()];		
+			}
+		] each .daas.statsGen.jobQueue;
+ 	delete from `.daas.statsGen.jobQueue;
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dataClass</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>sd</parameter>
+		<default>1970.01.01</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>ed</parameter>
+		<default>1970.01.01</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

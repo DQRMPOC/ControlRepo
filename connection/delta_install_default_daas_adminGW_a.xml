@@ -1,0 +1,15 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>daas_adminGW_a</connection>
+	<host>ENV=daas_adminGw_a_HOST=</host>
+	<port>ENV=daas_adminGw_a_PORT=</port>
+	<user></user>
+	<pass></pass>
+	<dbname></dbname>
+	<dbtype>q</dbtype>
+	<tls></tls>
+	<dataconnectiongroup>daas_adminGW</dataconnectiongroup>
+	<dataconnectiongroup>daas_admin_connectionGrp</dataconnectiongroup>
+	<primarystatus>primary</primarystatus>
+	<primarystatus>backup</primarystatus>
+</connection>

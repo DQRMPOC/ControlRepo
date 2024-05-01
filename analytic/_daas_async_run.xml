@@ -1,0 +1,147 @@
+<analytic>
+	<analytic>.daas.async.run</analytic>
+	<code_text>{[queryParams]
+
+    /choose process targets
+    queryParams[`userGroups]:exec ugroup from .pm.ugroup where member=.z.u;
+    servers:.daas.util.targetProcMeta[queryParams`input;queryParams`API];
+    
+    if[servers~`noTargetError;
+        .daas.log.logErrorAndSignal["No servers registered that support the requested query:";queryParams];
+        ];
+    
+    /log the query
+    newQueryLog:`requestNum`requestTime`hostname`ip`status`serversRequested`numberOfServersRequested`debug!(.daas.gw.queryNum+:1;.z.P;.daas.hostname;.daas.ip;`Pending;(),servers;count servers;());
+    newQueryLog,:`user`handle`function`arguments!queryParams`user`handle`analytic`input;
+    
+    `.daas.queryLog upsert newQueryLog;
+    
+    if[count key`.daas.log.logh;
+        .daas.log.logh enlist (`.daas.log.replay;(enlist[`requestNum]!enlist .daas.gw.queryNum),.daas.queryLog .daas.gw.queryNum);
+     ];
+    
+    /Add query number to the query
+    queryParams[`queryNum]:.daas.gw.queryNum;
+    
+    /add query to cache - stores query details, and holds the partial results
+    .daas.queryCache[.daas.gw.queryNum]:(queryParams`user;queryParams`handle;.z.P;`Pending;queryParams`analytic;queryParams`input;();0;count servers;(),servers);
+    
+    /get handles to servers
+    handles:exec asyncHandle from .ds.gw.getServerDetails[] where name in servers;
+    
+    
+    if[any[null handles] or not count handles;
+    	update status:`Error, debug:enlist"server connection error" from `.daas.queryLog where requestNum = .daas.gw.queryNum;
+    	/remove entry from cache
+    	delete from `.daas.queryCache where queryNum = .daas.gw.queryNum;
+    	.daas.log.logErrorAndSignal["No handle to the server(s) - ";.daas.util.targetProcMetaFailure[queryParams`input;queryParams`API]];
+    	];
+    	
+    /send the query to the servers
+    -25!(handles; (.daas.async.serverExecution; queryParams));
+     
+    /clearing cache count
+    .daas.queryCache:(key select from
+    						(update ind:til count i by user from select from .daas.queryCache where status=`Completed) 
+    				where (0W^ind) &lt;  ((count;i) fby ([]user)) - .daas.async.maxCache) 
+    				_ .daas.queryCache;
+    
+    
+    /if client connection is async end here
+    if[`async~queryParams`clientMode;
+    	:(::);
+     ];
+    	
+    	
+    //BELOW IS ADDED IN FOR SYNC IN ASYNC BACK END   
+    /block handles until return is back
+    handles@\:"";
+    
+    /sort this out on key
+    query:select from .daas.queryCache where queryNum = .daas.gw.queryNum;
+    query:flip 0!query;
+    
+    /remove entry from cache
+    delete from `.daas.queryCache where queryNum = .daas.gw.queryNum;
+    
+    
+    /if failure
+    if[.daas.async.failureFlag;
+        update status:`Failed, executionTime:.z.P-requestTime, returnRowCount:0N, debug:string query`status from `.daas.queryLog where requestNum = .daas.gw.queryNum;
+        .daas.cmon.gw.queryStatus[0b; first each .daas.cmon.gw.cfg.queryKeys#query];
+    
+        .daas.async.failureFlag:0b;
+    	.daas.log.logErrorAndSignal["Error";query`status];
+    ];
+    	
+    
+    return:raze query`return;
+    /aggregate the data
+    $[(not queryParams[`API] in `getBars`getSummary`getRef`getInstrumentTaxonomy`getUDFInfo`saveUDF`deleteUDF);
+    	return:getJoin return;
+    / else
+    	return:raze return
+    ];
+    
+    /mark as complete in query log
+    update status:`Complete, executionTime:.z.P-requestTime, returnRowCount:count return from `.daas.queryLog where requestNum = .daas.gw.queryNum;
+    
+    .daas.cmon.gw.queryStatus[1b; first each .daas.cmon.gw.cfg.queryKeys#query];
+    
+    :return;
+    }</code_text>
+	<description>async framework for daas</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>queryParams</parameter>
+		<default>
+			<dictkey>
+				<name>user</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>identifier</name>
+				<datatype>Character[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>analytic</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>report</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>input</name>
+				<datatype>Boolean[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description>This input is a dictionary of parameters to be passed to the underlying analytic</description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasAsync</analyticgroup>
+</analytic>

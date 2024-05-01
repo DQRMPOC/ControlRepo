@@ -1,0 +1,18 @@
+<analytic>
+	<analytic>.surv.ui.backtest.getBatchOverrides</analytic>
+	<code_text>{[]
+	:([]asc (`$"(null)"),@[.ex.prh;(`.uc.getActiveParamOrides;`SURV_ALERT_BATCH);{.log.err[.z.h;"Failed to get validation override";x]}])
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBacktest</analyticgroup>
+</analytic>

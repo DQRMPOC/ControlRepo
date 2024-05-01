@@ -1,0 +1,93 @@
+<analytic>
+	<analytic>.daas.wc.temporality</analytic>
+	<code_text>{[timeCol;startTime;endTime;temporality;granularityUnit;apiName]
+    
+    // continuous temporality doesn't need an extra time filter
+    // this is handled by the `time` part of the where clause 
+    if[temporality~`continuous;
+        :()
+        ];
+    
+    // slice temporality handling 
+    
+    // default where clause in startTime&lt;=endTime
+    // and the api isn't getBars
+    sliceWC:enlist (within;timeCol;(startTime;endTime));
+    
+    
+     // TODO: Fix hardcoding of time col for bars 
+    if[getBarsCall:apiName~`getBars;
+        timeCol:`time
+        ];
+    
+    // TODO: Find reason for subtracting a milli and comment it here
+    if[(not granularityUnit~`day)  and getBarsCall;
+        sliceWC:enlist (within;`time;(startTime;endTime - 00:00:00.001))
+        ];
+    
+    // TODO: Find reason for the &gt; / &gt;= split based on API or remove if not
+   if[startTime&gt;endTime;
+        sliceWC:$[getBarsCall;
+            enlist (|;(&gt;=;timeCol;startTime);(&lt;;timeCol;endTime));
+            enlist (|;(&gt;=;timeCol;startTime);(&lt;=;timeCol;endTime))
+            ];
+        ];	
+
+    sliceWC
+    
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>timeCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>startTime</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>endTime</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>temporality</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>granularityUnit</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>apiName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasWhereClause</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

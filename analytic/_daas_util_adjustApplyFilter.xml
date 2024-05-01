@@ -1,0 +1,79 @@
+<analytic>
+	<analytic>.daas.util.adjustApplyFilter</analytic>
+	<code_text>{[functionName;args]
+
+    if[not `applyFilter in key args;
+    	:();
+    	];
+    
+    
+    if[not count filters:args`applyFilter;
+    	:args;
+    	];
+    if[(all 1=count each filters) or (`within~`$string first filters) or (`in~`$string first filters) or (all($[(type f:first filters)in(-10h;10h);`$f;f]) in key .daas.cfg.applyFilterFuncDict);
+    	args[`applyFilter]:enlist args`applyFilter;
+    	];
+    
+    if[(`like~`$string first filters);:args];
+    	
+    //enlist symbol and string values (enlist again if checking for single string)
+    args[`applyFilter]:{.[x;((where ({abs type first x} each x[;2]) in 10 11h);2);enlist]} args[`applyFilter];
+    args[`applyFilter]:{.[x;((where ({abs type first x} each x[;2]) = 10);2);enlist]} args[`applyFilter];
+    
+    /adjust args - at this point we know the filters contain valid operators so just replace with the functional form - if string cast to sym to avoid multiple values being selected
+    args[`applyFilter]:{x[0]:.daas.cfg.applyFilterFuncDict[ $[(type x[0])in(-10h;10h);`$x[0];x[0]] ];x}each args[`applyFilter];
+    
+    //If we're doing a pivoted getTicks
+    if[(not 0b~args[`pivot]) and functionName~`getTicks;
+        if[(1b~args[`pivot]) or 1b~first exec pivotForGetTicks from .daas.cfg.pivotSettings where tableName=args[`dataType];
+            
+            //Put the sym in the apply filter into the symList
+            args[`reqSyms]:args`symList;
+            args[`symList]:args[`symList],.daas.util.stripAnalyticSyms[args]`readSyms;
+            
+            //drop the filter and apply after pivoting.
+            args[`postPivotApplyFilter]:args`applyFilter;
+            args[`applyFilter]:();
+            
+            ];
+        ];     
+   
+   
+    
+    
+    args
+ }</code_text>
+	<description>Apply default parameters for any parameters not already present in the dictionary passed in.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

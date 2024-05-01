@@ -1,0 +1,7 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_IDX_RTE</tablegroup>
+	<tablename>idxQuote</tablename>
+	<tablename>idxSummary</tablename>
+	<tablename>idxTrade</tablename>
+</schemagroup>

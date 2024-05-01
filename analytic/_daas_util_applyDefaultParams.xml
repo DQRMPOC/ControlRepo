@@ -1,0 +1,70 @@
+<analytic>
+	<analytic>.daas.util.applyDefaultParams</analytic>
+	<code_text>{[functionName;args]
+
+	// If getBars must set cancor explicitly off default and name the filter
+	// in the argument dictionary so they don't overwrite default
+    // TODO: Look for a better place for this logic
+    if[functionName~`getBars;
+       if[not `applyCanCor in key args;
+            args[`applyCanCor]:0b;
+            ];
+        if[args[`filterRule]~`;
+            args[`filterRule]:`nofilter;
+            ];	
+        ];
+
+    //Apply filter must be empty clause
+    if[not `applyFilter in key args;
+        args[`applyFilter]:();
+        ];
+    
+    //For tables that are pivoted we can default the API to pivot and fill
+    args:.daas.util.applyDefaultPivoting[functionName;args];
+    
+    //Lookup rest of defaults as they are same across APIs
+    defaults:.daas.cfg.defaultParamDict[functionName];
+
+    schema:.daas.meta.getSchemaFromDataType args[`dataType];
+    idType:.daas.meta.cfg.defaultSymCol^.daas.meta.cfg.schemaToSymColMap[schema];
+    timeCol:.daas.meta.cfg.defaultTimeCol^.daas.meta.cfg.schemaToTimeParamMap[schema];
+    
+    defaults[`idType`time]:(idType;timeCol);
+
+    defaults,args
+ 
+    }</code_text>
+	<description>Apply default parameters for any parameters not already present in the dictionary passed in.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,26 @@
+<analytic>
+	<analytic>.daas.udf.reloadUDF</analytic>
+	<code_text>{[]
+	//async shot to reload funcs
+    asyncShotReload:{
+        handles:exec handle from .pl.getRunningInformation[] where name like "*udf*",not any each flip name like/: ("*rdb*";"*pdb*";"*hdb*";"*tp*";"*ctp*";"*Daemon*");
+        neg[handles] @\: (`.daas.udf.loadUDFFuncs;`)
+        };
+    
+    .ex.prh(asyncShotReload;::);
+    .daas.udf.udfFuncStore:1#.daas.udf.udfFuncStore;
+    .daas.udf.loadUDFFuncs`;
+    :`RELOADED
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

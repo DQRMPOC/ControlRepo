@@ -1,0 +1,28 @@
+<analytic>
+	<analytic>.daas.cmon.q.getRdbFlushStatus</analytic>
+	<code_text>{[]
+    completeStatus:.daas.cmon.q.i.getGenericMetricData[`process; `rdb.eodFlush; `complete; `complete; 1b];
+    completeStatus:update complete:0b from completeStatus where complete~\:();
+
+    deleteStatus:.daas.cmon.q.i.getGenericMetricData[`process; `rdb.eodFlush; `deletedBefore; `deletedBefore; 1b];
+    deleteStatus:update deletedBefore:0Np from deleteStatus where deletedBefore~\:();
+
+    rdbs:select from (completeStatus lj 1!deleteStatus) where processName like "*rdb*";
+    rdbs:update status:`NOT_OK from rdbs where not[complete] | null complete;
+    rdbs:update status:`OK from rdbs where null status;
+
+    :`completed`registered _ rdbs;
+}
+    </code_text>
+	<description>Refinery Monitoring - RDB Flush Check</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

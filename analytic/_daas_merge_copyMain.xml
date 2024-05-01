@@ -1,0 +1,67 @@
+<analytic>
+	<analytic>.daas.merge.copyMain</analytic>
+	<code_text>{[dir]
+
+
+
+	mergeHdblog:`$getenv[`DAAS_MERGED_PREHDB],last "hdblog" vs string dir;
+	mergeHdblogBase:"/" sv -1_ "/" vs string mergeHdblog;
+	/does the root hdb directory exit?
+	if[not count @[system;"ls -l ",mergeHdblogBase;{()}];
+		/if not make it
+		cmd1:"mkdir -p ",mergeHdblogBase;
+		.log.out[.z.h;"making directory";mergeHdblogBase];
+		system cmd1;
+		];
+	
+	/does the date partition exist?
+	if[count @[system;"ls -l ",string mergeHdblog;{()}];
+		.log.out[.z.h;"Date parition already in the merge directory, not copying";mergeHdblog];
+		];
+	/if not attempt to copy it out of main
+	if[not count @[system;"ls -l ",string mergeHdblog;{()}];
+		/does it exist in main?
+		if[not count @[system;"ls -l ",string dir;{()}];
+			/if not, tell the merge slave it's a reenum and mv.
+			.log.out[.z.h;"no date in main to merge -temp break";()];
+			/set global flag indicating that the source is now the new DB.
+			.daas.merge.replace:1b;
+			:`$":",string mergeHdblog;
+			];
+		
+		/if it is a replace, then we want empty date dir
+		if[.daas.merge.replace;
+			cmd2:"mkdir -p ",string mergeHdblog;
+			.log.out[.z.h;"replace mode - creating empty date partition";()];
+			system cmd2;
+			:`$":",string mergeHdblog;
+			];
+			
+		/copy from main
+		cmd3:"cp -r "," " sv string(dir;`$(raze "/" sv -1_"/" vs string mergeHdblog),"/");	
+		.log.out[.z.h;"Copying data out of main";cmd2];
+		system cmd3;
+		];
+	
+
+	:`$":",string mergeHdblog;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

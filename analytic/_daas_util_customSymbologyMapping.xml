@@ -1,0 +1,46 @@
+<analytic>
+	<analytic>.daas.util.customSymbologyMapping</analytic>
+	<code_text>{[params]
+/handle missing/unpopulated map 
+if[not `customSymbologyMap in key `.daas.cfg; params[`symSwaps]:0b;:params];
+if[not count .daas.cfg.customSymbologyMap; params[`symSwaps]:0b;:params];	
+	
+	if[`customSymbologyMapping in key params;
+		if[params`customSymbologyMapping;
+			symSwaps:?[.daas.cfg.customSymbologyMap;enlist(in;`inputSymbol;enlist params`symList);0b;(`inputSymbol`mappedSymbol`returnAsMappedSym)!`inputSymbol`mappedSymbol`returnAsMappedSym];
+			params[`symList]:(raze symSwaps[`mappedSymbol],params[`symList])except symSwaps`inputSymbol;
+			symSwaps:delete returnAsMappedSym from update inputSymbol:mappedSymbol from symSwaps where returnAsMappedSym;
+			params[`symSwaps]:symSwaps,([]inputSymbol:a;mappedSymbol:a:((),params[`symList]) except raze symSwaps`mappedSymbol);
+			:params;
+			];
+		];
+	if[any params[`symList]in .daas.cfg.alwaysMappedCustomSymbols;
+		symSwaps:?[.daas.cfg.customSymbologyMap;(`alwaysMap;(in;`inputSymbol;enlist params`symList));0b;(`inputSymbol`mappedSymbol`returnAsMappedSym)!`inputSymbol`mappedSymbol`returnAsMappedSym];
+		params[`symList]:(raze symSwaps[`mappedSymbol],params[`symList])except symSwaps`inputSymbol;		
+		symSwaps:delete returnAsMappedSym from update inputSymbol:mappedSymbol from symSwaps where returnAsMappedSym;
+		params[`symSwaps]:symSwaps,([]inputSymbol:a;mappedSymbol:a:((),params[`symList]) except raze symSwaps`mappedSymbol);
+		params[`customSymbologyMapping]:1b;
+		:params;		
+		];
+	params[`symSwaps]:0b;
+	params
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

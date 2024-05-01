@@ -1,0 +1,31 @@
+<analytic>
+	<analytic>.daas.events.resp.eodL2Rte</analytic>
+	<code_text>{[data]
+		if[`begin=data`tag1;
+			.daas.events.pubEventMessage[`eodL2Rte;`started;.daas.cfg.asset;`;data`info];
+			
+			res:.daas.util.trap[.daas.infra.l2rteEOD;enlist data[`info]`date];
+			$[res`error;
+				[.daas.events.pubEventMessage[`eodL2Rte;`failed;.daas.cfg.asset;`;(data`info),(enlist[`error]!enlist[res`result])];' res`result];
+				.daas.events.pubEventMessage[`eodL2Rte;`complete;.daas.cfg.asset;`;data`info]];
+			];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

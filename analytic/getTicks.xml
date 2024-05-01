@@ -1,0 +1,243 @@
+<analytic>
+	<analytic>getTicks</analytic>
+	<code_text>{[args] 
+
+    if[not `stream in key args;
+        args[`stream]:0b;
+        ];
+
+    /check and adjust
+    args:.daas.util.adjustParams[`getTicks;args];
+
+    /Level 2 data 
+    if[(`depth=args`dataType) and any(`equity`future=\:args`assetClass);
+        if[args`stream;
+            args[`colClause]:();
+            :.daas.util.initiateTickStream[.daas.util.applyAssetClassTableName[args]];
+            ];
+        :.daas.util.runl2[args]
+        ];
+
+    /Snapshot data
+    if[(`snapshot=args`temporality)and not args`stream;
+        :.daas.util.getSnapshots[args];
+        ];
+
+    /TaQ data
+    if[(args`dataType) in `taq`taqWide; 
+        res:.daas.util.runTaqQuery[args];
+         ];
+
+    /Regular tick retrieval 
+    if[not args[`dataType] in `taq`taqWide`depth; 
+        whereClause:.daas.util.genWhereClause[args];
+        args[`symCol]:.daas.wc.getSymCol args`idType;
+
+        args:.daas.util.applyAssetClassTableName[args];
+        colClause:.daas.util.genTicksColClause[args];
+
+
+        /set up tick streaming
+        if[args`stream;
+            :.daas.util.initiateTickStream[args,`whereClause`colClause!(whereClause;colClause)];
+            ];
+
+        /apply cancels and corrections
+         $[args[`applyCanCor]&amp;not null .daas.cfg.canCorTargets[args`dataType];
+           [   
+            res:.daas.util.select[args`dataType;(args`startTime;args`endTime;args`time);(args`symList;args`symCol);();();whereClause];
+            res:.daas.canCor.applyCanCor[res;args];
+            res:?[res;whereClause;0b;colClause]
+            ];
+           res:0!.daas.util.select[args`dataType;(args`startTime;args`endTime;args`time);(args`symList;args`symCol);colClause;();whereClause]
+         ];
+      ];
+
+
+    /Adjustments to retrieved data
+    res:.daas.util.convertOnDiskTZtoOutboundTZ[args;res];
+    /res:.daas.util.timeSort[res;args];
+    res:.daas.util.sortCols[res;args];
+    res:.daas.util.showFilters[res;args];
+    res:.daas.util.customSymbologyMappingSwapBack[res;args];
+    if[`adjustCorAx in key args;
+      if[args`adjustCorAx;
+          :(.daas.util.adjustCorporateActions[res;args];args)
+          ]
+    ];
+    //Finally pivot if needed and return
+    :.daas.util.pivotDataset[res;args;0b];
+
+    }</code_text>
+	<description>Select from server, applying conditions passed in params dictionary.
+Concatenate qualifiers.
+Select from result table where entries are valid based on concatenated qualifiers.
+Convert timestamps from UTC to local time.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias>getTicks</alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>symList</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>dataType</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>assetClass</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>startDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>endDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>inputTimeZone</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>outputTimeZone</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>timeZone</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>startTime</name>
+				<datatype>Time</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>endTime</name>
+				<datatype>Time</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>temporality</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>filterRule</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>time</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>adjustCorAx</name>
+				<datatype>Boolean</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>applyCanCor</name>
+				<datatype>Boolean</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>columns</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>sortCols</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>trackSym</name>
+				<datatype>Boolean</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>idType</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>applyFilter</name>
+				<datatype>NullType</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>numLevels</name>
+				<datatype>Integer</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description></description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasQR</analyticgroup>
+	<analyticgroup>daasQS</analyticgroup>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

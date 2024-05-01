@@ -1,0 +1,36 @@
+<process>
+	<process>daas_processing_fm</process>
+	<directory>/</directory>
+	<file>daas_trth_fm_copy.q</file>
+	<description>TRTH feed monitor template</description>
+	<apps></apps>
+	<returnstat></returnstat>
+	<param>
+		<parameter>messagingServer</parameter>
+		<description>Delta Messaging Server</description>
+		<datatype>Config</datatype>
+		<required>1</required>
+		<default>DS_MESSAGING_SERVER</default>
+	</param>
+	<param>
+		<parameter>initialStateFunct</parameter>
+		<description>Specifies initial state tasks and sets call backs.</description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>dxEmptyFunctionNull</default>
+	</param>
+	<param>
+		<parameter>dc_host</parameter>
+		<description>Host</description>
+		<datatype>Symbol</datatype>
+		<required>1</required>
+		<default>No_host_set</default>
+	</param>
+	<param>
+		<parameter>dc_port</parameter>
+		<description>Port</description>
+		<datatype>Integer</datatype>
+		<required>1</required>
+		<default>0</default>
+	</param>
+</process>

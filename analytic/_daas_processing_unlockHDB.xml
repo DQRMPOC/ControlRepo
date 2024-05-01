@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.processing.unlockHDB</analytic>
+	<code_text>{[handles]
+	{
+	/6 call unblock
+		neg[x]".daas.infra.unlockHDB[.z.w]";
+		x"";
+		.log.out[.z.h;"Sent unblock to HDB";()];
+	} each handles
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>handles</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer[]</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

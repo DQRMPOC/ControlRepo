@@ -1,0 +1,45 @@
+<analytic>
+	<analytic>.daas.stream.tickSnapshot</analytic>
+	<code_text>{[id]
+
+	params: .daas.stream.streamSubs[id;`params];
+	
+	whereClause:$[`~params`symList;();enlist(in;`sym;enlist params`symList)];
+	/whereClause:$[`=params`symList;();enlist(in;`sym;params`symList)];
+	
+	/if orderExec, nothing
+	if[params[`dataType] in .surv.util.getTableNameForAssetClass[;params`assetClass]each .surv.util.getParamValue[`SURV_STREAMING_TABS;`];
+		:?[0#value params`dataType;();0b;params[`colClause]!params[`colClause]]
+		];
+	
+	/if level 1, publish out last record	
+	if[not params[`dataType] like "*Update";
+		columnClause:$[count a:params`colClause;a!a;()];
+		:?[`time`sym xcols 0!value .daas.stream.lastTable params`dataType;whereClause;0b;columnClause]
+		];
+	
+	/if level 2, push out image of book
+	if[params[`dataType] like "*Update";
+		tab:?[.daas.stream.L2booktab params[`dataType];whereClause;0b;()];
+	    :.daas.util.l2BookFromdict[tab];
+		];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>id</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Long</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

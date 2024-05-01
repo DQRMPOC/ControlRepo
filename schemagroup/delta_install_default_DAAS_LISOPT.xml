@@ -1,0 +1,14 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_LISOPT</tablegroup>
+	<tablename>ConditionalAnalytics</tablename>
+	<tablename>auction</tablename>
+	<tablename>dacsUpdate</tablename>
+	<tablename>lisOptCanCor</tablename>
+	<tablename>lisOptOpenClose</tablename>
+	<tablename>lisOptQuote</tablename>
+	<tablename>lisOptTrade</tablename>
+	<tablename>openInterest</tablename>
+	<tablename>respStatus</tablename>
+	<tablename>ricInfo</tablename>
+</schemagroup>

@@ -1,0 +1,75 @@
+<analytic>
+	<analytic>dxReportWriteToPartitioned</analytic>
+	<code_text>{[reportData;dictn;reportStats]
+
+    dxReportTableCheck[reportData;`dxReportWriteToPartitioned];
+    if[not ""~e:dxReportDictionaryCheck[dictn;`ffpath`dt`tabname];
+     .log.err[.z.h;e:"dxReportWriteToPartitioned : ",e;()];
+     'e];
+	
+    path:hsym .utils.checkForEnvVar[dictn`ffpath];
+    if[not -14h=type dt:dictn`dt; dt:.al.callfunction[`dxParseDateParam][dictn`dt]];
+	tabname:`$.utils.createString[string dictn`tabname;dictn];
+
+	res:(` sv .Q.par[path;dt;tabname],`) set .Q.en[path;] reportData;
+	(res;`Action`ffpath`dt`tabname!(`dxReportWriteToPartitioned;path;dt;tabname))
+ }</code_text>
+	<description>Report action analytic to save report results to a partitioned table
+ffpath: full filepath to the directory you wish the file to be saved in
+dt: partition folder name
+fffilename: name for the table folder</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description></description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>ffpath</name>
+				<datatype>Character[]</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>dt</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>tabname</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default></default>
+		<description>report statistics</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+	<analyticgroup>DxReportGenerator</analyticgroup>
+</analytic>

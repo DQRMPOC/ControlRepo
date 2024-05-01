@@ -1,0 +1,165 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>emea_fw_core_transactionData_comm_0_b</override>
+	<parameter>DS_FILEWATCHER_MATCHTABLE</parameter>
+	<description>DS_FILEWATCHER_MATCHTABLE:This is a list of files and directories that the DS_FILEWATCHER process instance should monitor.
+
+contains the regex filename match and how it is to be handled when detected initially in inbox_a/.
+
+fileID sets the order and groupings in which files are ingested. So, if multiple files are about to be loaded, it will process the grouping with the lowest number first, and wait for all files in that grouping to be added before continuing.
+
+fileregex - regex to identify each file type
+directory - source directory of the file
+analytic - analytic to run to load the file
+alertTime - time the file is expected to be present at
+alertTZ - time zone of the alertTime field.Values must match timezoneID column in .tz.tzinfo
+frequency - How often we expect the files (e.g. daily, weekdays, Mon-Sat, Mon,Wed,Fri, etc)
+grouping - Function to apply if a single file type/region comes in multiple batches
+fileID - Unique id for each file type &amp; region 
+dateFn-Analytic used to parse the date from the file name</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>fileregex</element>
+		<elementType>Symbol</elementType>
+		<elementValue>*commordersbackup.csv</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>directory</element>
+		<elementType>Symbol</elementType>
+		<elementValue>ENV=DAASDATA_FWDIR_ORDEREXEC_COMM=</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>analytic</element>
+		<elementType>Symbol</elementType>
+		<elementValue>.daas.infra.orderExecCsvLoader</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>alertTime</element>
+		<elementType>Time</elementType>
+		<elementValue>00:00:00.000</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>alertTZ</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>frequency</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>regionregex</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>grouping</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>fileID</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>dateFn</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>sourceData</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>expectedTime</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>fileregex</element>
+		<elementType>Symbol</elementType>
+		<elementValue>*commexecutionsbackup.csv</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>directory</element>
+		<elementType>Symbol</elementType>
+		<elementValue>ENV=DAASDATA_FWDIR_ORDEREXEC_COMM=</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>analytic</element>
+		<elementType>Symbol</elementType>
+		<elementValue>.daas.infra.orderExecCsvLoader</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>alertTime</element>
+		<elementType>Time</elementType>
+		<elementValue>00:00:00.000</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>alertTZ</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>frequency</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>regionregex</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>grouping</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>fileID</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>dateFn</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>sourceData</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>expectedTime</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+</configparam>

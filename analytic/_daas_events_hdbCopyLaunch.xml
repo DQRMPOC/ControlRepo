@@ -1,0 +1,63 @@
+<analytic>
+	<analytic>.daas.events.hdbCopyLaunch</analytic>
+	<code_text>{[info]
+	.daas.events.pubEventMessage[`hdbCopyStart;`;`;`;info];
+	hdbcopyProc:`$"_" sv string (info`region),`hdbcopy,(info `vendor`dataType`asset`instanceNum`env);
+	//hdbcopyProc:`$"_" sv string (info `region`vendor`asset),`hdbcopy,info`env;
+	.pl.runProcess hdbcopyProc ;
+ }</code_text>
+	<description>spawns an hdbcopy process from the event bus when a `statsGenComplete message is received and the event bus in question is not mastered</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>info</parameter>
+		<default>
+			<dictkey>
+				<name>date</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>region</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>vendor</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>asset</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>env</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

@@ -1,0 +1,119 @@
+<analytic>
+	<analytic>getSummary</analytic>
+	<code_text>{[params] 
+/.daas.util.checkParams[`getStats;params];
+if[`dataType in key params;
+	params[`colDataType]:params`dataType;
+	];
+	
+params:{((key x),y)!(value x),z}[params;`removeType;0b];
+params[`dataType]:`summary;
+
+params:.daas.util.adjustParams[`getSummary;params];
+params:.daas.util.applyAssetClassTableName[params];
+
+whereClause:.daas.util.genSummaryWhereClause[params];
+colClause:.daas.util.genSummaryColClause[params];
+
+// fork off stream call
+if[params`stream;
+	.daas.stream.summaryDebug:params;
+	period:$[not `period in key params; 0; params`period];
+	params,: `whereClause`colClause!(whereClause;colClause);
+	id:.daas.stream.sub[ `func`params`period!(`getSummary;params;period)];
+	.daas.stream.streamTabs[id]:`newSyms`data!(`$(); 0# value .daas.summary.tableName);
+	:id;
+	];
+
+res:0!?[params`dataType;whereClause;0b;colClause];
+res:.daas.util.customSymbologyMappingSwapBack[res;params];
+res
+ }</code_text>
+	<description>Build dictionary of syms and qualifiers to group by.
+Build dictionary of columns to select with aggregations.
+Select from server, applying created dictionaries and conditions passed in params dictionary.
+Concatenate qualifiers.
+Select from result table where entries are valid based on concatenated qualifiers.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias>getSummary</alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>assetClass</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>dataType</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>symList</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>startDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>endDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>analytics</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>startTime</name>
+				<datatype>Time</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>endTime</name>
+				<datatype>Time</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>filterRule</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>false</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>the time parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasQR</analyticgroup>
+	<analyticgroup>daasQS</analyticgroup>
+</analytic>

@@ -1,0 +1,25 @@
+<analytic>
+	<analytic>.daas.cmon.q.getHdbMaxDate</analytic>
+	<code_text>{[]
+    latestDate:.daas.cmon.q.i.getGenericMetricData[`process; `hdb.availableDates; `latest; `latestHdbDate; 1b];
+    latestDate:(select from .daas.cmon.q.i.getProcesses[0b] where processName like "*hdb_*") lj 1!latestDate;
+    latestDate:update latestHdbDate:0Nd from latestDate where latestHdbDate~\:();
+
+    latestDate:update status:`NOT_OK from latestDate where not latestHdbDate = .z.D - 1;
+    latestDate:update status:`OK from latestDate where null status;
+
+    :`connected`registered`metricStale _ latestDate;
+}
+    </code_text>
+	<description>Refinery Monitoring - HDB Max Date</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

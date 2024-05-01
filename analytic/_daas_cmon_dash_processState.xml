@@ -1,0 +1,25 @@
+<analytic>
+	<analytic>.daas.cmon.dash.processState</analytic>
+	<code_text>{[serverName]
+	sStats:(select by processName from ProcessInfo)`$"systemInfo.",string[serverName];
+    :select pid, executable, runState, cmdline from ProcessInfo where processName=(`$"systemInfo.",string[serverName]),time=sStats`time;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>serverName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

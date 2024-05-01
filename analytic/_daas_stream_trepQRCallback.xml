@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.daas.stream.trepQRCallback</analytic>
+	<code_text>{[id;tab]
+subId:.daas.stream.trepQRIdMap[id];
+if[not all (cols symRefData) in (cols tab);.daas.stream.trepCalendarCallback[subId;tab];:()];
+if[not count tab;
+	.trep.accept[han:.daas.stream.trepSubIdMap[`$subId]];	
+	.trep.publishFlat[han;([]ERROR:`$enlist("No Reference Data for RIC"))];
+	:()];
+exchange:exec MIC from tab;
+getRef[`identifier`dataType`symList`startDate`endDate`calendarType!(`exchange;`calendar;exchange;.z.D;.z.D;`openClose)];
+.daas.stream.trepQRIdMap[.qr.counter]:subId;
+.qr.counter+:1
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>id</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Long</datatype>
+	</param>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

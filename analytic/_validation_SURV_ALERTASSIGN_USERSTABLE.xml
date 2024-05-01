@@ -1,0 +1,60 @@
+<analytic>
+	<analytic>.validation.SURV_ALERTASSIGN_USERSTABLE</analytic>
+	<code_text>{[config]
+	
+    .debug.jamie.config:config;
+    levelsInConfig:config[`level];
+    if[not count levelsInConfig;
+            :1b
+        ]; 
+    
+    // All level needs to be present
+    if[not `All in levelsInConfig;
+         '"Validation Message:  The All level needs to be present"
+        ];
+    
+    // null not accepted
+    if[` in levelsInConfig;
+         '"Validation Message:  The value of levels can not be null"
+        ];
+
+    // figure out number of levels
+    noOfLevels:count hlv:.uc.getActiveParamValue[`SURV_ALERTASSIGN_HIERARCHYLEVELVALUES;`];
+
+    // top level should always be All
+    // level 2 is ok
+    // level 3 and above should be checked to ensure that a parent exists
+    // "|"vs'string levelsInConfig
+    levelsToCheck:where 1&lt;til noOfLevels;
+    levelsToCheckAgainst:levelsToCheck-1;
+    {[levelsInConfig;levelX;levelXMinus1]
+        parsedLevels:"|"vs'string levelsInConfig;
+        levelXMinus1ParentValues:distinct `$(parsedLevels where (levelXMinus1+1)=count each parsedLevels)[;levelXMinus1];
+        levelXValues:distinct `$(parsedLevels where (levelX+1)=count each parsedLevels)[;levelXMinus1];
+        if[count invalidPaerents:levelXValues except levelXMinus1ParentValues;
+            '"Validation Message:  The following pareent levels do not exist: ",", " sv string invalidPaerents; 
+        ];
+        }[levelsInConfig]'[levelsToCheck;levelsToCheckAgainst];
+
+
+    :1b
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Config</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

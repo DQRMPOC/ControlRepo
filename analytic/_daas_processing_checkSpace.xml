@@ -1,0 +1,60 @@
+<analytic>
+	<analytic>.daas.processing.checkSpace</analytic>
+	<code_text>{[dir;file]
+unzippedSize:{[dir;file]
+	a:(2#i where 1&lt;deltas i:where null s:(system"gzip -l ",dir,"/",file)1);
+	value (a[1]-a[0])#a[0]_s
+	};
+
+ rawSz:mdSz:0;
+ if[count processing:(system"ls ",pdir:getenv[`TRTH_TICKHISTORYMD],"/processing");
+ 	mdSz:sum unzippedSize[pdir;]each processing;
+ 	];		
+ if[count processing:(system"ls ",pdir:getenv[`TRTH_TICKHISTORYRAW],"/processing");
+	rawSz:sum unzippedSize[pdir;]each processing;
+	];
+	
+if[pSz:mdSz+rawSz;
+	.log.out[.z.h;"Total space reserved by processing files";pSz];
+	];		
+	
+nSz:unzippedSize[dir;file];
+.log.out[.z.h;"Space reserved by new file";nSz];
+
+space:1024*value first system"df -P . | tail -1 | awk '{print $4}'";
+
+.log.out[.z.h;"Remaining disk space";space];
+
+if[(nSz+pSz)&gt;space;
+	.log.err[.z.h;"Total space reservation will exceed current free space";::];
+	.log.err[.z.h;"Not processing report";file];
+	:0b];
+	
+1b
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

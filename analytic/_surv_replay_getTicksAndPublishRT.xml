@@ -1,0 +1,96 @@
+<analytic>
+	<analytic>.surv.replay.getTicksAndPublishRT</analytic>
+	<code_text>{[args]
+	
+    thisFunc:".surv.replay.getTicksAndPublishRT";
+	if[.surv.debug.active;.debug.getTicksAndPublishRT:(`time`args)!(.z.P;args)];   
+    
+    //if direct replay, preprocessing of ticks must be done locally
+    if[(.surv.util.isStringTrue .surv.setting.alertBatch.enableDirectReplay) &amp; not .surv.util.isStringTrue .surv.setting.ppe.preProcessTicksLocally;
+        msg:"SURV_GENERAL_SETTING cfg: must have .ppe.preProcessTicksLocally=true if .alertBatch.enableDirectReplay=true";
+        .surv.util.logerr[thisFunc;msg;`];
+        'msg
+        ];
+    
+    tablesToReplay:args`tablesToReplay;
+    dateParam:args`dateParam;
+    startTime:args`startTime;
+    endTime:args`endTime;
+    typ:args`instanceType;
+    applyFilter:$[`applyFilter in key args;args`applyFilter;()];
+    timeZone:$[`timeZone in key args;args`timeZone;`];
+    inputTimeZone:$[`inputTimeZone in key args;args`inputTimeZone;`];
+    outputTimeZone:$[`outputTimeZone in key args;args`outputTimeZone;`];    	
+	tablesToReplay:args[`tablesToReplay]:`$trim each ";" vs tablesToReplay;
+    region:$[`region in key args;args`region;`];
+    vendor:$[`vendor in key args;args`vendor;`];
+    alertFilters:$[`alertFilters in key args;.surv.util.parseAlertFilters args[`alertFilters];()!()];
+    alertFilters:alertFilters,{x!count[x]#enlist()}tablesToReplay where not tablesToReplay in key alertFilters;
+    
+    .log.out[.z.h;thisFunc;"started with params: ",-3!(tablesToReplay;dateParam;startTime;endTime;typ)];
+    
+    schemaGroupToValidateTablesAgainst:`$("DAAS_ORDEREXEC_",upper raze[.surv.assetPrefix];"DAAS_PAYMENT_",upper raze[.surv.assetPrefix];"DAAS_AML_",upper raze[.surv.assetPrefix]);
+    tablesToValidateAgainst:raze .tbl.gettablesbygroup each schemaGroupToValidateTablesAgainst;
+    if[count tablesToValidateAgainst;
+        args[`tablesToReplay]:tablesToReplay:tablesToReplay inter tablesToValidateAgainst;
+    ];
+
+	dataBucketSize:.surv.sched.getTicksAndPublishRTSettings`dataBucketSize;
+	bucketPoints:{(-1_x),(1+min(-1#x;y))}[;endTime]startTime+dataBucketSize*til 1+ceiling (endTime-startTime)%dataBucketSize;
+
+    bucketPoints:.surv.replay.adjustBucketPointsForClockChangeDay[args;bucketPoints];
+    
+	bucketStartTimes:-1_bucketPoints;
+	bucketEndTimes:-1+1_bucketPoints;
+
+	dataTypeReplaySequence:.surv.replay.getDataTypeReplaySequence[];
+
+    if[count missingTables:args[`tablesToReplay] where not args[`tablesToReplay] in dataTypeReplaySequence;
+            '"The following tables are not configured to be replayed: ",(","sv string missingTables),". The table type must be entered in .surv.cfg.getTicksAndPublishRT:DEFAULT"
+        ];
+    
+	timerParamsTable:`bucketStart xasc (,/){[x;y;filters]update dataType:y,rawFilter:enlist filters[y] from x}[([]dateParam:dateParam;bucketStart:bucketStartTimes;bucketEnd:bucketEndTimes;typ;timeZone;inputTimeZone;outputTimeZone;region;vendor);;alertFilters]each dataTypeReplaySequence inter tablesToReplay;
+	
+    if[0D&lt;preBatchDataWindow:.surv.sched.getTicksAndPublishRTSettings`preBatchLookbackDataToPublish;
+        extendedFirstBucket:update dateParam:(distinct each ((`date$dateParam+bucketStart-preBatchDataWindow),'dateParam)),bucketStart:(dateParam+bucketStart-preBatchDataWindow),bucketEnd:(dateParam+bucketEnd) from select from timerParamsTable where i=(first;i)fby dataType;
+        timerParamsTable:extendedFirstBucket,delete from timerParamsTable where i=(first;i)fby dataType;
+    ];
+    
+	.surv.sched.getTicksAndPublishRT_counter:0;
+	@[{delete from x};;`] each `masterProcessStatus`getTicksRequests`getTicksResponses; 
+	.surv.sched.replayFinished:0b;
+	.surv.sched.partiallyPublishing:0b;
+	.surv.sched.publishLimit:.surv.sched.getTicksAndPublishRTSettings`enginePublishLimit;
+	.surv.sched.waitingOnNextBucket:0b;
+	
+	.d.prcl.addFunctToTimer[`.surv.replay.getTicksAndPublishRTonTimerWrapper;timerParamsTable;.z.Z;0Wz;`int$.surv.sched.getTicksAndPublishRTSettings`timerFrequencyMilliseconds;1b];
+	`masterProcessStatus insert (.z.P;.ex.instance_name;`Replaying;();exec max time from masterProcessStatus);
+	.dm.pub[`masterProcessStatus;-1# masterProcessStatus];
+
+ }   </code_text>
+	<description>// @kind function
+// @fileoverview Function to replay buckets of data from Refinery given a specified date and time window. Bucket sizes are configurable and can be updated by editing the config .surv.cfg.getTicksAndPublishRT. Each data bucket gets published downstream to subscribing services.
+// @param tablesToReplay {string} List of tables you want to replay delimited by ;. Currently the only tables that you can replay are order and execution. 
+// @param dateParam {date} Date you want to replay data for.
+// @param startTime {time} Time you want to start replaying buckets of data from.
+// @param endTime {time} Time you want to replay buckets of data to.
+// @return {null} Kicks off the replaying of data buckets based on the arguments passed.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceReplay</analyticgroup>
+</analytic>

@@ -1,0 +1,23 @@
+<analytic>
+	<analytic>.daas.hdb.coreInit</analytic>
+	<code_text>{[]
+
+	.daas.init.setMetaAndEventBusConn[];
+	.daas.init.setUpDataNodeMinimal[];
+	.daas.init.mon.hdb[];
+
+    // custom surveillance load in 
+    .al.getfunction each `.surv.getTransactionData`.surv.getTransactionDataForAlertFilters
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

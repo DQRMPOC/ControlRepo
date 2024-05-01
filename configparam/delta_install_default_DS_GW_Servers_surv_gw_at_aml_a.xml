@@ -1,0 +1,43 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>surv_gw_at_aml_a</override>
+	<parameter>DS_GW_Servers</parameter>
+	<description>List of servers to be used by the GW along with their type, hdb or rdb</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>serverInstance</element>
+		<elementType>Symbol</elementType>
+		<elementValue>surv_at_aml_a</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>serverType</element>
+		<elementType>Symbol</elementType>
+		<elementValue>at</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>qryable</element>
+		<elementType>Boolean</elementType>
+		<elementValue>true</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>serverInstance</element>
+		<elementType>Symbol</elementType>
+		<elementValue>surv_hdb_at_aml_a</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>serverType</element>
+		<elementType>Symbol</elementType>
+		<elementValue>hdb</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>qryable</element>
+		<elementType>Boolean</elementType>
+		<elementValue>true</elementValue>
+	</param>
+</configparam>

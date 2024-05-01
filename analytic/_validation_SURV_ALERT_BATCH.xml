@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.validation.SURV_ALERT_BATCH</analytic>
+	<code_text>{[config]
+	thisFunc:".validation.SURV_ALERT_BATCH";
+    
+    alerts:.al.callfunction[`.surv.util.getAllParamValues][`SURV_ALERTS];
+
+    if[(not null first config[`product]) &amp; count crossProd:config[`alert] inter exec alertName from alerts where crossProduct;
+        '"You cannot specify a product for cross-product alerts. The following alerts in the batch are cross-product: ",", " sv string crossProd
+    ];
+    
+    if[(not null first config[`timezZone]) &amp; not first[config[`timezZone]] in `$exec elementValue from .uc.userconfig where parameter=`SURV_TIMEZONES,element=`timezoneID;
+        '"You must use a timezone defined in for consistency across alerts and benchmarks"
+    ];
+    
+    if[(not null first config[`timezZone]) &amp; any (exec elementValue from .uc.userconfig where parameter=`SURV_TIMEZONES,element=`offsetTimezoneID) like\: "*Volgograd*";
+        '"No support for this timezone (Volgograd)"
+    ];    
+    
+    1b
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

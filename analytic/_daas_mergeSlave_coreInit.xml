@@ -1,0 +1,27 @@
+<analytic>
+	<analytic>.daas.mergeSlave.coreInit</analytic>
+	<code_text>{[]
+	
+	.daas.cfg.env:`$last string .ex.getInstanceName[];
+	.daas.merge.openMDhandle:{@[hopen;value getenv `$"daas_dataMergeDaemon_",string[.daas.cfg.env],"_PORT";{.log.out[.z.h;()];exit 0}]};
+	.md.handle:.daas.merge.openMDhandle[];
+
+	.my.ID:value ("_" vs string .ex.getInstanceName[])2;
+
+	/request my job
+	.log.out[.z.h;"Getting job details from merge daemon";()];
+	neg[.md.handle](`.daas.merge.getJobDetails;.my.ID);
+ 	}
+ </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

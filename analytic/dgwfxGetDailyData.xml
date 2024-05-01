@@ -1,0 +1,48 @@
+<analytic>
+	<analytic>dgwfxGetDailyData</analytic>
+	<code_text>{[dict]
+   symList:(),$[first[dict`symList]~`ALL; `$("EUR/USD";"USD/JPY";"GBP/USD";"USD/CHF"); dict`symList];
+   :.ds.gw.query[`hdb`rdb;(`dfxGetDailyData;(symList;dict`startDate;dict`endDate;()))];
+ }</code_text>
+	<description>Returns daily statistics</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dict</parameter>
+		<default>
+			<dictkey>
+				<name>symList</name>
+				<datatype>Symbol[]</datatype>
+				<default>ALL</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>startDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>endDate</name>
+				<datatype>Date</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>DfxGwDataAccess</analyticgroup>
+</analytic>

@@ -1,0 +1,54 @@
+<analytic>
+	<analytic>.daas.util.genTicksStatsColClause</analytic>
+	<code_text>{[args]
+    
+    columns:args[`time],`sym;
+
+    $[any `=args`columns;
+        columns:(cols .daas.meta.getSchemaFromDataType[args`dataType]) except `date;
+        columns,:args`columns
+        ];
+
+    if[any`=args`analytics;
+        args[`analytics]:.daas.cfg.tickStatsTableFunctionMap[.daas.meta.getSchemaFromDataType[args`dataType]];
+        ];
+    
+    if[0&gt;type args`analytics;
+        args[`analytics]:enlist args`analytics;
+        ];
+    
+    analytics:args[`analytics];
+    nonAnalyticCols:columns where not columns in analytics;
+    
+    $[any `=args`columns;
+        :(nonAnalyticCols,analytics)!nonAnalyticCols,.daas.cfg.tickStatsColumns[analytics];
+        :(nonAnalyticCols,analytics where analytics in columns)!nonAnalyticCols,.daas.cfg.tickStatsColumns[columns where columns in analytics]
+     ]; 
+ }</code_text>
+	<description>Applies column aggregations for correct table when aggregating by interval.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

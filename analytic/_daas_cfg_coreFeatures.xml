@@ -1,0 +1,138 @@
+<analytic>
+	<analytic>.daas.cfg.coreFeatures</analytic>
+	<code_text>/ condition code filtering 
+// @see .daas.util.isValidRecord
+// @see .daas.util.alertForConditionCodes
+.uc.getAndSaveActiveParamValue[`.daas.cfg.filterRuleConfig;`;`.daas.cfg.tradeFilterRules;`keyCols`action!(`exch`cond;".al.loadinstruction[`.daas.cfg.gwTradeFilters]")];
+.daas.cfg.tradeFilterRulesDict:(enlist[`]!enlist`),raze { tab:0!value"select cond by exch from .daas.cfg.tradeFilterRules where ",string x; :enlist[x]!enlist (!). tab `exch`cond; } each cols[.daas.cfg.tradeFilterRules] except `exch`cond;
+.uc.getAndSaveActiveParamValue[`.daas.cfg.quoteFilterRuleConfig;`;`.daas.cfg.quoteFilterRules;`keyCols`action!(`exch`cond;".al.loadinstruction[`.daas.cfg.gwQuoteFilters]")];
+.daas.cfg.quoteFilterRulesDict:(enlist[`]!enlist`),raze { tab:0!value"select cond by exch from .daas.cfg.quoteFilterRules where ",string x; :enlist[x]!enlist (!). tab `exch`cond; } each cols[.daas.cfg.quoteFilterRules] except `exch`cond;
+.daas.cfg.filterRulesDict:`trade`quote!(.daas.cfg.tradeFilterRulesDict;.daas.cfg.quoteFilterRulesDict);
+.daas.cfg.filterRuleOptionsDict:`trade`quote!(key .daas.cfg.filterRulesDict`trade;key .daas.cfg.filterRulesDict`quote);
+
+
+/ getRef
+// @see .daas.util.refTableSelect
+// @see .daas.util.genRefWhereClause
+// @see .daas.util.secMasterPub
+.daas.cfg.refTable:exec dataType!tabName by identifier from .uc.getActiveParamValue[`.daas.cfg.refTables;`];
+.daas.cfg.secMasterWhereClause:1!.uc.getActiveParamValue[`.daas.cfg.secMasterWhereClause;`];
+.daas.cfg.secMasterIdentifierMap:exec identifier!queryCol from .uc.getActiveParamValue[`.daas.cfg.secMasterIdentifierMap;`];
+.daas.cfg.corAxSelect:`dividend`capChange!`coraxDividends`coraxCapChange;
+.daas.cfg.secMasterPub:1!.uc.getActiveParamValue[`.daas.cfg.secMasterPub;.ex.getInstanceName[]];
+
+
+/ symbology mapping and custom symbology mapping
+// @see .daas.util.ricChangesSymList
+.daas.cfg.idTypeDescription:(!). .uc.getActiveParamValue[`.daas.cfg.idTypeDescription;`]`Description`Type;
+// @see .daas.util.customSymbologyMapping
+// @see .daas.util.customSymbologyMappingSwapBack
+.uc.getAndSaveActiveParamValue[`.daas.cfg.customSymbologyMap;`;`.daas.cfg.customSymbologyMap;`keyCols`action!(();"`.daas.cfg.alwaysMappedCustomSymbols set ?[`.daas.cfg.customSymbologyMap;enlist(`alwaysMap);();`inputSymbol]")];
+`.daas.cfg.alwaysMappedCustomSymbols set ?[`.daas.cfg.customSymbologyMap;enlist(`alwaysMap);();`inputSymbol];
+
+
+/ general usage in multiple places - some examples:
+// @see .daas.util.appendOpenClose
+// @see .daas.util.applyAssetClassTableName
+// @see .daas.util.checkSensibleParamsGetTicks, .daas.util.checkSensibleParamsGetStats
+.daas.cfg.tableMetaData:.uc.getActiveParamValue[`.daas.cfg.tableMetaData;`];
+.daas.cfg.tickColumns:exec table!colnames from .tbl.gettabledetails each .daas.cfg.tableMetaData[`tableSchemaName] except `;
+.daas.cfg.assetPrefixes:(!) . .uc.getActiveParamValue[`.daas.cfg.assetPrefixes;`] `asset`prefix;
+.daas.cfg.subClassToAsset:(!) . .uc.getActiveParamValue[`.daas.cfg.subClassToAsset;`] `subClass`asset
+
+
+/ parameter checking
+// @see .daas.util.checkParams
+.daas.cfg.paramscfg:.uc.getActiveParamValue[`.daas.cfg.paramscfg;`];
+.daas.cfg.tickStatsTableFunctionMap:(!). (0!`tableNames xgroup ungroup select colName, tableNames:value each tableNames from .uc.getActiveParamValue[`.daas.cfg.TickStatsColumns;`])`tableNames`colName;
+.daas.cfg.paramOptionDict:value each (!). .uc.getActiveParamValue[`.daas.cfg.paramOptionDict;`]`paramName`Options;
+.daas.cfg.reqParamExceptions:3!update paramValue:value@/:paramValue, exceptionParams:value@/:exceptionParams except\: "," from .uc.getActiveParamValue[`.daas.cfg.reqParamExceptions;`];
+
+/ parameter defaulting
+// @see .daas.util.applyDefaultParams
+.daas.cfg.nonDefaultedParams:`applyFilter`sortCols`showFilter`rawFilter`postFilter;
+.daas.cfg.definedAPIs:exec distinct funcName from .daas.cfg.paramscfg;
+.daas.cfg.defaultParamDict:.daas.cfg.definedAPIs!.daas.util.getDefaultParamsDict each .daas.cfg.definedAPIs;
+
+/ clause generation
+// @see .daas.util.genTicksStateColClause
+.daas.cfg.tickStatsColumns:value each (!). .uc.getActiveParamValue[`.daas.cfg.TickStatsColumns;`]`colName`agg;
+
+
+/ getBars table generation
+// @see .daas.util.quoteStatsWriteDown, .daas.util.tradeStatsWriteDown
+.daas.cfg.columnDefaults:value each (!). .uc.getActiveParamValue[`.daas.cfg.columnDefaults;`] `tableName`columns;
+.daas.cfg.barTableMap:([name:`quote`trade]day:`quoteDayStats`tradeDayStats;minute:`quoteMinStats`tradeMinStats;hour:`quoteMinStats`tradeMinStats);
+
+/ by clause generation
+// @see .daas.util.rackTable
+// @see .daas.util.genByTimeRack
+.daas.cfg.grandict:(!) . flip (
+    (`tick;0Nn);
+    (`nanosecond;0D00:00:00.000000001);
+    (`microsecond;0D00:00:00.000001000);
+    (`millisecond;0D00:00:00.001000000);
+    (`second;0D00:00:01.000000000);
+    (`minute;0D00:01:00.000000000);
+    (`hour;0D01:00:00.000000000);
+    (`day;1D00:00:00.000000000)
+    )
+// @see .daas.util.checkSingleSortClause
+.daas.cfg.tableFunctionMap:(!). (0!`tableNames xgroup ungroup select colName, tableNames:value each tableNames from .uc.getActiveParamValue[`.daas.cfg.aggregationFunctions;`])`tableNames`colName;
+
+
+/ symbology changes over time
+// @see .daas.util.ricChangesLookup
+.uc.getAndSaveActiveParamValue[`.daas.cfg.trackSym;`;`.daas.cfg.customTrackMap;`keyCols`action!(();"`ricHistory set select date, effectiveTime:time,oldRic:oldRIC,newRic:newRIC from .daas.cfg.customTrackMap where not null newRIC, not null oldRIC;")];
+`ricHistory set select date, effectiveTime:time,oldRic:oldRIC,newRic:newRIC from .daas.cfg.customTrackMap where not null newRIC, not null oldRIC;
+
+/ timezone configuration
+// @see .daas.util.adjustTemporalityParam
+// @see .daas.util.getOnDiskTZ
+// @see .daas.util.convertOnDiskTZtoOutboundTZ
+.daas.cfg.regionConfig:(!). .uc.getActiveParamValue[`.daas.cfg.regionConfig;`]`key`value;
+.daas.cfg.exchangeTimeZone:(!). .uc.getActiveParamValue[`.daas.cfg.exchangeTimeZone;`]`key`value;
+.daas.cfg.insertTimeZone:`$getenv`TZ;
+
+
+/ aggregation
+// @see .daas.util.genColClause
+// @see .daas.util.genMRRedColClause
+.daas.util.initAggregations[];
+.daas.util.initMRAggregations[];
+.daas.util.barInitAggregations[];
+
+
+/ significant figures setting on processes
+system"P 0";
+
+
+/ applyFilter feature
+// @see .daas.util.checkValidApplyFilerClause
+// @see .daas.util.adjustApplyFilter
+.daas.loadConfig.applyFilter[];
+
+
+/ client monitoring feature
+.al.loadinstruction each `.daas.cmon.conn`.daas.cmon.common;
+.daas.cmon.init[];
+.daas.cmon.common.init[];
+
+
+// Table metatdata
+.daas.cfg.pivotSettings:.uc.getActiveParamValue[`.daas.cfg.pivotSettings;`];
+.daas.cfg.interpolationfuncs:(enlist`linear)!enlist`.daas.util.fillmap.linear;
+
+</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>1</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>DataLoaderWorker</analyticgroup>
+</analytic>

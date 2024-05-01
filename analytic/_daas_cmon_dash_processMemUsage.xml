@@ -1,0 +1,32 @@
+<analytic>
+	<analytic>.daas.cmon.dash.processMemUsage</analytic>
+	<code_text>{[serverName;selectedPID]
+	totBytes:exec last totalBytes from SystemMem where processName=(`$"systemInfo.",string[serverName]);
+	:select time, 100*residentSetSizeBytes%totBytes from ProcessMem where processName=(`$"systemInfo.",string[serverName]), pid=selectedPID;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>serverName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>selectedPID</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Long</datatype>
+	</param>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

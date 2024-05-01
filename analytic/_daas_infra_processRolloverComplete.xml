@@ -1,0 +1,47 @@
+<analytic>
+	<analytic>.daas.infra.processRolloverComplete</analytic>
+	<code_text>{[name]
+
+	// check if process send us the message is rolling over
+	if[not name in .daas.rollover.procs`procName;
+		.log.out[.z.h;"Process not mid rollover, exiting";name];
+		:()
+		];
+	
+	update status:1b from `.daas.rollover.procs where procName=name;
+        	
+	.log.out[.z.h;
+		$[`hdb~first exec procType from `.daas.rollover.procs where procName=name;
+        	"HDB reloaded";
+        	"RDB flushed"];
+        	name];
+    	
+   	// run rolloverFinished when all the processes have finished their individual functions
+	if[all .daas.rollover.procs`status;
+		delete from `.daas.rollover.procs;
+		.daas.infra.rolloverFinished[];
+	];
+	  
+    //Close handle to process now it is rollover complete
+	hclose .z.w
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>name</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

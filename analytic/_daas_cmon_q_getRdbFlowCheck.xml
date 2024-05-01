@@ -1,0 +1,24 @@
+<analytic>
+	<analytic>.daas.cmon.q.getRdbFlowCheck</analytic>
+	<code_text>{[]
+    rdbs:select from .daas.cmon.q.i.getProcesses[0b] where processName like "*rdb_*";
+
+    rowCounts:select last metricStale, last `time$generatedTime, rowCount:first last metric, prevRowCount:first last prev metric by processName, metricKey from ProcessMetric where processName in rdbs`processName, metricName = `consumer.updDayCount;
+    rowCounts:update status:`NOT_OK from rowCounts where metricStale | (rowCount = 0) | rowCount = prevRowCount;
+    rowCounts:update status:`OK from rowCounts where null status;
+
+    :0!rowCounts;
+}
+    </code_text>
+	<description>Refinery Monitoring - RDB Flow Check</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

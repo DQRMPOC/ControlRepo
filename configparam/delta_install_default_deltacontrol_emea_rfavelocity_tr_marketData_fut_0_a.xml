@@ -1,0 +1,43 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>emea_rfavelocity_tr_marketData_fut_0_a</override>
+	<parameter>deltacontrol</parameter>
+	<description>DELTA - imported parameters</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>login-name</element>
+		<elementType>Symbol</elementType>
+		<elementValue>Administrator:password</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>max-timeout-interval</element>
+		<elementType>Integer</elementType>
+		<elementValue>10</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>primary-host</element>
+		<elementType>Symbol</elementType>
+		<elementValue>localhost</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>primary-port</element>
+		<elementType>Integer</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>timeout-interval-step</element>
+		<elementType>Integer</elementType>
+		<elementValue>1</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>dynamic-configuration</element>
+		<elementType>Symbol</elementType>
+		<elementValue>true</elementValue>
+	</param>
+</configparam>

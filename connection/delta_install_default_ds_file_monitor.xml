@@ -1,0 +1,11 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>ds_file_monitor</connection>
+	<host>ENV=ds_rdb_ops_a_HOST=</host>
+	<port>ENV=ds_rdb_ops_a_PORT=</port>
+	<user></user>
+	<pass></pass>
+	<dbname></dbname>
+	<dbtype>q</dbtype>
+	<tls></tls>
+</connection>

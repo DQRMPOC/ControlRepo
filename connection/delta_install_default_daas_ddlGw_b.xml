@@ -1,0 +1,13 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>daas_ddlGw_b</connection>
+	<host>64.209.200.36</host>
+	<port>26165</port>
+	<user>Administrator</user>
+	<pass>AESencrypted!106788FEBA38639057BDE65584E37120</pass>
+	<dbname></dbname>
+	<dbtype>q</dbtype>
+	<tls>off</tls>
+	<dataconnectiongroup>daas_ddlGw</dataconnectiongroup>
+	<primarystatus>primary</primarystatus>
+</connection>

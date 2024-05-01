@@ -1,0 +1,25 @@
+<analytic>
+	<analytic>.daas.routing.registerSysProcess</analytic>
+	<code_text>{[data]
+routeDict:`procName`region`vendor`assetClass`procType`procNum`env`stack!(.ex.getInstanceName[];.daas.cfg.region;.daas.cfg.vendor;.daas.cfg.asset;.daas.cfg.procType;.daas.cfg.procNum;.daas.cfg.env;.daas.cfg.asset);
+.daas.events.pubEventMessage[`sysProcDataResponse;`;`;`;routeDict]; 
+  }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

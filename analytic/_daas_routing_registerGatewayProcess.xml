@@ -1,0 +1,21 @@
+<analytic>
+	<analytic>.daas.routing.registerGatewayProcess</analytic>
+	<code_text>{[]
+
+GWDict:`procName`region`procType`procNum`env`primary`routingTableMaster!(.ex.getInstanceName[];.daas.cfg.region;.daas.cfg.procType;.daas.cfg.procNum;.daas.cfg.env;0b;0b);
+
+.daas.events.pubEventMessage[`GWprocResponse;`;`;`;GWDict]; 
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.async.serverExecution</analytic>
+	<code_text>{[queryParams]
+.log.out[.z.h; "Executing query: ",string queryParams`analytic; queryParams`input];
+
+queryRes:.[get queryParams`analytic; enlist queryParams`input; { (`QUERY_FAILED;x) }];
+
+if[`QUERY_FAILED ~ first queryRes;
+    .log.out[.z.h;;()] "Error executing query: ",string[queryParams`analytic]," with parameters ",.Q.s1[queryParams`input],". Error - ",last queryRes;
+
+    queryParams[`error]:last queryRes;
+    neg[.z.w] (`.daas.async.failure; queryParams);
+    :(::);
+ ];
+
+queryParams[`return]:queryRes;
+
+neg[.z.w] (`.daas.async.success; queryParams);
+
+.log.out[.z.h;;()] "Query execution successful: ",string[queryParams`analytic]," with parameters ",.Q.s1 queryParams`input;
+
+}</code_text>
+	<description>Runs the specified query on the current process (sent from GW)</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>queryParams</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasAsync</analyticgroup>
+</analytic>

@@ -1,0 +1,122 @@
+<analytic>
+	<analytic>.daas.infra.LRrollover</analytic>
+	<code_text>{[]
+	/-------------------------------------
+	/ Publish start to event message
+	/-------------------------------------
+	.daas.events.pubEventMessage[`eodLr;`started;.daas.cfg.asset;`;()];
+	.daas.events.pubEventMessage[`hdbWrite;`started;`;`;()];
+	
+	/-------------------------------------
+	/ Save down data into HDB
+	/-------------------------------------
+		
+    / save keyed tables to disk
+    keyedList:$[first[.ds.cfg.saveTableList]=`ALL_TABLES;
+                    tables[`.] where @[{(99h=type value x) and count value x};;0b] each tables[`.];
+                    .ds.cfg.saveTableList where @[{(99h=type value x) and count value x};;0b] each .ds.cfg.saveTableList
+                ];
+    if[count keyedList;
+        .log.out[.z.h;"Flushing keyed tables to disk";.Q.w[]%1e9];
+        {[t] $[1b; writeToHDB t; [.ds.cfg.numWritten[t]+:"i"$c:count value t; .[t;();0#]]]} each keyedList;
+        .log.out[.z.h;"Flushed keyed tables to disk";.Q.w[]%1e9];
+    ];
+    
+    // params to sortHDBTable are tableName, columns to sort by, column to apply `p# to
+    sortHDBTable[;`sym;`sym] each $[first[.ds.cfg.saveTableList]=`ALL_TABLES; tables[`.]; .ds.cfg.saveTableList] except .ds.cfg.intradayTableList;
+  
+   // take intraday tables from .ds.cfg.intradayDateDir + save to HDB 
+        .log.out[.z.h;"Entry to persist function"; ()];
+        parts:key[.ds.cfg.intradayDateDir]except`sym`replayedFiles;  
+        .log.out[.z.h;"Parts:: ",raze "`" sv' enlist string raze parts; ()];
+        parts:parts@iasc(get .ds.cfg.hdbsym)["I"$string parts];
+        tablenames:{[part]key` sv .ds.cfg.intradayDateDir,part} each parts;
+        tableparts:{[part]` sv'path,'key path:` sv .ds.cfg.intradayDateDir,part} each parts;
+        .log.out[.z.h;"Calling append";()];
+        appendtable''[tablenames;tableparts];
+        .log.out[.z.h;"Append complete. Sort next";()];
+        sortHDBTable[;();`sym] each .ds.cfg.intradayTableList;
+        .log.out[.z.h;"Sort complete";"done"];
+
+    /Publish write complete
+    .daas.events.pubEventMessage[`hdbWrite;`complete;`;`;()];
+
+    // -------------------------------------------------------------------
+    // clear intraday partition
+    // -------------------------------------------------------------------
+   
+    replayedFiles:.ds.cfg.replayedFiles;
+    system"rm -rf ",1_string .ds.cfg.intradayDateDir;  //delete intraday partition
+    setDate[.ds.cfg.currentDate];  // create empty intraday partition
+    
+    {if[`gc in key `.Q;.log.out[.z.h;"Running garbage collection";()];.Q.gc[]]}[];
+
+
+        /------------------
+        /Pre-flush/Reload setup
+        /------------------
+	.daas.rollover.hdbHandles:{[hdb]
+ 			h:.ds.cfg.getHandle[hdb];
+ 			if[null h; :`err];
+ 			`.daas.rollover.procs upsert (`hdb;hdb`instancename;h;`.ds.hdb.reloadDB;::;0b);
+ 			};
+ 				
+		.daas.rollover.rdbHandles:{[rdb;tbls]
+        	h:.ds.cfg.getHandle[rdb];
+ 			if[null h; :`()];
+ 			`.daas.rollover.procs upsert (`rdb;rdb`instancename;h;`.daas.infra.rdbFlush;tbls;0b);
+        	};
+        
+        
+        /Table of process type, name, handle reload func, complete status
+ 		.daas.rollover.procs:([]procType:`$();procName:`$();handle:`int$();reloadFunc:`$();args:();status:`boolean$());
+ 
+		/RDB pre-flush
+        delTables:.ds.cfg.replayTableList;
+   		.daas.rollover.rdbHandles[;delTables] each .ds.cfg.rdbProcessList;
+   
+   		/HDB pre reload
+   		.daas.rollover.hdbHandles each .ds.cfg.hdbProcessList;
+   
+   
+   
+   		/-------------------
+   		/Simultaneous flush and reload
+   		/-------------------
+   
+        {.log.out[.z.h;"Turning off timout for process ";x]} each  .daas.rollover.procs`procName;
+        neg[.daas.rollover.procs`handle]@\:(`.daas.util.timeoutOff;(::));
+        
+        {.log.out[.z.h;"Triggering EOD for processes ";x]} each  .daas.rollover.procs`procName;
+        neg[.daas.rollover.procs`handle]@' flip .daas.rollover.procs`reloadFunc`args;
+        
+        {.log.out[.z.h;"Turning timeout back on for processes ";x]} each  .daas.rollover.procs`procName;
+        neg[.daas.rollover.procs`handle]@\:(`.daas.util.timeoutOn;(::));
+        /Flush handles
+        neg[.daas.rollover.procs`handle]'[];
+        
+        /wait for complete message back from databases
+        .log.out[.z.h;"Waiting for async complete status from rdbs and hdbs";()];
+       
+       
+       /-----------------
+       /Completion
+       /----------------
+       
+        /both the rdbs and hdbs are now completing their EOD function
+        /they will respond by calling .daas.infra.processRolloverComplete
+        /if all processes are complete, it will trigger .daas.infra.rolloverFinished
+        /which is the final part of the LRs end of day function.
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

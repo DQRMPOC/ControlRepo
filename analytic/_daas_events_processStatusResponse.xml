@@ -1,0 +1,39 @@
+<analytic>
+	<analytic>.daas.events.processStatusResponse</analytic>
+	<code_text>{[x]
+	newStatus:first x;
+	if[not ()~key`.daas.events.alrt.processStatus;
+		oldProcs:(exec instance_name from .daas.events.alrt.processStatus);
+		newProcs:(exec instance_name from newStatus);
+		downProcs:oldProcs except newProcs;
+		startProcs:newProcs except oldProcs;
+		downProcRows:oldProcs ? downProcs;
+		startProcRows:newProcs ? startProcs;
+		// if primary bus, publish response
+		// pass system running info to isPrimaryBus to prevent sync call to Control
+		if[.daas.events.isPrimaryBus[newStatus];
+			.daas.events.pubEventMessage[`processDown;;`;`;]'[downProcs;.daas.events.alrt.processStatus downProcRows];
+			.daas.events.pubEventMessage[`processStart;;`;`;]'[startProcs; newStatus startProcRows]];
+		];
+	.daas.events.alrt.processStatus: newStatus;
+ }</code_text>
+	<description>analytic called on the event bus in response to a process status change in the system;
+argument is a process status table sent by Delta Control (same table can be found by running ".ex.prh(`.pl.getRunningInformation;`)" on any delta process</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>x</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

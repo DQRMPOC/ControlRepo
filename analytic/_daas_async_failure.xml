@@ -1,0 +1,36 @@
+<analytic>
+	<analytic>.daas.async.failure</analytic>
+	<code_text>{[params]
+.[`.daas.queryCache;(params`queryNum;`status);:;`$"ERROR: execution failed with - ",params[`error]];
+update status:`error,debug:(enlist"Execution failed with - ",params[`error]) from `.daas.queryLog where requestNum=params`queryNum;
+
+/add to the return count
+.[`.daas.queryCache;(params[`queryNum];`returnCount);+;1i];
+.daas.async.failureFlag:1b;
+
+if[`async~params`clientMode;
+	if[query[`returnCount]=(query:.daas.queryCache[params`queryNum])`requestCount;
+			neg[first query`handle](`.daas.async.failure;query,`queryNum`tieredQueryNum!(params`queryNum;params`tieredQueryNum))
+		];
+	];
+	
+}</code_text>
+	<description>Update the in-memory table with the report failure and the error message.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasAsync</analyticgroup>
+</analytic>

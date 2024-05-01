@@ -1,0 +1,107 @@
+<analytic>
+	<analytic>.daas.udf.checkAndAdjustUDF</analytic>
+	<code_text>{[function;params]
+	
+	if[not 99h=type params; 
+        '"Input to all UDF functions should be a dictionary";
+        ];
+	
+    if[`saveUDF=function;
+		if[not all `description`func`funcName in key params;
+               '"saveUDF requires input keys `func`funcName`description";
+               ];
+		params: params, enlist[`description]! enlist (),params`description;
+		if[(not -11h=type params`funcName) or not 10h=type params`description;
+               '"Type error: in saveUDF `funcName should be a symbol and `description a string";
+               ];
+		if[10h=type params`func;
+               params[`func]: parse params`func
+               ];
+		if[not 100h=type params`func;
+               '"Input error: in saveUDF `func should be a function object (type 100h) or a string parsing to one";
+               ];
+		params[`func]:-3! params`func;
+           .daas.udf.checkSaveUDFOverwrite[params`overwrite;params`funcName];
+		];
+        
+	if[`getUDF=function;
+	    if[not `funcType in key params;
+            params[`funcType]:`static;
+            ];
+        if[(not -11h=type params`funcType);
+            '"`funcType must be a symbol";
+            ];
+        if[(not -11h=type params`funcName);
+            '"Syntax: call getUDF with `funcName a symbol";
+            ];
+        if[not params[`funcType] in `realtime`static;
+            '"`funcType much be either `realtime or `static";
+            ];
+        
+        if[params[`funcType]~`static;
+            if[not all `funcName`params`funcType in key params;
+                '"getUDF requires input keys `funcName`params";
+                ];
+            if[(not 99h=type params`params);
+                '"Syntax: call getUDF with`params a dictionary";
+                ];
+            if[params[`stream]~1b;
+                '"UDF streaming is `funcType!`realtime only";
+                ];
+            ];
+        if[params[`funcType]~`realtime;
+            .daas.udf.checkRTgetUDF[params];
+            ];
+		];
+        
+	if[`getUDFInfo=function;
+		if[not `funcNames in key params;
+               '"getUDFInfo requires input key `funcNames";
+               ];
+		params: params, enlist[`funcNames]! enlist (), params`funcNames;
+		if[not 11h=type params`funcNames;
+               '"Type error: input for getUDFInfo should have key `funcNames with value of symbol type";
+               ];
+		];
+       
+	if[`deleteUDF=function;
+		if[not `funcNames in key params;
+               '"deleteUDF requires input key `funcNames";
+               ];
+		params: params, enlist[`funcNames]! enlist (), params`funcNames;
+		if[not 11h=type params`funcNames;
+               '"Type error: input for deleteUDF should have key `funcNames with values of symbol type";
+               ];
+		if[` in params`funcNames;
+               '"Cannot pass ` into deleteUDF: specific functions must be specified";
+               ];
+		];
+	params
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>function</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

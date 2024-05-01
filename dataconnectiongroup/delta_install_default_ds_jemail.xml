@@ -1,0 +1,16 @@
+<dataconnectiongroup>
+	<ucname>delta_install_default</ucname>
+	<grpid>ds_jemail</grpid>
+	<key>
+		<keyname>DBS</keyname>
+		<val>instance.ds_jemail_a,instance.ds_jemail_b,</val>
+	</key>
+	<key>
+		<keyname>CONN_SELECTOR</keyname>
+		<val>DEFAULT</val>
+	</key>
+	<key>
+		<keyname>PRIMARY</keyname>
+		<val>primary,primary,</val>
+	</key>
+</dataconnectiongroup>

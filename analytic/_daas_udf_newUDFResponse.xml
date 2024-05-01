@@ -1,0 +1,33 @@
+<analytic>
+	<analytic>.daas.udf.newUDFResponse</analytic>
+	<code_text>{[data]
+	info:data`info;
+	info[`func]:parse info`func;
+	.daas.udf.newUDFTime:.z.P;
+	if[ (.daas.cfg.procNum=info`procNum) and (.daas.cfg.env=info`env); :()];
+	 
+	`.daas.udf.udfFuncStore upsert (enlist[`active]!enlist[1b]),`func`funcName`description # info;
+	
+	if[(not .daas.cfg.env=info`env) and .daas.udf.isFirstUDF[];
+		.daas.udf.saveUDFToDisk . info`func`funcName`description;
+		];
+ }</code_text>
+	<description>responds to the presence of a new UDF by reloading it from disk</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

@@ -1,0 +1,7 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_LISOPT_RTE</tablegroup>
+	<tablename>lisOptQuote</tablename>
+	<tablename>lisOptSummary</tablename>
+	<tablename>lisOptTrade</tablename>
+</schemagroup>

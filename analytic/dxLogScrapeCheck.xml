@@ -1,0 +1,49 @@
+<analytic>
+	<analytic>dxLogScrapeCheck</analytic>
+	<code_text>{[data;dict]
+if[(1=count data);:1b];
+ id:exec id from data;
+ required:`id`host`directory`filename`scrapePattern`level;
+ {[x;y]if[max(^:[?[y;();();(x)]]);'"",(string x)," can not be null";:0b]}[;data]each required;
+ if[count[distinct id]&lt;count id; 
+               '"ID must be unique";
+               :0b
+   ];
+ if[count con:exec id from data where ((not null contextAnalytic)&amp;(null contextConfig))|((null contextAnalytic) &amp; (not null contextConfig));
+               '"Context checks require analytic and configuration parameter - Row ID(s): ",(", " sv string[con]);
+               :0b
+   ];
+ /- if[count negID:exec id from data where ((not null TTL)&amp;((null negativeId)|(null executionTime)))|((not null negativeId)&amp;((null TTL)|(null executionTime)))|((not null executionTime)&amp;((null TTL)|(null negativeId)));
+    if[count negID:exec id from data where ((not null negativeId)&amp; ((null TTL)|(null executionTime)));
+               '"If Negative Logging, entries require executionTime, TTL, negativeId to be populated - Row ID(s): ",(", " sv string[negID]);
+               :0b
+   ];
+ 
+ :1b;
+ }</code_text>
+	<description>validation analytic for Log Scraping configuration parameter</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>config param table</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dict</parameter>
+		<default>"c"$()</default>
+		<description>profile, param, override name</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

@@ -1,0 +1,63 @@
+<analytic>
+	<analytic>getUDF</analytic>
+	<code_text>{[params]
+    
+    //Tag on to params to signal the join later that it comes from udf
+    params[`API]:`getUDF;
+    //If we haven't specified that we are realtime, assume static udf retrieval
+    if[not `funcType in key params;
+        params[`funcType]:`static;
+        ];
+    
+    
+    funcName:params`funcName;
+    if[params[`funcType]=`static;
+        funcParams:params`params;
+        if[(not 99h=type funcParams) or (not -11h=type funcName); '"Syntax: getUDF[funcName;params], with funcName a symbol and params a dictionary"];
+
+        .daas.udf.checkUDFPermissions[funcName;.z.u];
+
+        :(.daas.udf.runUDF[funcName;funcParams];params);
+        ];
+    
+    if[1b~params`stream;
+        :.daas.udf.initiateUDFstream[params];
+        ];
+    
+    .daas.udf.getRealtimeUDF[params]
+ }</code_text>
+	<description>compute and retrieve the results of an extant user-defined-function that has been saved with saveUDF or imported from another environment</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias>getUDF</alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>funcName</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>params</name>
+				<datatype>NullType</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasQR</analyticgroup>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.events.eodBusLogging</analytic>
+	<code_text>{[daysInMem;logDir]
+	delete from `.daas.events.eventRecords where daysInMem &lt;= .z.D - "d"$time;
+	.daas.events.logFile:{` sv x, `$string[.ex.getInstanceName[]],"_", ssr[;".";"_"]string y}[logDir;.z.D];
+	if[()~key .daas.events.logFile;.daas.events.logFile set ()];
+	hclose .daas.events.logh;
+	.daas.events.logh:hopen .daas.events.logFile;
+ }</code_text>
+	<description>sets up EOD handling of disk logging on the event bus.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>daysInMem</parameter>
+		<default></default>
+		<description>number of log days to maintain in memory</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<param>
+		<parameter>logDir</parameter>
+		<default></default>
+		<description>file directory handle</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

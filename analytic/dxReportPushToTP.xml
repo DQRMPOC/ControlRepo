@@ -1,0 +1,66 @@
+<analytic>
+	<analytic>dxReportPushToTP</analytic>
+	<code_text>{[reportData;dictn;reportStats]
+   dxReportTableCheck[reportData;`dxReportPushToTP];
+   if[not ""~e:dxReportDictionaryCheck[dictn;`tpname`tptable];
+     .log.err[.z.h;e:"dxReportPushToTP : ",e;()];
+     'e];
+
+	handleStr:.pl.gethostport[dictn`tpname];
+	h:.utils.dcc[handleStr;0;{[handleStr;x].log.err[.z.h;"dxReportPushToTP : unable to open a handle to ",(string handleStr);x];'x}[handleStr]];
+	(neg h) ("upd";dictn`tptable;reportData);
+	(neg h)(::);
+	@[hclose;h;()];
+	(`;`Action`tpname`tptable`tphostport!(`dxPushToTP;dictn`tpname;dictn`tptable;handleStr))
+}</code_text>
+	<description>Report action analytic to push report results data to TP, i.e. Ticker Plant
+tpname: name of ticker plant
+tptable: name for the table to be pushed to TP</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description></description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>tpname</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>tptable</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default>"c"$()</default>
+		<description>report statistics</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+	<analyticgroup>DxReportGenerator</analyticgroup>
+</analytic>

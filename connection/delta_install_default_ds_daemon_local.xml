@@ -1,0 +1,11 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>ds_daemon_local</connection>
+	<host>ENV=DELTACONTROL_HOST=</host>
+	<port>0</port>
+	<user>Administrator</user>
+	<pass>AESencrypted!106788FEBA38639057BDE65584E37120C6A13B37878F5B826F4F8162A1C8D879</pass>
+	<dbname></dbname>
+	<dbtype>daemon</dbtype>
+	<tls></tls>
+</connection>

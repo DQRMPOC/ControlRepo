@@ -1,0 +1,104 @@
+<analytic>
+	<analytic>.daas.admin.filterConfigUpdate</analytic>
+	<code_text>{[add;upd;del;keyCols;configName]
+
+//combining our data into a table for some initial checks
+data:raze {$[count x; flip x;()]} each (add;upd;del);
+
+//get current config param setup
+tab:keyCols!.uc.getActiveParamValue[configName;`];
+
+//if we don't have anything in our data there was likely an unsuccessful update attempt prior, update log table with unsuccessful attempt
+if[not count data;.daas.admin.logOut[(.z.P;configName;`editUnsuccessful;0b;.p.u;`filterValueUpdate)];
+             '"Edit unsuccessful"];
+              
+
+//update dictionary
+if[((count upd)&gt;0);
+              tab: tab upsert ?[(keyCols!delete setting from flip upd);();0b;(a)!a:cols tab]];
+//delete from config
+/if[((count del)&gt;0);
+     /         tab:delete from tab where key[tab] in (key keyCols!delete setting from flip del)];
+//add to config
+/if[((count add)&gt;0);
+  /            tab: tab upsert keyCols!delete setting from flip add];
+
+tab:0!tab;
+;
+
+//Passing to Config Editor analytic
+if[null .daas.admin.editFilterConfigParam[tab;configName;`];
+	.daas.admin.logOut[(.z.P;`.daas.cfg.filterRuleConfig;`filterEdited;1b;.p.u;`filterValueUpdate)]]
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>add</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>upd</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>del</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>keyCols</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<param>
+		<parameter>configName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

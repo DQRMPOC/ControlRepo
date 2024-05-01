@@ -1,0 +1,31 @@
+<analytic>
+	<analytic>.validation.SURV_GENERAL_SETTINGS</analytic>
+	<code_text>{[config]
+	thisFunc:".validation.SURV_GENERAL_SETTINGS";
+    settings:exec first values by setting from config;
+    
+    if[(not "true"~lower settings`.ppe.preProcessTicksLocally)&amp;"true"~lower settings`.alertBatch.enableDirectReplay;
+        '".ppe.preProcessTicksLocally must be set to true when .alertBatch.enableDirectReplay is set to true"
+        ];
+    
+    1b
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

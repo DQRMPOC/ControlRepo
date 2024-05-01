@@ -1,0 +1,7 @@
+<analyticgroup>
+	<name>daasCanCor</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.canCor.applyCanCor</analytic>
+	<analytic>.daas.canCor.getCanCorMatchInds</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

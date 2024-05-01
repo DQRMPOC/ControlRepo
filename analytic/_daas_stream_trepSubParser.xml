@@ -1,0 +1,81 @@
+<analytic>
+	<analytic>.daas.stream.trepSubParser</analytic>
+	<code_text>{[input]
+.log.out[.z.h;"sending subscription";()];
+.ch.chk::input;
+input[`symList]:`$input[`RIC];
+clientSubID:first string 1?0Ng;
+.daas.stream.trepRefresh[`$clientSubID]:1b;
+.daas.stream.trepSubIdMap[`$clientSubID]:han:"i"$(get input[`handle]);
+/Finding the asset class using .daas.mon.respStatus
+list:string each exec feedHandler from .daas.mon.respStatus where sym like input[`RIC], not feedHandler like "*L2*";
+if[list~();
+	.trep.accept[han];
+	.trep.publishFlat[han;([]ERROR:`$enlist("Not subscribed to that RIC"))];
+	:()];
+feed:list[where enlist (count ("_" vs raze list))&gt;5];
+ac:("_" vs raze feed)[4];
+input[`assetClass]:first value .daas.cfg.assetPrefixes[`$ac];
+
+/Specify source param
+input[`source]:.daas.cfg.vendor;
+
+/If insert or exchange time not specified, use default
+if[not (first `$input[`timeType]) in `insertTime`exchangeTime;input[`timeType]:.daas.cfg.trepDefaultParams[`timeType]];
+
+/Changing the types of the inputs so they can be sent
+
+input[`analytics]:`VWAP`turnover`sym`time`maxPrice`minPrice`sumVolume`tradeCount;
+
+/Changing types of times to symbol, if times not specified, change to start and end of day
+if[not input[`start]~"";input[`start]:`$string["j"$"n"$get input[`start]]];
+if[not input[`end]~"";input[`end]:`$string["j"$"n"$get input[`end]]];
+
+/Getting the filters in the correct format
+inExFilters:.daas.stream.trepFilterParser each rawFilters:input`infilter`exfilter;
+// if there are some filters
+if[not all blankFilters:""~/:rawFilters;
+    input[`applyFilter]:inExFilters where not blankFilters
+    ];
+
+   
+/Remove unneeded parameters to send over 
+params:(`RIC`infilter`exfilter`clientHandle`symbol`analytic)_input;
+
+/Send Subscription
+.log.out[.z.h;"adding subscription";()];
+
+
+`.daas.stream.subs upsert ([]clientSubID:enlist clientSubID;analytic:enlist `getSummary;params:enlist params;period:enlist 0;callbackFn:enlist .daas.stream.defaultCallback;deltaUser:enlist `Administrator;status:enlist `registering);
+/Once we can get the assetclass from the refData remove this line
+
+.daas.stream.regSub[`getSummary;enlist params;`;`Administrator;clientSubID];
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>input</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

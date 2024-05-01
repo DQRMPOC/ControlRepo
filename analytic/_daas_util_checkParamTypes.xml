@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.daas.util.checkParamTypes</analytic>
+	<code_text>{[functionName;params]
+typeCols:a!a:(cols .daas.cfg.paramscfg)except `funcName`paramType`default`isRequired;
+k where not any each (type each params k)=' flip(a each k:(key params) inter exec paramName from a:1!?[.daas.cfg.paramscfg;enlist(=;`funcName;enlist functionName);0b;typeCols])[(key typeCols)except `paramName]
+}</code_text>
+	<description>Check parameter dictionary to ensure all parameters are of the correct type.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,48 @@
+<analytic>
+	<analytic>.daas.util.applyDefaultPivoting</analytic>
+	<code_text>{[functionName;args]
+    .daas.cfg.pivotSettings:.uc.getActiveParamValue[`.daas.cfg.pivotSettings;`DEFAULT];
+    if[not functionName in `getStats`getTicks;
+        :args;
+        ];
+    
+    if[not (.daas.util.applyAssetClassTableName[args]`dataType)in .daas.cfg.pivotSettings`tableName;
+        :args;
+        ];
+    
+    //Index into map to get corresponding fields (avoids mess of if/elses)
+    defaults:`pivot`fill!
+        ((!) . flip ( 
+            (`getTicks;((first;`pivotForGetTicks);(first;`fillForGetTicks)));
+            (`getStats;((first;`pivotForAggregations);(first;`fillForAggregations)))
+            )
+        ) functionName;    
+    
+    ?[.daas.cfg.pivotSettings;();();defaults],args
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,49 @@
+<analytic>
+	<analytic>.daas.util.runl2</analytic>
+	<code_text>{[params]
+    if[`snapshot=params`temporality;
+        if[`snapshotPreceding=params`l2flag;
+            res:.daas.util.l2snapshot[params];
+            ];
+        if[`snapshotFollowing=params`l2flag;
+            res:.daas.util.l2snapshotFollowing[params];
+            ];
+        res:.daas.util.convertOnDiskTZtoOutboundTZ[params;res];
+        res:delete from res where null time;
+        :(res;params);
+        ];
+    res:@[.daas.util.l2GenTimeSeries;params;{if[x~"stop";'`$"Query Time Out"]}]; 
+    legacyRes:.daas.util.l2Legacy[params];
+    
+    / combine the results from market by price and legacy generation
+    ret:$[count res;
+            $[count legacyRes;
+                [b:a!a:exec c from (meta res);
+                c:?[res;();0b;b];
+                c uj legacyRes];
+                res];
+            legacyRes];
+            
+    res:.daas.util.convertOnDiskTZtoOutboundTZ[params;ret];
+	res:.daas.util.timeSort[res;params];
+    :(res;params)
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

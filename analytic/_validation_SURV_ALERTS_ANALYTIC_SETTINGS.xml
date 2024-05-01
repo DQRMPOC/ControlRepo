@@ -1,0 +1,162 @@
+<analytic>
+	<analytic>.validation.SURV_ALERTS_ANALYTIC_SETTINGS</analytic>
+	<code_text>{[config]
+	
+	.debug.SURV_ALERTS_ANALYTIC_SETTINGS:config;
+
+	if[count duplicateRows:exec i+1 from config where 1&lt;(count;i)fby([]alert;setting);
+		'"There are multiple occurences of same settings on rows: ",", "sv string[duplicateRows];
+	];
+	
+	if[any count each (-3!'flip config)inter\:",";
+		'"use of comma's prohibited"
+	];
+
+	.validation.getAction:getAction:{[config;alertName;sttng]
+		exec first action from config where alert=alertName,setting=`$sttng
+	}[config];
+	
+	.validation.seperateAction:seperateAction:{`$1_"`"vs string[x]};
+  	 
+	.validation.throwError:throwError:{[config;alertName;sttng;message]
+		row:exec first i+1 from config where alert=alertName,setting=`$sttng;
+		/'"(row ",string[row],") setting:",#[10;sttng],"... for alert ",string[alertName]," :",message
+		'"(row ",string[row],") setting for alert ",string[alertName]," :",message
+	}[config];
+
+  	/all  	
+  	if[not getAction[a:`all;s:"order and execution data is parted by instrumentID and sorted by eventTimestamp"] in `true`false;
+  		throwError[a;s;": must be true or false"]
+  	];
+  	
+  	/check that eventTypes are words
+  	.validation.validCharacterList:raze[.Q.a,.Q.A,string[til 10],"_"];
+  	.al.callfunction[`.validation.SURV_ALERTS_ANALYTIC_SETTINGS_checkIfWords] each select from (update rowNumber:i from config) where setting like "eventType value*";
+  	 
+	tabls:exec distinct table from .tbl.tablecolumn;
+	orderColumns:exec column from .tbl.tablecolumn where table=`order;
+	executionColumns:exec column from .tbl.tablecolumn where table=`execution;
+
+	{[x;executionColumns]
+		if[count alienCols:except[.validation.seperateAction .validation.getAction[a:x`alert;s:"execution columns to define a contributing trade identifier"];executionColumns]; 
+			.validation.throwError[a;s;": these columns not in execution: ",", "sv string alienCols]
+		];
+	}[;executionColumns]each select from config where setting like "*columns to define a contributing*";
+	{[x;orderColumns]
+		if[count alienCols:except[.validation.seperateAction .validation.getAction[a:x`alert;s:"order columns to define a contributing order identifier"];orderColumns]; 
+			.validation.throwError[a;s;": these columns not in execution: ",", "sv string alienCols]
+		];
+	}[;orderColumns]each select from config where setting like "order columns to define a contributing order identifier";
+
+	/baitAndSwitch  	   	 
+	if[not getAction[a:`baitAndSwitch;s:"column to compute cancelled quantity and leftover quantity still to be filled for orders"] in orderColumns;
+		throwError[a;s;": isn't in order schema"]
+	];
+  	 
+	if[not getAction[a:`baitAndSwitch;s:"enable/disable trade at better price logic"] in `enable`disable;
+		throwError[a;s;": action must be either enable or disable"]
+	];
+  	
+  	/momentumIgnition 
+	if[count alienTabs:(mimdts:seperateAction getAction[a:`momentumIgnition;s:"table name(s) to use as market data (aggregations will by entityLevelMomentum in alert thresholds)"]) except tabls;
+		throwError[a;s;": these doesn't exist: ",", "sv string alienTabs]
+	];
+  	if[count mimdts; 
+		mimdcds:";"vs string getAction[a:`momentumIgnition;s:"market data table(s) column name conversion dicts (;-seperated. count of dicts must match number of MD tables. must at least have `eventTimestamp`instrumentID`price`quantity in key for each table)"];
+		if[count[mimdcds]&lt;&gt;count[mimdts];
+			throwError[a;s;": Number of dictionaries don't match number of Market Data tables (ensure comma-seperated)"];
+		]; 
+		
+		miMarketDataTableColumnsDict:exec column by table from .tbl.tablecolumn where table in mimdts;
+		mimdcds:mimdts!mimdcds;
+		miargs:(`a`s`colDictFromConfig`sourceTableName`sourceTableColDict`expectedTableName`expectedColumns`requiredColumnsToBeMappedTo)!(a;s;mimdcds;`;miMarketDataTableColumnsDict;`execution;executionColumns;`eventTimestamp`instrumentID`price`quantity);
+		{[args;x]args[`sourceTableName]:x;.al.callfunction[`.validation.SURV_ALERTS_ANALYTIC_SETTINGS_checkColDict][args]}[miargs;]each key[mimdcds];	
+		
+		mimdctcs:";"vs string getAction[a:`momentumIgnition;s:"market data table columns to define a market contributing transaction identifier"];
+		mimdctcs:.validation.seperateAction each `$mimdts!mimdctcs;
+		{[a;s;x;y;z]
+			miMarketDataTableColumns:x[z];
+			desiredCols:y[z];
+			if[count alienCols:except[desiredCols;miMarketDataTableColumns]; 
+				.validation.throwError[a;s;": these columns not in market data table ",string[z],": ",", "sv string alienCols]
+			];
+		}[a;s;miMarketDataTableColumnsDict;mimdctcs;]each key[miMarketDataTableColumnsDict];
+	];
+	
+	if[count alienCols:except[.validation.seperateAction getAction[a:`momentumIgnition;s:"execution columns to define a contributing trade identifier"];executionColumns]; 
+		throwError[a;s;": these columns not in execution: ",", "sv string alienCols]
+	];  	 
+  	 
+  	/unusualTradePriceMov
+	if[count alienTabs:(utpmmdts:seperateAction getAction[a:`unusualTradePriceMov;s:"table name(s) to use as market data"]) except tabls;
+		throwError[a;s;": these doesn't exist: ",", "sv string alienTabs]
+	];
+  	if[count utpmmdts;
+		utpmmdcds:";"vs string getAction[a:`unusualTradePriceMov;s:"market data table(s) column name conversion dicts (;-seperated. count of dicts must match number of MD tables. must at least have `eventTimestamp`instrumentID`price in key for each table)"];
+		if[count[utpmmdcds]&lt;&gt;count[utpmmdts];
+			throwError[a;s;": Number of dictionaries don't match number of Market Data tables (ensure comma-seperated)"];
+		]; 
+		
+		utpmMarketDataTableColumnsDict:exec column by table from .tbl.tablecolumn where table in utpmmdts;
+		utpmmdcds:utpmmdts!utpmmdcds;
+		utpmargs:(`a`s`colDictFromConfig`sourceTableName`sourceTableColDict`expectedTableName`expectedColumns`requiredColumnsToBeMappedTo)!(a;s;utpmmdcds;`;utpmMarketDataTableColumnsDict;`execution;executionColumns;`eventTimestamp`instrumentID`price);
+		{[args;x]args[`sourceTableName]:x;.al.callfunction[`.validation.SURV_ALERTS_ANALYTIC_SETTINGS_checkColDict][args]}[utpmargs;]each key[utpmmdcds];
+		
+		utpmmdfils:"\""vs string getAction[a:`unusualTradePriceMov;s:"marketData alert-instance style filters to apply"];
+		utpmmdfils:utpmmdfils[(1+2*til count utpmmdfils)inter til count utpmmdfils];	
+		
+		if[any 0=count each utpmmdfils;
+			throwError[a;s;": Invalid.  Supply empty string if no filters to apply.  Example is Example is \"\";\"instrumentID&lt;&gt;r*;eventType=new\""];
+		];
+	
+		if[count[utpmmdts]&lt;&gt;count utpmmdfils;
+			throwError[a;s;": Invalid.  Filters for each Market Data table required.  Example is \"instrumentID&lt;&gt;n*;eventType=new\";\"instrumentID&lt;&gt;r*;eventType=new\""];
+		];
+		utpmmdfils:utpmmdts!utpmmdfils;
+		.al.callfunction[`.validation.SURV_ALERTS_ANALYTIC_SETTINGS_checkAlertInstanceTypeFilters][a;s;utpmMarketDataTableColumnsDict]'[value utpmmdfils;key utpmmdfils];
+	    	 
+	  	utpmmdpmel:`$"+" vs string getAction[a:`unusualTradePriceMov;s:"market data priceMoveEntityLevel (columns for each MD table to use to join on reference price).  Example instrumentID+side"];
+	  	if[not count utpmmdpmel;
+	  		throwError[a;s;": must list at least one column"];
+	  	];
+  	
+	  	if[count unmappedColumns:utpmmdpmel except distinct raze key each value each value utpmmdcds;
+	  		throwError[a;s;": Not all UTPM Market Data mapping dictionaries have these columns: ",", "sv string unmappedColumns];
+	  	]; 
+	  	
+	  	if[count columnsNotInExecution:utpmmdpmel except executionColumns;
+			throwError[a;s;": These columns not in execution for Market Data Join: ",", "sv string columnsNotInExecution];
+		];
+
+  		if[not getAction[a:`unusualTradePriceMov;s:"market data is sorted in HDB by chosen market data priceMoveEntityLevel"] in `true`false;
+  			throwError[a;s;": must be true or false"]
+  		];		
+		
+	];
+	
+	/front running
+	if[not getAction[a:`frontRunning;s:"analytic to keep and add fields from order table"] in `,exec analytic from .al.analytic;
+		throwError[a;s;": analytic doesn't exist on system"]
+	];
+		  	 
+	:1b
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

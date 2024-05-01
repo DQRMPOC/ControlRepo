@@ -1,0 +1,35 @@
+<workflow>
+<wfName>DAAS_STACK_global_launch_monitoringCapture</wfName>
+	<branch>
+		<tName1>global_fh_monitoringCapture.1</tName1>
+		<tName2>global_hdb_monitoringCapture.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>global_fh_monitoringCapture.1</tName1>
+		<tName2>global_pdb_monitoringCapture.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>global_pdb_monitoringCapture.1</tName1>
+		<tName2>global_tp_monitoringCapture.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>global_tp_monitoringCapture.1</tName1>
+		<tName2>global_rdb_monitoringCapture.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+</workflow>

@@ -1,0 +1,11 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_EQ_RTE</tablegroup>
+	<tablename>eqQuote</tablename>
+	<tablename>eqSummary</tablename>
+	<tablename>eqTrade</tablename>
+	<tablename>fiSummary</tablename>
+	<tablename>futSummary</tablename>
+	<tablename>fxSummary</tablename>
+	<tablename>idxSummary</tablename>
+</schemagroup>

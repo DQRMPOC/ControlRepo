@@ -1,0 +1,65 @@
+<analytic>
+	<analytic>saveUDF</analytic>
+	<code_text>{[params]
+    func:params`func;funcName:params`funcName;description:params`description;
+    
+    /This block is so we continue to accept static udfs with no api change
+    funcType:$[`funcType in key params;
+        params`funcType;
+        `static
+        ];
+    
+    
+    description:(),description;
+    if[(not -11h=type funcName) or not 10h=type description;'"Type error: in saveUDF[funcName;func;description], funcName should be a symbol and description a string"];
+    if[10h=type func;func: parse func];
+    if[not 100h=type func; '"Input error: in saveUDF[funcName;func;description] func should be a function object (type 100h) or a string parsing to one"];
+    
+    // this should error out if the function format is incorrect
+    .daas.udf.checkFunc[func;0];
+    
+    .daas.udf.saveUDFToDisk[funcName;funcType;func;description];
+    
+    :`SUCCESS;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>funcName</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>func</name>
+				<datatype>String</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>description</name>
+				<datatype>String</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

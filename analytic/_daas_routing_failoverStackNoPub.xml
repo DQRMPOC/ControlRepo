@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.routing.failoverStackNoPub</analytic>
+	<code_text>{[stack;env]
+	failProcs:?[.daas.routingMetaData;((=;`stack;enlist stack);(=;`env;enlist env));();`procName];
+	processes:first each .daas.routingMetaData[;`failoverTo] each failProcs;
+	.daas.routing.setPrimaryNoPub each processes except `;
+	if[count a:failProcs where `=processes;
+		.daas.log.logErrorAndSignal["The following processes do not have a process to failover to for .daas.routing.failoverStack";a];
+ 		];
+  }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>stack</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>env</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+</analytic>

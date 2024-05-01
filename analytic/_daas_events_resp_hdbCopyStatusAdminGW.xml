@@ -1,0 +1,32 @@
+<analytic>
+	<analytic>.daas.events.resp.hdbCopyStatusAdminGW</analytic>
+	<code_text>{[data]
+	info:data`info;
+	`.daas.admin.hdbCopyHistory upsert (.z.P;data`topic;data`process;info`asset;(`a`b!`b`a)info`env;`$enlist string info`date;info`hdb1;info`hdb2);
+	
+	//only maintain last 500-1000 records 
+	if[count .daas.admin.hdbCopyHistory&gt;1000;
+		.daas.admin.hdbCopyHistory:-500#.daas.admin.hdbCopyHistory;
+		];
+	
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

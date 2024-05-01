@@ -1,0 +1,33 @@
+<analytic>
+	<analytic>.daas.eventBus.coreInit</analytic>
+	<code_text>{[]
+
+	.daas.init.setMetaAndEventBusConn[];
+	.al.loadinstruction`.daas.cfg.serverCfg;
+	
+	// bus logging setup
+	.daas.events.logDir:hsym .utils.checkForEnvVar "ENV=DELTADATA_HOME=/DaaSData/eventlog";
+	.daas.events.logDays:3;
+	.daas.events.initBusLogging[.daas.events.logDays;.daas.events.logDir];
+
+    / Track the most-recent 'is primary' check
+    .daas.events.isPrimary:(::);
+
+    / Monitoring 2.0 - Event Bus
+    .al.loadinstruction `.daas.cmon.eb;
+    .daas.cmon.eb.init[];
+	
+	.daas.util.initEod[23:59:59.999;`.daas.events.eventBusEod];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

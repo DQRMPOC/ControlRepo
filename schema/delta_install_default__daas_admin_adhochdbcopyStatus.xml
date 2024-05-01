@@ -1,0 +1,26 @@
+<schema>
+	<ucname>delta_install_default</ucname>
+	<table>.daas.admin.adhochdbcopyStatus</table>
+	<description></description>
+	<column>
+		<column>Time</column>
+		<coltype>Timestamp</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>Message</column>
+		<coltype>NullType</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>Information</column>
+		<coltype>NullType</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+</schema>

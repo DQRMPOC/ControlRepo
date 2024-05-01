@@ -1,0 +1,27 @@
+<analytic>
+	<analytic>.daas.cmon.q.getTpSlowSubscribers</analytic>
+	<code_text>{[]
+    pending:.daas.cmon.q.i.getGenericMetricData[`process; `ipc.pendingHandleBytes; `pendingBytes; `pending; 1b];
+    pending:enlist[`pending]_ update pendingHandles:key each pending, pendingBytes:value each pending from pending;
+
+    allTps:select from .daas.cmon.q.i.getProcesses[0b] where processName like "*tp_*";
+
+    pending:allTps lj 1!pending;
+    pending:update status:`OK from pending where 0 = count each pendingHandles;
+    pending:update status:`NOT_OK from pending where metricStale | null status;
+
+    :`connected`registered _ pending;
+}
+    </code_text>
+	<description>Refinery Monitoring - TP Slow Subscribers</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

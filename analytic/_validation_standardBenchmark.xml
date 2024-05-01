@@ -1,0 +1,103 @@
+<analytic>
+	<analytic>.validation.standardBenchmark</analytic>
+	<code_text>{[config]
+
+	.debug.standardBenchConfig:config;
+	res:.al.callfunction[`.validation.standard][config];
+	res:.al.callfunction[`.validation.checkUniqueInstanceBenchmark][config];	
+			
+	configCols:cols config;
+    daysParameterColumns:distinct configCols where any configCols like/: ("sampleTimePeriod";"*days*";"*Days*";"*date*";"*Date*");
+    if[any (any flip not config[daysParameterColumns] within (0;200))and (type each config[daysParameterColumns]) within (5;9);
+    	'"Validation Message: Any threshold for sampleTimePeriod or for a number of days must be between 0 and 200 inclusively"
+    ];	
+    
+    
+    /any percentile parameters to be within [0,100]
+    percentileColNames:("*percentile*";"*Percentile*";"*methodParameter*");
+    percentileColumns:distinct configCols where any configCols like/: percentileColNames;
+    if[any (any not flip config[percentileColumns] within (0;100))and (type each config[percentileColumns]) within (5;9);
+    	'"Validation Failed: Percentile/methodParameter thresholds must be between 0 and 100 inclusively"
+    ];
+	
+	if[`method in cols config;
+    	if[count alienMethods:config[`method]except`logNormal`powerMean`percentile`ADV`avgAcrossDays`total`ADVP;
+    		'"Validation Failed: Following method's not recognised: ",", " sv string[alienMethods]
+    	];
+    ];	  
+    
+    /cap number of days to 40 
+    /make exception for abusive squeeze and parking
+    daysParameterColumns:daysParameterColumns except `underlyingTradingDays`derivativeTradingDays`parkingDateInterval;    
+    /any day parameter thresholds must be between 0 and 40
+    if[any (any flip not config[daysParameterColumns] within (0;40))and (type each config[daysParameterColumns]) within (5;9);
+    	'"Validation Message: Any threshold for sampleTimePeriod or for a number of days must be between 0 and 40 inclusively"
+    ];	
+  	
+  	/end time must br greater than start time
+  	if[all in[;cols config] each `startTimeBucket`endTimeBucket;
+	  	if[any not (exec startTimeBucket from config)&lt;='exec endTimeBucket from config;
+	 		'"Validation Message:  endTimeBucket values must be greater than startTimeBucket values"
+	  	];
+	];
+	
+  	/end time must br greater than start time
+  	if[all in[;cols config] each `startTime`endTime;
+	  	if[any not (exec startTime from config)&lt;='exec endTime from config;
+	 		'"Validation Message:  endTimeBucket values must be greater than startTimeBucket values"
+	  	];
+	];	
+  	 
+  	/minNoSamples must be non-negative 
+  	if[`minNoSamples in cols config;
+	  	if[any not 0&lt;=exec minNoSamples from config;
+	 		'"Validation Message:  minNoSamples values cannot be negative"
+	  	]
+  	];
+  	
+  	/winsorisation parameters between 0 and 100
+  	winsorisationColumns:distinct configCols where any configCols like/: enlist "*insorisation*";
+	if[any (any flip not config[winsorisationColumns] within (0;100))and (type each config[winsorisationColumns]) within (5;9);
+		'"Validation Message: Winsorisation Bounds must be between 0 and 100 inclusively"
+	];
+  	  	
+	/percentile between 0.0233 and 100 inclusively  	 
+ 	if[any `percentile`methodParameter in cols config;
+		if[any not within[;0.0233  100] each raze (select from config where instance&lt;&gt;`numberOfIntervals)[`percentile`methodParameter inter cols config];
+			'"Validation Message: percentile values must be between 0.0233 and 100 inclusively"
+		];
+	];
+    
+    if[`assetClass in cols config;
+        inputedAssetClasses:exec distinct assetClass from config;
+        allowedAssetClasses:(`;`notInUse;`$"*notInUse*"),exec ((`$string[subClass],\:"*"),(`$string[asset],\:"*")) from .uc.getActiveParamValue[`.daas.cfg.subClassToAsset;`];
+        matches:inputedAssetClasses in allowedAssetClasses;
+        isLike:any inputedAssetClasses like\:/: string[allowedAssetClasses];
+        badInputs:inputedAssetClasses where not[matches] and not[isLike];
+        if[count badInputs;
+            '"Bad assetClass inputs: ",(","sv string[badInputs]),". Only allowed values with or without *'s like: ",(","sv string[allowedAssetClasses])
+        ];
+    ];
+ 	      
+ 	:1b
+ 	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

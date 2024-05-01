@@ -1,0 +1,11 @@
+<task>
+	<taskName>global_rdb_monitoringCapture.1</taskName>
+	<taskEnabled>0</taskEnabled>
+	<taskManual>0</taskManual>
+	<taskType>once</taskType>
+	<prInsName>global_rdb_monitoringCapture</prInsName>
+	<stDateTime></stDateTime>
+	<endDateTime></endDateTime>
+	<rptFrequency></rptFrequency>
+	<rptInterval></rptInterval>
+</task>

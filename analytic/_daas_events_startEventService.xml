@@ -1,0 +1,74 @@
+<analytic>
+	<analytic>.daas.events.startEventService</analytic>
+	<code_text>{[]
+		/--Event Handling--/
+	// if delta messaging hasn't been loaded, do so
+	if[.ex.getInstanceName[] like "*eventBus*";
+		instanceParse:`$"_" vs string .ex.getInstanceName[];
+		if[1&lt;count string last instanceParse; instanceParse,:`a];
+		//`.daas.cfg.region`.daas.cfg.vendor`.daas.cfg.env set' (instanceParse 0; instanceParse 1;last instanceParse)
+		`.daas.cfg.region`.daas.cfg.vendor`.daas.cfg.env set' (instanceParse 0; instanceParse 2;last instanceParse)];
+	//msOverride:`$"DS_MESSAGING_SERVER:","_" sv string .daas.cfg.region,.daas.cfg.vendor,.daas.cfg.env;
+	msOverride:`$"DS_MESSAGING_SERVER:emea_tr","_", string .daas.cfg.env;
+	//msOverride:`$"DS_MESSAGING_SERVER:DS";
+	if[()~key`.dm.regsubc;
+		.dm.init[msOverride]
+	];
+	
+	// load daasEvents analytics
+	.al.loadgroupfunctions`daasEvents;
+	
+	// load event schema
+	.tbl.gettable[`.daas.events.eventRecords];
+	// ensure that "info" field remains general:
+	`.daas.events.eventRecords upsert enlist[`info]!enlist[::];
+	// create separate copy as the adminInterface topic log
+	`.daas.events.adminRecords set .daas.events.eventRecords;
+	
+	// set up event responses in .daas.events.upd
+	.daas.cfg.eventResponsesByTopic:`topic xkey .uc.getActiveParamValue[`.daas.cfg.eventResponsesByTopic;`];
+	$[.ex.getInstanceName[] like "*eventBus*";
+		.daas.events.upd:.daas.events.eventBusUpd;
+		.daas.events.upd:{[topic;data]$[not null resp:.daas.cfg.eventResponsesByTopic[topic;`response];
+			get(resp;data);];}];
+	
+	// create process subscriptions to `daasAdmin topics
+	.daas.cfg.eventSubscriptions:.uc.getActiveParamValue[`.daas.cfg.eventSubscriptions;`];
+	$[.ex.getInstanceName[] like "*eventBus*";
+		[ .dm.regsubc [`daasAdmin;"eventReporting"]; 
+			.dm.regsubc[`daasAdmin;"adminInterface"];
+			.dm.regsrcc/:[`daasAdmin;string each (distinct raze `$ "," vs/: exec topics from .daas.cfg.eventSubscriptions) except `]];
+		0&lt;count .daas.events.thisSub:(first select from .daas.cfg.eventSubscriptions where .ex.getInstanceName[] like/: processName)`topics;
+		[.daas.events.thisSub:"," vs .daas.events.thisSub; .dm.regsubc/:[`daasAdmin;.daas.events.thisSub ]  ];
+		0&lt;count .daas.events.thisSub:(first select from .daas.cfg.eventSubscriptions where processType=.ex.getProcessName[])`topics;
+		[.daas.events.thisSub:"," vs .daas.events.thisSub; .dm.regsubc/:[`daasAdmin;.daas.events.thisSub ]  ];
+		];
+// all processes can generate event and admin messages
+	.dm.regsrcc[`daasAdmin;"eventReporting"];
+	.dm.regsrcc[`daasAdmin;"adminInterface"];
+	
+// set up system alerts in event bus
+	if[.ex.getInstanceName[] like "*eventBus*"; 
+		.alrt.subscribe[`statusview];
+		statusview::.daas.events.processStatusResponse];
+		
+// set up master-slave config with updates handled by DC
+	.daas.events.masterSlave.init[];
+	
+	
+// set up cross-event-bus connections
+if[.ex.getInstanceName[] like "*eventBus*";
+	.daas.events.connectEventBuses[]];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

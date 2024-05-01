@@ -1,0 +1,62 @@
+<analytic>
+	<analytic>.daas.admin.getTickLossDetail</analytic>
+	<code_text>{[srcProcess; srcTable; sym; tickCounts]
+    if[null srcProcess;
+        :();
+    ];
+
+    trRdbHandles:.daas.admin.getTrRdbHandles[];
+
+    targetHandle:trRdbHandles srcProcess;
+
+    if[null targetHandle;
+        .log.error[`tickLoss;;()] "Source process has no valid handle [ Process: ",string[srcProcess]," ]";
+        '"InvalidSourceProcessException";
+    ];
+
+    .log.out[`tickLoss;;()] "Querying tick loss detail [ Process: ",string[srcProcess]," ] [ Table: ",string[srcTable]," ] [ Sym: ",string[sym]," ] [ Affected Tick Counts: ",.Q.s1[tickCounts]," ]";
+
+    tickDetail:targetHandle(?; srcTable; ((=; `sym; enlist sym); (in; `tickCount; tickCounts)); 0b; ());
+    :tickDetail;
+ }
+    </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>srcProcess</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>srcTable</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>sym</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tickCounts</parameter>
+		<default></default>
+		<description></description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<analyticgroup>daasWatchlistDashboard</analyticgroup>
+</analytic>

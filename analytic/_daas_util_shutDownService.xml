@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.daas.util.shutDownService</analytic>
+	<code_text>{[toShutDown]
+	currentLoc:system"pwd";
+    system"cd ",getenv[`DELTA_HOME],"/delta-bin/bin";
+
+    {
+        .log.out[`shutdown;"shutting down service class";x];
+        @[system;"./stopService.sh -n ",string x;{.log.warn[`shutdown;"err back from os when shutting down";x]}];
+        } each toShutDown;
+
+    system"cd ",first currentLoc;
+    
+    //give 1s to shutdown
+    system"sleep 1";
+    if[count stillUp:?[.ex.prh(`.pl.getRunningInformation;::);((=;`entityclass;enlist`serviceclass);(in;`name;(),toShutDown));();`name];
+        .log.err[`shutdown;"unable to shut down service class";] each stillUp;    
+        :0b
+        ];
+    1b
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>toShutDown</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

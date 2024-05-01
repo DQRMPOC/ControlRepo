@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.daas.processing.writeTab</analytic>
+	<code_text>{[t]
+
+	if[count value t;
+		{[t;dt]
+			//Handle to table partition
+		    dir:` sv (.daas.processing.tabDir;`$string dt;t;`);
+		    
+		    //Select from table
+			$[t in .daas.processing.keyedTables;
+		    	tab:0!delete trthDate from select from t where trthDate=dt;
+		    	tab:select from t where ("d"$time)=dt
+		    ];
+		    
+		    //Write to disk
+		    .log.out[.z.h;"Saving: (table;count;date)";(t;count tab;dt)];
+		    .[$[count key dir;upsert;set];(dir;.Q.en[.daas.processing.tabDir;tab]);{.log.error[.z.h;"Error writing to disk";(x)]}];
+		    
+		} [t;] each exec distinct ("d"$time) from t;
+	];
+	delete from t;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>t</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

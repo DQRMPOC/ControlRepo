@@ -1,0 +1,69 @@
+<analytic>
+	<analytic>.daas.events.resp.hdbCopy</analytic>
+	<code_text>{[data]
+	
+	if[not lower[.ex.getInstanceName[]] like "*hdbcopy*";:()];
+	
+	info:data`info;
+	sourceEnv: info`sourceEnv;
+	env:info`env;
+	region:info`region;
+	vendor:info`vendor;
+	asset:info`asset;
+	runDate:info`date;
+	copyStatus:data`tag1;
+	
+	if[not all (asset=.daas.cfg.asset) and (region=.daas.cfg.region) and (vendor=.daas.cfg.vendor) and (env=.daas.cfg.env) and (copyStatus=`start);:()];
+
+	// get process info for hte two environments
+	procInfo:.ex.prh(`.pl.getRunningInformation;::);
+
+		/hdb1Procs:exec instance_name from procInfo where 
+ 	/	(all instance_name like/: ("*",string[.daas.cfg.asset],"_hdb_*";"*_",string[sourceEnv]) ) or 
+  	/	( (instance_name like ("*",string[.daas.cfg.asset],"_stats_","*") ) and instance_name like "*_",string[sourceEnv]) or 
+ 	/	 (all instance_name like/: ("*",string[.daas.cfg.asset],"L2_hdb_*";"*_",string[sourceEnv]));
+	/hdb2Procs:{`$  "_" sv ,[;enlist string .daas.cfg.env] -1 _ "_" vs string x} each hdb1Procs;
+	
+	hdb1Procs:exec instance_name from .pl.getRunningInformation[] where 
+ 		((instance_name like ("*_hdb_*")) and (instance_name like ("*_",string[.daas.cfg.asset],"_*")) and instance_name like "*_",string[.daas.cfg.env]) or 
+  		((instance_name like ("*_stats_*")) and (instance_name like ("*_",string[.daas.cfg.asset],"*")) and instance_name like "*_",string[.daas.cfg.env]) or 
+ 		((instance_name like ("*_hdb_*")) and (instance_name like ("*_",string[.daas.cfg.asset],"L2*")) and instance_name like "*_",string[.daas.cfg.env]);
+	hdb2Procs:{`$  "_" sv ,[;enlist string .daas.cfg.env] -1 _ "_" vs string x} each hdb1Procs;
+
+	`hdbCopyTable set update date:runDate, tablist:` from (flip `hdb1`hdb2!(hdb1Procs;hdb2Procs));
+	
+	{[p]
+	  msgInfo:p, (`region`vendor`asset`env! (.daas.cfg.region;.daas.cfg.vendor;.daas.cfg.asset;.daas.cfg.env));
+	
+	  .daas.events.pubEventMessage[`hdbCopyStarted;`;`;`;msgInfo];
+	
+	  res:.daas.util.trap[.daas.infra.hdbdatacopySCP;enlist p];
+	  $[res`error;
+		  .daas.events.pubEventMessage[`hdbCopyFailed;`;`;`;msgInfo, enlist[`error]!enlist[res`error]];
+		  .daas.events.pubEventMessage[`hdbCopyComplete;`;`;`;msgInfo]] ;
+		.Q.gc[];
+	  :res;
+	 } each hdbCopyTable;
+	
+	
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

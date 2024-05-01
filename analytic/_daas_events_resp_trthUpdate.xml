@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.events.resp.trthUpdate</analytic>
+	<code_text>{[data]
+
+.log.out[.z.h;"Entered .daas.events.resp.trthUpdate";()];
+
+trthUpdateValues:data[`info];
+.log.out[.z.h;"Data: ";(trthUpdateValues)];
+
+$[(trthUpdateValues[`status]) in (`COMPLETE;`FAILED); 
+	[
+		rptName:`$trthUpdateValues[`reportName];
+		rptID:"I"$trthUpdateValues[`reportID];
+		rptAction:`$".daas.trth.requestAction";
+		delete from `.rpt.sentDocs where reportName=rptName, rptID=rptID, action=rptAction;
+		.log.out[.z.h;"Deleted Report from .rpt.sentDocs";(rptName;rptID)];
+	];		
+];
+
+.r.rexe[(`updRT;`dxLog;(.ex.getName[];.z.P;`$trthUpdateValues[`reportName];trthUpdateValues[`status];`INFO;trthUpdateValues[`statusMessage];trthUpdateValues[`reportID];`;0N))];
+
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+</analytic>

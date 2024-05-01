@@ -1,0 +1,69 @@
+<analytic>
+	<analytic>.daas.util.l2GenTimeSeries</analytic>
+	<code_text>{[params]
+    startTime:params`startTime;
+    endTime:params`endTime;
+    symList:params`symList;
+    nLevels:params`numLevels;
+    tableName:.daas.util.applyAssetClassTableName[params]`dataType;
+    timeCol:params`time;
+
+    trimCols:0b;
+    
+
+    / if number of levels is null/infinite, determine the max number from the number of price levels 
+    / in the l2 update table
+    if[nLevels in 0N 0W;
+        nLevels:exec max price from select count distinct price by sym,side from orderTable:?[tableName;.daas.l2.genWhereClause[params;tableName];0b;()];
+        trimCols:1b;
+        if[not count orderTable;
+            nLevels:1;
+            ];
+        ];
+
+    bookDict:@[.daas.util.l2GenOrderBookFromIntra[nLevels;startTime;timeCol;symList;tableName;]; params; {`NO_BOOKDICT_FROM_INTRA}];
+
+    / create dictionary with empty preBookDict table and 
+    / symList with distinct syms from the intraday table (for given dates if on the hdb)
+    if[`NO_BOOKDICT_FROM_INTRA~bookDict;
+        
+        / select distinct syms from intraday snapshots
+        wc:$[.ex.getProcessName[]~`DS_HDB;
+                enlist(within;`date;(enlist;params`startDate;params`endDate));
+                ()
+                ];
+        symList:exec sym from ?[.daas.l2rdbIntraTabNames[params`assetClass];wc;1b;c!c:enlist`sym];
+        
+        pbd:.daas.l2.emptyPreBookDict[symList];
+        bookDict:`preBookDict`SymList!(pbd;symList)
+        ];
+
+    symList:$[`SymList in key bookDict;bookDict`SymList;exec distinct sym from bookDict`preBookDict];
+
+    bookDict[`preBookDict]:update params[`startTime]^time from bookDict[`preBookDict];
+
+    if[symList ~ `symbol$(); 
+        symList:enlist `noSym
+        ];
+
+    :timeCol xasc raze .daas.l2.buildOrderBook[tableName;params;bookDict`preBookDict;nLevels;timeCol;] each symList;    
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

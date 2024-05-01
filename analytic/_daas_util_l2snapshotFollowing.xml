@@ -1,0 +1,64 @@
+<analytic>
+	<analytic>.daas.util.l2snapshotFollowing</analytic>
+	<code_text>{[params]
+
+time:params`startTime;
+symList:params`symList;
+nLevels:params`numLevels;
+tableName:.daas.util.applyAssetClassTableName[params]`dataType;
+
+if[(any ` in symList) and .ex.getProcessName[]=`DS_HDB ; symList: first value flip select distinct sym from tableName where date within params`startDate`endDate];
+if[(any ` in symList) and not .ex.getProcessName[]=`DS_HDB ; symList: exec distinct sym from tableName];
+
+if[1=count time;
+		time:enlist time;
+		];
+raze {[time;symList;nLevels;tableName;params]
+	delete l2tabBookDict from `.daas;
+	
+	trimCols:0b;
+	
+	$[.ex.getProcessName[]~`DS_RDB;
+		orderTable:	0!?[tableName;((in;`sym;enlist symList);(&gt;;params`time;time));(enlist`sym)!enlist`sym;`time`exchTime`action`id`side`price`size`levelTime`MMId`numOrders`condition`indication!((first;`time);(first;`exchTime);(first;`action);(first;`id);(first;`side);(first;`price);(first;`size);(first;`levelTime);(first;`MMId);(first;`numOrders);(first;`condition);(first;`indication))];
+		orderTable:	0!?[tableName;((within;`date;(0 1)+params`endDate);(in;`sym;enlist symList);(&gt;;params`time;time));(enlist`sym)!enlist`sym;`time`exchTime`action`id`side`price`size`levelTime`MMId`numOrders`condition`indication!((first;`time);(first;`exchTime);(first;`action);(first;`id);(first;`side);(first;`price);(first;`size);(first;`levelTime);(first;`MMId);(first;`numOrders);(first;`condition);(first;`indication))]
+		];
+	
+	symList:exec distinct sym from orderTable;
+	
+	if[nLevels in 0N 0W;
+		nLevels:exec max price from select count distinct price by sym,side from orderTable;
+		trimCols:1b;
+		if[not count orderTable;
+			nLevels:1;
+			];
+		];
+		
+	bookDict:.daas.util.l2GenOrderBookFromIntra[nLevels;time;params`time;symList;tableName;params];
+	
+	t:asc (params`time) xcols select from ((params`time) xasc raze .daas.l2.buildOrderBook[tableName;params;bookDict`preBookDict;nLevels;] each (),symList) where i=(last;i) fby sym;
+	t lj ?[orderTable;();enlist[`sym]!enlist[`sym];enlist[params`time]!enlist[(last;params`time)]];
+	
+	if[trimCols;
+		:![t;();0b;b where any each flip (b:cols t) like/: (string inter[`$distinct first each "bid" vs/: string first a where each (a:(key ft) where value all each null ft:flip t) like/: ("*bid*";"*ask*");`$distinct first each "ask" vs/: string last a where each (a:(key ft) where value all each null ft:flip t) like/: ("*bid*";"*ask*")]),\:"*"];
+		];
+	t}[;symList;nLevels;tableName;params] each (),time
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

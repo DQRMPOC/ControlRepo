@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.daas.admin.removeFilterRule</analytic>
+	<code_text>{[filterName;filterType]
+/load in cfg to edit
+current:-8!0!tab:.uc.getActiveParamValue[filterType;`];
+/reject addition if a there does not exists a filter of that name
+if[not filterName in cols tab;:(`success`current`updated`message)!(0b;`;`;`filterDoesNotExist)];
+if[filterName in (`exch;`cond);'"Exch and Cond cannot be removed"];
+/remove designated column
+updated:-8!tab:![tab;();0b;enlist filterName];
+/update filter config
+.daas.admin.editFilterConfigParam[tab;filterType;`];
+:(`success`current`updated`message)!(1b;current;updated;`filterRemoved)
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>filterName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>filterType</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

@@ -1,0 +1,46 @@
+<analytic>
+	<analytic>.daas.python.executeRTUDF</analytic>
+	<code_text>{[udfName;tabName;data]
+    .daas.udf.activeUDF:udfName;
+    
+	//If we get rank err trying to pass tab;data, then we try with no args, otherwise fail.
+    //Trailing backtick to access embedPy object
+    .[.daas.udf.udfFuncStore[udfName]`func;
+        (tabName;data);
+        .daas.python.reExecuteNoArgs[udfName;]
+        ]`
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>udfName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tabName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>0</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasPython</analyticgroup>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

@@ -1,0 +1,57 @@
+<analytic>
+	<analytic>.daas.processing.peInit</analytic>
+	<code_text>{[]
+	/proc params
+	.daas.cfg.env:`$first "." vs last "_" vs first .fd.process;
+	.daas.cfg.vendor:`tr;
+	.daas.cfg.region:`emea;
+	.daas.cfg.jobID:value last -1_"_" vs first .fd.process;
+	
+	/Delta messaging
+	/.al.callfunction[`.daas.events.startEventService][];
+	/.dm.regsrcc[`TRTH;"stackManagement"];
+	/.dm.regsrcc[`TRTH;string[.daas.cfg.jobID]];
+	
+
+	`.daas.processing.rawTabs set ();																						//tables to write down
+	`.daas.processing.tabDir set ();																						//location of temp
+	`.daas.processing.writeCountTrigger set 500000;																			//write-to-disk row count limit
+	`.daas.processing.keyedTables set tables[`.] where @[{(99h=type value x)};;0b] each tables[`.]; 						//get the keyed tables
+	
+	//boot tickerplant
+	`tpBoot set {
+		.log.out[.z.h;"Connecting to PD";()];
+		.daas.trth.pd:hopen `$":",":" sv getenv each `$ ("daas_processingDaemon_",string[.daas.cfg.env]),/:("_HOST";"_PORT");
+		/.daas.trth.pd::first exec handle from .dm.qipc where entity like ("*processingDaemon_",string[.daas.cfg.env],"*");
+		
+		$[not null .daas.trth.pd;
+		
+			[.log.out[.z.h;"PD connected - booting TP";()];
+			neg[.daas.trth.pd]".daas.processing.bootTRTHStack[`",string[.daas.cfg.jobID],";`DS_TP]"
+			];
+			
+			:()
+		];
+		.d.prcl.removeFuncFromTimer[`tpBoot;1b];
+	};
+	
+	/Use timer to account for time required to connect to PD
+	.d.prcl.addFunctToTimer[`tpBoot;();.z.Z;`datetime$.z.P+(`timespan$30e9);1000i;1b];
+	.d.prcl.setTimerFreq 100i;
+	
+	/log `boot complete`
+	.log.out[.z.h;"PE Boot Complete";()];
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

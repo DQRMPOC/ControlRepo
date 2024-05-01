@@ -1,0 +1,54 @@
+<analytic>
+	<analytic>.daas.pdb.registerTP</analytic>
+	<code_text>{[]
+	.daas.cfg.tpWriteDownProcess:(1!.uc.getActiveParamValue[`.daas.cfg.tpWriteDownProcess;`]).ex.getInstanceName[];
+	if[all null .daas.cfg.tpWriteDownProcess;
+		.pl.report_error_and_terminate["No writedown process listed for tp. Please check contents of .daas.cfg.tpWriteDownProcess";()]
+	 ];
+ 	//Check if PDB is being used, if not check if subscriptions listed in instance params
+ 	if[not `PDB=.daas.cfg.tpWriteDownProcess`writeDownProcType;
+ 		if[enlist[`NO_TABLES]~.fd.subscriptionTableList;
+ 			.pl.report_error_and_terminate["No tables listed for subscriptions and PDB not being used. Please add tables to subscriptionTableList in TP instance parameters";()]
+ 		 ];
+ 		:()
+ 	 ];
+	
+	//Extract PDB channel, pdb subscription tables, rdb subscription tables
+	if[all null .daas.cfg.pdbChannels:exec channel from .uc.getActiveParamValue[`.daas.cfg.pdbChannel;.ex.getInstanceName[]];
+		.pl.report_error_and_terminate["No PDB channels listed for TP. Please check override of .daas.cfg.pdbChannel";()];
+	 ];
+	//Derived pdb process name from tp name, removing Legacy as shared L2 pdb
+	pdbProcess:first .daas.cfg.tpWriteDownProcess`writeDownProcName;
+	.daas.cfg.pdbTables:enlist each string exec tableName from .uc.getActiveParamValue[`.daas.cfg.pdbTableSettings;pdbProcess];
+	.daas.cfg.rdbTables:enlist each exec tableName from .uc.getActiveParamValue[`.daas.cfg.tpRealtimeTables;.ex.getInstanceName[]];
+	
+	//Subscribe to non-persisted tables straight away if there are any
+	$[0&lt;nonPersistedTables:count .daas.cfg.rdbTables except .daas.cfg.pdbTables;
+		[.log.out[`pdb;"Subscribing to non-persisted tables:";nonPersistedTables];.dm.regsubc ./: .fd.subscriptionChannel cross nonPersistedTables];
+		.log.out[`pdb;"No non-persisted tables to subscribe to";()]
+	 ];
+	
+	//Register as source to PDB for listed subscription tables
+	if[0= count .daas.cfg.pdbTables;
+		.log.warn[`pdb;"No tables listed by tickerPlant to be persisted. Please check override of .daas.cfg.tpSubscriptionTables is correct";()];
+		:(::)
+	 ];
+		
+	.daas.cfg.pdbSubs:.daas.cfg.pdbChannels cross .daas.cfg.pdbTables;
+	.log.out[`pdb;"Registering with PDB to publish tables: ";.daas.cfg.pdbTables];
+	.dm.regsrcc ./: .daas.cfg.pdbSubs;
+	//Add function to timer to check if PDB subscriptions all active
+	.d.prcl.addFunctToTimer[`.daas.pdb.checkTPSubActive;();.z.Z;0Nz;1000;1b];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPDB</analyticgroup>
+</analytic>

@@ -1,0 +1,61 @@
+<analytic>
+	<analytic>.daas.util.rackTable</analytic>
+	<code_text>{[tab;args]
+
+    $[`orderID~args`idType;
+        aggCol:`orderID;
+        aggCol:`sym
+        ];
+    if[count args`fill;
+        if[args[`fill] in `null`zero`forward;
+            width:.daas.cfg.grandict[args`granularityUnit]*args`granularity;
+            start:args[`rackStart];
+            end:args[`rackEnd];
+            list:args`timeRack;
+            $[`orderID~args`idType;
+                rack:([]time:(lcount*count syms)#list;orderID:raze(lcount:count list)#'syms:$[`~a:args`symList;exec distinct orderID from tab;a]);
+                rack:([]time:(lcount*count syms)#list;sym:raze(lcount:count list)#'syms:$[`~a:args`symList;exec distinct sym from tab;a])
+            ];
+            rack:args[`time] xcol rack;
+            if[(`slice=args`temporality) or (1=count args`rackTemporalWhereClause);
+                :`time xasc (`time xcol ?[rack;args`rackTemporalWhereClause;0b;()]) lj (`time,aggCol) xkey tab;
+                ];
+            :`time xasc (`time xcol ?[rack;raze args`rackTemporalWhereClause;0b;()]) lj ((`time,aggCol) xkey tab)
+            ];
+        ];
+    tab
+ }</code_text>
+	<description>zero fill a result table</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

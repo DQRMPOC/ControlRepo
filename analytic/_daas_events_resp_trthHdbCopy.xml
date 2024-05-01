@@ -1,0 +1,68 @@
+<analytic>
+	<analytic>.daas.events.resp.trthHdbCopy</analytic>
+	<code_text>{[data]
+.d.d:data; /debug
+ .log.out[.z.h;"Entered .daas.events.resp.trthHdbCopy";()];
+  /trthUpdateValue:data[`info];
+ trthUpdateValue:data;
+ .log.out[.z.h;"Data: ";(trthUpdateValue)];
+ 
+ //hdbDates: -14h date
+//asset: 10h string
+
+hdbDates:trthUpdateValue[`hdbDates];
+.daas.trth.asset:trthUpdateValue[`asset];
+.daas.cfg.env:`a;
+
+// generate target hdb proc list for copying
+// TODO: shouldn't require hdb procs to be running
+procInfo:.ex.prh(`.pl.getRunningInformation;::);
+masterEnv:exec first env from .daas.cfg.masterSlaveInstances where isMaster;
+hdb1Procs:exec instance_name from procInfo where 
+ (instance_name like ("*",.daas.trth.asset,"_hdb_",string[masterEnv],"*") ) or 
+  ( (instance_name like ("*stats_",.daas.trth.asset,"*") ) and instance_name like "*_",string[masterEnv]) or 
+  (instance_name like ("*",.daas.trth.asset,"L2_hdb_",string[masterEnv],"*"));
+ //this line could be changes so to not remove the a and add it back on
+hdb2Procs:{`$  "_" sv ,[;enlist string .daas.cfg.env] -1 _ "_" vs string x} each hdb1Procs;
+
+`hdbCopyTable set update date:enlist hdbDates, tablist:` from (flip `hdb1`hdb2!(hdb1Procs;hdb2Procs));
+
+
+
+`hdbTransferFunct set {[]
+ `hdbCopyResults set {[p]
+  msgInfo:p, (`region`vendor`asset`env! (.daas.cfg.region;.daas.cfg.vendor;.daas.trth.asset;.daas.cfg.env));
+
+  .daas.events.pubEventMessage[`hdbCopyStarted;`;`;`;msgInfo];
+
+  res:.daas.util.trap[.daas.infra.hdbdatacopySCP;enlist p];
+  $[res`error;
+	  .daas.events.pubEventMessage[`hdbCopyFailed;`;`;`;msgInfo, enlist[`error]!enlist[res`error]];
+	  .daas.events.pubEventMessage[`hdbCopyComplete;`;`;`;msgInfo]] ;
+  :res;
+	 } each hdbCopyTable;
+//	.pl.return_exit[`];
+		};
+	
+	.daas.events.runOnInitialBusCon `hdbTransferFunct;
+ 
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

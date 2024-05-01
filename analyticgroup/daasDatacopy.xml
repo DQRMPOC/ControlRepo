@@ -1,0 +1,7 @@
+<analyticgroup>
+	<name>daasDatacopy</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.dataCopy.zipData</analytic>
+	<analytic>.daas.datacopy.dropDataLR</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

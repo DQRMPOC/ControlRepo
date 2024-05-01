@@ -1,0 +1,110 @@
+<analytic>
+	<analytic>.daas.processing.parseTRTHconfig</analytic>
+	<code_text>{[dict]
+
+	// can't update elements in a dict with values all the same type; 
+    //eg. params:(`identifier`symList`idType`dataType)!(`instrument;`GB00BH4HKS39; `ISIN; `refData); params[`symList]:enlist[`MSFT] won't work
+	info:(enlist(::))!enlist(::);
+    info,:dict;
+
+	/*** OLD CODE (modified) ***/
+	
+    .daas.trth.file:file:dict`file;
+    .daas.trth.dir:dir:dict`filePath;
+    .daas.trth.fileSplit:"_" vs string[file];
+
+    /getting info from report name
+	.daas.trth.fileDict:`status`reportID`reportName`filePart`statusMessage`reportDate!(`PENDING;(.daas.trth.fileSplit[0]);.daas.trth.fileSplit[1];.daas.trth.fileSplit[4];"";.daas.trth.fileSplit[2]);
+	.daas.trth.statusMsg:(first .fd.process),": ",(.daas.trth.eventBusUpdate[`reportID],"_",.daas.trth.eventBusUpdate[`reportName]);
+	.daas.trth.fileDict[`statusMessage]:.daas.trth.statusMsg;
+	
+	.daas.trth.eventBusUpdate:.daas.trth.fileDict _ `reportDate;
+
+    assetClass:{[file]
+        if[(first "." vs last "RFA-" vs string file) like "*L2*"; 
+            r:();
+            if[file like "*RFA-EQUITYL2*";r:`short`upShort`long!("eqL2";"Eq";"EQUITY")];
+            if[file like "*RFA-FUTUREL2*";r:`short`upShort`long!("futL2";"Fut";"FUTURE")];
+            if[file like "*RFA-EQUITYLL2*";r:`short`upShort`long`feedAsset!("LL2";"Eq";"EQUITY";"EQL2")];
+            if[file like "*RFA-FUTURELL2*";r:`short`upShort`long`feedAsset!("LL2";"Fut";"FUTURE";"FUTL2")];
+            $[()~r;
+				[ /event bus update
+					.daas.trth.eventBusUpdate[`status]:`FAILED;
+					.daas.trth.eventBusUpdate[`statusMessage],:" - Error due to the RFA Velocity feed currently only supporting L2,LL2 playback for EQ &amp; FUT";
+					.log.err[.z.p;"Event Bus Update Data: ";.daas.trth.eventBusUpdate];
+					.daas.events.pubEventMessage[`trthUpdate;`;`;`;.daas.trth.eventBusUpdate];
+					'"Playback fromat not supported";
+				];
+				:r
+			];
+		];
+            
+        if[file like "*RFA-EQUITY*";:`short`upShort`long!("eq";"Eq";"EQUITY")];
+        if[file like "*RFA-FUTURE*";:`short`upShort`long!("fut";"Fut";"FUTURE")];
+        if[file like "*RFA-FOREX*";:`short`upShort`long!("fx";"Fx";"FOREX")];
+        if[file like "*RFA-FIXED*";:`short`upShort`long!("fi";"Fi";"FIXED")];
+        if[file like "*RFA-INDEX*";:`short`upShort`long!("idx";"Idx";"INDEX")];
+        if[file like "*RFA-MNYM*";:`short`upShort`long!("mn";"Mn";"MNYM")];
+        if[file like "*RFA-LISOPT*";:`short`upShort`long!("lisopt";"LisOpt";"FUTURE")];
+        }[dict`file];
+    
+    /***	***/
+    
+	/record remaining report params
+	info[`writeTabs]:value string first value(1!.uc.getActiveParamValue[`.daas.cfg.processing.writeTabs;`]) `$assetClass`short;		/tables to write to disk
+    info[`assetClass]:assetClass;																									/asset class dict
+    info[`processingFilePath]:` sv (dir;`processing;file);																			/path to processing directory
+    info[`processedFilePath]:` sv (dir;`processed;`$string[file],".",raze ":" vs string .z.z);										/path to processed directory
+    info[`fileDict]:.daas.trth.fileDict;																							/dict of fileSplit values
+    $[`feedAsset in key info[`assetClass];
+    	info[`tempDir]:hsym`$(getenv`$"TRTH_HDBLOG_",upper (info[`assetClass])`feedAsset),"/","_" sv 3# "_" vs string info`file;	/directory of temp HDB (ie. RTE's write directory)
+    	info[`tempDir]:hsym`$(getenv`$"TRTH_HDBLOG_",upper (info[`assetClass])`short),"/","_" sv 3# "_" vs string info`file
+    ];
+    info[`time]:`timestamp$value .daas.trth.fileDict[`reportDate];																	/time of the report
+    info[`status]:`initializing;																									/status of the feed
+    
+    /Define jobID for pdInfo table in processing daemon
+    $[0&lt;r:exec max jobID from .daas.processing.pdInfo;
+    	info[`jobID]:1+r;
+    	info[`jobID]:1001
+    ];
+    
+    /Assign a stack number
+    $[0&gt;exec max stackNum from .daas.processing.pdInfo;
+    	info[`stackNum]:0;
+    	
+    	[r:value getenv`TRTH_PROCESSING_STACKLIMIT;
+    	r:min (til r) except exec distinct stackNum from `.daas.processing.pdInfo where status=`processing;
+    	info[`stackNum]:r
+    	]
+    ];
+	
+    1_info
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dict</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

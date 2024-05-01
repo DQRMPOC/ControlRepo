@@ -1,0 +1,31 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.regionConfig</parameter>
+	<description>parameters that relate to region stack</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>key</element>
+		<elementType>Symbol</elementType>
+		<elementValue>timeZone</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>value</element>
+		<elementType>Symbol</elementType>
+		<elementValue>GMT</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>key</element>
+		<elementType>Symbol</elementType>
+		<elementValue>trthDefaultRegion</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>value</element>
+		<elementType>Symbol</elementType>
+		<elementValue>EMEA</elementValue>
+	</param>
+</configparam>

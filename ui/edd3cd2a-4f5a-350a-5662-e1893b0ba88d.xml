@@ -1,0 +1,562 @@
+<ui>
+	<name>edd3cd2a-4f5a-350a-5662-e1893b0ba88d</name>
+	<displayName>QR Query Log</displayName>
+	<description>{
+  "creationDate": "Mon, 24 Oct 2016 17:59:46 GMT",
+  "lastUpdateDate": "Mon, 08 Jun 2020 12:02:35 GMT",
+  "tags": []
+}</description>
+	<data>{
+  "id": "edd3cd2a-4f5a-350a-5662-e1893b0ba88d",
+  "name": "QR Query Log",
+  "creationDate": "Mon, 24 Oct 2016 17:59:46 GMT",
+  "lastUpdateDate": "Mon, 08 Jun 2020 12:02:35 GMT",
+  "thumb": "data:image/png;base64,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",
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "1b0fbadc-aeb1-265f-a3d0-2b7cdc6c393c"
+    }
+  ],
+  "screens": [
+    {
+      "id": "1b0fbadc-aeb1-265f-a3d0-2b7cdc6c393c",
+      "name": "Screen 1",
+      "thumb": "data:image/png;base64,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",
+      "widgets": [
+        {
+          "id": "2971ebe6-90be-7501-e2d4-f73f14801b2",
+          "layout": {
+            "row": 0,
+            "column": 0,
+            "rowSpan": 3,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_2168",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "widgetTitle": "QR Query Log",
+                "titleFontSize": 24,
+                "titleHorizontal": "Center",
+                "titleColor": "#FFFFFF",
+                "titleBottomBorderWidth": 0,
+                "titleFontBold": true,
+                "titleShadow": true,
+                "tileBorderWidth": 1,
+                "tileBorderRounding": 3,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#2e466e",
+                "tileTransparentBackground": false,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Center",
+                "FontSize": "13",
+                "tooltip": "",
+                "HtmlText": "&lt;br&gt;",
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Middle",
+                "version": "3.1.1.2",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "version": "4.5.0"
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "optionsVersion": 48,
+            "hasOnSettingsChange": true,
+            "prevVersion": 48,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "e28d8dd-15a3-dd46-1fcf-25cc5921eae8",
+          "layout": {
+            "row": 3,
+            "column": 0,
+            "rowSpan": 24,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_8478",
+            "key": "Datagrid",
+            "options": {
+              "sortingPossibleValues": [
+                "",
+                "time",
+                "qr",
+                "requestID",
+                "sent",
+                "status",
+                "user",
+                "targetProcesses",
+                "qp",
+                "client",
+                "function",
+                "arguments"
+              ],
+              "highlightTargetPossibleValues": [
+                "time",
+                "qr",
+                "requestID",
+                "sent",
+                "status",
+                "user",
+                "targetProcesses",
+                "qp",
+                "client",
+                "function",
+                "arguments",
+                "*"
+              ],
+              "Selection": {
+                "RowSelectionColumn": "requestNum"
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleColor": "#FFFFFF",
+                "titleFontBold": false,
+                "titleShadow": true,
+                "titleTransparentBackground": false,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "Data": {
+                  "_dashboardsType": "data",
+                  "value": "viewQueryLog"
+                },
+                "Filtering": "Advanced Column Filters"
+              },
+              "datagridPossibleColumns": [
+                "time",
+                "qr",
+                "requestID",
+                "sent",
+                "status",
+                "user",
+                "targetProcesses",
+                "qp",
+                "client",
+                "function",
+                "arguments"
+              ],
+              "version": "4.5.0",
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "innerPaddingTop": 0,
+                "paddingLeft": 0
+              },
+              "FileExport": {
+                "ShowExportExcelButton": false
+              },
+              "ColumnsConfiguration": [
+                {
+                  "Field": "time",
+                  "DisplayName": "time",
+                  "Format": "DateTime",
+                  "TimeFormat": "HH:mm:ss.SSSSSSSSS",
+                  "WidthWeight": 150,
+                  "MinWidthAbsolute": 100,
+                  "TextAlign": "left"
+                },
+                {
+                  "Field": "qr",
+                  "DisplayName": "qr",
+                  "WidthWeight": 50,
+                  "MinWidthAbsolute": 50,
+                  "TextAlign": "left"
+                },
+                {
+                  "Field": "requestID",
+                  "DisplayName": "requestID",
+                  "Format": "Formatted Number",
+                  "Precision": 0,
+                  "WidthWeight": 35,
+                  "MinWidthAbsolute": 20,
+                  "TextAlign": "right"
+                },
+                {
+                  "Field": "sent",
+                  "DisplayName": "sent",
+                  "Format": "Boolean",
+                  "WidthWeight": 40,
+                  "MinWidthAbsolute": 40
+                },
+                {
+                  "Field": "status",
+                  "DisplayName": "status",
+                  "WidthWeight": 50,
+                  "MinWidthAbsolute": 50
+                },
+                {
+                  "Field": "user",
+                  "DisplayName": "user",
+                  "WidthWeight": 70,
+                  "MinWidthAbsolute": 70,
+                  "TextAlign": "left"
+                },
+                {
+                  "Field": "targetProcesses",
+                  "DisplayName": "targetProcesses",
+                  "WidthWeight": 100,
+                  "MinWidthAbsolute": 100,
+                  "TextAlign": "left"
+                },
+                {
+                  "Field": "qp",
+                  "DisplayName": "qp",
+                  "WidthWeight": 70,
+                  "MinWidthAbsolute": 70,
+                  "TextAlign": "left"
+                },
+                {
+                  "Field": "client",
+                  "DisplayName": "client",
+                  "WidthWeight": 120,
+                  "MinWidthAbsolute": 120
+                },
+                {
+                  "Field": "function",
+                  "DisplayName": "function",
+                  "WidthWeight": 120,
+                  "MinWidthAbsolute": 120,
+                  "TextAlign": "left"
+                },
+                {
+                  "Field": "arguments",
+                  "DisplayName": "arguments",
+                  "WidthWeight": 120,
+                  "MinWidthAbsolute": 120,
+                  "TextAlign": "left"
+                }
+              ],
+              "Style": {
+                "RowHeight": 22
+              },
+              "selectedColumnPossibleValues": [
+                "time",
+                "qr",
+                "requestID",
+                "sent",
+                "status",
+                "user",
+                "targetProcesses",
+                "qp",
+                "client",
+                "function",
+                "arguments"
+              ],
+              "datagridPossibleColumnsWithItself": [
+                "&lt;this&gt;",
+                "time",
+                "qr",
+                "requestID",
+                "sent",
+                "status",
+                "user",
+                "targetProcesses",
+                "qp",
+                "client",
+                "function",
+                "arguments"
+              ],
+              "HighlightRules": [
+                {
+                  "Name": "qr-success",
+                  "Enabled": true,
+                  "Target": "status",
+                  "ConditionSource": "&lt;this&gt;",
+                  "ConditionOperator": "==",
+                  "ConditionValue": "success",
+                  "Color": "#26ff00",
+                  "BackgroundColor": "",
+                  "BorderColor": "",
+                  "Icon": "",
+                  "IconColor": "",
+                  "RuleType": "discrete",
+                  "RuleMin": 0,
+                  "RuleMax": 1,
+                  "RuleLimitEnabled": false,
+                  "TargetElement": "background",
+                  "Palette": [
+                    {
+                      "color": "#b71c1c"
+                    },
+                    {
+                      "color": "#F57F17"
+                    },
+                    {
+                      "color": "#33691E"
+                    }
+                  ]
+                },
+                {
+                  "Name": "qr-failed",
+                  "Enabled": true,
+                  "Target": "status",
+                  "ConditionSource": "&lt;this&gt;",
+                  "ConditionOperator": "!=",
+                  "ConditionValue": "success",
+                  "Color": "#ff2600",
+                  "BackgroundColor": "",
+                  "BorderColor": "",
+                  "Icon": "",
+                  "IconColor": "",
+                  "RuleType": "discrete",
+                  "RuleMin": 0,
+                  "RuleMax": 1,
+                  "RuleLimitEnabled": false,
+                  "TargetElement": "background",
+                  "Palette": [
+                    {
+                      "color": "#b71c1c"
+                    },
+                    {
+                      "color": "#F57F17"
+                    },
+                    {
+                      "color": "#33691E"
+                    }
+                  ]
+                }
+              ]
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "optionsVersion": 80,
+            "hasOnSettingsChange": true,
+            "prevVersion": 80,
+            "definitionId": "21"
+          }
+        }
+      ],
+      "relativeHeight": false,
+      "rowHeight": 25,
+      "colCount": 12,
+      "floatable": false,
+      "isDefault": true
+    }
+  ],
+  "popups": [],
+  "tags": [],
+  "dashboardTheme": "Dark",
+  "themeSwitchable": true,
+  "saveTimestamp": null,
+  "relativeHeight": false,
+  "rowHeight": 25,
+  "colCount": 12,
+  "floatable": false,
+  "viewState": {
+    "selectedClient": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "nullSymbol": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    "selected": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    ".settings": {
+      "component_8478": {
+        "UsersColumnsConfiguration": null,
+        "GroupingConfiguration": [],
+        "version": 15,
+        "Grid.Basics.Filtering": {
+          "version": 1,
+          "type": "Advanced Column Filters",
+          "value": {
+            "function9": ""
+          }
+        }
+      }
+    }
+  },
+  "data": {
+    "viewQueryLog": {
+      "_autoExec": true,
+      "_columns": [
+        "time",
+        "qr",
+        "requestID",
+        "sent",
+        "status",
+        "user",
+        "targetProcesses",
+        "qp",
+        "client",
+        "function",
+        "arguments"
+      ],
+      "_dataType": "analytic",
+      "_dataSource": "kdb",
+      "_connection": "refineryMonitoring",
+      "_mappings": {
+        "key": "time",
+        "mappings": {},
+        "value": "qr"
+      },
+      "_maxRows": "1000",
+      "_subscriptionType": "polling",
+      "_subscriptionInterval": "5",
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_selectedAnalytic": ".daas.cmon.q.getQRQueryLog",
+      "_analyticParams": [],
+      "_subscriptionKey": "",
+      "_isStreamingSubscription": false,
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_updateType": "query",
+      "_pageSize": 2000,
+      "_serverPaging": false
+    }
+  },
+  "permissionEntity": {
+    "class": "api.entity.PermissionEntity",
+    "permissions": {
+      "all": [
+        false,
+        false
+      ],
+      "daasSuperUsers": [
+        true,
+        true
+      ],
+      "Administrators": [
+        true,
+        true
+      ],
+      "DashboardUsers": [
+        false,
+        false
+      ],
+      "DeltaDocGenRestrictions": [
+        false,
+        false
+      ],
+      "daasAdministrators": [
+        true,
+        true
+      ],
+      "ReportAdminUserGroup": [
+        false,
+        false
+      ],
+      "daasMonitoring": [
+        false,
+        false
+      ],
+      "daasApplication": [
+        false,
+        false
+      ],
+      "daasSandbox": [
+        false,
+        false
+      ]
+    }
+  },
+  "worksheetPadding": 10,
+  "widgetsSpacing": 0,
+  "borderColor": "000000",
+  "borderBackground": "000000",
+  "transparentBackground": true,
+  "borderWidth": 0,
+  "borderRounding": 0,
+  "borderSpacing": 0,
+  "borderShadow": false,
+  "enableShareDashboard": false,
+  "notifications": {
+    "Notifications": {
+      "_Version": "4.2.0s2",
+      "Enabled": true,
+      "InBrowserNotifications": false,
+      "Position": "Bottom Right",
+      "MaxVisibleCount": 3,
+      "FadeOut": 5,
+      "Icon": "fa-bell-o",
+      "Sound": "beep",
+      "SoundVolume": 100,
+      "Grouping": false,
+      "GroupingInterval": 1,
+      "triggers": []
+    }
+  },
+  "showLoadingIndicators": true,
+  "unsavedViewerPrompt": false,
+  "advancedCss": "",
+  "cssClasses": "",
+  "viewStateBinding": false,
+  "wasChanged": false,
+  "version": "4.4.0p7"
+}</data>
+</ui>

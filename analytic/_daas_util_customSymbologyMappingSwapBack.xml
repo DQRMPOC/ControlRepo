@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.util.customSymbologyMappingSwapBack</analytic>
+	<code_text>{[res;params]
+if[-1=type params[`symSwaps]; :res];
+	if[`customSymbologyMapping in key params;
+		if[params`customSymbologyMapping;
+			swapBack:a[`mappedSymbol]!(a:params`symSwaps)`inputSymbol;			
+			:update swapBack sym from res;
+			];
+		];
+	res	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

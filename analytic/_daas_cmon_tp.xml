@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.daas.cmon.tp</analytic>
+	<code_text>// Refinery (DaaS) TickerPlant Monitoring 2.0
+// Copyright (c) 2019 Kx Systems Inc
+
+.tp.updStatistics:(`symbol$())!`long$();
+
+
+.daas.cmon.tp.init:{
+    .tp.updStatistics[.daas.cmon.common.i.getTables[]]:0;
+    .daas.cmon.addTimerMetric[`tp.updDayCount; `.daas.cmon.tp.updDayCount; `timespan$00:00:10; `dict];
+ };
+
+
+.daas.cmon.tp.upd:{[originalUpd; t; d]
+    originalUpd[t;d];
+
+    if[.ds.tp.EodTrigger &lt; .z.P;
+        .log.out[`cmon;;()] "Resetting TP capture statistics at end-of-day";
+        .tp.updStatistics[.daas.cmon.common.i.getTables[]]:0;
+    ];
+
+    .tp.updStatistics[t]+:count d;
+ };
+
+.daas.cmon.tp.updDayCount:{
+    .daas.cmon.sendMetrics[`tp.updDayCount; .tp.updStatistics];
+ };
+    </code_text>
+	<description>Refinery (DaaS) TickerPlant Monitoring 2.0</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

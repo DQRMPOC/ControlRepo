@@ -1,0 +1,24 @@
+<analytic>
+	<analytic>.daas.udf.udfStartup</analytic>
+	<code_text>.daas.udf.udfFuncStore: ([funcName:enlist`]func:enlist[(::)];active:0b;permissionType:enlist[`];description:enlist"";funcType:enlist`;funcLang:enlist`);
+
+.daas.udf.allowedInternalFuncs:`getTicks`getStats`getBars`getSummary`q`.q.xcols`xcols`.q.lj`.q.ij`.q.ej`.q.aj`.q.aj0`.q.wj`.q.wj1`xcol`.q.xcol`lj`ij`ej`aj0`aj`qj`wj1`.j.j`.j.k`fby`.q.fby;
+.daas.udf.forbiddenFuncs:`.Q.dpft`.Q.par`.Q.en`.Q.chk`.Q.view`.q.set`.q.hclose`.q.system`.q.get`.q.value`.z.w`.z.h`.z.s;
+.daas.udf.qNativeForbiddenFuncs:enlist hopen;
+
+.daas.udf.loadUDFFuncs`;
+.daas.python.loadUDFFuncs`;
+
+.daas.udf.initComplete:1b;</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

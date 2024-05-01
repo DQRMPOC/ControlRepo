@@ -1,0 +1,71 @@
+<analytic>
+	<analytic>.daas.processing.mergeData</analytic>
+	<code_text>{[dir;file]
+
+
+
+
+	.log.out[.z.h;"Picked up new merge trigger";file];
+    cfg:(!).`$csv vs/: read0 (` sv (dir;file));
+
+	/check in correct format
+	if[not all`file`hdbTarget in key cfg;
+		.log.err[.z.h;"missing cfg key `file or `hdbTarget";()];
+		:();
+		];
+
+	cfg:(`copy _cfg),enlist[`copy]!enlist`1~cfg`copy;
+		
+	/add any option param defaults
+	cfg:(`processingType`mode`when`copy!(`;`add;`eod;0b)),cfg;
+
+	mergeDir:`$":",getenv `DAAS_MERGEDIR;
+	source:`$"/" sv string(mergeDir;cfg[`file]);
+
+hdbTarget:$[all r: "/"~/:(first a;last a:string cfg`hdbTarget);
+	a;
+	all not r;
+		"/",a,"/";
+		not first r;
+			"/",a;
+			a,"/"];
+
+
+target:`$":",getenv[`DELTADATA_HOME],"/DaaSData/hdblog",hdbTarget;
+
+mode:cfg`mode;
+immediate:`immediate=cfg`when;
+copy:cfg`copy;
+
+.daas.merge.newSource[source;target;copy;mode;immediate];
+
+
+	.log.out[.z.h;"Moving trigger to complete folder";file];
+system"mv ",1_string[dir],"/",string[file]," ",1_string[dir],"/complete/";
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

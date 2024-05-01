@@ -1,0 +1,43 @@
+<analytic>
+	<analytic>.daas.stream.qrCallback</analytic>
+	<code_text>{[runID;res]
+  /gets the subscription ID for this response 
+  id:.daas.stream.qrIdMap[runID];
+  params:.daas.stream.streamSubs[id;`params];
+  /if it the first one back form this response save the tick data
+  $[runID=params[`tradeQrID];.daas.stream.firstUpd[first assetTabs;res;id];.daas.stream.firstUpd[last assetTabs;res;id]]; 
+  /removes subscription from the cache, delete if it's 0 now
+  if[(not null .daas.stream.streamSubs[id;`params;`tradePassed])&amp;(not null .daas.stream.streamSubs[id;`params;`quotePassed]);
+  .log.out[.z.h;"check passed";()];
+  .daas.stream.streamCache[params[`symList];`idCount]-:1i;
+  if[.daas.stream.streamCache[params[`symList];`idCount]=0i;![`.daas.stream.streamCache;enlist (=;`idCount;0i);0b;`symbol$()]];
+  if[(count .daas.stream.streamTabs[id;`data])=0;.daas.stream.streamTabs[id;`data]:((enlist(value .daas.summary.tableName)[`]),'([sym:enlist params[`symList]]time:enlist .z.P))];
+  .daas.stream.summaryPub[id];
+  ];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>runID</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Long</datatype>
+	</param>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

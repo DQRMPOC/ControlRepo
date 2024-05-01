@@ -1,0 +1,108 @@
+<analytic>
+	<analytic>.daas.dataCopy.zipData</analytic>
+	<code_text>{[dataPath;date;targetDirs;dropCfgInProcessingFilestore]
+
+	/pick out data to move
+	hdbDir:getenv[`DELTADATA_HOME],"/DaaSData/hdblog","/",dataPath;
+	date:$[0&gt;type date;enlist date;date];
+	date:date where (`$string d:date)in key `$":",hdbDir;
+	
+	/only copy dates that exist. Exit if none
+	if[(count d)&lt;&gt;count date;
+		.daas.hdbcopy.oldLog[.z.p;"no date to copy for";d except date];
+		if[not count date;
+			:();
+			];
+		];
+	
+	/handle singular droploc	
+	if[10=type targetDirs;
+		targetDirs:enlist targetDirs;
+		];
+	
+	/make sure trailing "/"
+	targetDirs:@[targetDirs;where not "/"=/:last each targetDirs;,;"/"];
+	
+	/make sure only trailing "/"
+	if[not "/"=last dataPath;
+		dataPath,:"/";
+		];
+	if["/"=first dataPath;
+		dataPath:1_dataPath;
+		];
+	
+	
+	/local location to do the zip and create processing config
+	zipLoc:getenv`DATACOPY_ZIPDIR;
+		fileName:raze ("_" sv (-1_"/" vs raze dataPath),string[(),first date]),".tgz";
+
+	/set up target file
+	targets:targetDirs,\:fileName;
+	
+	/set up processing config target
+	pDrops:$[dropCfgInProcessingFilestore;
+		{("/"sv -2_"/" vs x),"/processingConfig/"} each targets;
+		targetDirs],\:(fileName,"_hdbDrop.csv");
+	
+	/build out script to run copy
+	script:getenv[`DAASCORE_HOME],"/interfaces/dataCopy/./zipCopy.sh";
+	
+	c:raze script
+	," -z ",zipLoc,"/",fileName
+	," -h ",hdbDir
+	," -d '",raze (" "sv string[(),date];" sym'")
+	," -t '",(" " sv targets),"'"
+	," -p '",pDrops,"'"
+	," 2&gt;&amp;1 &amp;";
+
+
+	/define paramters for the processing config that will be pushed
+	processingConfig:(`processingType`file`hdbTarget`mode`when!(`dataCopy;-4_fileName;dataPath;`replace;`immediate));
+	(`$":",zipLoc,"/",fileName,"_hdbDrop.csv") 0: csv 0:enlist processingConfig;
+	
+	
+	/execute
+	.daas.hdbcopy.oldLog[.z.p;"calling copy ";c];
+	system c;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dataPath</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>date</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>targetDirs</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>dropCfgInProcessingFilestore</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasDatacopy</analyticgroup>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

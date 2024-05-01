@@ -1,0 +1,119 @@
+<analytic>
+	<analytic>.daas.util.runTaqQuery</analytic>
+	<code_text>{[args]	
+	// TODO: This function should be refactored
+    // TODO: its too long
+
+	baseTable:.daas.meta.getSchemaFromDataType[`trade];
+	joinTable:.daas.meta.getSchemaFromDataType[`quote];
+	
+	chosenBaseCols:`sym,(args`time),.daas.util.taqChooseCols[args; baseTable];
+	chosenJoinCols:`sym,(args`time),.daas.util.taqChooseCols[args; joinTable];
+	commonCols:inter[chosenBaseCols; chosenJoinCols] except `sym,args`time;
+	
+	$[`taqWide~args`dataType;
+			baseColClause:(.daas.util.taqRenameCols[chosenBaseCols; commonCols; "Trade"])!chosenBaseCols;
+			baseColClause:chosenBaseCols!chosenBaseCols
+	];
+	joinColClause:(.daas.util.taqRenameCols[chosenJoinCols; commonCols; addString:"Quote"])!chosenJoinCols;
+	
+	$[1~count args[`filterRule];
+ 	args[`taqFilters]:(args`filterRule),`;
+ 	args[`taqFilters]:args`filterRule
+ 	];
+	
+	args[`taq]:args`dataType;
+	args[`dataType]:`trade;	
+	args[`filterRule]:first args`taqFilters;
+	symClause:$[` in args`symList; ();enlist (in;`sym;enlist args`symList)];
+	whereClause:.daas.util.genWhereClause[args];
+	
+	args[`dataType]:`quote;
+	args[`filterRule]:last args`taqFilters;
+	quoteWhereClause:{[args]
+	args[`temporality]:`continuous;
+	:.daas.util.genWhereClause[args];
+	}[args];
+	
+	whereClauseDict:`trade`quote!(whereClause;quoteWhereClause);
+	
+	extraDays:.daas.util.dayBuffer[baseTable;args`time];
+	todayInRange:.z.D within (neg[extraDays]+args`startDate; extraDays+args`endDate);
+	
+	process:.ex.getProcessName[];
+	
+
+	if[process~`DS_HDB; 
+		$[not `date  in cols baseTable;
+			[res:.daas.util.taqReturnEmptySchema[baseTable; joinTable; baseColClause; joinColClause; args]
+			];
+		  1&gt;count dates:.Q.PV where .Q.PV within (args`startDate;args`endDate);
+			[res:.daas.util.taqReturnEmptySchema[baseTable; joinTable; baseColClause; joinColClause; args]
+			];
+			[
+			 if[0D&lt;extraDays;
+			 	dates:`date$(neg[extraDays]+first dates),dates,extraDays+last dates
+			 	];
+
+			 res:distinct (,/) @[;`sym;`g#] peach .daas.util.taqAjPartition[baseTable;symClause;whereClauseDict;baseColClause;joinTable;joinColClause;args;] peach dates;
+					
+			 if[`continuous~args`temporality; 
+					$[todayInRange;	 
+						res:?[res;enlist (&gt;;baseColClause?args`time;args`startTime);0b;()]; 
+						res:?[res;((&gt;;baseColClause?args`time;args`startTime);(&lt;;baseColClause?args`time;args`endTime)) ;0b;()]
+					]
+				];	 
+			]	
+		 ];
+	];
+	
+  	$[(process~`DS_RDB) and todayInRange;
+		[ 
+		 $[(`continuous~args`temporality) and (.z.D=args`startDate) and (.z.D=args`endDate); 
+		 		whereClause:enlist(within; args`time; (args`startTime; args`endTime));
+		   (`continuous~args`temporality) and not (.z.D=args`startDate);
+		   		whereClause:enlist(&lt;; args`time; args`endTime);
+		 	];
+		 base:@[;`sym;`g#] ?[baseTable; symClause,whereClause; 0b; baseColClause];
+		 join:@[;`sym;`g#] ?[joinTable; symClause,quoteWhereClause; 0b; joinColClause];
+		 res:aj[`sym,args`time;base;join];
+		];
+	  (process~`DS_RDB) and not todayInRange;
+		[res:.daas.util.taqReturnEmptySchema[baseTable; joinTable; baseColClause; joinColClause; args]
+		];
+		[()
+		]
+	];
+   	
+   	if[`taqWide~args`taq;:res];
+   	
+   	columns:a except a where (a:cols res) in `$(string commonCols),\:addString;
+	res:?[res; (); 0b; columns!columns]
+    }</code_text>
+	<description>Returns a joined table of trade data with matching quote data based on the parameters put in</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

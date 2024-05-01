@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.util.l2BookFromdict</analytic>
+	<code_text>{[tab]	
+ 	preBookDict:ungroup ?[tab;();(enlist`sym)!enlist`sym;`time`exchTime`side`price`size`numOrders`id!((#;-2;`time);(#;-2;`exchTime);(#;-2;`side);(#;-2;`price);(#;-2;`size);(#;-2;`numOrders);(#;-2;`id))];
+
+    if[not count nLevelCount:exec max count each price from preBookDict;
+		:delete from l2Legacy
+		];
+    nLevels:(exec max count each price from preBookDict);
+    
+    levelCols:`price`size`numOrders;
+    temp:{enlist each raze (flip (value y)[;til x]),'(flip (value z)[;til x])
+     }[nLevels]'[b:(first each) each select reverse each price, reverse each size,reverse each numOrders by sym from preBookDict where side=`BID;
+            a:(first each) each select price,size,numOrders by sym from preBookDict where side=`ASK];
+    temp:(first each) each (`$("L",'string til nLevels) cross ("bid";"ask") cross @[;0;upper] each string levelCols)!/:temp;
+        
+                 
+    startPoint:0!lj[?[preBookDict;();enlist[`sym]!enlist[`sym];`time`exchTime!((max;`time);(max;`exchTime))];temp]
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

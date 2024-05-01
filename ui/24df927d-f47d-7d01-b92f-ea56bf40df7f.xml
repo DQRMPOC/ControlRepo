@@ -1,0 +1,2751 @@
+<ui>
+	<name>24df927d-f47d-7d01-b92f-ea56bf40df7f</name>
+	<displayName>Datacopy</displayName>
+	<description>{
+  "creationDate": "Wed, 09 May 2018 11:48:43 GMT",
+  "lastUpdateDate": "Thu, 22 Aug 2019 13:33:46 GMT",
+  "tags": [],
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "1839a432-97c4-3b2a-cbbb-85a2dc78eb25"
+    }
+  ],
+  "thumb": null
+}</description>
+	<data>{
+  "id": "24df927d-f47d-7d01-b92f-ea56bf40df7f",
+  "name": "Datacopy",
+  "creationDate": "Wed, 09 May 2018 11:48:43 GMT",
+  "lastUpdateDate": "Thu, 22 Aug 2019 13:33:46 GMT",
+  "thumb": null,
+  "screenDetails": [
+    {
+      "label": "Screen 1",
+      "value": "1839a432-97c4-3b2a-cbbb-85a2dc78eb25"
+    }
+  ],
+  "screens": [
+    {
+      "id": "1839a432-97c4-3b2a-cbbb-85a2dc78eb25",
+      "name": "Screen 1",
+      "thumb": null,
+      "widgets": [
+        {
+          "id": "8a45bbe5-3ea8-f799-9cbe-1989ca7985b3",
+          "layout": {
+            "row": 0,
+            "column": 0,
+            "rowSpan": 2,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_2851",
+            "key": "BasicComponents",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "AllowUnsafeContent": false,
+                "horizontal": "Center",
+                "FontSize": 13,
+                "tooltip": "",
+                "HtmlText": "&lt;b&gt;&lt;font size=\"5\"&gt;Manual HDB Data Copy&lt;/font&gt;&lt;/b&gt;&lt;br&gt;",
+                "Theme": "Dark",
+                "ComponentName": "label",
+                "Data": "",
+                "vertical": "Middle",
+                "version": "3.3.1S3",
+                "Template": ""
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "version": "4.3.1"
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "prevVersion": 68,
+            "optionsVersion": 68,
+            "hasOnSettingsChange": true,
+            "definitionId": "17"
+          }
+        },
+        {
+          "id": "4528c57-c3a1-db1a-47d1-42ae860dbc28",
+          "layout": {
+            "row": 5,
+            "column": 0,
+            "rowSpan": 29,
+            "colSpan": 12
+          },
+          "component": {
+            "id": "component_1343",
+            "key": "Tabs",
+            "options": {
+              "Alignment": {
+                "titlePaddingRight": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "paddingBottom": 0,
+                "innerPaddingRight": 0,
+                "paddingRight": 0,
+                "innerPaddingLeft": 0,
+                "paddingTop": 0,
+                "titlePaddingBottom": 7,
+                "innerPaddingTop": 0,
+                "titlePaddingTop": 7,
+                "paddingLeft": 0
+              },
+              "Selection": {
+                "target_tab": 0,
+                "SetViewStateOnSelect": {
+                  "Value": "",
+                  "ViewState": ""
+                },
+                "unloadInactive": false
+              },
+              "dropdownPossibleValues": [
+                {
+                  "Id": 0,
+                  "Name": "Run Data Copy"
+                },
+                {
+                  "Id": 1,
+                  "Name": "Data Copy History"
+                },
+                {
+                  "Id": 2,
+                  "Name": "Auto copy config Status"
+                },
+                {
+                  "Id": 3,
+                  "Name": "Master/Slave config"
+                }
+              ],
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              },
+              "Basics": {
+                "ComponentName": "tabs"
+              },
+              "Style": {
+                "advanced": "",
+                "cssClasses": ""
+              },
+              "Items": [
+                {
+                  "Tooltip": "",
+                  "Id": "ada8ac06-733-2493-3992-ca7c71db9428",
+                  "HideTab": false,
+                  "Name": "Run Data Copy"
+                },
+                {
+                  "Tooltip": "",
+                  "Id": "8e906372-b223-b658-4dd7-cff1d5431434",
+                  "HideTab": false,
+                  "Name": "Data Copy History"
+                },
+                {
+                  "Tooltip": "",
+                  "Id": "426d27c3-203f-f57d-d75f-1f929b37102c",
+                  "HideTab": false,
+                  "Name": "Auto copy config Status"
+                },
+                {
+                  "Tooltip": "",
+                  "Id": "1ab3b19-8f9f-c2d6-fbff-c915805d65f",
+                  "HideTab": false,
+                  "Name": "Master/Slave config"
+                }
+              ],
+              "version": "4.2.0s2"
+            },
+            "containerId": null,
+            "components": [
+              {
+                "id": "component_1404",
+                "key": "Panel",
+                "options": {
+                  "Alignment": {
+                    "titlePaddingRight": 0,
+                    "innerPaddingBottom": 0,
+                    "titlePaddingLeft": 0,
+                    "paddingBottom": 0,
+                    "innerPaddingRight": 0,
+                    "paddingRight": 0,
+                    "innerPaddingLeft": 0,
+                    "paddingTop": 0,
+                    "titlePaddingBottom": 7,
+                    "innerPaddingTop": 0,
+                    "titlePaddingTop": 7,
+                    "paddingLeft": 0
+                  },
+                  "format": {
+                    "titleFontSize": "16",
+                    "titleHorizontal": "Center",
+                    "titleShadow": true,
+                    "tileBorderWidth": 0,
+                    "tileBorderRounding": 0,
+                    "tileBorderColor": "#000000",
+                    "tileBackgroundColor": "#000000",
+                    "tileTransparentBackground": true,
+                    "tileShadow": false
+                  },
+                  "Basics": {
+                    "Advanced": false,
+                    "RelativeHeight": false,
+                    "UserLayout": false,
+                    "ComponentName": "panel",
+                    "ColCount": 12,
+                    "Floatable": false,
+                    "RowHeight": 25
+                  },
+                  "Style": {
+                    "advanced": "",
+                    "cssClasses": ""
+                  },
+                  "version": "4.4.0"
+                },
+                "containerId": "ada8ac06-733-2493-3992-ca7c71db9428",
+                "components": [],
+                "widgets": [
+                  {
+                    "id": "3275ad4-dfbe-a80a-83c1-906832335168",
+                    "layout": {
+                      "row": 0,
+                      "column": 0,
+                      "rowSpan": 3,
+                      "colSpan": 4
+                    },
+                    "component": {
+                      "id": "component_1432",
+                      "key": "BasicComponents",
+                      "options": {
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "titlePaddingBottom": 7,
+                          "innerPaddingTop": 0,
+                          "titlePaddingTop": 7,
+                          "paddingLeft": 0
+                        },
+                        "format": {
+                          "titleFontSize": "16",
+                          "titleHorizontal": "Center",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "AllowUnsafeContent": false,
+                          "horizontal": "Center",
+                          "FontSize": 14,
+                          "tooltip": "",
+                          "HtmlText": "Manual data copy can be triggered on a per asset class basis with the options below.&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;",
+                          "Theme": "Dark",
+                          "ComponentName": "label",
+                          "Data": "",
+                          "vertical": "Middle",
+                          "version": "3.3.1S3",
+                          "Template": ""
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "version": "4.3.1"
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 70,
+                      "optionsVersion": 70,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "17"
+                    }
+                  },
+                  {
+                    "id": "cfc745d3-73b8-e51e-2942-f9698513dabe",
+                    "layout": {
+                      "row": 3,
+                      "column": 0,
+                      "rowSpan": 2,
+                      "colSpan": 3
+                    },
+                    "component": {
+                      "id": "component_1483",
+                      "key": "BasicComponents",
+                      "options": {
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "titlePaddingBottom": 7,
+                          "innerPaddingTop": 0,
+                          "titlePaddingTop": 7,
+                          "paddingLeft": 0
+                        },
+                        "dropdownPossibleValues": [
+                          "",
+                          "x"
+                        ],
+                        "format": {
+                          "titleFontSize": "16",
+                          "titleHorizontal": "Center",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "MultiSelect": false,
+                          "ShowSearch": false,
+                          "Label": "Asset Class",
+                          "ForceSelectedValue": false,
+                          "tooltip": "",
+                          "Data": {
+                            "_dashboardsType": "data",
+                            "value": "assets"
+                          },
+                          "vertical": "Middle",
+                          "DataSourceMapping": {
+                            "Value": "x",
+                            "Text": "x"
+                          },
+                          "FieldSummaryThreshold": 5,
+                          "horizontal": "Center",
+                          "AcceptEmptyValues": false,
+                          "LabelWidth": 75,
+                          "Theme": "Dark",
+                          "ComponentName": "dropdown",
+                          "Items": [],
+                          "TooltipSummaryThreshold": 10,
+                          "Width": 100,
+                          "SelectAllValue": "",
+                          "SelectedValue": {
+                            "_dashboardsType": "viewstate",
+                            "value": "Asset original"
+                          },
+                          "UseDataSource": true
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "version": "4.3.1",
+                        "Actions": []
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 54,
+                      "optionsVersion": 54,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "16"
+                    }
+                  },
+                  {
+                    "id": "fcdf897-38e6-c8a3-bfa2-3adb16f1449d",
+                    "layout": {
+                      "row": 5,
+                      "column": 0,
+                      "rowSpan": 2,
+                      "colSpan": 3
+                    },
+                    "component": {
+                      "id": "component_1531",
+                      "key": "BasicComponents",
+                      "options": {
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "titlePaddingBottom": 7,
+                          "innerPaddingTop": 0,
+                          "titlePaddingTop": 7,
+                          "paddingLeft": 0
+                        },
+                        "dropdownPossibleValues": [
+                          "",
+                          "x"
+                        ],
+                        "format": {
+                          "titleFontSize": "16",
+                          "titleHorizontal": "Center",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "MultiSelect": false,
+                          "ShowSearch": false,
+                          "Label": "Source Environment",
+                          "ForceSelectedValue": false,
+                          "tooltip": "",
+                          "Data": {
+                            "_dashboardsType": "data",
+                            "value": "New node"
+                          },
+                          "vertical": "Middle",
+                          "DataSourceMapping": {
+                            "Value": "x",
+                            "Text": "x"
+                          },
+                          "FieldSummaryThreshold": 5,
+                          "horizontal": "Center",
+                          "AcceptEmptyValues": false,
+                          "LabelWidth": 75,
+                          "Theme": "Dark",
+                          "ComponentName": "dropdown",
+                          "Items": [],
+                          "TooltipSummaryThreshold": 10,
+                          "Width": 100,
+                          "SelectAllValue": "",
+                          "SelectedValue": {
+                            "_dashboardsType": "viewstate",
+                            "value": "sourceEnv original"
+                          },
+                          "UseDataSource": true
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "version": "4.3.1",
+                        "Actions": []
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 44,
+                      "optionsVersion": 44,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "16"
+                    }
+                  },
+                  {
+                    "id": "1ba71bf-dd59-765c-757e-acf6477b1d14",
+                    "layout": {
+                      "row": 7,
+                      "column": 0,
+                      "rowSpan": 2,
+                      "colSpan": 3
+                    },
+                    "component": {
+                      "id": "component_1563",
+                      "key": "BasicComponents",
+                      "options": {
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "titlePaddingBottom": 7,
+                          "innerPaddingTop": 0,
+                          "titlePaddingTop": 7,
+                          "paddingLeft": 0
+                        },
+                        "format": {
+                          "titleFontSize": "16",
+                          "titleHorizontal": "Center",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "horizontal": "Center",
+                          "Label": "Start Date",
+                          "tooltip": "",
+                          "width": 75,
+                          "SelectedDate": {
+                            "_dashboardsType": "viewstate",
+                            "value": "Start date original"
+                          },
+                          "Theme": "Dark",
+                          "ComponentName": "datePicker",
+                          "Data": "",
+                          "vertical": "Middle",
+                          "labelWidth": 75
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "version": "4.3.1",
+                        "Actions": []
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 66,
+                      "optionsVersion": 66,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "15"
+                    }
+                  },
+                  {
+                    "id": "61dcf97e-63a9-e663-621d-9b7dcf992b52",
+                    "layout": {
+                      "row": 9,
+                      "column": 0,
+                      "rowSpan": 2,
+                      "colSpan": 3
+                    },
+                    "component": {
+                      "id": "component_1593",
+                      "key": "BasicComponents",
+                      "options": {
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "titlePaddingBottom": 7,
+                          "innerPaddingTop": 0,
+                          "titlePaddingTop": 7,
+                          "paddingLeft": 0
+                        },
+                        "format": {
+                          "titleFontSize": "16",
+                          "titleHorizontal": "Center",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "horizontal": "Center",
+                          "Label": "End Date",
+                          "tooltip": "",
+                          "width": 75,
+                          "SelectedDate": {
+                            "_dashboardsType": "viewstate",
+                            "value": "end date original"
+                          },
+                          "Theme": "Dark",
+                          "ComponentName": "datePicker",
+                          "Data": "",
+                          "vertical": "Middle",
+                          "labelWidth": 75
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "version": "4.3.1",
+                        "Actions": []
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 64,
+                      "optionsVersion": 64,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "15"
+                    }
+                  },
+                  {
+                    "id": "3ecab407-444e-8598-ae3f-5e1cb845fc1f",
+                    "layout": {
+                      "row": 11,
+                      "column": 0,
+                      "rowSpan": 9,
+                      "colSpan": 3
+                    },
+                    "component": {
+                      "id": "component_1644",
+                      "key": "BasicComponents",
+                      "options": {
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "titlePaddingBottom": 7,
+                          "innerPaddingTop": 0,
+                          "titlePaddingTop": 7,
+                          "paddingLeft": 0
+                        },
+                        "format": {
+                          "titleFontSize": "16",
+                          "titleHorizontal": "Center",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "horizontal": "Center",
+                          "fixedWidth": false,
+                          "FontSize": 22,
+                          "isEnabled": true,
+                          "Label": "Run Data Copy",
+                          "tooltip": "",
+                          "width": 123,
+                          "ComponentName": "linkButton",
+                          "vertical": "Middle",
+                          "Icon": ""
+                        },
+                        "Style": {
+                          "border": "",
+                          "color": "#fcfcfc",
+                          "advanced": "",
+                          "background": "#701b1b",
+                          "cssClasses": ""
+                        },
+                        "version": "4.3.1",
+                        "Actions": [
+                          {
+                            "Current": {
+                              "_dashboardsType": "viewstate",
+                              "value": "dataCopyRun"
+                            },
+                            "Target": {
+                              "_dashboardsType": "viewstate",
+                              "value": "dataCopyRunMapped"
+                            },
+                            "_Type": "map"
+                          }
+                        ]
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 180,
+                      "optionsVersion": 180,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "25"
+                    }
+                  },
+                  {
+                    "id": "767e9f-1242-ac7c-6371-6a8a44b26c2",
+                    "layout": {
+                      "row": 0,
+                      "column": 4,
+                      "rowSpan": 26,
+                      "colSpan": 8
+                    },
+                    "component": {
+                      "id": "component_1671",
+                      "key": "Datagrid",
+                      "options": {
+                        "sortingPossibleValues": [
+                          "",
+                          "Time",
+                          "Message",
+                          "Information"
+                        ],
+                        "highlightTargetPossibleValues": [
+                          "Time",
+                          "Message",
+                          "Information",
+                          "*"
+                        ],
+                        "Selection": {
+                          "RowSelectionColumn": "Time",
+                          "SelectedValue": "2019-08-22T11:14:38.183093000Z",
+                          "SelectedCellValue": "\"`hdb1`hdb2`date`tablist!(`emea_stats_tr_marketData_lisOpt_exchNoFilter_0_a;`emea_stats_tr_marketData_lisOpt_exchNoFilter_0_b;2019.08.22;`)\"",
+                          "SelectedField": "Information"
+                        },
+                        "format": {
+                          "widgetTitle": "Progress",
+                          "titleFontSize": 16,
+                          "titleColor": "",
+                          "titleBottomBorderWidth": 0,
+                          "titleFontBold": "",
+                          "titleShadow": true,
+                          "titleBackgroundColor": "",
+                          "titleTransparentBackground": "",
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "ShowPagingControl": false,
+                          "EnableGrouping": false,
+                          "Filtering": "disabled",
+                          "SortOrder": "descending",
+                          "Data": {
+                            "_dashboardsType": "data",
+                            "value": "Log output"
+                          },
+                          "SortColumn": "Time"
+                        },
+                        "datagridPossibleColumns": [
+                          "Time",
+                          "Message",
+                          "Information"
+                        ],
+                        "version": "4.3.1",
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "innerPaddingTop": 0,
+                          "paddingLeft": 0
+                        },
+                        "FileExport": {
+                          "ShowExportCsvButton": false,
+                          "ShowExportExcelButton": false
+                        },
+                        "HighlightRules": [
+                          {
+                            "Target": ""
+                          }
+                        ],
+                        "ColumnsConfiguration": [
+                          {
+                            "TimeFormat": "HH:mm:ss.SSSSSSSSS",
+                            "WidthWeight": 200,
+                            "Field": "Time",
+                            "Format": "DateTime",
+                            "TextAlign": "right",
+                            "DisplayName": "Time",
+                            "MinWidthAbsolute": 200
+                          },
+                          {
+                            "WidthWeight": 100,
+                            "Field": "Message",
+                            "DisplayName": "Message",
+                            "MinWidthAbsolute": 100
+                          },
+                          {
+                            "WidthWeight": 100,
+                            "Field": "Information",
+                            "DisplayName": "Information",
+                            "MinWidthAbsolute": 100
+                          }
+                        ],
+                        "SummaryRow_Groupings": [
+                          {}
+                        ],
+                        "Style": {
+                          "EvenRowBackgroundColorOverride": "#303030",
+                          "DashboardTheme": ""
+                        },
+                        "selectedColumnPossibleValues": [
+                          "Time",
+                          "Message",
+                          "Information"
+                        ],
+                        "Tooltip": {
+                          "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\r\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\r\n&lt;/div&gt;"
+                        }
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 170,
+                      "optionsVersion": 170,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "21"
+                    }
+                  }
+                ],
+                "prevVersion": 241,
+                "optionsVersion": 241,
+                "hasOnSettingsChange": true,
+                "rowCount": 26,
+                "definitionId": "50"
+              },
+              {
+                "id": "component_1721",
+                "key": "Panel",
+                "options": {
+                  "Alignment": {
+                    "titlePaddingRight": 0,
+                    "innerPaddingBottom": 0,
+                    "titlePaddingLeft": 0,
+                    "paddingBottom": 0,
+                    "innerPaddingRight": 0,
+                    "paddingRight": 0,
+                    "innerPaddingLeft": 0,
+                    "paddingTop": 0,
+                    "titlePaddingBottom": 7,
+                    "innerPaddingTop": 0,
+                    "titlePaddingTop": 7,
+                    "paddingLeft": 0
+                  },
+                  "format": {
+                    "titleFontSize": "16",
+                    "titleHorizontal": "Center",
+                    "titleShadow": true,
+                    "tileBorderWidth": 0,
+                    "tileBorderRounding": 0,
+                    "tileBorderColor": "#000000",
+                    "tileBackgroundColor": "#000000",
+                    "tileTransparentBackground": true,
+                    "tileShadow": false
+                  },
+                  "Basics": {
+                    "Advanced": false,
+                    "RelativeHeight": false,
+                    "UserLayout": false,
+                    "ComponentName": "panel",
+                    "ColCount": 12,
+                    "Floatable": false,
+                    "RowHeight": 25
+                  },
+                  "Style": {
+                    "advanced": "",
+                    "cssClasses": ""
+                  },
+                  "version": "4.4.0"
+                },
+                "containerId": "426d27c3-203f-f57d-d75f-1f929b37102c",
+                "components": [],
+                "widgets": [
+                  {
+                    "id": "e6b58b00-94e5-62b7-cf47-f58d870fb34",
+                    "layout": {
+                      "row": 9,
+                      "column": 4,
+                      "rowSpan": 4,
+                      "colSpan": 4
+                    },
+                    "component": {
+                      "id": "component_1750",
+                      "key": "Datagrid",
+                      "options": {
+                        "sortingPossibleValues": [
+                          "",
+                          "runAtEOD"
+                        ],
+                        "highlightTargetPossibleValues": [
+                          "runAtEOD",
+                          "*"
+                        ],
+                        "Selection": {
+                          "DefaultFallbackOnDeselect": false,
+                          "RowSelectionColumn": "runAtEOD"
+                        },
+                        "format": {
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "ShowPagingControl": false,
+                          "EnableGrouping": false,
+                          "Filtering": "disabled",
+                          "Data": {
+                            "_dashboardsType": "data",
+                            "value": "autoCopy"
+                          }
+                        },
+                        "datagridPossibleColumns": [
+                          "runAtEOD"
+                        ],
+                        "version": "4.3.1",
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "innerPaddingTop": 0,
+                          "paddingLeft": 0
+                        },
+                        "FileExport": {
+                          "ShowExportCsvButton": false,
+                          "ShowExportExcelButton": false
+                        },
+                        "HighlightRules": [
+                          {}
+                        ],
+                        "ColumnsConfiguration": [
+                          {
+                            "WidthWeight": 40,
+                            "Field": "runAtEOD",
+                            "Format": "Boolean",
+                            "DisplayName": "Automatic end of day HDB copy",
+                            "MinWidthAbsolute": 40
+                          }
+                        ],
+                        "SummaryRow_Groupings": [
+                          {}
+                        ],
+                        "selectedColumnPossibleValues": [
+                          "runAtEOD"
+                        ]
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 52,
+                      "optionsVersion": 52,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "21"
+                    }
+                  },
+                  {
+                    "id": "a1dae417-e8af-2dee-bc7a-f2ffc90e132e",
+                    "layout": {
+                      "row": 0,
+                      "column": 4,
+                      "rowSpan": 9,
+                      "colSpan": 4
+                    },
+                    "component": {
+                      "id": "component_1787",
+                      "key": "BasicComponents",
+                      "options": {
+                        "Alignment": {
+                          "titlePaddingRight": 0,
+                          "innerPaddingBottom": 0,
+                          "titlePaddingLeft": 0,
+                          "paddingBottom": 0,
+                          "innerPaddingRight": 0,
+                          "paddingRight": 0,
+                          "innerPaddingLeft": 0,
+                          "paddingTop": 0,
+                          "titlePaddingBottom": 7,
+                          "innerPaddingTop": 0,
+                          "titlePaddingTop": 7,
+                          "paddingLeft": 0
+                        },
+                        "format": {
+                          "titleFontSize": "16",
+                          "titleHorizontal": "Center",
+                          "titleShadow": true,
+                          "tileBorderWidth": 0,
+                          "tileBorderRounding": 0,
+                          "tileBorderColor": "#000000",
+                          "tileBackgroundColor": "#000000",
+                          "tileTransparentBackground": true,
+                          "tileShadow": false
+                        },
+                        "Basics": {
+                          "AllowUnsafeContent": false,
+                          "horizontal": "Center",
+                          "FontSize": 17,
+                          "tooltip": "",
+                          "HtmlText": "This flag indicates if the system is set up to automatically copy hdbs. The direction of data copy is tied to failover. For more information consult the Administration guide.&lt;br&gt;",
+                          "Theme": "Dark",
+                          "ComponentName": "label",
+                          "Data": "",
+                          "vertical": "Middle",
+                          "version": "3.3.1S3",
+                          "Template": ""
+                        },
+                        "Style": {
+                          "advanced": "",
+                          "cssClasses": ""
+                        },
+                        "version": "4.3.1"
+                      },
+                      "containerId": null,
+                      "components": [],
+                      "widgets": [],
+                      "prevVersion": 56,
+                      "optionsVersion": 56,
+                      "hasOnSettingsChange": true,
+                      "definitionId": "17"
+                    }
+                  }
+                ],
+                "prevVersion": 63,
+                "optionsVersion": 63,
+                "hasOnSettingsChange": true,
+                "rowCount": 13,
+                "definitionId": "50"
+              },
+              {
+                "id": "component_2320",
+                "key": "Datagrid",
+                "options": {
+                  "sortingPossibleValues": [
+                    "",
+                    "time",
+                    "statusMessage",
+                    "process",
+                    "asset",
+                    "fromEnv",
+                    "dates",
+                    "sourceHDB",
+                    "targetHDB"
+                  ],
+                  "highlightTargetPossibleValues": [
+                    "time",
+                    "statusMessage",
+                    "process",
+                    "asset",
+                    "fromEnv",
+                    "dates",
+                    "sourceHDB",
+                    "targetHDB",
+                    "*"
+                  ],
+                  "format": {
+                    "titleShadow": true,
+                    "tileBorderWidth": 0,
+                    "tileBorderRounding": 0,
+                    "tileBorderColor": "#000000",
+                    "tileBackgroundColor": "#000000",
+                    "tileTransparentBackground": true,
+                    "tileShadow": false
+                  },
+                  "Basics": {
+                    "ShowPagingControl": false,
+                    "EnableGrouping": false,
+                    "Filtering": "disabled",
+                    "Data": {
+                      "_dashboardsType": "data",
+                      "value": "hdbcopyHistory"
+                    }
+                  },
+                  "datagridPossibleColumns": [
+                    "time",
+                    "statusMessage",
+                    "process",
+                    "asset",
+                    "fromEnv",
+                    "dates",
+                    "sourceHDB",
+                    "targetHDB"
+                  ],
+                  "version": "4.3.1",
+                  "Alignment": {
+                    "titlePaddingRight": 0,
+                    "innerPaddingBottom": 0,
+                    "titlePaddingLeft": 0,
+                    "paddingBottom": 0,
+                    "innerPaddingRight": 0,
+                    "paddingRight": 0,
+                    "innerPaddingLeft": 0,
+                    "paddingTop": 0,
+                    "innerPaddingTop": 0,
+                    "paddingLeft": 0
+                  },
+                  "FileExport": {
+                    "ShowExportCsvButton": false,
+                    "ShowExportExcelButton": false
+                  },
+                  "ColumnsConfiguration": [
+                    {
+                      "TimeFormat": "HH:mm:ss.SSSSSSSSS",
+                      "WidthWeight": 200,
+                      "Field": "time",
+                      "Format": "DateTime",
+                      "TextAlign": "right",
+                      "DisplayName": "time",
+                      "MinWidthAbsolute": 200
+                    },
+                    {
+                      "WidthWeight": 100,
+                      "Field": "statusMessage",
+                      "TextAlign": "left",
+                      "DisplayName": "statusMessage",
+                      "MinWidthAbsolute": 100
+                    },
+                    {
+                      "WidthWeight": 100,
+                      "Field": "process",
+                      "TextAlign": "left",
+                      "DisplayName": "process",
+                      "MinWidthAbsolute": 100
+                    },
+                    {
+                      "WidthWeight": 100,
+                      "Field": "asset",
+                      "TextAlign": "left",
+                      "DisplayName": "asset",
+                      "MinWidthAbsolute": 100
+                    },
+                    {
+                      "WidthWeight": 100,
+                      "Field": "fromEnv",
+                      "TextAlign": "left",
+                      "DisplayName": "fromEnv",
+                      "MinWidthAbsolute": 100
+                    },
+                    {
+                      "WidthWeight": 100,
+                      "Field": "dates",
+                      "DisplayName": "dates",
+                      "MinWidthAbsolute": 100
+                    },
+                    {
+                      "WidthWeight": 100,
+                      "Field": "sourceHDB",
+                      "TextAlign": "left",
+                      "DisplayName": "sourceHDB",
+                      "MinWidthAbsolute": 100
+                    },
+                    {
+                      "WidthWeight": 100,
+                      "Field": "targetHDB",
+                      "TextAlign": "left",
+                      "DisplayName": "targetHDB",
+                      "MinWidthAbsolute": 100
+                    }
+                  ],
+                  "selectedColumnPossibleValues": [
+                    "time",
+                    "statusMessage",
+                    "process",
+                    "asset",
+                    "fromEnv",
+                    "dates",
+                    "sourceHDB",
+                    "targetHDB"
+                  ],
+                  "Tooltip": {
+                    "Template": "&lt;div style=\"margin:0 2px; padding:10px; background: #f0f0f0; color: #101010; font-size:11px; border:1px solid #c0c0c0; border-radius: 2px;\"&gt;\r\n  {{#each this}}&lt;b&gt;{{@key}}&lt;/b&gt; : {{this}}&lt;br&gt;{{/each}}\r\n&lt;/div&gt;"
+                  }
+                },
+                "containerId": "8e906372-b223-b658-4dd7-cff1d5431434",
+                "components": [],
+                "widgets": [],
+                "prevVersion": 89,
+                "optionsVersion": 89,
+                "hasOnSettingsChange": true,
+                "definitionId": "21"
+              },
+              {
+                "id": "component_9210",
+                "key": "ConfigManager",
+                "options": {
+                  "profileName": "delta_install_default",
+                  "GridOptions": {
+                    "import": false,
+                    "edit": true,
+                    "insert": false,
+                    "reorder": false,
+                    "duplicate": false,
+                    "dictionaryView": false,
+                    "delete": false,
+                    "export": false,
+                    "promptBeforeSave": true,
+                    "Filtering": "disabled"
+                  },
+                  "ParameterGroups": [
+                    {
+                      "GroupName": "",
+                      "Parameters": [
+                        {
+                          "DictionaryView": false,
+                          "DisplayName": "Master/Slave",
+                          "ParameterName": ".daas.cfg.masterSlaveInstances:DEFAULT"
+                        }
+                      ],
+                      "LoadExpanded": false,
+                      "duplicate": true
+                    }
+                  ],
+                  "Alignment": {
+                    "titlePaddingRight": 0,
+                    "innerPaddingBottom": 0,
+                    "titlePaddingLeft": 0,
+                    "paddingBottom": 0,
+                    "innerPaddingRight": 0,
+                    "paddingRight": 0,
+                    "innerPaddingLeft": 0,
+                    "paddingTop": 0,
+                    "titlePaddingBottom": 7,
+                    "innerPaddingTop": 0,
+                    "titlePaddingTop": 7,
+                    "paddingLeft": 0
+                  },
+                  "dynamicParameters": [
+                    ".daas.admin.adminServers:DEFAULT",
+                    ".daas.admin.compress:DEFAULT",
+                    ".daas.admin.diskM.fileAllocationTable:DEFAULT",
+                    ".daas.admin.diskM.hdbAllocationTable:DEFAULT",
+                    ".daas.admin.hdbDataCheckInstances:DEFAULT",
+                    ".daas.admin.rdbDataCheckInstances:DEFAULT",
+                    ".daas.admin.scriptsForBash:DEFAULT",
+                    ".daas.admin.serverDetails:DEFAULT",
+                    ".daas.admin.um.userTable:DEFAULT",
+                    ".daas.cfg.FATVAR:Calendar.csv",
+                    ".daas.cfg.FATVAR:DEFAULT",
+                    ".daas.cfg.FATVAR:Hist.csv",
+                    ".daas.cfg.FATVAR:MIC.csv",
+                    ".daas.cfg.FATVAR:MICInfo.csv",
+                    ".daas.cfg.FATVAR:MICInfo2.csv",
+                    ".daas.cfg.FATVAR:RefData.csv",
+                    ".daas.cfg.FATVAR:TRTH_TAS.csv",
+                    ".daas.cfg.FATVAR:Taxonomy.csv",
+                    ".daas.cfg.FATVAR:corax.csv",
+                    ".daas.cfg.FATVAR:depth.csv",
+                    ".daas.cfg.FATVAR:emea_tr_eq_fw",
+                    ".daas.cfg.FATVAR:emea_tr_eq_fw_a",
+                    ".daas.cfg.FATVAR:emea_tr_fi_fw_a",
+                    ".daas.cfg.FATVAR:emea_tr_filewatcher",
+                    ".daas.cfg.FATVAR:emea_tr_filewatcherCorp",
+                    ".daas.cfg.FATVAR:emea_tr_filewatcherRef",
+                    ".daas.cfg.FATVAR:emea_tr_fut_fw&gt;",
+                    ".daas.cfg.FATVAR:emea_tr_fx_fw_a",
+                    ".daas.cfg.FATVAR:emea_tr_idx_fw_a",
+                    ".daas.cfg.FATVAR:execution",
+                    ".daas.cfg.FATVAR:order",
+                    ".daas.cfg.RDMFIDColumnsDict:DEFAULT",
+                    ".daas.cfg.RDMFieldColumnsDict:DEFAULT",
+                    ".daas.cfg.TickStatsAggregationFunctions:DEFAULT",
+                    ".daas.cfg.TickStatsColumns:DEFAULT",
+                    ".daas.cfg.aggregationFunctions:DEFAULT",
+                    ".daas.cfg.aggregationFunctions:override",
+                    ".daas.cfg.aggregationOperators:DEFAULT",
+                    ".daas.cfg.assetPrefixes:DEFAULT",
+                    ".daas.cfg.assetTableMap:DEFAULT",
+                    ".daas.cfg.autoHdbCopy:DEFAULT",
+                    ".daas.cfg.barAggregationFunctions:DEFAULT",
+                    ".daas.cfg.barTableAggregationColumns:DEFAULT",
+                    ".daas.cfg.canCorColumnMap:DEFAULT",
+                    ".daas.cfg.canCorParams:DEFAULT",
+                    ".daas.cfg.canCorTargets:DEFAULT",
+                    ".daas.cfg.columnDefaults:DEFAULT",
+                    ".daas.cfg.complexAggregationFunctions:DEFAULT",
+                    ".daas.cfg.complexBarAggregationFunctions:DEFAULT",
+                    ".daas.cfg.condCol:DEFAULT",
+                    ".daas.cfg.customSymbologyMap:DEFAULT",
+                    ".daas.cfg.dataCopyTargets:DEFAULT",
+                    ".daas.cfg.defaultSource:DEFAULT",
+                    ".daas.cfg.depth:DEFAULT",
+                    ".daas.cfg.dspConnectionDetails:DEFAULT",
+                    ".daas.cfg.dssBarsHDBDirectories:DEFAULT",
+                    ".daas.cfg.dssStatsHDB:DEFAULT",
+                    ".daas.cfg.eqSymMap:DEFAULT",
+                    ".daas.cfg.eventResponses:DEFAULT",
+                    ".daas.cfg.eventResponsesByTopic:DEFAULT",
+                    ".daas.cfg.eventSubscriptions:DEFAULT",
+                    ".daas.cfg.exchangeTimeZone:DEFAULT",
+                    ".daas.cfg.fiSymMap:DEFAULT",
+                    ".daas.cfg.fileLoader:DEFAULT",
+                    ".daas.cfg.fileLoader:DSP",
+                    ".daas.cfg.fileLoader:DSS_EOD",
+                    ".daas.cfg.fileLoader:DSS_PRICE_HISTORY",
+                    ".daas.cfg.fileLoader:DSS_STATS",
+                    ".daas.cfg.fileLoader:clientRefData",
+                    ".daas.cfg.fileLoader:tradingSummary",
+                    ".daas.cfg.fileLoader:transaction",
+                    ".daas.cfg.fileLoaderParams:DEFAULT",
+                    ".daas.cfg.filterRuleConfig:DEFAULT",
+                    ".daas.cfg.futSymMap:DEFAULT",
+                    ".daas.cfg.fwTargetDB:Calendar.csv",
+                    ".daas.cfg.fwTargetDB:DEFAULT",
+                    ".daas.cfg.fwTargetDB:DSP",
+                    ".daas.cfg.fwTargetDB:DSS_STATS",
+                    ".daas.cfg.fwTargetDB:Hist.csv",
+                    ".daas.cfg.fwTargetDB:MIC.csv",
+                    ".daas.cfg.fwTargetDB:MICInfo.csv",
+                    ".daas.cfg.fwTargetDB:RefData.csv",
+                    ".daas.cfg.fwTargetDB:TRTH_TAS_EQUITY.csv",
+                    ".daas.cfg.fwTargetDB:TRTH_TAS_FIXED.csv",
+                    ".daas.cfg.fwTargetDB:TRTH_TAS_FOREX.csv",
+                    ".daas.cfg.fwTargetDB:TRTH_TAS_FUTURE.csv",
+                    ".daas.cfg.fwTargetDB:TRTH_TAS_INDEX.csv",
+                    ".daas.cfg.fwTargetDB:Taxonomy.csv",
+                    ".daas.cfg.fwTargetDB:clientRefData",
+                    ".daas.cfg.fwTargetDB:corax.csv",
+                    ".daas.cfg.fwTargetDB:depth.csv",
+                    ".daas.cfg.fwTargetDB:tradingSummary",
+                    ".daas.cfg.fwTargetDB:transaction",
+                    ".daas.cfg.fxSymMap:DEFAULT",
+                    ".daas.cfg.getStatsMaxWidths:DEFAULT",
+                    ".daas.cfg.hdbDir:DEFAULT",
+                    ".daas.cfg.hdbDirectories:DEFAULT",
+                    ".daas.cfg.help:DEFAULT",
+                    ".daas.cfg.idTypeDescription:DEFAULT",
+                    ".daas.cfg.idxSymMap:DEFAULT",
+                    ".daas.cfg.instanceAssetClasses:DEFAULT",
+                    ".daas.cfg.mapCSVCols:DEFAULT",
+                    ".daas.cfg.mapCSVCols:clientRefData",
+                    ".daas.cfg.mapCSVCols:transaction",
+                    ".daas.cfg.masterSlaveInstances:DEFAULT",
+                    ".daas.cfg.mifidAssetClass:DEFAULT",
+                    ".daas.cfg.mifidInstrGrouping:DEFAULT",
+                    ".daas.cfg.mifidSubAssetClass:DEFAULT",
+                    ".daas.cfg.mifidSubClass:DEFAULT",
+                    ".daas.cfg.modules:DEFAULT",
+                    ".daas.cfg.mrComponentAggregationFunctions:DEFAULT",
+                    ".daas.cfg.mrReductionAggregationFunctions:DEFAULT",
+                    ".daas.cfg.orderExecFileLoaderParams:DEFAULT",
+                    ".daas.cfg.paramOptionDict:DEFAULT",
+                    ".daas.cfg.paramscfg:DEFAULT",
+                    ".daas.cfg.pdbChannel:DEFAULT",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_eqL2Legacy_0_a",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_eqL2Legacy_0_b",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_eqL2_0_a",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_eqL2_0_b",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_eq_0_a",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_eq_0_b",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_fi_0_a",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_fi_0_b",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_futL2Legacy_0_a",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_futL2Legacy_0_b",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_futL2_0_a",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_futL2_0_b",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_fut_0_a",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_fut_0_b",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_fx_0_a",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_fx_0_b",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_idx_0_a",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_idx_0_b",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_lisOpt_0_a",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_lisOpt_0_b",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_mn_0_a",
+                    ".daas.cfg.pdbChannel:emea_tp_tr_marketData_mn_0_b",
+                    ".daas.cfg.pdbDataProcs:DEFAULT",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_eqL2_0_a",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_eqL2_0_b",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_eq_0_a",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_eq_0_b",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_fi_0_a",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_fi_0_b",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_futL2_0_a",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_futL2_0_b",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_fut_0_a",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_fut_0_b",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_fx_0_a",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_fx_0_b",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_idx_0_a",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_idx_0_b",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_lisOpt_0_a",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_lisOpt_0_b",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_mn_0_a",
+                    ".daas.cfg.pdbDataProcs:emea_pdb_tr_marketData_mn_0_b",
+                    ".daas.cfg.pdbSettings:DEFAULT",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_eqL2_0_a",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_eqL2_0_b",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_eq_0_a",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_eq_0_b",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_fi_0_a",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_fi_0_b",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_futL2_0_a",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_futL2_0_b",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_fut_0_a",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_fut_0_b",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_fx_0_a",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_fx_0_b",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_idx_0_a",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_idx_0_b",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_lisOpt_0_a",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_lisOpt_0_b",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_mn_0_a",
+                    ".daas.cfg.pdbSettings:emea_pdb_tr_marketData_mn_0_b",
+                    ".daas.cfg.pdbTableSettings:DEFAULT",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_eqL2_0_a",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_eqL2_0_b",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_eq_0_a",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_eq_0_b",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_fi_0_a",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_fi_0_b",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_futL2_0_a",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_futL2_0_b",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_fut_0_a",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_fut_0_b",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_fx_0_a",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_fx_0_b",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_idx_0_a",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_idx_0_b",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_lisOpt_0_a",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_lisOpt_0_b",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_mn_0_a",
+                    ".daas.cfg.pdbTableSettings:emea_pdb_tr_marketData_mn_0_b",
+                    ".daas.cfg.postAggCorAxAdjustments:DEFAULT",
+                    ".daas.cfg.preAggCorAxAdjustments:DEFAULT",
+                    ".daas.cfg.procNameParsing:DEFAULT",
+                    ".daas.cfg.procNameParsingTest:DEFAULT",
+                    ".daas.cfg.processMap:DEFAULT",
+                    ".daas.cfg.processing.writeTabs:DEFAULT",
+                    ".daas.cfg.quoteFilterRuleConfig:DEFAULT",
+                    ".daas.cfg.refTables:DEFAULT",
+                    ".daas.cfg.regionConfig:DEFAULT",
+                    ".daas.cfg.reqParamExceptions:DEFAULT",
+                    ".daas.cfg.respStatusConversion:DEFAULT",
+                    ".daas.cfg.ricTypes:DEFAULT",
+                    ".daas.cfg.routingGWs:DEFAULT",
+                    ".daas.cfg.rteAggregations:DEFAULT",
+                    ".daas.cfg.rteCalculationAggregations:DEFAULT",
+                    ".daas.cfg.rteCompositeAggregations:DEFAULT",
+                    ".daas.cfg.secMasterFaTVar:DEFAULT",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_eq_secMaster_fw",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_eq_secMaster_fw_CorAx",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_fi_secMaster_fw",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_fut_secMaster_fw",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_fx_secMaster_fw",
+                    ".daas.cfg.secMasterFaTVar:emea_tr_idx_secMaster_fw",
+                    ".daas.cfg.secMasterIdentifierMap:DEFAULT",
+                    ".daas.cfg.secMasterPub:DEFAULT",
+                    ".daas.cfg.secMasterSub:DEFAULT",
+                    ".daas.cfg.secMasterWhereClause:DEFAULT",
+                    ".daas.cfg.statsDirectories:DEFAULT",
+                    ".daas.cfg.statsDirectories:equity",
+                    ".daas.cfg.statsDirectories:fixedIncome",
+                    ".daas.cfg.statsDirectories:foreignExchange",
+                    ".daas.cfg.statsDirectories:future",
+                    ".daas.cfg.statsDirectories:index",
+                    ".daas.cfg.statsFilterRules:DEFAULT",
+                    ".daas.cfg.statsFilterRules:EQ",
+                    ".daas.cfg.statsFilterRules:FI",
+                    ".daas.cfg.statsFilterRules:FUT",
+                    ".daas.cfg.statsFilterRules:FX",
+                    ".daas.cfg.statsFilterRules:IDX",
+                    ".daas.cfg.statsFilterRules:equity",
+                    ".daas.cfg.statsFilterRules:fixedIncome",
+                    ".daas.cfg.statsFilterRules:foreignExchange",
+                    ".daas.cfg.statsFilterRules:future",
+                    ".daas.cfg.statsFilterRules:index",
+                    ".daas.cfg.statsGenLrMap:DEFAULT",
+                    ".daas.cfg.statsHDB:DEFAULT",
+                    ".daas.cfg.statsProcesses:DEFAULT",
+                    ".daas.cfg.symExchangeMapConfig:DEFAULT",
+                    ".daas.cfg.symLiquidity:DEFAULT",
+                    ".daas.cfg.symLiquidity_test:DEFAULT",
+                    ".daas.cfg.symLiquidity_test:equity",
+                    ".daas.cfg.symLiquidity_test:fixedIncome",
+                    ".daas.cfg.symLiquidity_test:foreignExchange",
+                    ".daas.cfg.symLiquidity_test:future",
+                    ".daas.cfg.symLiquidity_test:index",
+                    ".daas.cfg.tableAggregationColumns:DEFAULT",
+                    ".daas.cfg.tableMap:DEFAULT",
+                    ".daas.cfg.targetFunctionDict:DEFAULT",
+                    ".daas.cfg.targetStatsHDBDict:DEFAULT",
+                    ".daas.cfg.taxonomyParams:DEFAULT",
+                    ".daas.cfg.tpRealtimeTables:DEFAULT",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_eqL2Legacy_0_a",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_eqL2Legacy_0_b",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_eqL2_0_a",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_eqL2_0_b",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_eq_0_a",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_eq_0_b",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_fi_0_a",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_fi_0_b",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_futL2Legacy_0_a",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_futL2Legacy_0_b",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_futL2_0_a",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_futL2_0_b",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_fut_0_a",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_fut_0_b",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_fx_0_a",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_fx_0_b",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_idx_0_a",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_idx_0_b",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_lisOpt_0_a",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_lisOpt_0_b",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_mn_0_a",
+                    ".daas.cfg.tpRealtimeTables:emea_tp_tr_marketData_mn_0_b",
+                    ".daas.cfg.tpWriteDownProcess:DEFAULT",
+                    ".daas.cfg.trackSym:DEFAULT",
+                    ".daas.cfg.trepDefaultParams:DEFAULT",
+                    ".daas.cfg.trepPort:DEFAULT",
+                    ".daas.cfg.trth.credentials:DEFAULT",
+                    ".daas.cfg.trth.frameworkSettings:DEFAULT",
+                    ".daas.cfg.trth.rfaVelocityFeed:DEFAULT",
+                    ".daas.cfg.weeklyBarStartDay:DEFAULT",
+                    ".daas.cfg.writedownAggregationFunctions:DEFAULT",
+                    ".daas.ddl.cfg.functionMap:DEFAULT",
+                    ".daas.infra.createCTPDefaultParams:DEFAULT",
+                    ".daas.infra.createGWDefaultParams:DEFAULT",
+                    ".daas.infra.createHDBDefaultParams:DEFAULT",
+                    ".daas.infra.createHDBList:DEFAULT",
+                    ".daas.infra.createHdbcopyDefaultParams:DEFAULT",
+                    ".daas.infra.createLRDefaultParams:DEFAULT",
+                    ".daas.infra.createLRList:DEFAULT",
+                    ".daas.infra.createOrderExecFWDefaultParams:DEFAULT",
+                    ".daas.infra.createOrderExecNormEngineDefaultParams:DEFAULT",
+                    ".daas.infra.createOrderExecPdbDefaultParams:DEFAULT",
+                    ".daas.infra.createOrderExecTpDefaultParams:DEFAULT",
+                    ".daas.infra.createQMDefaultParams:DEFAULT",
+                    ".daas.infra.createQPDefaultParams:DEFAULT",
+                    ".daas.infra.createQRDefaultParams:DEFAULT",
+                    ".daas.infra.createRDBDefaultParams:DEFAULT",
+                    ".daas.infra.createRDBList:DEFAULT",
+                    ".daas.infra.createRFADefaultParams:DEFAULT",
+                    ".daas.infra.createRFAList:DEFAULT",
+                    ".daas.infra.createRTEDefaultParams:DEFAULT",
+                    ".daas.infra.createRTEList:DEFAULT",
+                    ".daas.infra.createSTARTERDefaultParams:DEFAULT",
+                    ".daas.infra.createSTATSDefaultParams:DEFAULT",
+                    ".daas.infra.createStatsGenDefaultParams:DEFAULT",
+                    ".daas.infra.createTPDefaultParams:DEFAULT",
+                    ".daas.infra.createTPList:DEFAULT",
+                    ".daas.infra.createUDFDefaultParams:DEFAULT",
+                    ".daas.infra.rdbShards:DEFAULT",
+                    ".daas.module.cfg.moduleCfg:DEFAULT",
+                    ".daas.mon.flowCheckInstances:DEFAULT",
+                    ".daas.mon.hdbDataCheckInstances:DEFAULT",
+                    ".daas.mon.pingCheckInstances:DEFAULT",
+                    ".daas.mon.rdbDateCheckInstances:DEFAULT",
+                    ".daas.mon.rdbFlushCheckInstances:DEFAULT",
+                    ".daas.mon.slowConsumerCheckInstances:DEFAULT",
+                    ".daas.mon.timeoutCheckInstances:DEFAULT",
+                    ".daas.orderExec.fwRequiredFieldTypes:DEFAULT",
+                    ".daas.orderExec.fwRequiredFieldTypes:execution",
+                    ".daas.orderExec.fwRequiredFieldTypes:order",
+                    ".daas.orderExec.fwTargetDB:DEFAULT",
+                    ".daas.orderExec.fwTargetDB:executions",
+                    ".daas.orderExec.fwTargetDB:orders",
+                    ".daas.orderExec.instrumentDescriptionMapping:DEFAULT",
+                    ".daas.orderExec.instrumentDescriptionMapping:execution",
+                    ".daas.orderExec.instrumentDescriptionMapping:order",
+                    ".daas.orderExec.validateISOCurrencyFormat:DEFAULT",
+                    ".daas.trth.fw.connections:DEFAULT",
+                    ".dtools.instanceInstructions:DEFAULT",
+                    ".dtools.userfilters:DEFAULT",
+                    "CONTROL_HEARTBEATS:DEFAULT",
+                    "CONTROL_SSO:DEFAULT",
+                    "DAAS_LOG_SCRAPE_IGNORE:DEFAULT",
+                    "DASHBOARD_ALERT_PROCESSES:DEFAULT",
+                    "DASHDatabaseDrivers:DEFAULT",
+                    "DASHconfigBundle:DEFAULT",
+                    "DASHdashlist:DEFAULT",
+                    "DASHdashlist:DeltaMonAdministrator",
+                    "DASHproperties:DEFAULT",
+                    "DASHsessionTimeout:DEFAULT",
+                    "DC_ARCHIVE_FILES:DEFAULT",
+                    "DC_AUDIT:DEFAULT",
+                    "DC_DAEMON_LAUNCH_TEMPLATES:DEFAULT",
+                    "DC_EXCLUDE_UNPACKAGED_ENTITIES:DEFAULT",
+                    "DC_EXPORT:DEFAULT",
+                    "DC_EXPORT_FILES:DEFAULT",
+                    "DC_EXPORT_FILES:DeltaStream",
+                    "DC_FILEMONITOR:DEFAULT",
+                    "DC_LOGGING:DEFAULT",
+                    "DC_LOG_PUBLISH:DEFAULT",
+                    "DC_MEMORY:DEFAULT",
+                    "DC_PASSWORD_RESET:DEFAULT",
+                    "DC_SYSTEM_CONFIGURATION:DEFAULT",
+                    "DM_ALERT_FILEMON_LOOKUP:DEFAULT",
+                    "DM_ALERT_MONITOR_COLUMNS:DEFAULT",
+                    "DM_ALERT_PARAMETERS:DEFAULT",
+                    "DM_ALERT_PARAMETERS:MemoryUsage",
+                    "DM_ALERT_PARAMETERS:Server1MinLoad",
+                    "DM_ALERT_PARAMETERS:ServerCPU",
+                    "DM_AlertsConfiguration:DEFAULT",
+                    "DM_ColourThresholds:DEFAULT",
+                    "DM_ColourThresholds:ProcessCPU",
+                    "DM_ColourThresholds:ProcessMemory",
+                    "DM_ColourThresholds:ServerCPU",
+                    "DM_ColourThresholds:ServerFileSystem",
+                    "DM_ColourThresholds:ServerMemory",
+                    "DM_Config_Log_Scraper:DEFAULT",
+                    "DM_Configuration:DEFAULT",
+                    "DM_FILE_CHANGE_ALERT:DEFAULT",
+                    "DM_FILE_POLL:DEFAULT",
+                    "DM_FileMonitorConfiguration:DEFAULT",
+                    "DM_FileSizeAlert:DEFAULT",
+                    "DM_FileSystemUsageAlert:DEFAULT",
+                    "DM_HDB_SAMPLING:DEFAULT",
+                    "DM_INSTANCE_ALERT:DEFAULT",
+                    "DM_JobScheduleAlert:DEFAULT",
+                    "DM_LOG_ALERT:DEFAULT",
+                    "DM_LOG_ALERT:DM_FILE_MON_FILE_PATH_ALERT",
+                    "DM_LOG_SCRAPING:DEFAULT",
+                    "DM_Log_Context:DEFAULT",
+                    "DM_Log_Context:DM_GC_Context",
+                    "DM_ProcessAlias:DEFAULT",
+                    "DM_ProcessDetails_DetailView:DEFAULT",
+                    "DM_ProcessDetails_GraphicalNICDetails:DEFAULT",
+                    "DM_ProcessDetails_GraphicalNetConnDetails:DEFAULT",
+                    "DM_ProcessDetails_NetworkConnectionSummary:DEFAULT",
+                    "DM_ProcessDetails_PerconnectionDetails:DEFAULT",
+                    "DM_ProcessDetails_ProcessDetails:DEFAULT",
+                    "DM_ProcessSpecificAlert:DEFAULT",
+                    "DM_ProcessSpecificAlert:DM_PIDResidentMemoryAlert",
+                    "DM_ProcessSpecificAlert:DM_ProcessCpuAlert",
+                    "DM_QPING_CONFIG:DEFAULT",
+                    "DM_QueryBuilder_LatestAmmendments:DEFAULT",
+                    "DM_QueryBuilder_QueryViews:DEFAULT",
+                    "DM_RECOVERY:DEFAULT",
+                    "DM_SERVER_ALERT:DEFAULT",
+                    "DM_SYSMON_CONFIG:DEFAULT",
+                    "DM_SYSMON_CONFIG_COLLECTORS:DEFAULT",
+                    "DM_SYSMON_CONFIG_PROC:DEFAULT",
+                    "DM_SYSMON_FILESIZE_CONFIG:DEFAULT",
+                    "DM_SYSMON_SERVERGROUPS:DEFAULT",
+                    "DM_SYSPING_CONFIG:DEFAULT",
+                    "DM_ServerLoadAlert:DEFAULT",
+                    "DM_TABLE_RELATIONS:DEFAULT",
+                    "DM_TOP_AlertsMonitor:DEFAULT",
+                    "DM_TOP_CPUCoreLeagueTable:DEFAULT",
+                    "DM_TOP_CPUMemoryGraph:DEFAULT",
+                    "DM_TOP_CPUTable:DEFAULT",
+                    "DM_TOP_FileSystemLeagueTable:DEFAULT",
+                    "DM_TOP_NetworkConnectionsTable:DEFAULT",
+                    "DM_TOP_ServerDetailsGraph:DEFAULT",
+                    "DM_TOP_ServerMemoryLeagueTable:DEFAULT",
+                    "DM_WEBPING_CONFIG:DEFAULT",
+                    "DRVT_ProjectMappings:DEFAULT",
+                    "DRVT_Properties:DEFAULT",
+                    "DS_AF_CCY_PIPS:DEFAULT",
+                    "DS_AF_FUNCTIONS:DEFAULT",
+                    "DS_AF_SAVEDOWN:DEFAULT",
+                    "DS_AF_TRADING_SESSIONS:DEFAULT",
+                    "DS_AF_TRADING_SESSIONS_CONTIGUOUS:DEFAULT",
+                    "DS_AF_TRADING_WEEK:DEFAULT",
+                    "DS_ALERT_FRAMEWORK:DEFAULT",
+                    "DS_AT_DDF_FUNCTIONS:DEFAULT",
+                    "DS_AT_LINKS:DEFAULT",
+                    "DS_CHARTS_CFG:DEFAULT",
+                    "DS_CHARTS_REFDATA:DEFAULT",
+                    "DS_COMPRESS:DEFAULT",
+                    "DS_EMAIL_ADDRESSES:DEFAULT",
+                    "DS_EMAIL_SERVER:DEFAULT",
+                    "DS_EOD_Servers:DEFAULT",
+                    "DS_EXEC_ANALYTIC_LOGIN:DEFAULT",
+                    "DS_FILEWATCHER_MATCHTABLE:CORP",
+                    "DS_FILEWATCHER_MATCHTABLE:DAAS",
+                    "DS_FILEWATCHER_MATCHTABLE:DEFAULT",
+                    "DS_FILEWATCHER_MATCHTABLE:DSS_STATS",
+                    "DS_FILEWATCHER_MATCHTABLE:QrTimings",
+                    "DS_FILEWATCHER_MATCHTABLE:REF",
+                    "DS_FILEWATCHER_MATCHTABLE:daas_clientFileUpload",
+                    "DS_FILEWATCHER_MATCHTABLE:dataMergeDaemon",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_orderExec_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_orderExec_fw_b",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_clientFileUpload",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_eq_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_eq_secMaster_fw",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fi_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fi_secMaster_fw",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_filewatcher",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_filewatcherCorp",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_filewatcherRef",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fut_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fut_secMaster_fw",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fx_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_fx_secMaster_fw",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_idx_fw_a",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_idx_secMaster_fw",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_trth",
+                    "DS_FILEWATCHER_MATCHTABLE:emea_tr_watchListUpload",
+                    "DS_FILEWATCHER_MATCHTABLE:eq_depth",
+                    "DS_FILEWATCHER_MATCHTABLE:fi_depth",
+                    "DS_FILEWATCHER_MATCHTABLE:fut_depth",
+                    "DS_FILEWATCHER_MATCHTABLE:fx_depth",
+                    "DS_FILEWATCHER_MATCHTABLE:idx_depth",
+                    "DS_FILEWATCHER_MATCHTABLE:processingDaemon",
+                    "DS_GW_AnalyticMap:DEFAULT",
+                    "DS_GW_AnalyticMap:ds_gw_alert",
+                    "DS_GW_AnalyticMap:ds_gw_ops",
+                    "DS_GW_Servers:DEFAULT",
+                    "DS_GW_Servers:daas_admin",
+                    "DS_GW_Servers:daas_monGw_procList",
+                    "DS_GW_Servers:daas_mon_procList",
+                    "DS_GW_Servers:ds_gw_action_tracker_a",
+                    "DS_GW_Servers:ds_gw_action_tracker_b",
+                    "DS_GW_Servers:ds_gw_alert_a",
+                    "DS_GW_Servers:ds_gw_alert_b",
+                    "DS_GW_Servers:ds_gw_ops_a",
+                    "DS_GW_Servers:ds_gw_ops_b",
+                    "DS_GW_Servers:ds_gw_report_a",
+                    "DS_GW_Servers:ds_gw_report_b",
+                    "DS_GW_Servers:emea_gw_0_a",
+                    "DS_GW_Servers:emea_gw_0_b",
+                    "DS_INTRADAY:DEFAULT",
+                    "DS_JEMAIL_SERVER:DEFAULT",
+                    "DS_JEMAIL_SERVER:exchangeAnonymous",
+                    "DS_JEMAIL_SERVER:exchangeAuthenticated",
+                    "DS_JEMAIL_SERVER:gmail",
+                    "DS_JEMAIL_SETUP:DEFAULT",
+                    "DS_JEMAIL_SNMP:DEFAULT",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:DEFAULT",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:ds_appServer",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:ds_jemail",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:ds_report_doc_generator_a",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:ds_report_doc_generator_b",
+                    "DS_LAUNCH_COMMANDLINE_PARAMS:trthClient",
+                    "DS_MASTERED_PROCESS:DEFAULT",
+                    "DS_MASTERED_PROCESS:DS",
+                    "DS_MASTERED_PROCESS:DS_REPORT_FRAMEWORK",
+                    "DS_MESSAGING_SERVER:DAAS",
+                    "DS_MESSAGING_SERVER:DEFAULT",
+                    "DS_MESSAGING_SERVER:DS",
+                    "DS_MESSAGING_SERVER:emea_tr_a",
+                    "DS_MESSAGING_SERVER:emea_tr_b",
+                    "DS_OPS_CONNECTIONS:DEFAULT",
+                    "DS_OPS_DISTINCT_COLS:DEFAULT",
+                    "DS_OPS_DISTINCT_COLS:DeltaOps",
+                    "DS_OPS_FILTERS:DEFAULT",
+                    "DS_OPS_FILTERS:DeltaOps",
+                    "DS_OPS_HDBCLEANSING:DEFAULT",
+                    "DS_OPS_HDBCLEANSING:DeltaOps",
+                    "DS_OPS_INST_LAYER_MAP:DEFAULT",
+                    "DS_OPS_INST_LAYER_MAP:DeltaOps",
+                    "DS_OPS_QBTABLES:DEFAULT",
+                    "DS_OPS_QBTABLES:DeltaOps",
+                    "DS_OPS_QUERYGROUPS:DEFAULT",
+                    "DS_OPS_QUERYGROUPS:DeltaOps",
+                    "DS_OPS_SELECTIONS:DEFAULT",
+                    "DS_OPS_SELECTIONS:DeltaOps",
+                    "DS_PAGING:DEFAULT",
+                    "DS_QR_EXCLUDE:DEFAULT",
+                    "DS_QR_ROUTINGS:DEFAULT",
+                    "DS_QR_ROUTINGS:DaaS",
+                    "DS_QR_ROUTINGS:Monitoring",
+                    "DS_QR_TIMINGS:DEFAULT",
+                    "DS_Report_Instance_Editor:DEFAULT",
+                    "DS_Report_Run_Info:DEFAULT",
+                    "DS_Report_Template_Management:DEFAULT",
+                    "DS_TABLES_EOD_LIST:DEFAULT",
+                    "DS_TABLES_EOD_LIST:alert",
+                    "DS_TERMINATE_PRCL_NAME:DEFAULT",
+                    "DS_TERMINATE_PRCL_NAME:ds_terminate_prcl_alert",
+                    "DeltaOps_AccessLog:DEFAULT",
+                    "DeltaOps_AuditList:DEFAULT",
+                    "DeltaOps_AuditLog:DEFAULT",
+                    "DeltaOps_AuditUpdates:DEFAULT",
+                    "DeltaOps_Overview_Controller:DEFAULT",
+                    "DeltaOps_ProcLayers_Container:DEFAULT",
+                    "DeltaOps_QueryGroupsGeneral:DEFAULT",
+                    "DeltaOps_QueryGroupsGeneralDrillDown:DEFAULT",
+                    "DeltaOps_QueryLog:DEFAULT",
+                    "DeltaOps_StatLatencyGeneral:DEFAULT",
+                    "DeltaOps_StatLatencyGeneralDrillDown:DEFAULT",
+                    "DeltaOps_dxLogContainer:DEFAULT",
+                    "DeltaOps_dxLogFilter:DEFAULT",
+                    "DeltaOps_dxLogSummary:DEFAULT",
+                    "DeltaReportDocDefinitions:DEFAULT",
+                    "DeltaReportFormatPDFcols:DEFAULT",
+                    "DeltaReportHiddenPDFcols:DEFAULT",
+                    "DeltaReportPDFBlockFunctions:DEFAULT",
+                    "DeltaReportResources:DEFAULT",
+                    "GeoTags:DEFAULT",
+                    "INSTANCE_CONFIG:DEFAULT",
+                    "StratController:DEFAULT",
+                    "daas.mon.processCpuAlert:DEFAULT",
+                    "deltacontrol:DEFAULT",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_eqL2_0_a",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_eqL2_0_b",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_eq_0_a",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_eq_0_b",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_fi_0_a",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_fi_0_b",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_futL2_0_a",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_futL2_0_b",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_fut_0_a",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_fut_0_b",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_fx_0_a",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_fx_0_b",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_idx_0_a",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_idx_0_b",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_lisOpt_0_a",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_lisOpt_0_b",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_mn_0_a",
+                    "deltacontrol:emea_rfavelocity_tr_marketData_mn_0_b",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_eq_0_a",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_eq_0_b",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_fi_0_a",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_fi_0_b",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_fut_0_a",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_fut_0_b",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_fx_0_a",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_fx_0_b",
+                    "deltacontrol:emea_trdfdrfavelocity_tr_marketData_idx_0_a",
+                    "eqBarProcesses:DEFAULT",
+                    "fiBarProcesses:DEFAULT",
+                    "fix:DEFAULT",
+                    "futBarProcesses:DEFAULT",
+                    "fxBarProcesses:DEFAULT",
+                    "housekeeping:DEFAULT",
+                    "idxBarProcesses:DEFAULT",
+                    "kdbpublisher:DEFAULT",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_eqL2_0_a",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_eqL2_0_b",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_eq_0_a",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_eq_0_b",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_fi_0_a",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_fi_0_b",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_futL2_0_a",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_futL2_0_b",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_fut_0_a",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_fut_0_b",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_fx_0_a",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_fx_0_b",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_idx_0_a",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_idx_0_b",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_lisOpt_0_a",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_lisOpt_0_b",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_mn_0_a",
+                    "kdbpublisher:emea_rfavelocity_tr_marketData_mn_0_b",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_eq_0_a",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_eq_0_b",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_fi_0_a",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_fi_0_b",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_fut_0_a",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_fut_0_b",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_fx_0_a",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_fx_0_b",
+                    "kdbpublisher:emea_trdfdrfavelocity_tr_marketData_idx_0_a",
+                    "kdbsubscriber:DEFAULT",
+                    "kdbsubscriber:emea_rfavelcoity_tr_marketData_eqL2Legacy_0_b",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_eqL2_0_a",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_eqL2_0_b",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_eq_0_a",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_eq_0_b",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_fi_0_a",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_fi_0_b",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_futL2_0_a",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_futL2_0_b",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_fut_0_a",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_fut_0_b",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_fx_0_a",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_fx_0_b",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_idx_0_a",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_idx_0_b",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_lisOpt_0_a",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_lisOpt_0_b",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_mn_0_a",
+                    "kdbsubscriber:emea_rfavelocity_tr_marketData_mn_0_b",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_eq_0_a",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_eq_0_b",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_fi_0_a",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_fi_0_b",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_fut_0_a",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_fut_0_b",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_fx_0_a",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_fx_0_b",
+                    "kdbsubscriber:emea_trdfdrfavelocity_tr_marketData_idx_0_a",
+                    "linehandler:DEFAULT",
+                    "logging:DEFAULT",
+                    "logging:emea_rfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "logging:emea_rfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "logging:emea_rfavelocity_tr_marketData_eqL2_0_a",
+                    "logging:emea_rfavelocity_tr_marketData_eqL2_0_b",
+                    "logging:emea_rfavelocity_tr_marketData_eq_0_a",
+                    "logging:emea_rfavelocity_tr_marketData_eq_0_b",
+                    "logging:emea_rfavelocity_tr_marketData_fi_0_a",
+                    "logging:emea_rfavelocity_tr_marketData_fi_0_b",
+                    "logging:emea_rfavelocity_tr_marketData_fut_0_a",
+                    "logging:emea_rfavelocity_tr_marketData_fut_0_b",
+                    "logging:emea_rfavelocity_tr_marketData_fx_0_a",
+                    "logging:emea_rfavelocity_tr_marketData_fx_0_b",
+                    "logging:emea_rfavelocity_tr_marketData_idx_0_a",
+                    "logging:emea_rfavelocity_tr_marketData_idx_0_b",
+                    "logging:emea_rfavelocity_tr_marketData_lisOpt_0_a",
+                    "logging:emea_rfavelocity_tr_marketData_lisOpt_0_b",
+                    "logging:emea_rfavelocity_tr_marketData_mn_0_a",
+                    "logging:emea_rfavelocity_tr_marketData_mn_0_b",
+                    "mnBarProcesses:DEFAULT",
+                    "rfa:DEFAULT",
+                    "rfa:emea_rfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "rfa:emea_rfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "rfa:emea_rfavelocity_tr_marketData_eqL2_0_a",
+                    "rfa:emea_rfavelocity_tr_marketData_eqL2_0_b",
+                    "rfa:emea_rfavelocity_tr_marketData_eq_0_a",
+                    "rfa:emea_rfavelocity_tr_marketData_eq_0_b",
+                    "rfa:emea_rfavelocity_tr_marketData_fi_0_a",
+                    "rfa:emea_rfavelocity_tr_marketData_fi_0_b",
+                    "rfa:emea_rfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "rfa:emea_rfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "rfa:emea_rfavelocity_tr_marketData_futL2_0_a",
+                    "rfa:emea_rfavelocity_tr_marketData_futL2_0_b",
+                    "rfa:emea_rfavelocity_tr_marketData_fut_0_a",
+                    "rfa:emea_rfavelocity_tr_marketData_fut_0_b",
+                    "rfa:emea_rfavelocity_tr_marketData_fx_0_a",
+                    "rfa:emea_rfavelocity_tr_marketData_fx_0_b",
+                    "rfa:emea_rfavelocity_tr_marketData_idx_0_a",
+                    "rfa:emea_rfavelocity_tr_marketData_idx_0_b",
+                    "rfa:emea_rfavelocity_tr_marketData_lisOpt_0_a",
+                    "rfa:emea_rfavelocity_tr_marketData_lisOpt_0_b",
+                    "rfa:emea_rfavelocity_tr_marketData_mn_0_a",
+                    "rfa:emea_rfavelocity_tr_marketData_mn_0_b",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_eq_0_a",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_eq_0_b",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_fi_0_a",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_fi_0_b",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_fut_0_a",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_fut_0_b",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_fx_0_a",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_fx_0_b",
+                    "rfa:emea_trdfdrfavelocity_tr_marketData_idx_0_a",
+                    "rfaconditions:DEFAULT",
+                    "rfaconfig:DEFAULT",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_eq_0_a",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_eq_0_b",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_fi_0_a",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_fi_0_b",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_fut_0_a",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_fut_0_b",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_fx_0_a",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_fx_0_b",
+                    "rfaconfig:emea_trdfdrfavelocity_tr_marketData_idx_0_a",
+                    "rfasubscription:DEFAULT",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_eqL2_0_a",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_eqL2_0_b",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_eq_0_a",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_eq_0_b",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_fi_0_a",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_fi_0_b",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_futL2_0_a",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_futL2_0_b",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_fut_0_a",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_fut_0_b",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_fx_0_a",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_fx_0_b",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_idx_0_a",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_idx_0_b",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_lisOpt_0_a",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_lisOpt_0_b",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_mn_0_a",
+                    "rfasubscription:emea_rfavelocity_tr_marketData_mn_0_b",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_eq_0_a",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_eq_0_b",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_fi_0_a",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_fi_0_b",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_fut_0_a",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_fut_0_b",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_fx_0_a",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_fx_0_b",
+                    "rfasubscription:emea_trdfdrfavelocity_tr_marketData_idx_0_a",
+                    "tcp:DEFAULT",
+                    "timeval:DEFAULT",
+                    "timeval:emea_rfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "timeval:emea_rfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "timeval:emea_rfavelocity_tr_marketData_eqL2_0_a",
+                    "timeval:emea_rfavelocity_tr_marketData_eqL2_0_b",
+                    "timeval:emea_rfavelocity_tr_marketData_eq_0_a",
+                    "timeval:emea_rfavelocity_tr_marketData_eq_0_b",
+                    "timeval:emea_rfavelocity_tr_marketData_fi_0_a",
+                    "timeval:emea_rfavelocity_tr_marketData_fi_0_b",
+                    "timeval:emea_rfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "timeval:emea_rfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "timeval:emea_rfavelocity_tr_marketData_futL2_0_a",
+                    "timeval:emea_rfavelocity_tr_marketData_futL2_0_b",
+                    "timeval:emea_rfavelocity_tr_marketData_fut_0_a",
+                    "timeval:emea_rfavelocity_tr_marketData_fut_0_b",
+                    "timeval:emea_rfavelocity_tr_marketData_fx_0_a",
+                    "timeval:emea_rfavelocity_tr_marketData_fx_0_b",
+                    "timeval:emea_rfavelocity_tr_marketData_idx_0_a",
+                    "timeval:emea_rfavelocity_tr_marketData_idx_0_b",
+                    "timeval:emea_rfavelocity_tr_marketData_lisOpt_0_a",
+                    "timeval:emea_rfavelocity_tr_marketData_lisOpt_0_b",
+                    "timeval:emea_rfavelocity_tr_marketData_mn_0_a",
+                    "timeval:emea_rfavelocity_tr_marketData_mn_0_b",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_a",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_eqL2Legacy_0_b",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_eq_0_a",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_eq_0_b",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_fi_0_a",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_fi_0_b",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_a",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_futL2Legacy_0_b",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_fut_0_a",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_fut_0_b",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_fx_0_a",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_fx_0_b",
+                    "timeval:emea_trdfdrfavelocity_tr_marketData_idx_0_a"
+                  ],
+                  "format": {
+                    "widgetTitle": "",
+                    "titleFontSize": 16,
+                    "titleHorizontal": "Center",
+                    "titleColor": "",
+                    "titleBottomBorderWidth": 0,
+                    "titleFontBold": false,
+                    "titleShadow": true,
+                    "titleBackgroundColor": "",
+                    "titleTransparentBackground": false,
+                    "tileBorderWidth": 0,
+                    "tileBorderRounding": 0,
+                    "tileBorderColor": "#000000",
+                    "tileBackgroundColor": "#000000",
+                    "tileTransparentBackground": true,
+                    "tileShadow": false
+                  },
+                  "Style": {
+                    "advanced": "",
+                    "cssClasses": ""
+                  },
+                  "version": "4.2.0d3",
+                  "View": {
+                    "showDescription": false,
+                    "tabbed": false,
+                    "tabSource": "Parents"
+                  },
+                  "notificationEvent": []
+                },
+                "containerId": "1ab3b19-8f9f-c2d6-fbff-c915805d65f",
+                "components": [],
+                "widgets": [],
+                "prevVersion": 95,
+                "optionsVersion": 95,
+                "definitionId": "99",
+                "hasOnSettingsChange": true
+              }
+            ],
+            "widgets": [],
+            "prevVersion": 768,
+            "optionsVersion": 768,
+            "hasOnSettingsChange": true,
+            "definitionId": "26"
+          }
+        }
+      ],
+      "relativeHeight": false,
+      "rowHeight": 25,
+      "colCount": 12,
+      "floatable": false,
+      "isDefault": true
+    }
+  ],
+  "popups": [
+    {
+      "visible": {
+        "_dashboardsType": "viewstate",
+        "value": "View confirm"
+      },
+      "dialogTitle": "",
+      "dialogHeight": 0,
+      "dialogWidth": 0,
+      "modal": false,
+      "resizable": false,
+      "widgets": [
+        {
+          "id": "11ec2d18-ec4f-9868-97a6-71cee9351a60",
+          "layout": {
+            "row": null,
+            "column": null,
+            "rowSpan": 12,
+            "colSpan": 6
+          },
+          "component": {
+            "id": "component_2230",
+            "key": "BasicComponents",
+            "options": {
+              "version": "4.2.0",
+              "Actions": [],
+              "Basics": {
+                "ComponentName": "linkButton",
+                "Label": {
+                  "_dashboardsType": "viewstate",
+                  "value": "Data copy params"
+                },
+                "Icon": "",
+                "FontSize": 11,
+                "horizontal": "Center",
+                "vertical": "Middle",
+                "tooltip": "",
+                "fixedWidth": false,
+                "width": 100,
+                "isEnabled": true
+              },
+              "Style": {
+                "advanced": "",
+                "background": "",
+                "color": "",
+                "border": ""
+              },
+              "Alignment": {
+                "paddingLeft": 0,
+                "paddingRight": 0,
+                "paddingTop": 0,
+                "paddingBottom": 0,
+                "innerPaddingLeft": 0,
+                "innerPaddingRight": 0,
+                "innerPaddingTop": 0,
+                "innerPaddingBottom": 0,
+                "titlePaddingLeft": 0,
+                "titlePaddingRight": 0,
+                "titlePaddingTop": 7,
+                "titlePaddingBottom": 7
+              },
+              "format": {
+                "titleFontSize": "16",
+                "titleHorizontal": "Center",
+                "titleShadow": true,
+                "tileBorderWidth": 0,
+                "tileBorderRounding": 0,
+                "tileBorderColor": "#000000",
+                "tileBackgroundColor": "#000000",
+                "tileTransparentBackground": true,
+                "tileShadow": false
+              }
+            },
+            "containerId": null,
+            "components": [],
+            "widgets": [],
+            "prevVersion": 6,
+            "optionsVersion": 6,
+            "definitionId": "25",
+            "hasOnSettingsChange": true
+          }
+        }
+      ],
+      "id": "e8ec1245-6eb6-c491-74f0-4dbe8af97edd"
+    }
+  ],
+  "tags": [],
+  "dashboardTheme": "Dark",
+  "themeSwitchable": true,
+  "saveTimestamp": null,
+  "relativeHeight": false,
+  "rowHeight": 25,
+  "colCount": 12,
+  "floatable": false,
+  "viewState": {
+    "end date original": {
+      "_default": "2018-05-09",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "date",
+      "value": "2019-08-21"
+    },
+    "sourceEnv original": {
+      "_default": "a",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": "a"
+    },
+    "Asset original": {
+      "_default": "eq",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": "lisOpt"
+    },
+    "Data copy params": {
+      "_default": "Confirm",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "string",
+      "value": "Confirm"
+    },
+    "Start date original": {
+      "_default": "2018-05-09",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "date",
+      "value": "2019-08-21"
+    },
+    "selected": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "symbol",
+      "value": ""
+    },
+    ".settings": {
+      "component_1343": {
+        "version": 30,
+        "Selection_target_tab": 0
+      },
+      "component_1750": {
+        "GroupingConfiguration": [],
+        "version": 27
+      },
+      "component_1671": {
+        "GroupingConfiguration": [],
+        "version": 29
+      },
+      "component_2320": {
+        "UsersColumnsConfiguration": null,
+        "GroupingConfiguration": [],
+        "version": 23
+      }
+    },
+    "View confirm": {
+      "_default": "",
+      "_viewType": true,
+      "_rolling": false,
+      "_type": "boolean",
+      "value": ""
+    },
+    "updateTimeStamp": {
+      "_viewType": true,
+      "_type": "timestamp",
+      "_rolling": false,
+      "value": "2019-01-18T09:53:33.226000000Z",
+      "_default": "2019-01-18T09:53:33.226000000Z"
+    },
+    "dataCopyRun": {
+      "_viewType": true,
+      "_type": "boolean",
+      "_rolling": false,
+      "value": true,
+      "_default": true
+    },
+    "dataCopyRunMapped": {
+      "_viewType": true,
+      "_type": "boolean",
+      "value": false,
+      "_default": false
+    }
+  },
+  "data": {
+    "assets": {
+      "_autoExec": true,
+      "_columns": [
+        "x"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "daas_admin_connectionGrp",
+      "_maxRows": 2000,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": false,
+          "weight": 2
+        }
+      ],
+      "_queryString": "([]`mn`idx`eq`fut`fi`fx`futL2`eqL2`lisOpt)",
+      "_queryParams": [],
+      "_subscriptionKey": "",
+      "_hasUpdateQuery": false,
+      "_updateQueryString": "",
+      "_updateType": "query",
+      "_pageSize": 2000,
+      "_serverPaging": false
+    },
+    "hdbcopyHistory": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_maxRows": 2000,
+      "_serverPaging": false,
+      "_aggregateFns": [],
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_aggregateCols": [],
+      "_forceReset": true,
+      "_subscriptionInterval": 5,
+      "_dataType": "query",
+      "_hasUpdateQuery": false,
+      "_subscriptionKey": "",
+      "_dataSource": "kdb",
+      "_columns": [
+        "time",
+        "statusMessage",
+        "process",
+        "asset",
+        "fromEnv",
+        "dates",
+        "sourceHDB",
+        "targetHDB"
+      ],
+      "_breakdownCols": [],
+      "_queryString": "{\n\treverse select from .daas.admin.hdbCopyHistory where not null asset,not null fromEnv\n\t}\n",
+      "_queryParams": [],
+      "_updateQueryString": "",
+      "_subscriptionType": "polling",
+      "_connection": "daas_admin_connectionGrp"
+    },
+    "Run data copy": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "x",
+        "P"
+      ],
+      "_dataType": "analytic",
+      "_dataSource": "kdb",
+      "_connection": "daas_admin_connectionGrp",
+      "_maxRows": "100",
+      "_forceReset": true,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_selectedAnalytic": ".daas.admin.triggerAdhocHDBCopy_dashboard",
+      "_analyticParams": [
+        {
+          "id": "asset",
+          "name": "asset",
+          "type": "symbol",
+          "description": "default parameter",
+          "required": true,
+          "value": "&lt;%Asset original%&gt;",
+          "isViewState": true
+        },
+        {
+          "id": "fromEnv",
+          "name": "fromEnv",
+          "type": "symbol",
+          "description": "default parameter",
+          "required": true,
+          "value": "&lt;%sourceEnv original%&gt;",
+          "isViewState": true
+        },
+        {
+          "id": "startDate",
+          "name": "startDate",
+          "type": "date",
+          "description": "default parameter",
+          "required": true,
+          "value": "&lt;%Start date original%&gt;",
+          "isViewState": true
+        },
+        {
+          "id": "endDate",
+          "name": "endDate",
+          "type": "date",
+          "description": "default parameter",
+          "required": true,
+          "value": "&lt;%end date original%&gt;",
+          "isViewState": true
+        },
+        {
+          "id": "dataCopyRun",
+          "name": "dataCopyRun",
+          "type": "boolean",
+          "description": "default parameter",
+          "required": true,
+          "value": "&lt;%dataCopyRunMapped%&gt;",
+          "isViewState": true
+        }
+      ],
+      "_subscriptionKey": "",
+      "_isStreamingSubscription": false,
+      "_mappings": {
+        "key": "x",
+        "value": "P",
+        "mappings": {
+          "boolValue": {
+            "_dashboardsType": "viewstate",
+            "value": "dataCopyRunMapped"
+          },
+          "counter": ""
+        }
+      }
+    },
+    "Log output": {
+      "_pagingType": "NONE",
+      "_autoExec": false,
+      "_columns": [
+        "Time",
+        "Message",
+        "Information"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "daas_admin_connectionGrp",
+      "_maxRows": 2000,
+      "_forceReset": true,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "polling",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": "{\n reverse .daas.admin.adhochdbcopyStatus\n\t}",
+      "_queryParams": [],
+      "_subscriptionKey": "Time",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": ""
+    },
+    "New node 2": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_maxRows": 2000,
+      "_serverPaging": false,
+      "_aggregateFns": [],
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 2
+        }
+      ],
+      "_aggregateCols": [],
+      "_subscriptionInterval": 3,
+      "_dataType": "query",
+      "_hasUpdateQuery": false,
+      "_dataSource": "kdb",
+      "_columns": [],
+      "_breakdownCols": [],
+      "_queryString": "",
+      "_queryParams": [],
+      "_updateQueryString": "",
+      "_subscriptionType": "static"
+    },
+    "envs": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_maxRows": 2000,
+      "_serverPaging": false,
+      "_aggregateFns": [],
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 2
+        }
+      ],
+      "_aggregateCols": [],
+      "_subscriptionInterval": 3,
+      "_dataType": "query",
+      "_hasUpdateQuery": false,
+      "_dataSource": "kdb",
+      "_columns": [],
+      "_breakdownCols": [],
+      "_queryString": "",
+      "_queryParams": [],
+      "_updateQueryString": "",
+      "_subscriptionType": "static"
+    },
+    "New node": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_columns": [
+        "x"
+      ],
+      "_dataType": "query",
+      "_dataSource": "kdb",
+      "_connection": "daas_admin_connectionGrp",
+      "_maxRows": 2000,
+      "_pageSize": 2000,
+      "_serverPaging": false,
+      "_subscriptionType": "static",
+      "_subscriptionInterval": 3,
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_queryString": "([]`a`b)",
+      "_queryParams": [],
+      "_subscriptionKey": "",
+      "_aggregateCols": [],
+      "_breakdownCols": [],
+      "_aggregateFns": [],
+      "_hasUpdateQuery": false,
+      "_updateQueryString": ""
+    },
+    "autoCopy": {
+      "_pagingType": "NONE",
+      "_autoExec": true,
+      "_maxRows": 2000,
+      "_serverPaging": false,
+      "_aggregateFns": [],
+      "_layout": [
+        {
+          "isExpanded": true,
+          "weight": 2
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": false,
+          "weight": 1
+        },
+        {
+          "isExpanded": true,
+          "weight": 0
+        },
+        {
+          "isExpanded": true,
+          "weight": 2
+        }
+      ],
+      "_aggregateCols": [],
+      "_subscriptionInterval": 3,
+      "_dataType": "query",
+      "_hasUpdateQuery": false,
+      "_subscriptionKey": "",
+      "_dataSource": "kdb",
+      "_columns": [
+        "runAtEOD"
+      ],
+      "_breakdownCols": [],
+      "_queryString": ".uc.getActiveParamValue[`.daas.cfg.autoHdbCopy;`]",
+      "_queryParams": [],
+      "_updateQueryString": "",
+      "_subscriptionType": "static",
+      "_connection": "daas_admin_connectionGrp"
+    }
+  },
+  "worksheetPadding": 10,
+  "widgetsSpacing": 0,
+  "borderColor": "000000",
+  "borderBackground": "000000",
+  "transparentBackground": true,
+  "borderWidth": 0,
+  "borderRounding": 0,
+  "borderSpacing": 0,
+  "borderShadow": false,
+  "enableShareDashboard": false,
+  "notifications": {
+    "Notifications": {
+      "_Version": "4.2.0s2",
+      "Enabled": true,
+      "InBrowserNotifications": false,
+      "Position": "Bottom Right",
+      "MaxVisibleCount": 3,
+      "FadeOut": 5,
+      "Icon": "bell-o",
+      "Sound": "beep",
+      "SoundVolume": 100,
+      "Grouping": false,
+      "GroupingInterval": 1,
+      "triggers": []
+    }
+  },
+  "showLoadingIndicators": true,
+  "unsavedViewerPrompt": false,
+  "advancedCss": "",
+  "cssClasses": "",
+  "wasChanged": true,
+  "version": "4.4.0"
+}</data>
+</ui>

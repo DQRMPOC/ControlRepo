@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.trth.requestFailed</analytic>
+	<code_text>{[reportStats;errorMsg]
+  reportName:reportStats`rptSchNameOrig;
+  reportID:reportStats`rptID;
+  reportAction:`.daas.trth.requestAction;
+  .log.out[.z.h;"RequestFailed:";(reportName;reportID;reportAction;errorMsg)];
+  delete from `.rpt.sentDocs where reportName=reportName,rptID=reportID,action=reportAction;
+  .r.rexe[(`updRT;`dxLog;(.ex.getName[];.z.P;reportName;`FAILED;`INFO;"Report Action Error: ",errorMsg;raze string reportID;`;0N))];
+  / return type error, as it is the only way to let the request finish in an error state
+  :("I"$`typeError);
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportStats</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>errorMsg</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

@@ -1,0 +1,31 @@
+<analytic>
+	<analytic>.daas.infra.l2rteEOD</analytic>
+	<code_text>{[dt]
+tb:.daas.l2rdbIntraTabNamesEOD[.daas.cfg.asset];
+updateTb:`$(string .daas.cfg.asset),"Update";
+delete from tb where dt&gt;="d"$time;
+delete from updateTb where dt&gt;="d"$time;
+.Q.gc[]; 
+
+/ Monitoring 2.0 - row count tracking reset
+.daas.cmon.rtc.eod[];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dt</parameter>
+		<default>1970.01.01</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

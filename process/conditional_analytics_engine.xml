@@ -1,0 +1,29 @@
+<process>
+	<process>conditional_analytics_engine</process>
+	<directory>/</directory>
+	<file>refinery_basic_startup.q</file>
+	<description></description>
+	<apps></apps>
+	<returnstat></returnstat>
+	<param>
+		<parameter>initialStateFunct</parameter>
+		<description></description>
+		<datatype>Analytic</datatype>
+		<required>1</required>
+		<default>.daas.process.init</default>
+	</param>
+	<param>
+		<parameter>messagingServer</parameter>
+		<description></description>
+		<datatype>Config</datatype>
+		<required>1</required>
+		<default>DS_MESSAGING_SERVER</default>
+	</param>
+	<param>
+		<parameter>dc_reusePort</parameter>
+		<description>Re-use port</description>
+		<datatype>Boolean</datatype>
+		<required>1</required>
+		<default>false</default>
+	</param>
+</process>

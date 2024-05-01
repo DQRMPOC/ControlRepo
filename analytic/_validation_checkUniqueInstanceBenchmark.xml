@@ -1,0 +1,58 @@
+<analytic>
+	<analytic>.validation.checkUniqueInstanceBenchmark</analytic>
+	<code_text>{[config]
+ 
+ 	.debug.checkUniqueInstanceBenchmark:config;
+ 	
+ 	// - Instance,Filters,entityLevel and startTimeBucket (where available) combination must be unique
+ 	nameOfStartTimeCol:first (cols config) where (cols config) like "*tartTime*";
+ 	nameOfEndTimeCol:first (cols config) where (cols config) like "*ndTime*";
+ 	columnsToDefineUniqueness:(`instance;nameOfStartTimeCol;nameOfEndTimeCol);
+ 	columnsRenames:(`instance;`startTime;`endTime);
+ 	
+ 	$[not or[nameOfStartTimeCol=`;nameOfEndTimeCol=`];
+ 		[
+		 	configSummary:columnsRenames xcol columnsToDefineUniqueness#columnsToDefineUniqueness xasc config;
+		 	
+		 	if[not count[configSummary]~count distinct configSummary;
+		 		'"Validation Message: The combination of instance, startTime and endTime must be unique";
+		 	];
+		 	
+		 	if[count badTimes:exec instance from configSummary where startTime&gt;endTime;
+		 		'"Validation Message: These bench instances have startTimes greater than endTimes: ",", "sv string badTimes
+		 	];
+		 	
+		 	configSummary:update lastEndTimeForInstance:(prev;endTime)fby instance from configSummary;
+		 	if[count overlaps:exec instance from configSummary where not null lastEndTimeForInstance,startTime&lt;=lastEndTimeForInstance;
+		 		'"Validation Message: These bench instances have startTimes that overlap with previous instance endTimes: ",", "sv string overlaps
+		 	]; 
+		 ];
+		 [
+		 	if[not count[config]~count exec distinct instance from config;
+		 		'"Validation Message: Benchmark instance names must be unique";
+		 	];
+		 ]
+	];
+ 		
+	:1b	
+	
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

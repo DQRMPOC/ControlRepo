@@ -1,0 +1,25 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.dspConnectionDetails</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>username</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>domain</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>batchFile</element>
+		<elementType>String</elementType>
+		<elementValue></elementValue>
+	</param>
+</configparam>

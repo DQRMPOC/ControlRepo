@@ -1,0 +1,22 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.weeklyBarStartDay</parameter>
+	<description>In kdb a 0 value for date is a saturday so if the weekly bars start on a different day of the week an offset has to be applied
+e.g. If the user wants weely bars to start on Sunday set dayValue to 1
+Key:
+Sunday - 1
+Monday - 2
+Tuesday - 3
+Wednesday - 4
+Thursday - 5
+Friday - 6
+Saturday - 0</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>dayValue</element>
+		<elementType>Integer</elementType>
+		<elementValue>1</elementValue>
+	</param>
+</configparam>

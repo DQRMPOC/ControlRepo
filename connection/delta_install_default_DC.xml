@@ -1,0 +1,12 @@
+<connection>
+	<ucname>delta_install_default</ucname>
+	<connection>DC</connection>
+	<host>ENV=DELTACONTROL_HOST=</host>
+	<port>ENV=DELTACONTROL_PORT=</port>
+	<user>Administrator</user>
+	<pass>AESencrypted!106788FEBA38639057BDE65584E37120C6A13B37878F5B826F4F8162A1C8D879</pass>
+	<dbname>DC</dbname>
+	<dbtype>q</dbtype>
+	<tls></tls>
+	<connectiongroup>MyApps</connectiongroup>
+</connection>

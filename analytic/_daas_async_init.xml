@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.async.init</analytic>
+	<code_text>{[cMax]
+.tbl.gettable[`.daas.queryCache];
+.tbl.gettable[`.daas.queryLog];
+
+.daas.gw.queryNum:0;
+.daas.async.failureFlag:0;
+.daas.async.maxCache:cMax - 1;
+
+}</code_text>
+	<description>Initilisation function for the Report Caching framwork. cMax below is the maximum amount of results to keep in memory per user and report.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>cMax</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<analyticgroup>daasAsync</analyticgroup>
+</analytic>

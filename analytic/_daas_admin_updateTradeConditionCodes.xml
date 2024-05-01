@@ -1,0 +1,20 @@
+<analytic>
+	<analytic>.daas.admin.updateTradeConditionCodes</analytic>
+	<code_text>{[]
+  schema:0#.daas.cfg.filterRuleConfig;
+  add:(count cols[schema]) &gt; (count cols .daas.admin.newTradeConditionCodes);
+  remove:(count cols .daas.admin.newTradeConditionCodes) &gt; (count cols[schema]);
+  if[add; $[1=count a:cols[schema] except cols .daas.admin.newTradeConditionCodes; upds:a!enlist 0b; upds:a!count[a]#0b];![`.daas.admin.newTradeConditionCodes; (); 0b;upds]];
+  if[remove; ![`.daas.admin.newTradeConditionCodes; (); 0b; cols[.daas.admin.newTradeConditionCodes] except cols schema]];
+ }</code_text>
+	<description>Function that gets called</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

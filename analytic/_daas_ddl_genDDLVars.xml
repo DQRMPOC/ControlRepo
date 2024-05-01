@@ -1,0 +1,138 @@
+<analytic>
+	<analytic>.daas.ddl.genDDLVars</analytic>
+	<code_text>{[params]
+
+	.log.out[.z.h;"Generating namespace";`.daas.ddl];
+    
+    .daas.ddl.rowCount:0;
+
+    //*****PARAMS*****//
+    
+	if[`ALL in params[`symList];
+		params[`symList]:`
+	];
+    
+	// User info
+	$[`user in key params;
+    	.daas.ddl.user:params[`user];
+    	.daas.ddl.user:.z.u
+    ];
+    params:`user _ params;
+
+    // Save user input
+    .daas.ddl.rawParams:params;
+
+    // Unique job id for current request
+    params[`jobID]:first 1?0Ng;
+    
+    allSyms:` in params[`symList];
+    allTimes:(0=`int$params[`startTime]) and (params[`endTime]&gt;=23:59:59);
+    allDataTypes:`ALL in params[`dataType];
+    .daas.ddl.auditLog[params;`start;""];
+    if[allDataTypes;params:`dataType _ params];
+    
+    
+    //**********//
+    
+    //*****ROUTING*****//
+    
+    // Identify DB directory
+    .daas.ddl.hdb:.daas.util.targetProcMeta[params;`getTicks];
+    // Get table name
+    if[not allDataTypes;
+	    params:.daas.util.applyAssetClassTableName[params]
+    ];
+    if[(not count .daas.ddl.hdb) or .daas.ddl.hdb~`noTargetError;
+        .daas.ddl.auditLog[params;`error;"noTargetError"];
+        :();
+    ];
+    
+    .daas.ddl.hdb:.daas.ddl.hdb where .daas.ddl.hdb like "*hdb*";
+    params[`dbdir]:distinct hsym`$getenv `$first each 1_/:"=" vs/: string {.ex.getdetails[x][`paramvalues][`directory]}each .daas.ddl.hdb;
+    
+	// Path to duplicate DB
+	.daas.ddl.modifiedDB:`$(string params[`dbdir]),\:"_modified";
+    
+  	// Handle to HDB process(es)
+  	.daas.ddl.hdbH:exec asyncHandle from database where name in .daas.ddl.hdb;
+
+	// List of dates
+    .daas.ddl.dates:{x[y;z]}[l] ./: (til count l),'enlist each where each (l:value each/: string -1_/:key each params[`dbdir]) within (params[`startDate];params[`endDate]);
+    
+	// Paths to (existing) src table partitions within date range
+	.daas.ddl.tabledirs:raze {.Q.par[y;;x]each z}[(01b!(`;params[`dataType])) (type params[`dataType]) in -11 11h] ./: params[`dbdir],'enlist each .daas.ddl.dates;
+	.daas.ddl.tabledirs:.daas.ddl.tabledirs where "b"$count each key each .daas.ddl.tabledirs;
+    if[not count .daas.ddl.tabledirs;
+        .daas.ddl.auditLog[params;`stop;"No Data To Delete"];
+        :()
+        ];
+    //**********//
+    
+    //*****EXCEPTIONS*****//
+    
+    // Check for request to remove all data in given tables/dates
+    .daas.ddl.removeTable:0b;
+    .daas.ddl.removePartition:0b;
+    
+    $[allDataTypes and allSyms and allTimes;
+        [
+            .daas.ddl.removePartition:1b;
+            :params
+        ];
+    allSyms and allTimes;
+        .daas.ddl.removeTable:1b;
+    ];
+    .daas.ddl.modifiedDB:first .daas.ddl.modifiedDB;
+    
+    //**********//
+    
+    //*****TMP DBs*****//
+
+  	// If db already modified, make changes in an alternate tmp directory and then perform system rsync to main modified directory
+  	.daas.ddl.prevModDt:();
+  	if[count key .daas.ddl.modifiedDB;
+
+    	// Note which dates for the requested table have already been modified
+        l:key each ` sv/: .daas.ddl.modifiedDB,/:(d:(key .daas.ddl.modifiedDB) except `tmp);
+        if[any r:(not params[`dataType] in/: l) or (not count each l);d:d where not r];
+        .daas.ddl.prevModDt:d;
+		.daas.ddl.prevModDt:value each string distinct .daas.ddl.prevModDt;
+
+    	// Direct system to tmp subdirectory
+		.daas.ddl.modifiedDB:`$raze (string .daas.ddl.modifiedDB),"/tmp"
+    ];
+
+  	// Create all necessary subdirectories
+    .daas.util.sysCmd["mkdir -p";]each 1_/:string ` sv/: raze .daas.ddl.modifiedDB,/:'(`$string[.daas.ddl.dates]),'\:params[`dataType];
+    
+    //**********//
+
+	:params;
+ }</code_text>
+	<description>Define variables in .daas.ddl namespace for use in modifying databases with .daas.ddl analytics</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasDDL</analyticgroup>
+</analytic>

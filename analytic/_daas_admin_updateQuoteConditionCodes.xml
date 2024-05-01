@@ -1,0 +1,20 @@
+<analytic>
+	<analytic>.daas.admin.updateQuoteConditionCodes</analytic>
+	<code_text>{[]
+  schema:0#.daas.cfg.quoteFilterRuleConfig;
+  add:(count cols[schema]) &gt; (count cols .daas.admin.newQuoteConditionCodes); 
+  remove:(count cols .daas.admin.newQuoteConditionCodes) &gt; (count cols[schema]);
+  if[add; $[1=count a:cols[schema] except cols .daas.admin.newQuoteConditionCodes; upds:a!enlist 0b; upds:a!count[a]#0b];![`.daas.admin.newQuoteConditionCodes; (); 0b;upds]];
+  if[remove; ![`.daas.admin.newQuoteConditionCodes; (); 0b; cols[.daas.admin.newQuoteConditionCodes] except cols schema]];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

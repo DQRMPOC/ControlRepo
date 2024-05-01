@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.events.resp.trthEOD</analytic>
+	<code_text>{[data]
+ .log.out[.z.h;"Entered .daas.events.resp.trthEOD";()];
+ trthUpdateValue:data[`info];
+ .log.out[.z.h;"Data: ";(trthUpdateValue)];
+ .daas.trth.processBlockedEOD:trthUpdateValue;
+ 
+ /if this is running on an eod process 
+ $[.daas.trth.processBlockedEOD and ("eod"~("_" vs first .fd.process)[3]);
+ 	[
+ 		.log.out[.z.h;"TRTH EOD STARTED";()];
+ 		.daas.trth.eod[];
+ 	];
+  ];
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

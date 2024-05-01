@@ -1,0 +1,43 @@
+<analytic>
+	<analytic>.validation.SURV_ALERTS_TICK_SIZES</analytic>
+	<code_text>{[config]
+	
+	.debug.SURV_ALERTS_MIN_PRICE_CHANGE:config;
+
+	if[1&lt;count distinct config`joinColumns;
+		'"joinColumns must be the same across the config"
+	];
+	
+	executionColumns:exec column from .tbl.tablecolumn where table=`execution;
+	
+	joinCols:`$";"vs exec first joinColumns from config;
+	if[count alienColumns:joinCols except executionColumns;
+		'"These columns are not in execution: ",", "sv string[alienColumns] 
+	]; 
+	
+	cntValsTab:select cntVals:(count each ";"vs/:joinValues),rowNum:i+1 from config;
+	if[count joinValsNotRightCount:select from cntValsTab where cntVals&lt;&gt;count[joinCols];
+		'"The count of joinValues on these rows doesn't match count of joinCols: ",", "sv string[joinValsNotRightCount`rowNum]
+	];
+ 
+	:1b
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

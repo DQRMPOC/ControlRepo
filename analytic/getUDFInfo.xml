@@ -1,0 +1,36 @@
+<analytic>
+	<analytic>getUDFInfo</analytic>
+	<code_text>{[params]
+    
+    //Map to func used in CLI for singular code path
+    .daas.udf.infoUDF enlist[`funcName]!enlist params`funcNames
+ }</code_text>
+	<description>fetches the descriptions of the given UDFs (symbol list or atom). Use ` to get all UDFs.
+
+Returns a table with columns `funcName (symbol) and description (string).</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>funcNames</name>
+				<datatype>Symbol[]</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

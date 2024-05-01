@@ -1,0 +1,31 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>MIC.csv</override>
+	<parameter>.daas.cfg.FATVAR</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>Field</element>
+		<elementType>Symbol</elementType>
+		<elementValue>MIC</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>Type</element>
+		<elementType>Character</elementType>
+		<elementValue>S</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>Field</element>
+		<elementType>Symbol</elementType>
+		<elementValue>sym</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>Type</element>
+		<elementType>Character</elementType>
+		<elementValue>S</elementValue>
+	</param>
+</configparam>

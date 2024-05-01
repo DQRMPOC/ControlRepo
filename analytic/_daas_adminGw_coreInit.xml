@@ -1,0 +1,60 @@
+<analytic>
+	<analytic>.daas.adminGw.coreInit</analytic>
+	<code_text>{[]
+
+	.daas.init.setMetaAndEventBusConn[];
+
+	.al.loadinstruction[`.daas.admin.gwCfg];
+
+	/ensure hdb dir exists
+	procDir:first system"pwd";
+	system"cd ",(getenv`$"DELTADATA_HOME"),"/DaaSData/hdblog/admin";
+	system"cd ",procDir;
+
+	/set assets to kick off trthEOD - called in .daas.events.resp.eodHdb
+	.daas.trth.assets:`eq`fi`fut`fx`idx;
+
+	`seekClusterAttempt set
+	{[]
+		.log.out[.z.h;"Checking if cluster data has been requested";()];
+		hbus:first exec handle from .dm.qipc where entity like "*eventBus*";	
+		data:hbus"select from .daas.events.eventRecords where tag1=`getData,topic=`hdbCluster,time&gt;=(.z.P-`long$3000e9)";
+		.daas.events.resp.getClusterData each data;
+	};
+
+	.daas.events.runOnInitialBusCon`seekClusterAttempt;
+
+
+	//overLoad hdbCopyComplete resp func to track status
+	.daas.events.resp.hdbCopyComplete:.daas.events.resp.hdbCopyStatusAdminGW;
+	.daas.events.resp.hdbCopyStarted:.daas.events.resp.hdbCopyStatusAdminGW;
+	.daas.events.resp.hdbCopyFailed:.daas.events.resp.hdbCopyStatusAdminGW;
+
+	/ Set query number for logging
+	.daas.log.queryNum:0;
+	
+	.daas.admin.rfaAssetTypes:`fut`futL2`futL2Legacy`fi`eq`eqL2`eqL2Legacy`fx`idx`mn;
+	
+	/ Cache of latest 'respStatus'
+	.daas.rs.cacheDuration:`timespan$00:00:10;
+	.daas.rs.cache:`queryTime`data!(0Np; ());
+
+	/ Monitoring 2.0 - connectivity and common metrics
+	.al.loadinstruction each `.daas.cmon.conn`.daas.cmon.common;
+	.daas.cmon.init[];
+	.daas.cmon.common.init[];
+
+ 	}
+ </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

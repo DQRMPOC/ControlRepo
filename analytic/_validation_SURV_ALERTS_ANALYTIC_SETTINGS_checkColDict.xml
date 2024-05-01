@@ -1,0 +1,75 @@
+<analytic>
+	<analytic>.validation.SURV_ALERTS_ANALYTIC_SETTINGS_checkColDict</analytic>
+	<code_text>{[args]
+
+	.debug.validation.SURV_ALERTS_ANALYTIC_SETTINGS_checkColDict:args;
+	a:args[`a];
+	s:args[`s];
+	colDictFromConfig:args[`colDictFromConfig];
+	sourceTableName:args[`sourceTableName];
+	sourceTableColDict:args[`sourceTableColDict];
+	expectedTableName:args[`expectedTableName];
+	expectedColumns:args[`expectedColumns];
+	requiredColumnsToBeMappedTo:args[`requiredColumnsToBeMappedTo];
+
+	colsDict:"!"vs colDictFromConfig[sourceTableName];
+	if[any 0=count each colsDict;
+		.validation.throwError[a;s;": dictionary for tab ",string[sourceTableName]," doesn't use ! character"]
+	];
+	
+	if[not "()"~{first[x[0]],last[x[1]]}colsDict;
+		.validation.throwError[a;s;": dictionary for tab ",string[sourceTableName]," isn't surrounded by brackets ()"]
+	];
+
+	oldColsString:-1_last colsDict;
+	newColsString:1_first colsDict;
+	
+	oldCols:1_"`"vs oldColsString;
+	newCols:1_"`"vs newColsString;
+	
+	validCharacterList:raze[.Q.a,.Q.A,string[til 10],"_"];
+	
+	findInvalidChars:{[a;s;x;y]
+		invalidCharacterColNames:x where 0&lt;count each x except\:y;
+		if[count[invalidCharacterColNames];
+			.validation.throwError[a;s;": invalid characters: ",","sv invalidCharacterColNames]
+		];
+	}[a;s;;validCharacterList];
+	
+	findInvalidChars each (oldCols;newCols);
+	
+	oldCols:`$oldCols;
+	newCols:`$newCols;
+	
+	if[not all requiredColumnsToBeMappedTo in newCols;
+		.validation.throwError[a;s;": key of dict for table ",string[sourceTableName]," doesn't have all of ","`"sv string requiredColumnsToBeMappedTo]
+	];
+	
+	if[count alienCols:newCols except expectedColumns;
+		.validation.throwError[a;s;": key of dict for table ",string[sourceTableName]," has columns not in ",string[expectedTableName],": ",", "sv string[alienCols]];
+	];
+	
+	if[count alienCols:oldCols except sourceTableColDict[sourceTableName];
+		.validation.throwError[a;s;": value of dict for table ",string[sourceTableName]," has alien columns: ",", "sv string[alienCols]];
+	];
+		
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

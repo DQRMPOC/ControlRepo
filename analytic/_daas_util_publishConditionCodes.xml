@@ -1,0 +1,63 @@
+<analytic>
+	<analytic>.daas.util.publishConditionCodes</analytic>
+	<code_text>{[lookback;dataType;filterCfg;colWithCodes;exchCol]
+      
+    / pull out the schema that we're checking for new condition codes in 
+    / and check if there are new condition codes in "colWithCodes" compared to the filterCfg
+    schema:.daas.meta.getSchemaFromDataType[dataType];    
+    newCodes:.daas.util.checkForNewConditionCodes[lookback;filterCfg;schema;colWithCodes;exchCol];
+
+    / only send an event message if there are new condition codes
+    if[c:count newCodes;
+        .log.out[`CondCodes; "Publishing message for new ",string[dataType]," condition codes";()];
+        .daas.events.pubEventMessage[`conditionCode;`new;schema;`$string c;flip newCodes]
+        ];
+        
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>lookback</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>dataType</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>filterCfg</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>colWithCodes</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>exchCol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

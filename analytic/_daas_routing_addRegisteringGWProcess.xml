@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.routing.addRegisteringGWProcess</analytic>
+	<code_text>{[data]
+	if[not .daas.routingGatewayProcs[.ex.getInstanceName[]]`routingTableMaster;
+		:();
+		];
+	GWDict:data`info;
+	
+	if[not any (.daas.routingGatewayProcs[] each $[count k:k where(k:($[count k:(key .daas.routingGatewayProcs)`procName;k;enlist`])except procName)like(-1_string procName:GWDict`procName),"*"; k;enlist`])`primary;
+		GWDict,:(enlist`primary)!enlist 1b;
+		];
+	
+	
+	`.daas.routingGatewayProcs upsert GWDict,(enlist`procUp)!enlist 1b;
+	failovers:a where each (not a~\:/:a) and a like\:/:{(-1_/:string each x),\:"*"}(a:raze value each key .daas.routingGatewayProcs);
+    update failoverTo:failovers from `.daas.routingGatewayProcs;
+	
+	.daas.events.pubEventMessage[`GWProcsTableUpdate;`;`;`;.daas.routingGatewayProcs];
+  }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

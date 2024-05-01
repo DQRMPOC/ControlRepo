@@ -1,0 +1,45 @@
+<analytic>
+	<analytic>.daas.stream.cacheUpd</analytic>
+	<code_text>{[tabname;data]
+  syms:distinct data[`sym];
+  syms:(),syms[where syms in ?[.daas.stream.streamCache;();();`sym]];
+  if[(count syms)=0;:()];
+  .log.out[.z.h;"Updating cache";syms];
+  
+  if[string[tabname] like "*Quote";dataType:`quote];
+  if[string[tabname] like "*Trade"; dataType:`trade];
+  
+  {[symVal;dataType;data] 
+  	newDat:?[data;enlist (=;`sym;`symVal);0b;()]; 
+  		$[count .daas.stream.streamCache[symVal;dataType];
+  			.[`.daas.stream.streamCache;(symVal;dataType);,;newDat];
+  			.[`.daas.stream.streamCache;(symVal;dataType);:;newDat]]
+  }[;dataType;data] each syms;
+
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tabname</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

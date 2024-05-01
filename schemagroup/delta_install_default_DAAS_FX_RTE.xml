@@ -1,0 +1,7 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_FX_RTE</tablegroup>
+	<tablename>fxQuote</tablename>
+	<tablename>fxSummary</tablename>
+	<tablename>fxTrade</tablename>
+</schemagroup>

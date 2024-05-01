@@ -1,0 +1,16 @@
+<dataconnectiongroup>
+	<ucname>delta_install_default</ucname>
+	<grpid>daas_admin_connectionGrp</grpid>
+	<key>
+		<keyname>DBS</keyname>
+		<val>daas_adminGW_a,instance.daas_adminGw_a,instance.daas_adminGw_b,daas_adminGW_b,</val>
+	</key>
+	<key>
+		<keyname>CONN_SELECTOR</keyname>
+		<val>DEFAULT</val>
+	</key>
+	<key>
+		<keyname>PRIMARY</keyname>
+		<val>backup,primary,primary,backup,</val>
+	</key>
+</dataconnectiongroup>

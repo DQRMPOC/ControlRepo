@@ -1,0 +1,61 @@
+<analytic>
+	<analytic>.daas.merge.startMergeJob</analytic>
+	<code_text>{[job]
+
+    .log.out[.z.h;"New job recieved";job`targetDir];
+
+    .daas.merge.fail:0b;
+    .daas.merge.replace:0b;
+    .daas.merge.forceAdd:0b;
+ 
+    /if replace
+    if[`replace~first job`mode;
+        .daas.merge.replace:1b; 
+        ];
+    if[`forceAdd~first job`mode;
+        .daas.merge.forceAdd:1b;
+        ];
+
+    /copy data out of main hdb
+    dir:`$(1_string first job[`targetDir]),string first[job`date];
+    target:@[.daas.merge.copyMain;dir;{.daas.merge.slaveError[x];.daas.merge.fail:1b}];
+
+    if[.daas.merge.fail;
+        :();
+        ];
+
+    /set variables and then run the merge Job
+    source:`$":",(1_string first job[`sourceDir]);
+    dt:first job`date;
+    .daas.merge.enumTarget:enumTarget:`$(string first job`targetDir);
+    .log.out[.z.h;"########### ",string enumTarget;()];
+
+    /error trap the actual merge - flag and report back if issue
+    .[.daas.merge.merge;(source;target;enumTarget;dt);{.daas.merge.slaveError[x];.daas.merge.fail:1b}];
+
+    if[.daas.merge.fail;
+        :();
+        ];
+
+    /finish the job
+        .daas.merge.finishJob[];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>job</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

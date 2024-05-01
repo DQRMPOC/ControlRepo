@@ -1,0 +1,41 @@
+<instance>
+	<instance>ds_starter_alert_a</instance>
+	<process>DS_STARTER</process>
+	<description>Starter Processes. These are for creating empty tasks which are used to kick off multiple workflows at the same time.</description>
+	<inherit>0</inherit>
+	<param>
+		<parameter>dc_gc</parameter>
+		<paramvalue>Immediate</paramvalue>
+	</param>
+	<param>
+		<parameter>dc_host</parameter>
+		<paramvalue>ENV=ds_starter_alert_a_HOST=</paramvalue>
+	</param>
+	<param>
+		<parameter>dc_port</parameter>
+		<paramvalue>ENV=ds_starter_alert_a_PORT=</paramvalue>
+	</param>
+	<param>
+		<parameter>dc_taskset</parameter>
+		<paramvalue>ENV=ds_starter_alert_a_TASKSET=</paramvalue>
+	</param>
+	<instancevariable>
+		<variable>*</variable>
+		<typ>object</typ>
+	</instancevariable>
+	<shutdown>
+		<shutdownType>unexpected</shutdownType>
+		<action></action>
+		<publish>1</publish>
+	</shutdown>
+	<shutdown>
+		<shutdownType>proper</shutdownType>
+		<action></action>
+		<publish>1</publish>
+	</shutdown>
+	<shutdown>
+		<shutdownType>dc_timeoutAction</shutdownType>
+		<action></action>
+		<publish>1</publish>
+	</shutdown>
+</instance>

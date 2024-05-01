@@ -1,0 +1,43 @@
+<analytic>
+	<analytic>.daas.util.reTypeAggregatedTable</analytic>
+	<code_text>{[preTab;postTab]
+
+    //If the aggregated table is aggregating empty rows it can lose the types in certain cirucumstances
+    //If this is the case we reapply the types from the source table
+    if[not count preTab;
+        rkeys:keys postTab;
+        postTab:0!postTab;
+        typeMap:.Q.t type each .Q.V preTab;
+        mapCols:where 0h=type each .Q.V postTab;
+        mapClause:mapCols!($),/:(typeMap mapCols),'mapCols;
+        mapClause:mc!mapClause mc:mapCols where not " "=typeMap mapCols;
+        :rkeys xkey ![postTab;();0b;mapClause];
+        ];
+    postTab
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>preTab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>postTab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,34 @@
+<schema>
+	<ucname>delta_install_default</ucname>
+	<table>.daas.stream.streamCache</table>
+	<description></description>
+	<keycol>sym</keycol>
+	<column>
+		<column>sym</column>
+		<coltype>Symbol</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>trade</column>
+		<coltype>NullType</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>quote</column>
+		<coltype>NullType</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+	<column>
+		<column>idCount</column>
+		<coltype>Integer</coltype>
+		<default></default>
+		<attribute></attribute>
+		<description></description>
+	</column>
+</schema>

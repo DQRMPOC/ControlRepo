@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.l2.updateSnap</analytic>
+	<code_text>{[prevSnap;updates]
+	
+	// if there is a clear cache message (indication=1), leave updates as is
+	joinTb:$[any 1=exec indication from updates;
+                updates;
+                update "j"$size,"j"$numOrders from (update action:"M" from prevSnap) uj updates 
+                ];
+    
+    bySymAndId:select max time,max exchTime,last side,last price,last size,last numOrders, last action by sym,id from joinTb;
+    deletesRemoved:delete from (update time:max time,exchTime:max exchTime from bySymAndId) where action="D";
+    0!delete action from deletesRemoved
+	
+ }</code_text>
+	<description>take a given starting snapshot table (ungrouped) and combine it with new update records to get an updated snapshot table (also ungrouped)</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>prevSnap</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>updates</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasL2</analyticgroup>
+</analytic>

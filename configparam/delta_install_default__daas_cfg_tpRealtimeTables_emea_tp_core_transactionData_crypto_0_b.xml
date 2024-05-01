@@ -1,0 +1,31 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>emea_tp_core_transactionData_crypto_0_b</override>
+	<parameter>.daas.cfg.tpRealtimeTables</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>tableName</element>
+		<elementType>String</elementType>
+		<elementValue>cryptoOrder</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>tableName</element>
+		<elementType>String</elementType>
+		<elementValue>cryptoExecution</elementValue>
+	</param>
+	<param>
+		<index>2</index>
+		<element>tableName</element>
+		<elementType>String</elementType>
+		<elementValue>cryptoBestBidOffer</elementValue>
+	</param>
+	<param>
+		<index>3</index>
+		<element>tableName</element>
+		<elementType>String</elementType>
+		<elementValue>cryptoOrderBookSnapshot</elementValue>
+	</param>
+</configparam>

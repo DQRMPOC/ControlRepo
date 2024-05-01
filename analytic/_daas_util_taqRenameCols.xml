@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.util.taqRenameCols</analytic>
+	<code_text>{[chosenCols;commonCols;addString]	
+									
+renamedCols:chosenCols;											
+renamedCols[where chosenCols in commonCols]:`$string[commonCols],\: addString; 			
+renamedCols
+}</code_text>
+	<description>Returns a joined table of trade data with matching quote data based on the parameters put in</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>chosenCols</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<param>
+		<parameter>commonCols</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<param>
+		<parameter>addString</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>String</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

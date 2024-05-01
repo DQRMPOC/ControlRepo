@@ -1,0 +1,43 @@
+<analytic>
+	<analytic>.daas.util.adjustCorporateActions</analytic>
+	<code_text>{[res;params]
+
+ if[(not .ex.getProcessName[] ~ `DS_HDB) or (not `equity~params`assetClass) or not `date in cols params`dataType;
+	params:.daas.util.applyNonAssetClassTableName[params];        
+    if[`trade~params`dataType;
+    	:update volume:"f"$volume from res;
+    ];
+    if[`quote~params`dataType;
+    	:update askSize:"f"$askSize, bidSize:"f"$bidSize from res;
+    ];
+   ];
+    
+ res:.daas.util.adjustStockSplits[res;params;"pre"];
+ res
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+## Kx Refinery Build Scripts - Common Functions
+## Copyright (c) 2019 Kx Systems Inc
+
+
+# Enables debug logging
+export REF_SCRIPTS_LOG_DEBUG=false
+
+
+# Debug logging (via stdout if enabled)
+logD() {
+    if [[ $REF_SCRIPTS_LOG_DEBUG = false ]]; then
+        return 0
+    fi
+
+    echo -e "$(date "+%Y.%m.%d %H:%M:%S") DEBUG  $*"
+}
+
+# Information logging (via stdout)
+logI() {
+    echo -e "$(date "+%Y.%m.%d %H:%M:%S") INFO  $*"
+}
+
+# Error logging (via stderr)
+logE() {
+    echo -e "$(date "+%Y.%m.%d %H:%M:%S") \033[1;31mERROR\033[0m $*" >&2
+}

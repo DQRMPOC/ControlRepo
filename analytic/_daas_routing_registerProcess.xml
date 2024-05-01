@@ -1,0 +1,81 @@
+<analytic>
+	<analytic>.daas.routing.registerProcess</analytic>
+	<code_text>{[data]
+
+    /exit if self requesting gateway
+    if[.ex.getInstanceName[]=gatewayName:data`info;
+        :();
+        ];
+
+    if[not `isMaster in key .daas.cfg;
+        .daas.cfg.isMaster:0b;
+        ];
+
+    if[not `isPrimary in key .daas.cfg;
+        .daas.cfg.isPrimary:0b;
+        ];	
+
+    routeDict:(!) . flip (
+        (`procName   ; .ex.getInstanceName[]);
+        (`primary    ; .daas.cfg.isPrimary);
+        (`dataMaster ; .daas.cfg.isMaster);
+        (`region     ; .daas.cfg.region);
+        (`vendor     ; .daas.cfg.vendor);
+        (`assetClass ; .daas.cfg.asset);
+        (`procType   ; .daas.cfg.procType);
+        (`procNum    ; .daas.cfg.procNum);
+        (`env        ; .daas.cfg.env);
+        (`stack      ; .daas.cfg.asset)
+        );
+
+    statsHDB:.daas.cfg.dssStatsHDB,.daas.cfg.statsHDB;
+    
+    if[(vsname:`$-2_first "." vs string[.ds.cfg.instanceName]) in statsHDB`processName;
+        
+        barFilterCols:`timeCol`tradeFilter`quoteFilter`applyCanCor;
+        
+        barStatTags:?[statsHDB;enlist(=;`processName;enlist vsname);();barFilterCols!barFilterCols];
+        
+        routeDict,:(enlist`barStatTags)!enlist enlist barStatTags;
+	];
+
+    / append the local list of supported data type
+    / @see .daas.meta.getLocalDataTypes
+    routeDict[`dataTypes]:.daas.meta.cfg.dataTypeList;
+
+
+    /adjust asset class to full name
+    routeDict:@[routeDict;`assetClass;.daas.cfg.subClassToAsset];
+
+    /add the name of the gateway that requested the data
+    routeDict[`requestingGatewayName]:gatewayName;
+
+    /add the routing table if it is a gateway process
+    if[.daas.cfg.procType=`gw;
+        routeDict[`routingTable]:.daas.routingMetaData;
+        ];
+
+    .daas.events.pubEventMessage[`procDataResponse;`;`;`;routeDict]; 
+	
+	
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

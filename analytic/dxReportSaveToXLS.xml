@@ -1,0 +1,83 @@
+<analytic>
+	<analytic>dxReportSaveToXLS</analytic>
+	<code_text>{[reportData;dictn;reportStats;reportoverride]
+
+    dxReportTableCheck[reportData;`dxReportSaveToXLS];
+	{a:`$26_string y;if[x~.uc.getActiveParamValue[`DeltaReportDocDefinitions;a];overridename::a]}[reportoverride;]each .ex.prh(`.uc.getActiveParamOverrides;`DeltaReportDocDefinitions);
+	if[overridename=`DEFAULT;errmsg:`$"cannot have DEFAULT as reportoverride";.log.err[.z.h;errmsg;()];'errmsg];
+    if[not ""~e:dxReportDictionaryCheck[dictn;`filepath`filename`filetype];
+     .log.err[.z.h;e:"dxReportSaveToXLS : ",e;()];
+     'e];
+	
+    path:.utils.checkForEnvVar[dictn`filepath];
+    //filename:dictn`filename;
+    filename:`$.utils.createString[string dictn`filename;dictn] except ".";
+	fullpath:(string path),"/",string filename;
+	if[0=count .rpt.docGen; '"No Doc Generator subscribed"]; 
+	neg[first exec handle from .rpt.docGen](`xls;update title:`$"ReportName: dxReportSaveToXLS", actionAnalytic:`dxReportSaveToXLS from dictn,reportStats,`overrideName`fileName`fileType`data!(overridename;fullpath;dictn`filetype;0!reportData));
+	//neg[first exec handle from .rpt.docGen](`xls;delete reportname,reportName from update title:`$"ReportName: dxReportSaveToXLS", actionAnalytic:`dxReportSaveToXLS from dictn,reportStats,`fileName`fileType`data!(fullpath;dictn`filetype;0!reportData));
+	`.rpt.sentDocs upsert (first exec ID from .rpt.docGen;first exec handle from .rpt.docGen;.z.P;reportStats`rptSchNameOrig;reportStats`rptID;`dxReportSaveToXLS;`$fullpath;dictn`filetype;());
+	:(`pending;`Action`path`filename`fullpath!(`dxReportSaveToXLS;path;filename;`$fullpath));
+ }</code_text>
+	<description>Report action analytic to save a table to a XLS file</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description>results of report analytic</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>filepath</name>
+				<datatype>Symbol</datatype>
+				<default>./</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>filename</name>
+				<datatype>Symbol</datatype>
+				<default>dxReportOutBasic</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>filetype</name>
+				<datatype>Symbol</datatype>
+				<default>xls</default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default>"c"$()</default>
+		<description>report statistics</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>reportoverride</parameter>
+		<default>DeltaReportDocDefinitions</default>
+		<description>config parameter override for xls</description>
+		<required>1</required>
+		<datatype>Config</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+</analytic>

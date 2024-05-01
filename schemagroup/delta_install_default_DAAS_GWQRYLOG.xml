@@ -1,0 +1,11 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_GWQRYLOG</tablegroup>
+	<tablename>.daas.admin.hdbDataCheck</tablename>
+	<tablename>.daas.admin.rdbDataCheck</tablename>
+	<tablename>.daas.admin.rdbSymbolState</tablename>
+	<tablename>.daas.queryLog</tablename>
+	<tablename>adminQueryLog</tablename>
+	<tablename>adminRespStatus</tablename>
+	<tablename>respStatus</tablename>
+</schemagroup>

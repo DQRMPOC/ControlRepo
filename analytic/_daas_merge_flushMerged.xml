@@ -1,0 +1,66 @@
+<analytic>
+	<analytic>.daas.merge.flushMerged</analytic>
+	<code_text>{[source;target]
+	
+    .log.out[`flush;"Starting flush for source";source];
+    //Get the tabs on disk for source and target
+    
+    sourceTabs:`sym _d!key each `$string[source],/:"/",/:string d:key source;
+    mergedTabs:`sym _d!key each `$string[target],/:"/",/:string d;
+
+    sourceTabs:([ date:key sourceTabs] source:value sourceTabs);
+    mergedTabs:([] date:key mergedTabs;merged:value mergedTabs);
+
+    //Get tabs that are in both
+    flush: select date,source inter' merged from (mergedTabs lj sourceTabs);
+
+    //Flush ones that have been merged
+    strSource:1_string source;
+    .log.out[.z.h;"Flushing tables in hdbMerge dir";] exec distinct raze merged from flush;
+    {[strSource;date;tab] system "/" sv ("rm -rf ",strSource;string date;string tab)}[strSource;;]./: flip value exec date,merged from  ungroup flush;
+
+
+    //Clear out date dirs that are empty (empty error trap, push to dev null and redirect stderrout to silence error when rmdir on non empty directories + sym file)
+    @[system;"rmdir ",strSource,"/* &gt; /dev/null 2&gt;&amp;1";{}];
+
+    //Check if anything is left - if not, remove overall directory, if there is, report in log as warn that there is unmerged.
+    unmergedSource: `sym _d!key each `$string[source],/:"/",/:string d:key source;
+    d:where 0&lt;count each unmergedSource;
+    if[count d;
+        unmergedSourced:d!unmergedSource d;
+        {[d;t] .log.warn[`merge;"Unmerged tables for date ",string[d];t]}./: flip (key unmergedSource;value unmergedSource);
+        .log.warn[`merge;"To re-run and force merge, edit the merge trigger mode to `forceAdd, and move up a directory to mergeTriggers";ssr[strSource;"hdbMerge";"mergeTriggers/complete"],"_Trigger.csv"]
+        ];
+
+    //if it was completely merged, flush everything
+    if[not count d;
+        .log.out[`merge;"Source fully merged, flushing source sym file";last "/" vs strSource];
+        @[system;"rm -rf ",strSource;{.log.err[`flush;"Could not flush source";x]}];
+        ];
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>source</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>target</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

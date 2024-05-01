@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.events.pubdata</analytic>
+	<code_text>{[t;x]
+  h:exec handle from .dm.qipc where id in (exec component from .dm.filters where table=t,channel=`daasAdmin);
+  //neg[h]@\:(".daas.events.upd";t;x);
+  .log.out[.z.h;"Running pub data";];
+  {[t;x;h] neg[h](".daas.events.upd";t;x)}[t;x;] each h;
+  .log.out[.z.h;"Running pub event messenger";];
+  //flush handles;
+  h:h where h&gt;0;
+  (neg h)@\: (::);
+ }</code_text>
+	<description>modification of the .dm.pubdata function that filters to the `daasAdmin channel and uses .daas.events.upd as a callback instead of .u.upd</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>t</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>x</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

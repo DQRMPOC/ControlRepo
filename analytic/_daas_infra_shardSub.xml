@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.infra.shardSub</analytic>
+	<code_text>{[]
+.log.out[.z.h;"Checking if shard subscription listed in .daas.infra.rdbShards";()];
+splits:(til count a)!a:exec split from .uc.getActiveParamValue[`.daas.infra.rdbShards;`$"_" sv string(.daas.cfg.region;.daas.cfg.vendor;.daas.cfg.asset)];
+
+.daas.cfg.rdbShard:splits["I"$string[.daas.cfg.procNum]];
+
+if[not count .daas.cfg.rdbShard;
+	.log.out[.z.h;"No shard listed for rdb, subscribing to all data on channel ",string[.ds.cfg.subscriptionChannel];()];
+	.dm.regsubc[.ds.cfg.subscriptionChannel;""]
+	];
+
+if[count .daas.cfg.rdbShard;
+	.log.out[.z.h;raze "Subscribing to syms ",string[.daas.cfg.rdbShard], " on channel ",string[.ds.cfg.subscriptionChannel];];
+	{[tab].dm.regsubshard[.ds.cfg.subscriptionChannel; tab; `sym; .daas.cfg.rdbShard; ()!()]} each .tbl.gettablesbygroup[`$"DAAS_TR_",upper string[.daas.cfg.asset]]
+	];
+ }</code_text>
+	<description>Analytic to subscribe to channel for a sharded symlist. Shards defined in .daas.infra.rdbShards override for the region/asset.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

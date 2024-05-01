@@ -1,0 +1,56 @@
+<analytic>
+	<analytic>.daas.merge.checkQueue</analytic>
+	<code_text>{[]
+
+
+ 	/do i have any slave spots for queued items
+ 	if[not q:count select from .daas.merge.mergeJobs where state=`queued;
+ 		.log.out[.z.h;"no jobs in queue";()];
+ 		:delete from .daas.merge.mergeJobs;
+ 		];
+ 		
+	.log.out[.z.h;"there are ",string[q]," jobs in the queue";()]; 
+ 	
+ 	p:count select  from .daas.merge.mergeJobs where state in `processing`initialising;
+ 	.log.out[.z.h;"there are ",string[p]," jobs currently processing";()]; 
+ 	
+ 	if[p=.daas.merge.slaveLimit;
+ 		.log.out[.z.h;"maximum job paralellisation reached";()]; 
+ 		:0b;
+ 		];
+ 	
+ 	j:.daas.merge.slaveLimit-p;
+ 	 if[not count inProg:exec (targetDir,'date) from .daas.merge.mergeJobs where state=`processing;
+ 		good:delete k from select by k:(targetDir,'date) from reverse select by k:(targetDir,'date) from select from .daas.merge.mergeJobs;
+ 		good:select from good where state=`queued;
+ 		.log.out[.z.h;"there are ",string[j]," slaves available";()];
+ 		.log.out[.z.h;"there are ",(string[cg:count good])," jobs that are elegible to begin";()];  
+ 		:select from good where i&lt;j
+ 		];
+ 	
+ 	
+ 	/good are distinct jobs that do not hit any currently written partitions
+ 	good:delete k from select by k:(targetDir,'date) from select by k:(targetDir,'date) from select from .daas.merge.mergeJobs where not any each flip (exec (targetDir,'date) from .daas.merge.mergeJobs)~\:/:inProg;
+ 	good:select from good where state=`queued;
+ 	bad:select from .daas.merge.mergeJobs where  any each flip (exec (targetDir,'date) from .daas.merge.mergeJobs)~\:/:inProg,state=`queued;
+ 
+ 	.log.out[.z.h;"there are ",string[j]," slaves available";()];
+ 	.log.out[.z.h;"there are ",string[count bad]," jobs in the queue that can't begin as the partitions are currently being written to";()]; 
+ 	.log.out[.z.h;"there are ",(string[cg:count good])," jobs that are elegible to begin";()];  
+ 	
+
+ 	/I now have a set of jobs that are ready to run
+ 	select from good where i&lt;j
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

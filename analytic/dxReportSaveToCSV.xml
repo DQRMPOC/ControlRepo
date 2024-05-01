@@ -1,0 +1,69 @@
+<analytic>
+	<analytic>dxReportSaveToCSV</analytic>
+	<code_text>{[reportData;dictn;reportStats]
+    if[not count reportData;
+        .log.out[.z.h;"dxReportSaveToCSV: No report data, exiting";()];
+        :()
+    ];
+    dxReportTableCheck[reportData;`dxReportSaveToCSV];
+    if[not ""~e:dxReportDictionaryCheck[dictn;`csvpath`csvfilename];
+     .log.err[.z.h;e:"dxReportSaveToCSV : ",e;()];
+     'e];
+	
+    path:.utils.checkForEnvVar[dictn`csvpath];
+	filename:`$.utils.createString[string dictn`csvfilename;dictn] except ".";
+	res:(`$":",fullpath:(string path),"/",(string filename),".csv") 0: csv 0: 0!reportData;
+	(res;`Action`csvpath`csvfilename`csvfullpath!(`dxReportSaveToCSV;path;filename;`$fullpath))
+ }</code_text>
+	<description>Report action analytic to save report results to a csv file, i.e. an Excel file
+csvpath: full filepath to the directory you wish the csv file to be saved in
+csvfilename: name for the csv file</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportData</parameter>
+		<default>"c"$()</default>
+		<description></description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<param>
+		<parameter>dictn</parameter>
+		<default>
+			<dictkey>
+				<name>csvpath</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>csvfilename</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired></isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>dictionary of parameters</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>reportStats</parameter>
+		<default>"c"$()</default>
+		<description>report statistics</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>DxReportActionAnalytics</analyticgroup>
+	<analyticgroup>DxReportGenerator</analyticgroup>
+	<analyticgroup>SurveillanceReport</analyticgroup>
+</analytic>

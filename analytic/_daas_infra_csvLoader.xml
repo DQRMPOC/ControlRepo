@@ -1,0 +1,141 @@
+<analytic>
+	<analytic>.daas.infra.csvLoader</analytic>
+	<code_text>{[dir;file]
+    thisFunc:".daas.infra.csvLoader";
+    .debug.csvLoader:`dir`file!(dir;file);
+    //hack to show status of a file in upload
+    .tmp.status:flip `time`file`status!();
+
+    .daas.events.pubEventMessage[`fileUpload;`started;file;`;()];
+    .log.out[.z.h;"Upload of file STARTING ",string[file],".";()];
+    .tmp.status,:(file;.z.P;`$"Upload of file STARTING");         
+    / if .gz then exit function to let the unzip function gunzip the .csv.gz file
+    $[".gz" ~ -3#string file;:.log.out[.z.h;"File needs to be unzipped before processing can continue: ",string[file],".";()];()];
+    /$[not file like "*[0-9][0-9][0-9][0-9].[0-9][0-9].[0-9][0-9]T[0-9][0-9][0-9][0-9][0-9][0-9].[0-9][0-9][0-9]";:.log.out[.z.h;"File already processed: ",string[file],".";()];()];
+    $[not all (file like "*RFA*")and(file like "*.csv");(); :.log.out[.z.h;"File already processed: ",string[file],".";()] ];
+
+    rgex:.fd[`fileListConfigName][`value]`fileregex;
+    fileregex:first rgex where file like ' string rgex;
+    dir:.utils.checkForEnvVar dir;
+    filePath:`$"/" sv (string dir; string file);
+    params:exec from .uc.getActiveParamValue[`.daas.cfg.fileLoaderParams;`] where fileRegex =fileregex;
+    targets:.uc.getActiveParamValue[`.daas.cfg.fwTargetDB;params`target];
+
+    .d.r:fileregex;
+    .d.f:file;
+
+    / update report manager - fileregex is a sym like `*RefData.csv and if the file contains Composite (RefData) or CorporateActionsStandard (CorAx) 
+    /$[(fileregex in (`$"*CorAx.csv";`$"*RefData.csv"))and(((string file) like "*Composite*")or((string file) like "*CorporateActionsStandard*"));
+    .daas.trth.checkFileRegex: fileregex in `$("*CorAx.csv";"*RefData.csv";"*RFA-EQUITY*";"*RFA-FUTURE*";"*RFA-FOREX*";"*RFA-FIXED*";"*RFA-INDEX*";"*restrictedSecurityList*");
+    .daas.trth.checkFileLike: max {(string .d.f) like x} each ("*Composite*";"*CorporateActionsStandard*";"*CorAx.csv";"*RefData.csv";"*RFA-EQUITY*";"*RFA-FUTURE*";"*RFA-FOREX*";"*RFA-FIXED*";"*RFA-INDEX*";"*restrictedSecurityList*"); 
+    $[.daas.trth.checkFileRegex and .daas.trth.checkFileLike;																																																		   													 
+        [
+            data:`status`reportID`reportName`statusMessage!(
+                `PENDING;
+                first raze/[( "." vs (("_" vs string[file])[0]))];
+                ("_" vs string[file])[1];
+                (first .fd.process),": Processing request");
+            .log.out[.z.h;"Report Manager Event Bus Update Data: ";(data)];
+            .daas.events.pubEventMessage[`trthUpdate;`;`;`;data];
+        ];
+    ];
+
+
+    {[targets;file;filePath;row]
+
+    target:targets[row];
+    fatvar:.uc.getActiveParamValue[`.daas.cfg.FATVAR;target`fatvar];
+    rawtypes:exec Type from fatvar;
+    rawfields:exec Field from fatvar;
+    tab:target`tab;
+    hdb:target`HDB;
+    /if TRTH_TAS then save to tmp dir: trth/hdblog/&lt;AssetClass&gt;/&lt;RequestName...&gt;
+    .daas.tas.regexes:`$("*RFA-EQUITY*";"*RFA-FUTURE*";"*RFA-FOREX*";"*RFA-FIXED*";"*RFA-INDEX*");
+    .daas.tas.regexDict:.daas.tas.regexes!`EQ`FUT`FX`FI`IDX;
+    .daas.tas.checkFileRegex: .d.r in .daas.tas.regexes;
+    .daas.tas.checkFileLike: max {(string .d.f) like x} each string .daas.tas.regexes; 
+    $[.daas.tas.checkFileRegex and .daas.tas.checkFileLike; 
+        [
+            reqTas:`rptID`rptName`rptDateTime!(("." vs (("_" vs string[file])[0]))[1];("_" vs string[file])[1];("_" vs string[file])[2]);
+            hdbdir: hsym `$ raze (string .utils.checkForEnvVar["ENV=TRTH_HDBLOG_",(string .daas.tas.regexDict[.d.r]),"="],"/",reqTas[`rptID],"_",reqTas[`rptName],"_",reqTas[`rptDateTime]);
+        ];
+        hdbdir:hsym .utils.checkForEnvVar (.ex.getdetails[hdb]`paramvalues)`directory
+    ];
+
+    /need to account for different table types, secmaster data mostly splayed tables
+    /what if corax date partitioned, need to do separate upserts for each date
+
+    fsLoaderSplayed:.daas.infra.fsLoaderSplayed[;rawtypes;rawfields;file;tab;hdbdir;target];
+
+    fsLoaderDate:.daas.infra.fsLoaderDate[;rawtypes;rawfields;file;tab;hdbdir;target];
+
+    fsLoader:$[target`dateParted;fsLoaderDate;fsLoaderSplayed];
+
+    .Q.fsn[fsLoader;;1555555] filePath; /we can play around with number to determin the optimal value
+    .log.out[.z.h;"gotThisFar", string[tab];.Q.w[]%1e9];
+
+
+    sortSplayed:{[target;hdbdir;tab]
+        tabdir:` sv (hdbdir;tab;`);
+        sortCol:raze value target`partedCol;
+        if[any not null sortCol;
+            .log.out[.z.h;"Applying `p# attribute to ", string[tab];sortCol];
+            sortCol xasc tabdir;
+            @[tabdir;first sortCol;`p#]
+        ];
+    };
+
+    if[not target`dateParted;sortSplayed[target;hdbdir;tab]];
+        
+    }[targets;file;filePath;] each til count targets;
+    
+    
+    .log.out[.z.h;"Upload of file PROCESSING ",string[file],".";()];
+    .tmp.status,:(file;.z.P;`$"Upload of file PROCESSING");         
+    .log.out[.z.h;"Renaming file";file];
+    newFile:string[file],".", raze ":" vs string .z.Z;
+    newPath:"/" sv ( string[dir]; newFile);
+    system "mv ",1_string[filePath] ," ",1_newPath;
+    .log.out[.z.h;"File renamed";newFile];
+
+    / update report manager - fileregex is a sym like `*RefData.csv and if the file contains Composite (RefData) or CorporateActionsStandard (CorAx) 
+    $[.daas.trth.checkFileRegex and .daas.trth.checkFileLike;
+        [
+            data:`status`reportID`reportName`statusMessage!(`COMPLETE;first "_" vs string file;("_" vs string[file])[1];(first .fd.process),": Completed processing request");
+            .log.out[.z.h;"Report Manager Event Bus Update Data: ";(data)];
+            .daas.events.pubEventMessage[`trthUpdate;`;`;`;data];
+        ];
+    ];
+
+    info:exec HDB from targets;
+    .daas.events.pubEventMessage[`fileUpload;`complete;file;`;targets];
+    .log.out[.z.h;"Upload of file COMPLETED";newFile];
+    .tmp.status,:(file;.z.P;`$"Upload of file COMPLETED");         
+
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasFilewatcher</analyticgroup>
+</analytic>

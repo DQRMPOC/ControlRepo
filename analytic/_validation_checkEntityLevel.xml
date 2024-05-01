@@ -1,0 +1,44 @@
+<analytic>
+	<analytic>.validation.checkEntityLevel</analytic>
+	<code_text>{[config]
+
+	.debug.checkEntityLevel:config;
+
+	colsConfig:cols config;
+	// - Select entity values from config update
+	colsLikeEntityLevel:colsConfig where colsConfig like "*ntityLevel";
+	configEntityLevels:(,/){[config;x]
+		`$distinct rtrim ltrim raze "+" vs/: string exec distinct entityLevel from ?[config;();0b;(enlist`entityLevel)!(enlist x)]			
+	}[config;]each colsLikeEntityLevel;
+
+	// - Compare entity levels with columns in order and execution	
+	if[not all configBoolean:configEntityLevels in validEntityLevels:``disabled,exec distinct column from .tbl.tablecolumn where any table like/: ("*[Ee]xecution";"*[Oo]rder";"*[Qq]uote";"*[Qq]uoteLeg";"*[Ss]ingleCreditTransfer";"*[Tt]ransactions";"*[Aa]ccounts";"*[Tt]ransactionTypes";"*[Cc]learing";"*[Dd]ividendCompensation";"*[Ss]ettlement");
+		'"Validation Message:  The entity level(s): ",(", " sv string configEntityLevels where not configBoolean)," are not valid."
+	];
+    
+    // - tranDirection not allowed in the entityLevel, dealt with implicity within the code
+    if[`tranDirection in configEntityLevels;
+        '"Validation Message:  The entity level: tranDirection is not valid, it is dealt with implicity in the code"
+    ];
+    
+    :1b   
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

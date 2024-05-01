@@ -1,0 +1,33 @@
+<analytic>
+	<analytic>.daas.admin.failover.failStack</analytic>
+	<code_text>{[env;asset]
+.daas.events.pubEventMessage[`failoverStack;`;`;`;`stack`env!(asset;env)];
+.daas.admin.logOut[(.z.P;`stackFailedOver;(`$raze string each (env;"_";asset));1b;.p.u;`failoverManagement)];
+:([] (`boolValue,`counter,`errUpd);(0b,.z.P,.z.P))
+ }</code_text>
+	<description>Failover entire stack from dashboard</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>env</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>asset</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.admin.failover</analyticgroup>
+</analytic>

@@ -1,0 +1,16 @@
+<dataconnectiongroup>
+	<ucname>delta_install_default</ucname>
+	<grpid>ds_gw_report</grpid>
+	<key>
+		<keyname>DBS</keyname>
+		<val>ds_gw_report_a,ds_gw_report_b,</val>
+	</key>
+	<key>
+		<keyname>CONN_SELECTOR</keyname>
+		<val>DEFAULT</val>
+	</key>
+	<key>
+		<keyname>PRIMARY</keyname>
+		<val>backup,primary,</val>
+	</key>
+</dataconnectiongroup>

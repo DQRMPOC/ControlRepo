@@ -1,0 +1,30 @@
+<analytic>
+	<analytic>.daas.util.secMasterPub</analytic>
+	<code_text>{[tab]
+
+dict:.daas.cfg.secMasterPub tab;
+$[tab in key .daas.cfg.secMasterPub;
+    .d.pub[tab;?[tab;(value dict`whereClause);(value dict`byClause);(value dict`colClause)]];
+    .d.pub[tab;value tab]
+    ]
+
+}</code_text>
+	<description>selects target processes to map query</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

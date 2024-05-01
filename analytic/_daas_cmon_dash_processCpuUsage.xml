@@ -1,0 +1,31 @@
+<analytic>
+	<analytic>.daas.cmon.dash.processCpuUsage</analytic>
+	<code_text>{[serverName;selectedPID]
+	:select 100*(1_deltas userTimeSecs)%1_deltas generatedTime%1e9,1_time from ProcessCpu where processName=(`$"systemInfo.",string[serverName]), pid=selectedPID;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>serverName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>selectedPID</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Long</datatype>
+	</param>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

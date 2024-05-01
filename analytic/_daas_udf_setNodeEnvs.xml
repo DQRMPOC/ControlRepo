@@ -1,0 +1,29 @@
+<analytic>
+	<analytic>.daas.udf.setNodeEnvs</analytic>
+	<code_text>{[]
+    .daas.cfg.env:@[{`$last first 1_ "." vs string .fd.entity_name};
+            ::;
+            {
+                .log.warn[`udfInit;"service class must be named *_&lt;int&gt;_&lt;env&gt; where env is a/b and int is 0 1 2 3 etc...";::];
+                .log.err[`udfInit;"Could not parse env, exiting";::];
+                '`terminate}];
+    
+    .daas.cfg.procNum:@[{value last last -1_"_" vs first  1_ "." vs string .fd.entity_name};
+            ::;
+            {
+                .log.warn[`udfInit;"service class must be named *_&lt;int&gt;_&lt;env&gt; where env is a/b and int is 0 1 2 3 etc...";::];
+                .log.err[`udfInit;"Could not parse procNum, exiting";::];
+                '`terminate}];
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

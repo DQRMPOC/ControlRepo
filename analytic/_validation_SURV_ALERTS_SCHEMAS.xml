@@ -1,0 +1,53 @@
+<analytic>
+	<analytic>.validation.SURV_ALERTS_SCHEMAS</analytic>
+	<code_text>{[config]
+  	 
+  	 .debug.configSAS:config;
+  	 	 
+  	 orderColumns:exec column from .tbl.tablecolumn where table like "*[Oo]rder*";
+  	 executionColumns:exec column from .tbl.tablecolumn where table like "*[Ee]xecution*";
+     quoteColumns:exec column from .tbl.tablecolumn where table like "*[Qq]uote*";
+     quoteLegColumns:exec column from .tbl.tablecolumn where table like "*[Qq]uoteLeg*";
+
+  	 orderColumnsForActionTracker:exec (column^sourceColumn)!i from config where `order in/:(`$","vs/:string[source]);
+  	 executionColumnsForActionTracker:exec (column^sourceColumn)!i from config where `execution in/:(`$","vs/:string[source]);
+     quoteColumnsForActionTracker:exec (column^sourceColumn)!i from config where `quote in/:(`$","vs/:string[source]);
+     quoteLegColumnsForActionTracker:exec (column^sourceColumn)!i from config where `quoteLeg in/:(`$","vs/:string[source]);
+
+  	 if[count alienOrderColumns:key[orderColumnsForActionTracker] except orderColumns;
+  	 	'"The following columns do not exist in the order table: ",(", "sv string[alienOrderColumns])," on rows: ",", "sv string[orderColumnsForActionTracker[alienOrderColumns]]
+  	 ];
+  	 
+  	 if[count alienExecutionColumns:key[executionColumnsForActionTracker] except executionColumns;
+  	 	'"The following columns do not exist in the execution table: ",(", "sv string[alienExecutionColumns])," on rows: ",", "sv string[executionColumnsForActionTracker[alienExecutionColumns]]
+  	 ];
+
+     if[count alienQuoteColumns:key[quoteColumnsForActionTracker] except quoteColumns;
+  	 	'"The following columns do not exist in the quote table: ",(", "sv string[alienQuoteColumns])," on rows: ",", "sv string[quoteColumnsForActionTracker[alienQuoteColumns]]
+  	 ];
+
+     if[count alienQuoteLegColumns:key[quoteLegColumnsForActionTracker] except quoteLegColumns;
+  	 	'"The following columns do not exist in the quoteLeg table: ",(", "sv string[alienQuoteLegColumns])," on rows: ",", "sv string[quoteLegColumnsForActionTracker[alienQuoteLegColumns]]
+  	 ];
+  	 
+  	 :1b
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

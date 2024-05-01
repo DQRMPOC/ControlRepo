@@ -1,0 +1,70 @@
+<analytic>
+	<analytic>.daas.merge.reportSlaveError</analytic>
+	<code_text>{[err;ID]
+.log.out[.z.h;"job errored on slave";ID];
+
+jID:first exec jobID from .daas.merge.mergeJobs where slaveID=ID;
+sz:first exec size from .daas.merge.status where slaveID=ID;
+targetDir:first exec targetDir from .daas.merge.mergeJobs where slaveID=ID;
+sourceDir:first exec sourceDir from .daas.merge.mergeJobs where slaveID=ID;
+jobAddTime :first exec startTime from .daas.merge.status where slaveID=ID;
+dt:first exec date from .daas.merge.mergeJobs where slaveID=ID;
+m:first exec mode from .daas.merge.mergeJobs where slaveID=ID;
+
+`.daas.merge.errors upsert `jobID`time`error`size`partitionDate`mode`target`source!(jID;.z.P;`$err;sz;dt;m;targetDir;sourceDir)
+	
+.log.out[.z.h;"deleting job for";ID];
+
+delete from `.daas.merge.mergeJobs where slaveID=ID;
+.daas.merge.completeStatus[ID];
+
+.log.out[.z.h;"checking queue for any jobs for slave";()];
+readyJobs:.daas.merge.checkQueue[];
+
+
+/if there is overlap on current jobs then there may be no jobs
+if[not count readyJobs;
+ 	.log.out[.z.h;"sending slave shutdown message";ID];
+	neg[.z.w](`.daas.merge.shutdownSlave;::);
+	:();
+ 	];
+ 	
+
+newJobID:first exec jobID from readyJobs;
+
+update state:`initalising,slaveID:ID from `.daas.merge.mergeJobs where jobID=newJobID;
+.daas.merge.initaliseStatus[newJobID];
+
+job:select from .daas.merge.mergeJobs where slaveID=ID;
+
+/push the job to the slave
+.log.out[.z.h;"sending new job to slave";job]; 
+neg[.z.w](`.daas.merge.startMergeJob;job)
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>err</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>ID</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

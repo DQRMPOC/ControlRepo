@@ -1,0 +1,108 @@
+<analytic>
+	<analytic>.daas.util.appendMedStats</analytic>
+	<code_text>{[args;timeRackList;tab;whereClause]
+    
+    /skip if not a named analytic
+    if[not 11h=abs type args`analytics;
+        :tab;
+        ];
+    
+    
+    /return if median analytics are not requested 
+    if[not count a:a where (a:(),args`analytics) like "med*";
+        :tab;
+        ];
+
+    /Define variables
+    aggCol:`sym;
+    time:args`time;
+    if[`orderID~args`idType;
+        aggCol:`orderID;
+        tab:update orderID:`$orderID from tab
+        ];
+    
+    medAggDict:`medVolume`medPrice`medBidPrice`medAskPrice`medBidSize`medAskSize`medSpread`medMidPrice!((med;`volume);(med;`price);(med;`bidPrice);(med;`askPrice);(med;`bidSize);(med;`askSize);(med;`spread);(med;`midPrice));
+    medComponentDict:(time;aggCol;`medVolume;`medPrice;`medBidPrice;`medAskPrice;`medBidSize;`medAskSize;`medSpread;`medMidPrice)!(time;aggCol;`volume;`price;`bidPrice;`askPrice;`bidSize;`askSize;(-;`askPrice;`bidPrice);(+;`bidPrice;(%;(-;`askPrice;`bidPrice);2)));
+    medComponentNameDict:(time;aggCol;`medVolume;`medPrice;`medBidPrice;`medAskPrice;`medBidSize;`medAskSize;`medSpread;`medMidPrice)!(time;aggCol;`volume;`price;`bidPrice;`askPrice;`bidSize;`askSize;`spread;`midPrice);
+    a:time,aggCol,a;
+
+    /Generate whereClause for aggregation
+    medWhereClause:enlist (within;args`time;args[`startTime`endTime]);
+    if[not `~args`symList;
+        medWhereClause,:enlist (in;aggCol;enlist args`symList);
+        ];
+    if[count whereClause;
+        medWhereClause,:whereClause;
+        ];
+    if[`date in cols args`dataType;
+        medWhereClause:(enlist(within;`date;`date$args`startTime`endTime)),medWhereClause;
+        ];
+
+    /Execute aggregation
+    /col label name must be `time even when params`time is exchTime to be joined with tab
+    medians:?[?[args`dataType;medWhereClause;0b;(medComponentNameDict a)!medComponentDict a];
+            ();
+            (`time,aggCol)!((timeRackList;(bin;timeRackList;time));aggCol);
+            (raze enlist a except (time,aggCol))!raze enlist medAggDict a except (time,aggCol)
+        ];
+
+    /Post aggregation processing
+    if[`orderID~args`idType;
+      medians:update orderID:`$orderID from medians;
+        ];
+
+    if[(count tab)=count ?[tab;();(enlist aggCol)!enlist aggCol;()];
+        :aj[aggCol;tab;medians];
+        ];
+
+    aj[(`time,aggCol);tab;medians]
+
+    }</code_text>
+	<description>appends and median statistics</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>timeRackList</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>tab</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>whereClause</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

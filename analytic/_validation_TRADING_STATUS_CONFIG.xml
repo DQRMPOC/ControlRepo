@@ -1,0 +1,44 @@
+<analytic>
+	<analytic>.validation.TRADING_STATUS_CONFIG</analytic>
+	<code_text>{[config]
+	
+	.debug.TRADING_STATUS_CONFIG:config;
+
+	orderColumns:exec column from .tbl.tablecolumn where table=`order;
+	executionColumns:exec column from .tbl.tablecolumn where table=`execution;
+	
+	determiningColumns:cols[config]except `statusName`tradingStatus`time`row;
+	
+	if[count select from config where tradingStatus like "preOpen*";
+		if[count nonOrderCols:determiningColumns except orderColumns;
+			'"These columns in TRADING_STATUS_CONFIG are not in the order schema: ",", " sv string nonOrderCols 
+		];
+	];
+
+	if[count select from config where tradingStatus like "*Trad*";
+		if[count nonExecCols:determiningColumns except executionColumns;
+			'"These columns in TRADING_STATUS_CONFIG are not in the execution schema: ",", " sv string nonExecCols
+		];
+	];	
+		  	 
+	:1b
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

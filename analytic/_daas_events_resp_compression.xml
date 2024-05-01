@@ -1,0 +1,46 @@
+<analytic>
+	<analytic>.daas.events.resp.compression</analytic>
+	<code_text>{[data]
+
+`.daas.events.eventRecords upsert data;
+grp:`$"_" sv string .daas.cfg`region`vendor`asset`procType
+if[.ex.instance_name = exec first process from .ex.prh(`.r.getRunningProcs;`) where process like (string[grp],"*");
+	if[(`hdb=.daas.cfg.procType) and .uc.checkActiveParamExists[`.daas.admin.compress;`DEFAULT];
+		cfg:select table,column,blocksize,compressionalgo,compressionlevel,stoponfail,tidyonfail from .uc.getActiveParamValue[`.daas.admin.compress;`] where process=grp;
+		date:exec first date from .uc.getActiveParamValue[`.daas.admin.compress;`] where process=grp;
+		if[count cfg;.uc.editActiveSingleParamData[`DS_COMPRESS;.ex.instance_name;cfg]];
+		if[.uc.checkActiveParamExists[`DS_COMPRESS;.ex.instance_name];
+			dxCompress[`:.;value date;value date]
+			];
+		];
+	];
+	
+
+ }</code_text>
+	<description>Response unction to be called by HDB to flip to symbolic directories</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

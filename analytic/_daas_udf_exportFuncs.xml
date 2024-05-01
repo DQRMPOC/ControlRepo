@@ -1,0 +1,60 @@
+<analytic>
+	<analytic>.daas.udf.exportFuncs</analytic>
+	<code_text>{[params]
+	
+	if[not 99h=type params;'"Input should be a dictionary with keys `dir`funcNames"];
+	if[any not `dir`funcNames in key params; '"Input should be a dictionary with keys `dir`funcNames"];
+
+	if[()~key`.daas.udf.fileDir;.daas.udf.fileDir: hsym .utils.checkForEnvVar "ENV=DELTADATA_HOME=/DaaSData/udfdir"];
+	
+	dir:params`dir;
+	funcNames:(),params`funcNames;
+	
+	if[not (-11=type dir) and 11=type funcNames; "`dir and `funcNames should be of symbol and symbol(-list) type, respectively"];
+	
+	output:getUDFInfo enlist[`funcNames] # params;
+	
+	({[dir;funcName;func;description]
+	funcPath: ` sv dir,` sv funcName, `q;
+	descPath: ` sv dir,` sv funcName, `txt;
+	
+	funcPath 0: "\n" vs func;
+	descPath 0: "\n" vs description;
+	}.) each dir,'flip output `funcName`func`description;
+	
+	:string[count output]," User Defined Function(s) exported to directory ", 1 _ string dir
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>dir</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+			<dictkey>
+				<name>funcNames</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

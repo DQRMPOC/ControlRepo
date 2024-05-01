@@ -1,0 +1,39 @@
+<analytic>
+	<analytic>.validation.checkClusteringFeatures</analytic>
+	<code_text>{[config]
+  .debug.checkClusteringFeatures:config;
+  
+  if[count[config]&lt;&gt;count distinct config`featureName;
+        '"Validation Failed: The features names must be unique"
+	];
+    
+  if[count features:exec featureName from config where not numApplyCols within 0 4;
+        '"Validation Failed: The following features have an invalid number of requiered columns (Number must be between 0 and 4): ", ","sv string features
+	];
+	
+  :1b
+  }</code_text>
+	<description>// @kind function
+// @category ClusteringML
+// @fileoverview Validates CLUSTERING_FEATURES configs.
+// @param config {table} Configuration parameter
+// @return {boolean} 1b if validation passed</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>Configuration parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+	<analyticgroup>ClusteringML</analyticgroup>
+</analytic>

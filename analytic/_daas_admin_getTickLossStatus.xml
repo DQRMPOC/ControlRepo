@@ -1,0 +1,24 @@
+<analytic>
+	<analytic>.daas.admin.getTickLossStatus</analytic>
+	<code_text>{[]
+    trRdbHandles:.daas.admin.getTrRdbHandles[];
+
+    .log.out[`tickLoss;;()] "Querying all TR RDBs for tick loss status";
+
+    tickLoss:trRdbHandles@\:(.daas.admin.r.getTickLossStatus; ::);
+
+    :raze tickLoss;
+ }
+    </code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasWatchlistDashboard</analyticgroup>
+</analytic>

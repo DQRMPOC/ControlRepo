@@ -1,0 +1,125 @@
+<analytic>
+	<analytic>.daas.ddl.auditLog</analytic>
+	<code_text>{[params;status;msg]
+    
+	// Make auditLog directory if needed
+	logDir:hsym `$(getenv`DELTADATA_HOME),"/DaaSData";
+	if[not `auditLog in key logDir;
+		.daas.util.sysCmd["mkdir";(1_string logDir),"/auditLog"];
+	];
+
+	// Path to auditLog directory
+	logDir:` sv logDir,`auditLog;
+	logFile:`$"auditLog_",string[.z.D],".csv";
+	logPath:` sv logDir,logFile;
+
+	// Read in log
+	auditLog:$[logFile in key logDir;
+		("GSSTTSSDDTT*I*";enlist",") 0: logPath;
+		([]
+			jobID: `guid$();
+			user: `$();
+			status: `$();
+			requestTime: `time$();
+			completeTime: `time$();
+			assetClass: `$();
+			dataType: `$();
+			startDate: `date$();
+			endDate: `date$();
+			startTime: `time$();
+			endTime: `time$();
+			instrumentIds: ();
+			rowCount: `long$();
+			errMsg: ()
+		)
+	];
+
+    if[`error=status;
+        .log.err[.z.h;"Error modifying table";msg]
+    ];
+    
+	// Add new row for current operation
+	.log.out[.z.h;"Updating audit log";(.daas.ddl.user;status;.z.P;params[`dataType];params[`startDate];params[`endDate];params[`symList])];
+	if[0&gt;type params[`symList];
+		params[`symList]:enlist params[`symList]
+	];
+	$[all raze null params[`symList];
+		params[`symList]:"";
+		params[`symList]: "`","`" sv string params[`symList]
+	];
+
+	$[status=`start;
+		auditLog:auditLog upsert (
+			params[`jobID];
+			.daas.ddl.user;
+			`inProgress;
+			.z.T;
+			0Nt;
+			params[`assetClass];
+			params[`dataType];
+			params[`startDate];
+			params[`endDate];
+			params[`startTime];
+			params[`endTime];
+			params[`symList];
+			0N;
+			""
+		);
+		[
+			p:exec from auditLog where jobID=params[`jobID];
+			newStatus:first `complete`failed r:where status=`stop`error;
+			newErrMsg:("";msg) r;
+            if[(count newErrMsg) and (count exec first errMsg from auditLog where jobID=params[`jobID]);
+                newErrMsg:raze " | ",newErrMsg
+            ];
+			auditLog: update status:newStatus, errMsg:raze each (errMsg,\:newErrMsg), completeTime:.z.T, rowCount:.daas.ddl.rowCount from auditLog where jobID=params[`jobID];
+		]
+	];
+
+	// Save to disk
+	.log.out[.z.h;"Saving audit log to disk";logPath];
+
+	logPath 0: (csv 0: auditLog);
+    }</code_text>
+	<description>Record attempts to modify a database to a csv
+Input dict needs keys: `dataType`startDate`endDate`startTime`endTime`symList</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>status</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>msg</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>String</datatype>
+	</param>
+	<analyticgroup>daasDDL</analyticgroup>
+</analytic>

@@ -1,0 +1,43 @@
+<analytic>
+	<analytic>.surv.master.ecm.runMSTeamsIngestionUI</analytic>
+	<code_text>{[startDate;endDate]
+	thisFunc:".surv.master.ecm.runMSTeamsIngestionUI";
+    .log.out[.z.h;thisFunc;"Running"];
+    
+    typ:`ecomms;
+    cid:first exec cloneID from masterServiceWFs where instanceType=`ecomms;
+    if[null cid;.log.err[.z.h;thisFunc;msg:"No WF Clone currently up for ",string[typ]];'msg];
+    args:`dt`batchName`instanceType`cloneID`startDate`endDate!(.z.D;`$"MSTeams_Ingestion_",string[startDate],"-",string[endDate];typ;cid;startDate;endDate); 
+    
+    .surv.master.runBatchOnClone args;
+    
+    .log.out[.z.h;thisFunc;"Finished!"];
+    
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>startDate</parameter>
+		<default>2021.10.01</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>endDate</parameter>
+		<default>2022.01.15</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatchUI</analyticgroup>
+</analytic>

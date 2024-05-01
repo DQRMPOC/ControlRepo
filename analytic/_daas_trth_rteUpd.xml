@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.trth.rteUpd</analytic>
+	<code_text>{[t;x]
+   / Monitoring 2.0 - Real-time consumer UPD row metrics
+   .rtc.updStatistics[tabName]+:count data;
+
+	if[t in .daas.trth.keyedTables; x:update trthDate:"d"$time from x;]; 
+	$[t in `eqOpenClose`futOpenClose`fiOpenClose`fxOpenClose`idxOpenClose;
+	    t upsert (value t) ^ `sym`trthDate xkey x;
+	    upsert[t;x]
+	    ];
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>t</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>x</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

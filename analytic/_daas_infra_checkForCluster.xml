@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.daas.infra.checkForCluster</analytic>
+	<code_text>{[]
+	.log.out[.z.h;"Checking if clusters are called for.";()];
+	//Check if hdb cluster is called for in install config
+	if[not value getenv`RUNCLUSTER_FLAG;:()];
+	
+	.log.out[.z.h;"HDB Clustering enabled. Gathering cluster specs";()];
+	
+	//Retrieve details on which hdb's to cluster
+	clRegion:`$"," vs getenv`CLUSTER_REGION;
+	clVendor:`$"," vs getenv`CLUSTER_VENDOR;
+	clAsset:`$"," vs getenv`CLUSTER_ASSET;
+	clSize:value each "," vs getenv`CLUSTER_SIZE;
+	
+	.log.out[.z.h;"Checking if current process meets specifications";()];
+	
+	//If 0th process and part of specified cluster,
+	//Then publish to the event bus with cluster details
+	$[.daas.cfg.procNum=`0;
+	
+		if[any r:(clRegion,'clVendor,'clAsset)~\:(.daas.cfg.region,.daas.cfg.vendor,.daas.cfg.asset);
+		
+			.log.out[.z.h;"Current process matches specs. Requesting data from gateway";()];
+			
+			clProcs:`$"_" sv/: ((-2_"_" vs first .fd.process),/:enlist each string each til first (clSize where r)),\:enlist string[.daas.cfg.env];
+			.daas.events.pubEventMessage[`hdbCluster;`getData;`;`;(clSize where r;clProcs)]
+		];
+		.log.out[.z.h;"Current process does not meet cluster specs";()]];
+ }</code_text>
+	<description>Determine if the calling process is marked as one that should operate in a cluster</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

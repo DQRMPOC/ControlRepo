@@ -1,0 +1,16 @@
+<dataconnectiongroup>
+	<ucname>delta_install_default</ucname>
+	<grpid>daas_ddlGw</grpid>
+	<key>
+		<keyname>DBS</keyname>
+		<val>daas_ddlGw_a,daas_ddlGw_b,</val>
+	</key>
+	<key>
+		<keyname>CONN_SELECTOR</keyname>
+		<val>LEADER_CLUSTER</val>
+	</key>
+	<key>
+		<keyname>PRIMARY</keyname>
+		<val>primary,primary,</val>
+	</key>
+</dataconnectiongroup>

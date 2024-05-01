@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.infra.hdbBlock</analytic>
+	<code_text>{[handle]
+/3 hdb pings back to EOD and unblocks
+	neg[handle]"1+1";
+	.log.out[.z.h;"Unblocked EOD process: ";handle];
+/4 blocks to EOD
+	handle[];
+/7 unblocked, call reload
+	.ds.hdb.reloadDB[];
+	if[0=system"T";
+		.daas.util.timeoutOn[];
+		];
+	.log.out[.z.h;"Unblocked and reloaded HDB.";()]
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>handle</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Integer</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+	<analyticgroup>daasPlatform</analyticgroup>
+</analytic>

@@ -1,0 +1,57 @@
+<analytic>
+	<analytic>.daas.util.calendarIsOpen</analytic>
+	<code_text>{[params;res]
+
+	venueID:.daas.cfg.secMasterIdentifierMap[params[`identifier]];
+	dateCol:(.daas.cfg.secMasterWhereClause[params`dataType])`dateCol;
+	
+	
+	r:.daas.util.calendarValidCheck[params;res;1b];
+	params:r[0];
+	res:r[1];
+	open:r[2];
+	
+	//Tabulate status(es) and return
+	$[99=type open;
+		[ov:([]MIC:l;date:(count l:where 1b in/: open)#params[`date];status:`open);
+		cv:([]MIC:l;date:(count l:where not 1b in/: open)#params[`date];status:`closed);
+		:ov,cv
+		];
+	
+		:([]MIC:l;date:(count l)#params[`date];status:(count l:distinct res[venueID])#`closed)
+	];
+ }</code_text>
+	<description>Returns table indicating whether or not the venue is open on the given date</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>getRef params</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

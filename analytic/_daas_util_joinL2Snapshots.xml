@@ -1,0 +1,51 @@
+<analytic>
+	<analytic>.daas.util.joinL2Snapshots</analytic>
+	<code_text>{[res;params]
+
+	if[not 99h=type params;params:first params];
+	
+	if[not count res;:res];
+	
+	if[not `snapshot=params`temporality;
+		:res;
+		];
+	
+	if[`snapshotFollowing=params`l2flag;
+		times:asc (),params`startTime;
+		res:raze {[x;y]0!select by sym from (`time xdesc x) where time&gt;=y}[res] each times;
+		];
+	if[`snapshotPreceding=params`l2flag;
+		times:asc (),params`endTime;
+		res:raze {[x;y]0!select by sym from (`time xasc x) where time&lt;=y}[res] each times;
+		];	
+	
+	
+	
+	: res
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>res</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

@@ -1,0 +1,122 @@
+<analytic>
+	<analytic>.daas.util.checkSingleSortClause</analytic>
+	<code_text>{[functionName;sortClause;params]
+    /check two elements
+	if[not 2= count sortClause;
+		:"incorrect number of arguments";
+		];
+		
+	/check they're both symbols
+	if[any not -11=type each sortClause;
+		:"non symbol arguments";
+		];	
+		
+	/check that first arg is asc/desc and second is a column of the table
+	if[(not a:first sortClause in `asc`desc);
+		:sortClause;
+		];
+
+    
+    
+	/if it's getTicks then check that the selected column is in the table, and or in the selected columns
+	if[`getTicks=functionName;
+		if[not params[`dataType] in `taq`taqWide;
+			if[not (last sortClause) in cols .daas.util.applyAssetClassTableName[params]`dataType;
+				:"Column not present in target table : ",string last sortClause;
+				];
+			];
+		if[params[`dataType] in `taq`taqWide;
+			if[not (last sortClause) in (cols .daas.util.applyAssetClassTableName[params,(enlist`dataType)!enlist`quote]`dataType),cols .daas.util.applyAssetClassTableName[params,(enlist`dataType)!enlist`trade]`dataType;
+				:"Column not present in target table : ",string last sortClause;
+				];
+			];
+		if[`columns in key params;
+		    if[not (last sortClause) in params`columns;
+			    :"Column not present in target table : ",string last sortClause;
+			    ];
+			];
+		];
+	
+    
+    
+	//If it's stats, check its in the anayltics and or the cols if tick stats
+	if[functionName=`getStats;
+        //If not tick level granularity, lookup available analytics and compare
+        if[(not `tick~params`granularityUnit)and ` in params`analytics;
+            if[not (last sortClause) in `sym,`time,`exchTime,.daas.cfg.mrtableFunctionMap .daas.util.applyAssetClassTableName[params]`dataType;
+                :"Column not present in target table : ",string last sortClause;
+                ];
+            ];
+        //If not asking for all analtyics, compare sortcols to requested fields
+        if[(not `tick~params`granularityUnit)and not ` in params`analytics;
+            if[not (last sortClause) in `sym,`time,`exchTime,params`analytics;
+                :"Column not present in target table : ",string last sortClause;
+                ];
+            ];
+        //If it's tick level granularity, check stats available
+		if[(`tick~params`granularityUnit);
+            if[` in params`analytics;
+                if[not (last sortClause) in (cols .daas.util.applyAssetClassTableName[params]`dataType),.daas.cfg.tickStatsTableFunctionMap .daas.util.applyAssetClassTableName[params]`dataType;
+                    :"Column not present in target table : ",string last sortClause;                      
+                    ];
+                ];
+            if[not ` in params`analytics;
+                if[not(last sortClause) in `sym,params`analytics;
+                    :"Column not present in target table : ",string last sortClause;
+                    ];
+                ];
+		     ];
+         ];
+
+    
+    /If it's bars
+    if[functionName=`getBars;
+        //If it's all analytics, look up what are available for requested datatype/asset
+		if[` in params`analytics;
+            if[not (last sortClause) in `sym,`time,.daas.cfg.barTableFunctionMap .daas.util.applyBarAssetClassTableName[params]`dataType;
+                :"Column not present in target table : ",string last sortClause;
+                ];
+            ];
+        //Otherwise check it matches specified requested analytics
+        if[not ` in params`analytics;
+            if[not (last sortClause) in `sym,`time,`exchTime,params`analytics;
+                :"Column not present in target table : ",string last sortClause;
+                ];
+            ];
+        ];
+    
+	1b
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>sortClause</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

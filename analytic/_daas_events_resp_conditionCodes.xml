@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.daas.events.resp.conditionCodes</analytic>
+	<code_text>{[data]
+	if[`new~data`tag1;
+		if[data[`tag2] like "*Quote*";
+			.log.out[.z.h; string[count flip data`info]," new ",string[data`tag2]," condition codes received"; ()];
+			.daas.admin.newQuoteConditionCodes:.daas.admin.newQuoteConditionCodes upsert t except ?[.daas.admin.newQuoteConditionCodes;();0b;cols[t]!cols t:flip data`info];
+			];
+		if[data[`tag2] like "*Trade*";
+			.log.out[.z.h; string[count flip data`info]," new ",string[data`tag2]," condition codes received"; ()];
+			.daas.admin.newTradeConditionCodes:.daas.admin.newTradeConditionCodes upsert t except ?[.daas.admin.newTradeConditionCodes;();0b;cols[t]!cols t:flip data`info];
+			];
+		];
+		
+	if[`none~data`tag1;
+		if[data[`tag2] like "*Quote*";
+			.log.out[.z.h; "No new ",string[data`tag2]," condition codes received"; ()];
+		];	
+		if[data[`tag2] like "*Trade*";
+			.log.out[.z.h; "No new ",string[data`tag2]," condition codes received"; ()];
+		];
+	 ];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default>"c"$()</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>NullType</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

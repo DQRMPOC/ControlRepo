@@ -1,0 +1,40 @@
+<analytic>
+	<analytic>.surv.master.runDataSyncUI</analytic>
+	<code_text>{[Date;batchName]
+	
+    thisFunc:".surv.master.runDataSyncUI";
+    if[null Date;
+        msg:"Date must be non-empty";
+        .log.err[.z.h;thisFunc;msg];
+        'msg
+        ];
+    
+    .surv.master.runBatchOnClone `dt`batchName`instanceType!(Date;batchName;`compareAndSync);
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>Date</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>batchName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatchUI</analyticgroup>
+</analytic>

@@ -1,0 +1,84 @@
+<analytic>
+	<analytic>.daas.processing.fmInit</analytic>
+	<code_text>{[]
+	system"c 1000 1000";
+	
+	/proc params
+	.daas.cfg.env:`$first "." vs last "_" vs first .fd.process;
+	.daas.cfg.vendor:`tr;
+	.daas.cfg.region:`emea;
+	.daas.cfg.jobID:value last -1_"_" vs first .fd.process;
+	.daas.cfg.senv:string[.daas.cfg.env];
+	
+	/delta messaging
+	/.al.callfunction[`.daas.events.startEventService][];
+	/.dm.regsrcc[`TRTH;"stackManagement"];
+	/.dm.regsubc[`TRTH;string[.daas.cfg.jobID]];
+	
+	/stack connection variables
+	.daas.trth.pd::0N;
+	.daas.trth.rte::0N;
+	.daas.trth.rtePort::();
+	.daas.trth.tp::0N;
+	.daas.trth.tpPort::();
+	
+	/eod is constant - connect using env vars
+	/.daas.trth.eod::hopen .daas.trth.eodPort::value getenv`$raze "emea_tr_trth_eod_",.daas.cfg.senv,"_PORT";
+	
+
+	/connection function set to timer
+	`fmConnect set {@[{
+		if[any null (.daas.trth.pd;.daas.trth.rte;.daas.trth.tp);
+			.log.out[.z.h;"Connecting to stack";.daas.cfg.jobID];
+			
+			//collect handles from .dm.qipc
+			/rte:`$raze "emea_tr_trth_rte_",string[.daas.cfg.jobID],"_",.daas.cfg.senv;
+			/.daas.trth.rte::exec first handle from .dm.qipc where entity=rte;
+			/.daas.trth.rtePort::exec first port from .dm.qipc where entity=rte;
+			
+			/tp:`$raze "emea_tr_trth_tp_",string[.daas.cfg.jobID],"_",.daas.cfg.senv;
+			/.daas.trth.tp::exec first handle from .dm.qipc where entity=tp;
+			/.daas.trth.tpPort::exec first port from .dm.qipc where entity=tp;
+			
+			
+			/.daas.trth.pd::exec first handle from .dm.qipc where entity like ("*processingDaemon_",.daas.cfg.senv,"*");
+			
+			
+			.daas.trth.pd:hopen `$":",":" sv getenv each `$ ("daas_processingDaemon_",string[.daas.cfg.env]),/:("_HOST";"_PORT");
+			.daas.trth.tpPort:(`int$system"p")-1;
+			.daas.trth.tp:hopen .daas.trth.tpPort;
+			.daas.trth.rtePort:(`int$system"p")-2;
+			.daas.trth.rte:hopen .daas.trth.rtePort;
+			
+			if[not any null (.daas.trth.pd;.daas.trth.rte;.daas.trth.tp);			
+				//stop attempting to connect and begin feed
+				.d.prcl.removeFuncFromTimer[`fmConnect];
+				
+				/log `boot complete`
+				.log.out[.z.h;"FM Boot Complete";()];
+				
+				/run feed
+				.daas.processing.fmStartPlayback[.daas.trth.pd("{first ?[`.daas.processing.pdInfo;enlist(=;`jobID;x);0b;()]}";.daas.cfg.jobID)]
+			];
+		];
+	};[];
+	{[err] .log.err[.z.p;"Unable to complete feed";(err)]}]};
+
+	/Use timer to account for time required to connect to PD, RTE, and TP
+	.d.prcl.addFunctToTimer[`fmConnect;();.z.Z;`datetime$.z.P+(`timespan$30e9);1000i;1b];
+	.d.prcl.setTimerFreq 100i;
+	
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

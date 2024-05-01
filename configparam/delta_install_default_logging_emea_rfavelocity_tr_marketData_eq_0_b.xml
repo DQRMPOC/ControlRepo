@@ -1,0 +1,43 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>emea_rfavelocity_tr_marketData_eq_0_b</override>
+	<parameter>logging</parameter>
+	<description>DELTA - imported parameters</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>debug</element>
+		<elementType>Boolean</elementType>
+		<elementValue>false</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>filename</element>
+		<elementType>Symbol</elementType>
+		<elementValue></elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>enable-date</element>
+		<elementType>Boolean</elementType>
+		<elementValue>true</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>enable-trace</element>
+		<elementType>Boolean</elementType>
+		<elementValue>false</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>thread-safe</element>
+		<elementType>Boolean</elementType>
+		<elementValue>true</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>roll-size</element>
+		<elementType>Long</elementType>
+		<elementValue>200000000</elementValue>
+	</param>
+</configparam>

@@ -1,0 +1,65 @@
+<analytic>
+	<analytic>.daas.util.targetProcMetaFailure</analytic>
+	<code_text>{[params;functionName]
+
+		if[lower[functionName] like "*udf*";
+		: " gateway not connected to UDF process ";
+		]; 
+		
+		
+	//build whereclause for selecting process
+	
+
+    whereClause:enlist(in';enlist functionName;`supportedAPIs);
+    
+    //comment out region clause until we add this meta data in
+    /if[`region in key params;
+    /	whereClause,:enlist(=;`region;enlist params`region);
+    /	];
+    
+       
+    
+    if[`vendor in key params;
+    	whereClause,:enlist(=;`vendor;enlist params`vendor);
+    	];
+    if[(not functionName=`getRef)and `assetClass in key params;
+    	whereClause,:enlist(=;`assetClass;enlist params`assetClass);
+    	];
+   	if[`dataType in key params;
+    	whereClause,:enlist(in';enlist params`dataType;`dataTypes);
+    	];
+    
+    if[functionName=`getBars;
+    	if[count barTags:.daas.util.barStatTags[params];
+    		whereClause,:enlist ({all value x in/:\: flip value flip ?[raze y;();0b;(key x)!(key x)]};barTags;`barStatTags);
+    		];
+    	];
+    targets:?[.daas.routingMetaData;whereClause;();`procName];
+    distinct targets   
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

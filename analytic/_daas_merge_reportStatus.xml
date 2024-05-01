@@ -1,0 +1,31 @@
+<analytic>
+	<analytic>.daas.merge.reportStatus</analytic>
+	<code_text>{[completion]
+
+		info:`myID`completion!(.my.ID;completion);
+
+		@[{neg[.md.handle](`.daas.merge.updateStatus;x);neg[.md.handle][]};
+			info;
+			{.log.out[.z.h;"Error reporting status. Handle to daemon dropped.";()]}
+			];
+		
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>completion</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

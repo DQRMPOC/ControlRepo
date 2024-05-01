@@ -1,0 +1,19 @@
+<usergroup>
+	<name>daasApplication</name>
+	<maxAttempts></maxAttempts>
+	<minHistory></minHistory>
+	<minLength></minLength>
+	<maxLength></maxLength>
+	<duration></duration>
+	<policyType>Custom</policyType>
+	<urls></urls>
+	<ips></ips>
+	<accessips></accessips>
+	<authType></authType>
+	<policy>
+		<cLower>0</cLower>
+		<cUpper>0</cUpper>
+		<number>0</number>
+		<special>0</special>
+	</policy>
+</usergroup>

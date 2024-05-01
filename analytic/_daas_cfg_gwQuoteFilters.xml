@@ -1,0 +1,16 @@
+<analytic>
+	<analytic>.daas.cfg.gwQuoteFilters</analytic>
+	<code_text>.daas.cfg.quoteFilterRulesDict:((enlist`)!enlist`),c!{tab:value"select cond by exch from .daas.cfg.quoteFilterRules where ",string x;(exec exch from tab)!exec cond from tab}each c:(cols .daas.cfg.quoteFilterRules) except `exch`cond;
+.daas.cfg.filterRulesDict:`trade`quote!(.daas.cfg.tradeFilterRulesDict;.daas.cfg.quoteFilterRulesDict);
+.daas.cfg.filterRuleOptionsDict:`trade`quote!(key .daas.cfg.filterRulesDict`trade;key .daas.cfg.filterRulesDict`quote);</code_text>
+	<description>Update tradeFilterRulesDict, filterRulesDict and filterRuleOptionsDict on the gw when changes are made to the underlying trade filter rules config</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

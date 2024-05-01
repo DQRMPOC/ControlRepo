@@ -1,0 +1,42 @@
+<analytic>
+	<analytic>.daas.udf.loadUDFFile</analytic>
+	<code_text>{[filePath]
+	funcName:  `$first "." vs last split:"/" vs 1 _ string filePath;
+    funcType: `$last -1_split;
+    
+	funcParse: parse raze read0 filePath;
+    if[0h=type funcParse;funcParse:first funcParse];
+	if[not 100h= type funcParse;
+		:`error;
+		];
+	
+	// look for txt file (.e.g func1.txt for the script func1.q) in the same directory
+	textDir: `$raze ("/" sv (-1_spfp),-1_"." vs last spfp:"/" vs string filePath), ".txt";
+	text:$[()~key textDir;"";raze "\n" sv read0 textDir];
+    
+    
+    
+	
+	: `.daas.udf.udfFuncStore upsert `funcName`func`active`description`funcType`funcLang!(funcName;funcParse;1b;text;funcType;`q);
+ }</code_text>
+	<description>loads a UDF file on-disk into memory
+
+input: the full file path (as a kdb filepath symbol) for a UDF script file</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>filePath</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

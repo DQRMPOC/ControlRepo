@@ -1,0 +1,11 @@
+<task>
+	<taskName>daas_clientFileUpload_a.2</taskName>
+	<taskEnabled>0</taskEnabled>
+	<taskManual>0</taskManual>
+	<taskType>Once</taskType>
+	<prInsName>daas_clientFileUpload_a</prInsName>
+	<stDateTime></stDateTime>
+	<endDateTime></endDateTime>
+	<rptFrequency>None</rptFrequency>
+	<rptInterval>0</rptInterval>
+</task>

@@ -1,0 +1,81 @@
+<analytic>
+	<analytic>.daas.stream.summaryUpd</analytic>
+	<code_text>{[t;data;id]
+.ch.catch::data;
+params:.daas.stream.streamSubs[id;`params];
+/if[null params[`updating]; :0b];
+if[params[`start]&gt;.z.N; :0b];
+timeType:$[params[`time]=`insertTime;`time;`exchTime];
+colClause:params`colClause;
+oldData:.daas.stream.streamTabs[id;`data];
+/if[null oldData; :0b];
+/only trade filters required
+$[string[t] like "*Trade";filter:$[(count raze params`applyFilter)&gt;1;$[any type each params`applyFilter;enlist params`applyFilter;params`applyFilter];()];filter:()];
+
+newDataInds:$[any ` in params`symList;til count data;exec i from data where sym in (params`symList)];
+if[(not count newDataInds); :0b];
+newSyms:distinct data[newDataInds;`sym];
+.[`.daas.stream.streamTabs;(id;`newSyms); union; newSyms]; 
+/ if `daily=params`startType, we just track the new relevant syms and ditch the data
+if[`daily=params`startType; :1b];
+newData:data newDataInds;
+/Make sure the data is in the specified times
+newData:?[newData;enlist (within;timeType;(enlist;(`params;enlist`start);(`params;enlist`end)));0b;()];
+newTab:?[newData;filter;(enlist`sym)!enlist`sym;(.daas.cfg.rtetableFunctionMap t)!.daas.cfg.rteAggregationFunctions .daas.cfg.rtetableFunctionMap t];
+
+/Don't update if no data at this point
+if[(count newTab)=0;:0b];
+
+
+tab:oldData lj newTab;
+
+
+/fill new sym records or mins and running sums so that later calcs work
+tab:![tab;();0b;(.daas.summary.minCols[t],.daas.summary.runningCols[t])!((^),/:(((.daas.summary.meta .daas.summary.minCols[t])$\:0W),'.daas.summary.minCols[t])),((^),/:((.daas.summary.meta .daas.summary.runningCols[t])$\:0),'.daas.summary.runningCols[t])];
+/update counts and max/mins
+tab:![tab;();0b;(.daas.cfg.rteCompositeTableFunctionMap t)!.daas.cfg.rteCompositeAggregationFunctions .daas.cfg.rteCompositeTableFunctionMap t];
+/update calculations
+tab:![tab;();0b;(.daas.cfg.rteCalculationTableFunctionMap t)!.daas.cfg.rteCalculationAggregationFunctions .daas.cfg.rteCalculationTableFunctionMap t];
+/delete tick rows
+delCols:a where (a:cols tab) like "tick*";
+updTab: 0!$[count delCols;![tab;();0b;delCols];tab];
+
+currData:`sym`time _(flip ?[oldData;();0b;colClause]);
+updData:`sym`time _(flip ?[updTab;();0b;colClause]);
+// upsert to streamTabs. return 1b to indicate an update occurred.
+$[currData~updData;:0b;.daas.stream.streamTabs[id;`data]:updTab];
+:1b;
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>t</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>id</parameter>
+		<default>false</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

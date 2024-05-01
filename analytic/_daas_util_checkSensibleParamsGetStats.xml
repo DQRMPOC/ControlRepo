@@ -1,0 +1,80 @@
+<analytic>
+	<analytic>.daas.util.checkSensibleParamsGetStats</analytic>
+	<code_text>{[functionName;args]
+    
+    assetClass:args`assetClass;
+    dataType:args`dataType;
+    
+    //if not sym or symlist then it should be mixed list/dict type
+    /Verify it is valid read
+    if[not 11=abs type args`analytics;
+        :.daas.util.checkValidAnalyticClauseRead[args];
+        ];
+    
+    if[`granularityUnit in key args;
+        if[not args[`granularityUnit] in key .daas.cfg.grandict;
+            :`granularityUnit
+            ];
+        
+        if[not `tick=args`granularityUnit;
+            if[count k:k where not (k:raze enlist each args`analytics) in `,.daas.cfg.tableFunctionMap[.daas.meta.getSchemaFromArgs[args;dataType;assetClass;functionName]];
+                :k
+                ];
+            ];
+        
+        if[`tick=args`granularityUnit;
+            if[count k:k where not (k:raze enlist each args`analytics) in `,tickFunctions:.daas.cfg.tickStatsTableFunctionMap[.daas.meta.getSchemaFromArgs[args;dataType;assetClass;functionName]];
+                :k
+                ];
+            
+            if[`columns in key args;
+                if[count a:a where not(a:raze enlist args`columns)in `,(.daas.cfg.tickColumns .daas.meta.getSchemaFromArgs[args;dataType;assetClass;functionName]),$[` in args`analytics;tickFunctions;args`analytics];
+                    :a;
+                    ];
+                ];
+            ];
+        ];
+    
+    if[not `granularityUnit in key args;
+        if[count k:k where not (k:raze enlist each args`analytics) in `,.daas.cfg.mrtableFunctionMap[.daas.meta.getSchemaFromArgs[args;dataType;assetClass;functionName]];
+            :k
+            ];
+        ];
+    
+    args
+    
+    }</code_text>
+	<description>Checks parameter options are correct</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

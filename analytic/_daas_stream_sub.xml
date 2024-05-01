@@ -1,0 +1,44 @@
+<analytic>
+	<analytic>.daas.stream.sub</analytic>
+	<code_text>{[x]
+
+ /check that x`func is registered as a streaming function
+ if[not x[`func] in key .daas.stream.tabFuncMap;'`$ string[x`func]," is not registered as a streaming function in .daas.stream.tabFuncMap"];
+ 
+ /adjust x`period to the appropriate type
+ x[`period]:`timespan$x`period;
+
+ /increment streamingID and add stream sub info
+  id:.daas.stream.streamingID+:1;
+ `.daas.stream.streamSubs upsert (`id`subFunc`params`period!(id;x[`func];x[`params];x[`period])), .daas.stream.tabFuncMap[x`func]; 
+ .daas.stream.streamTabs[id]:();
+ 
+  :.daas.stream.streamingID
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>x</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

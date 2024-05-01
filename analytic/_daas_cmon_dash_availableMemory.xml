@@ -1,0 +1,27 @@
+<analytic>
+	<analytic>.daas.cmon.dash.availableMemory</analytic>
+	<code_text>{[serverName]
+    sStats:(select by processName from SystemMem) `$"systemInfo.",string[serverName];
+    
+    :select V:.Q.f[2;] sStats[`totalBytes] % 1024 xexp 3 from sStats;
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>serverName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMonitoringQueries</analyticgroup>
+</analytic>

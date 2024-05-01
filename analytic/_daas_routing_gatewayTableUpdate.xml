@@ -1,0 +1,25 @@
+<analytic>
+	<analytic>.daas.routing.gatewayTableUpdate</analytic>
+	<code_text>{[data]
+  .daas.routingGatewayProcs:data`info;
+  .daas.routingQPs:1!(0!.daas.routingQPs)lj `region`env xkey select QR:procName,region,env from .daas.routingGatewayProcs where procType=`qr;
+  }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

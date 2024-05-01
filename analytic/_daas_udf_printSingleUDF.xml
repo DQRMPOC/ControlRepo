@@ -1,0 +1,37 @@
+<analytic>
+	<analytic>.daas.udf.printSingleUDF</analytic>
+	<code_text>{[funcStoreRow]
+	       
+    ext:$[`q=first funcStoreRow`funcLang;".q";".p"];
+    fpath:`$raze ":",raze raze getenv[`DAAS_UDF_DIR],"/",string[funcStoreRow`funcType],"/",string[funcStoreRow`funcName],ext;
+    
+    //Format all keys, drop out the func code
+    info:(string key fout),'" | ",/: .Q.s each value fout:`func _flip funcStoreRow;
+    
+    //Attempt to read udf from disk, if it fails just return normal defition
+    fcode:@[read0;
+        fpath;
+        funcStoreRow`func
+        ];
+    
+    info,enlist["func | "],fcode
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>funcStoreRow</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>0</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

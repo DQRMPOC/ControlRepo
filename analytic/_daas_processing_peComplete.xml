@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.processing.peComplete</analytic>
+	<code_text>{[]
+
+	/write remaining data to disk
+	.log.out[.z.h;"Flushing remaining data to disk";()];
+	.daas.processing.writeTab each .daas.processing.rawTabs;
+	
+	/fill in partitions with stub tabs for missing tables
+	/TODO: review if this is really necessary
+	.log.out[.z.h;"Adding stub tables to temp partitions";()];
+	.daas.processing.writeStubTabs each (key .daas.processing.tabDir) except `sym;
+	
+	/signal completion to FM
+	/fmHandle:exec first handle from .dm.qipc where entity=(`$"emea_tr_trth_fw_",string[.daas.cfg.jobID],"_",string[.daas.cfg.env]);
+	.daas.trth.fmPort:(`int$system"p")+2;
+	.daas.trth.fm:hopen .daas.trth.fmPort;
+
+	
+	.log.out[.z.h;"sending complete message to FM";.daas.trth.fm];
+	
+	
+	neg[.daas.trth.fm]".daas.processing.fmComplete[]";
+	
+	
+	//Send call to PD for shutdown and instance deletion
+	neg[.daas.trth.pd](".daas.processing.removeFromStack";`$first .fd.process;0b);
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasProcessing</analyticgroup>
+</analytic>

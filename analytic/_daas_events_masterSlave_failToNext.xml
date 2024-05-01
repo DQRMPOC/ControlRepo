@@ -1,0 +1,37 @@
+<analytic>
+	<analytic>.daas.events.masterSlave.failToNext</analytic>
+	<code_text>{[failedEnv]
+	isMaster: exec first isMaster from .daas.cfg.masterSlaveInstances where env=failedEnv;
+	if[not isMaster;
+		:() ];
+	nextEnv: exec first env from .daas.cfg.masterSlaveInstances where canMaster,i&gt;(exec first i from .daas.cfg.masterSlaveInstances where isMaster,canMaster);
+	if[null nextEnv;
+		:()];
+	.uc.editActiveSingleParamData[`.daas.cfg.masterSlaveInstances;`;update isMaster:(env=nextEnv) from .daas.cfg.masterSlaveInstances];
+
+ }</code_text>
+	<description>given a failed data environment failedEnv:
+1) if failedEnv is the current master,  changes the data master environment to the next down the list (viewable on any process in the .daas.cfg.masterSlaveInstances table)
+2) if failedEnv is not the current master, does nothing
+
+if at the last masterable env in the list, remains at than env (we dont want to fail back automatically).
+
+use .daas.events.masterSlave.changeMaster to manually return the data master env to the primary (or whichever env you choose)</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>failedEnv</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

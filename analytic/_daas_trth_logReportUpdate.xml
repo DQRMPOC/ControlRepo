@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.trth.logReportUpdate</analytic>
+	<code_text>{[reportStats;updMsg]
+  reportName:reportStats`rptSchNameOrig;
+  reportID:reportStats`rptID;
+  reportAction:`.daas.trth.requestAction;
+  .log.out[.z.h;"ReportUpdate:";(reportName;reportID;reportAction;updMsg)];
+  .r.rexe[(`updRT;`dxLog;(.ex.getName[];.z.P;reportName;`PENDING;`INFO;"Report Action Update: ",updMsg;raze string reportID;`;0N))];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>reportStats</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>updMsg</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

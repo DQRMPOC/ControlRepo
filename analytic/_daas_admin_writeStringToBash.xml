@@ -1,0 +1,26 @@
+<analytic>
+	<analytic>.daas.admin.writeStringToBash</analytic>
+	<code_text>{[]
+	//set double enlisted string to name
+	{[dir;name;script](`$name) set enlist enlist value script;
+	//create directory path beneath delta home
+	directory:raze(string .utils.checkForEnvVar"ENV=DELTA_HOME=";dir);
+	//create directory tree if it doesnt exist
+	system"mkdir -p ",directory;
+	//save the file down as a text file
+	save `$(filePath:raze(directory;name)),".txt";
+	//change the filve from .txt to .sh and update permissions to allow execution 
+	system"mv ",filePath,".txt ",filePath,".sh;chmod 774 ",filePath,".sh"}./:flip value exec directory,fileName,fileContents from .uc.getActiveParamValue[`.daas.admin.scriptsForBash;`]
+ }</code_text>
+	<description>Take in a directory, name and string. Make *name*.sh within the given directory containing the string.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>.daas.adminAnalytics</analyticgroup>
+</analytic>

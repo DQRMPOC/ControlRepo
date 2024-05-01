@@ -1,0 +1,11 @@
+<task>
+	<taskName>daas_archive_b.1</taskName>
+	<taskEnabled>1</taskEnabled>
+	<taskManual>0</taskManual>
+	<taskType>Daily</taskType>
+	<prInsName>daas_archive_b</prInsName>
+	<stDateTime>2019.08.20T02:00:00.000</stDateTime>
+	<endDateTime>2099.08.01T00:00:00.000</endDateTime>
+	<rptFrequency>D</rptFrequency>
+	<rptInterval>1</rptInterval>
+</task>

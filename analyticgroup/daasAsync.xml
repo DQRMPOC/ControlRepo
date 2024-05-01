@@ -1,0 +1,11 @@
+<analyticgroup>
+	<name>daasAsync</name>
+	<parameter>ignore</parameter>
+	<analytic>.daas.async.failure</analytic>
+	<analytic>.daas.async.init</analytic>
+	<analytic>.daas.async.run</analytic>
+	<analytic>.daas.async.sendResults</analytic>
+	<analytic>.daas.async.serverExecution</analytic>
+	<analytic>.daas.async.success</analytic>
+	<visibility>private</visibility>
+</analyticgroup>

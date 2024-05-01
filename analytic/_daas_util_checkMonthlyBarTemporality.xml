@@ -1,0 +1,44 @@
+<analytic>
+	<analytic>.daas.util.checkMonthlyBarTemporality</analytic>
+	<code_text>{[functionName;params]
+if[ (functionName=`getBars) and params[`granularityUnit]~`month;
+	if[(.z.D&lt;("m"$params[`endDate])+1);
+		:params[`endDate];
+		];
+	];
+	()
+ }</code_text>
+	<description>Check parameter dictionary to ensure all parameters are of the correct type.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>functionName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

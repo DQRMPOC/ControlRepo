@@ -1,0 +1,33 @@
+<analytic>
+	<analytic>.daas.udf.checkSaveUDFOverwrite</analytic>
+	<code_text>{[overwrite;funcName]
+    if[(not 1b~overwrite)and funcName in getUDFInfo[(enlist`funcNames)!(enlist `)]`funcName;
+        '"UDF with funcName ",string[funcName]," already exists, use parameter `overwrite!1b to force overwrite";
+        ];
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>overwrite</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>funcName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

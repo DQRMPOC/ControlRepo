@@ -1,0 +1,71 @@
+<analytic>
+	<analytic>.surv.master.crossValidationForModelsUI</analytic>
+	<code_text>{[batchConfig;batchJobs;startDate;endDate;updateAndTrain;batchName;assetClass]
+    thisFunc:".surv.master.crossValidationForModelsUI";
+    typ:`ml;
+
+	.surv.master.runBatchOnClone (`batchConfig`batchJobs`dt`batchName`instanceType`assetClass`mlStartDate`mlEndDate`updateAndTrain)!(batchConfig;batchJobs;.z.D;batchName;typ;assetClass;startDate;endDate;updateAndTrain);
+
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>batchConfig</parameter>
+		<default>SURV_ALERT_BATCH</default>
+		<description>job details for batch</description>
+		<required>1</required>
+		<datatype>Config</datatype>
+	</param>
+	<param>
+		<parameter>batchJobs</parameter>
+		<default>SURV_BATCH_JOBS</default>
+		<description>jobs in batch</description>
+		<required>1</required>
+		<datatype>Config</datatype>
+	</param>
+	<param>
+		<parameter>startDate</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>endDate</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>updateAndTrain</parameter>
+		<default>true</default>
+		<description>if ML parameters should be updated and model trained after cross-validation</description>
+		<required>1</required>
+		<datatype>Boolean</datatype>
+	</param>
+	<param>
+		<parameter>batchName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>assetClass</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxReportAnalytics</analyticgroup>
+	<analyticgroup>SurveillanceBatchUI</analyticgroup>
+</analytic>

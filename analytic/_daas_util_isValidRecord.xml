@@ -1,0 +1,82 @@
+<analytic>
+	<analytic>.daas.util.isValidRecord</analytic>
+	<code_text>{[symbol;qualifiers;filterRule;dataType;startDate;endDate]
+
+    exch:.daas.cfg.symExMapDict symbol;
+    
+    // search the ricInfo table if we're missing an exchange
+    if[any null exch;
+        // search for syms with missing exchange
+        // if on hdb unenumerate symbol col &amp; add date filter
+        $[.ex.getProcessName[]=`DS_HDB;
+            wc:((within;`date;(startDate;endDate));(in;`sym;enlist distinct value[symbol] where null exch));
+            wc:enlist (in;`sym;enlist distinct symbol where null exch)
+            ];
+        
+        missingSymToExch:?[ricInfo;wc;enlist[`sym]!enlist`sym;enlist[`listedExchange]!enlist (last;`listedExchange)];
+        dict:.daas.cfg.symExMapDict,exec sym!listedExchange from missingSymToExch;
+	    exch:dict symbol;
+    ];
+  
+    // if there's a mix of enum/non-enum syms in exch then resolve enumeration   
+    if[0h=type exch;
+        exch:{$[-20h&gt;=type x; value x; x]} each exch
+	    ];
+
+    (`$qualifiers) in' .daas.cfg.filterRulesDict[dataType][filterRule] exch
+
+    }</code_text>
+	<description>Takes sym, qualifiers and filterRules and returns a list of booleans. It is used for selecting vaild records according to .daas.cfg.filterRulesDict.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>symbol</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>qualifiers</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>filterRule</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>dataType</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>startDate</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>endDate</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

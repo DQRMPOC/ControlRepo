@@ -1,0 +1,121 @@
+<analytic>
+	<analytic>.daas.util.taqAjPartition</analytic>
+	<code_text>{[baseTable;symClause;whereClauseDict;baseCols;joinTable;joinCols;args;dt]
+	 	
+    whereClause:whereClauseDict`trade;
+    $[count whereClauseDict`quote;
+        quoteWhereClause:symClause,whereClauseDict`quote;
+        quoteWhereClause:whereClauseDict`quote
+        ];
+	
+    onDiskTab:.daas.meta.getSchemaFromDataType[args`dataType];
+    timecol:args`time;
+    
+    dateClause:$[0D&lt;extraDays:.daas.util.dayBuffer[onDiskTab;timecol];
+        enlist (within;`date;(neg[extraDays]+dt;extraDays+dt));
+        enlist (=;`date;dt)
+        ];
+    
+    aj[`sym,timecol; ?[baseTable; dateClause,symClause,whereClause; 0b; baseCols]; ?[joinTable; dateClause,quoteWhereClause; 0b; joinCols]]
+
+    }</code_text>
+	<description>Returns a joined table of trade data with matching quote data based on the parameters put in</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>baseTable</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>symClause</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>String</datatype>
+	</param>
+	<param>
+		<parameter>whereClauseDict</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>baseCols</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>joinTable</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>joinCols</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>dt</parameter>
+		<default>1970.01.01</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

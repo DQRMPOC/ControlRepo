@@ -1,0 +1,48 @@
+<analytic>
+	<analytic>.daas.stats.getUnderlyingStatsTab</analytic>
+	<code_text>{[args]
+    
+    //if readSyms was set earlier in the adjustment then we are doing a pivot and need to get those symbols.
+    if[preRead:`readSyms in key args;
+        //Early exit as cannot do cancor or corax on pivotable tab
+        :.daas.util.select[args`dataType;(args`startTime;args`endTime;args`time);(args`readSyms;args`symCol);();();args`whereClause];
+        ];
+    
+    //Are any modifications needed to underlying data before aggregation?
+    if[preRead:(args[`applyCanCor]&amp;not null .daas.cfg.canCorTargets[args`dataType]) or args[`adjustCorAx];
+        aggTab:.daas.util.select[args`dataType;(args`startTime;args`endTime;args`time);(args`symList;args`symCol);();();args`wc];	  
+        if[args[`applyCanCor];
+            aggTab:.daas.canCor.applyCanCor[aggTab;args];
+            ];
+        if[args[`adjustCorAx];
+            aggTab:.daas.util.adjustCorporateActions[aggTab;args];
+            ];
+        ];
+    
+    //Am I using underlying data or aggregating directly 
+    if[not preRead;
+        aggTab:args`dataType;
+    ];
+
+    
+    aggTab
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasStats</analyticgroup>
+</analytic>

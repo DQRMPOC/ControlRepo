@@ -1,0 +1,31 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>emea_pdb_core_amlData_eq_0_a</override>
+	<parameter>.daas.cfg.pdbTableSettings</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>tableName</element>
+		<elementType>Symbol</elementType>
+		<elementValue>eqTransactions</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>intradayPersistType</element>
+		<elementType>Symbol</elementType>
+		<elementValue>splay</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>eodPersistType</element>
+		<elementType>Symbol</elementType>
+		<elementValue>datePartition</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>partedCol</element>
+		<elementType>Symbol</elementType>
+		<elementValue>accountNumber</elementValue>
+	</param>
+</configparam>

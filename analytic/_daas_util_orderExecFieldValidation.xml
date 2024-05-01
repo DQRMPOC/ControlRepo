@@ -1,0 +1,52 @@
+<analytic>
+	<analytic>.daas.util.orderExecFieldValidation</analytic>
+	<code_text>{[tabName;data]
+
+    .daas.cfg.requiredFields:`execution`order!(.daas.cfg.execReqFields;.daas.cfg.orderReqFields);
+    //validate cols which have acceptedValues but are not required
+    validateFields:1!select field,fieldType from .daas.cfg.requiredFields[.daas.orderExec.tableNameMap[tabName]] where required;
+    //null mandatory fields
+    reqStringFields:exec field from validateFields where fieldType=`$"*";
+    reqNonStringFields:exec field from validateFields where not fieldType=`$"*";
+
+    badData:(,/){[data;x] update nullMandField:x from ?[data;enlist(like;x;"");0b;()]}[data;] each reqStringFields;
+    badData,:(,/){[data;x] update nullMandField:x from ?[data;enlist(null;x);0b;()]}[data;] each reqNonStringFields;
+    nullMandFields:raze "," sv string exec distinct nullMandField from badData;
+
+    if[count badData;
+        .log.err[`Batchload;"[ ",nullMandFields," ] are mandatory fields and must be populated. File cannot be loaded";()];
+        :0b
+        ];
+     
+    if[not count badData;
+        .log.out[`Batchload;"All are mandatory fields are populated. File can be loaded";()];
+        :1b
+        ];
+
+    }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>tabName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

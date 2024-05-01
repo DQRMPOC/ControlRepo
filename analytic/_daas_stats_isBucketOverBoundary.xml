@@ -1,0 +1,41 @@
+<analytic>
+	<analytic>.daas.stats.isBucketOverBoundary</analytic>
+	<code_text>{[buckets;args]
+	//Is the boundary between any of the buckets?
+    if[(all (buckets&lt;=midnight))or all buckets&gt;=midnight:.z.D;
+        :0b;
+        ];
+    
+    //If it's slice the only way it is true is if the startTime is after the endTime
+    if[(not null args`granularityUnit) and `slice~args`temporality;
+        :args[`st]&gt;args`et;
+        ];
+    
+    1b
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>buckets</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasStats</analyticgroup>
+</analytic>

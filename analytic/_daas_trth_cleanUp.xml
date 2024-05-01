@@ -1,0 +1,65 @@
+<analytic>
+	<analytic>.daas.trth.cleanUp</analytic>
+	<code_text>{[hdbdir]
+    		.log.out[.z.h;"Starting file movement function for asset";.daas.eod.asset];
+			.log.out[.z.h;"Directory";hdbdir];
+    		request: last "/" vs hdbdir;
+    		
+    		processedDir:string $[.daas.eod.asset like "*L2*";
+    			.utils.checkForEnvVar["ENV=TRTH_TICKHISTORYMD=/processed/"];
+    			.utils.checkForEnvVar["ENV=TRTH_TICKHISTORYRAW=/processed/"]
+    		];
+    		
+			trthCompleteDir:string $[.daas.eod.asset like "*L2*";
+    			.utils.checkForEnvVar["ENV=TRTH_TICKHISTORYMD="];
+    			.utils.checkForEnvVar["ENV=TRTH_TICKHISTORYRAW="]
+    		];
+    		
+ 		    rawFile:{[request;x] r:x like ("*",request,"*"); $[r;:x;()]}[request;] each system "ls ",processedDir;
+    		rawFile:rawFile where not () ~/: rawFile;
+    		rawFilesFullPath:(processedDir,/: rawFile);
+    		
+    		.log.out[.z.h;"Identified full path to raw file";rawFilesFullPath];
+    
+    		rawNotesFile:{[request;x] r:x like ("*",request,"*"); $[r;:x;()]}[request;] each system "ls ",trthCompleteDir;
+    		rawNotesFile:rawNotesFile where not () ~/: rawNotesFile;
+    		rawNotesFilesFullPath:((trthCompleteDir,"/") ,/: rawNotesFile);
+    
+    		.log.out[.z.h;"Identified full path to notes";rawNotesFilesFullPath];
+    		
+    
+    		trthCompleteFileDir:" ","/" sv (trthCompleteDir;"archived";request;"");
+   		 	trthCompleteNotesFileDir:" ","/" sv (trthCompleteDir;"archived";request;"notes";"");
+    
+      		.log.out[.z.h;"Creating completed directories";trthCompleteFileDir];
+    
+   			system "mkdir",trthCompleteFileDir;
+    		system "mkdir",trthCompleteNotesFileDir;
+    		.log.out[.z.h;"Moving files to : ";trthCompleteFileDir];
+    		system each ("mv ",/: rawFilesFullPath,\: trthCompleteFileDir);
+    		system each ("mv ",/: rawNotesFilesFullPath,\: trthCompleteNotesFileDir);
+    		.log.out[.z.h;"Files moved to : ";trthCompleteFileDir];
+    		
+    		/data:`status`reportID`reportName`statusMessage!(`COMPLETE;rptID;reportName;"TRTH Request Completed Processing");
+			/.log.out[.z.h;"Event Bus Update Data: ";data]; 
+			/.daas.events.pubEventMessage[`trthUpdate;`;`;`;data];
+			}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>hdbdir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>.daas.trth</analyticgroup>
+</analytic>

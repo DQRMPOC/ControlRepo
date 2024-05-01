@@ -1,0 +1,43 @@
+<analytic>
+	<analytic>.daas.l2.getEodSnap</analytic>
+	<code_text>{[buildDate;symList]
+
+// get last date by sym where a book update message occurred given by a 1 in the "indication" column
+	lastRestartDates: 0! select last date,restartInd:last i by sym from .daas.l2.updateTb where date within buildDate - (.daas.l2.dateWindow;0),sym in symList,indication=1;
+
+	snapTb: raze {[curSym;restartDate;restartInd;buildDate] 
+		: 0! res: delete action from delete from (update time:max time,exchTime:max exchTime from (select last sym,max time,max exchTime,last side,last price,last size,last numOrders,last action by id from .daas.l2.updateTb where date within (restartDate;buildDate),sym=curSym, i &gt;= restartInd) ) where action="D";
+		// : 0! select max time, max exchTime,price, size, numOrders, id by sym,side from res;
+	}'[lastRestartDates`sym;lastRestartDates`date;lastRestartDates`restartInd;buildDate];
+	
+	:$[count snapTb;
+		snapTb;
+		0! delete action from delete from update time:max time,exchTime:max exchTime from (select last sym,max time,max exchTime,last side,last price,last size,last numOrders,last action by id from .daas.l2.updateTb where date=buildDate,sym in () )];
+	
+ }</code_text>
+	<description>gets a snapshot of the order book at end-of-day</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>buildDate</parameter>
+		<default>1970.01.01</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Date</datatype>
+	</param>
+	<param>
+		<parameter>symList</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol[]</datatype>
+	</param>
+	<analyticgroup>daasL2</analyticgroup>
+</analytic>

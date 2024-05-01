@@ -1,0 +1,31 @@
+<analytic>
+	<analytic>.daas.udf.flushDataOnComplete</analytic>
+	<code_text>{[udf]
+	update timeNeededFrom:.z.P from `.daas.udf.dataRequirements where udfName=udf;
+    
+    flushTabs:exec distinct tabName from .daas.udf.dataRequirements where udfName=udf;
+    
+    flushTimes:exec min timeNeededFrom by tabName from .daas.udf.dataRequirements where tabName in flushTabs;
+    
+    {.[{![x;enlist(&lt;;`time;y);0b;`$()]};(x;y);{.log.warn[`udfDataFlush;"could not flush table ",string[x];y]}[x;]]} ./: flip (key flushTimes;value flushTimes);
+   
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>udf</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

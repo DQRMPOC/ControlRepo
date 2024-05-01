@@ -1,0 +1,85 @@
+<analytic>
+	<analytic>.daas.cmon.q.common</analytic>
+	<code_text>// Refinery (DaaS) Monitoring 2.0 - Query Common Functionality
+// Copyright (c) 2019 Kx Systems Inc
+
+/ The name of the system-level information process name in the Monitoring capture
+.daas.cmon.cfg.sysInfoName:`systemInfo;
+
+/ List of core processes that can be ignored if the query is not applicable to non-capture processes
+.daas.cmon.cfg.coreProcesses:.daas.cmon.cfg.sysInfoName,`deltaControl;
+
+
+/ Provides the process name ('processName') to query system-level information for the specified host
+/  @param host (Symbol) A host name
+/  @returns (Symbol) The process name to query system-level information with
+/  @see .daas.cmon.cfg.sysInfoName
+.daas.cmon.q.i.getHostProcessName:{[host]
+    if[not -11h = type host;
+        '"IllegalArgumentException";
+    ];
+
+    :` sv .daas.cmon.cfg.sysInfoName,first ` vs host;
+ };
+
+/ Queries the latest processes from the 'MonitoringProcesses' table and their connected and registered state
+/  @param ignoreCoreProcs (Boolean) If true, core processes will be removed from the list
+/  @returns (Table) Processes with their connected and registered state
+/  @see .daas.cmon.cfg.coreProcesses
+/  @see MonitoringProcesses
+.daas.cmon.q.i.getProcesses:{[ignoreCoreProcs]
+    if[(::) ~ ignoreCoreProcs;
+        ignoreCoreProcs:0b;
+    ];
+
+    procs:select processName:name, workflow, connected, registered from select by name from MonitoringProcesses;
+
+    if[ignoreCoreProcs;
+        procs:delete from procs where any processName like/: (string[.daas.cmon.cfg.coreProcesses],\:"*");
+    ];
+
+    :`workflow`processName xasc procs;
+ };
+
+/ Queries the latest value of the specified metric in the generic ProcessMetric / SystemMetric tables by
+/ process name and returns the result
+/  @param dataType (Symbol) One of 'process' or 'system' depending on the type required
+/  @param metricName (Symbol) The name of the metric to return
+/  @param metricKey (Symbol) Optional metric key if the specified metric name has multiple keys
+/  @param metricOutputCol (Symbol) The target column name in the result set
+/  @param ignoreCoreProcs (Boolean) If true, core processes will be removed from the list
+/  @returns (Table) The latest metric data per process type
+/  @see .daas.cmon.q.i.getProcesses
+.daas.cmon.q.i.getGenericMetricData:{[dataType; metricName; metricKey; metricOutputCol; ignoreCoreProcs]
+    monTable:`$@[string dataType; 0; upper],"Metric";
+
+    if[not monTable in tables[];
+        '"InvalidDataTypeException";
+    ];
+
+    selectWc:enlist (=; `metricName; enlist metricName);
+
+    if[not null metricKey;
+        selectWc,:enlist (=; `metricKey; enlist metricKey);
+    ];
+
+    data:?[monTable; selectWc; (!). 2#enlist enlist `processName; ()];
+    data:?[data; (); 0b; (`processName`generatedTime`metricStale,metricOutputCol)!(`processName;(`time$;`generatedTime);`metricStale;(first each;`metric))];
+
+    data:.daas.cmon.q.i.getProcesses[ignoreCoreProcs] lj 1!data;
+    data:![data; (); 0b; enlist[metricOutputCol]!enlist (0b^; metricOutputCol)];
+
+    :data;
+ };
+    </code_text>
+	<description>Refinery (DaaS) Monitoring - Common Query Functionality</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Instruction</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+</analytic>

@@ -1,0 +1,43 @@
+<analytic>
+	<analytic>.daas.dsp.runJob</analytic>
+	<code_text>{[]
+	creds:flip .uc.getActiveParamValue[`.daas.cfg.dspConnectionDetails;`];
+	
+	// get credentials to connect and pull files
+	username:first creds[`username];
+	domain:first creds[`domain];
+	batchFile:string .utils.checkForEnvVar first creds`batchFile;
+	
+	// Always using UTC versions of .z.t and .z.d as this matches the DSP publication schedule
+	// date folder on DSP
+	date:(raze "." vs string .z.d);
+	// segments published every 15 mins UTC, 00:15=1, 00:30=2, etc
+	segmentNo:string (15 xbar `minute$.z.t)%15;
+	pathToDir:"/Bulk_Reports/",date,"/",segmentNo;
+	
+	// make dated directory for the download to go into
+	downloadDir:(getenv`DAASDATA_FWDIR_SECMASTER_DSP),"/",date;
+	.log.out[.z.h; "Made download directory"; downloadDir];
+	system"mkdir -p ",downloadDir,"/success";
+	
+	// pull the files into the download directory
+	.log.out[.z.h; "Starting pull from DSP folder";pathToDir];
+	.daas.dsp.pullFiles[downloadDir;username;domain;pathToDir;batchFile]
+ 	.log.out[.z.h; "Finished pull from DSP folder";pathToDir];
+ 	
+ 	// load these files
+ 	filePath:`$":",downloadDir;
+ 	.daas.infra.dspLoader[filePath;] each key[filePath] where key[filePath] like "*.zip"
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasDSP</analyticgroup>
+</analytic>

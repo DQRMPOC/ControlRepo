@@ -1,0 +1,58 @@
+<analytic>
+	<analytic>.daas.util.getBarsCorAx</analytic>
+	<code_text>{[params;colClause;byClause]
+    
+    symCol:.daas.wc.getSymCol params`idType;
+    
+	$[params[`adjustCorAx]; 
+       [  res:.daas.util.select[params`dataType;(params`startTime;params`endTime;`time);(params`symList;symCol);();();params`whereClause];	  
+       	  res:.daas.util.adjustCorporateActions[res;params];
+       	  res:$[0=count res;
+                ?[res;();0b;(`time`sym!`time`sym),colClause];
+                .daas.util.select[res;(params`startTime;(params`endTime)-00:00:00.000000001;`time);(`;symCol);colClause;byClause;()]]
+        ];
+       res:.daas.util.select[params`dataType;(params`startTime;(params`endTime)-00:00:00.000000001;`time);(params`symList;symCol);colClause;byClause;params`whereClause]];
+       :res
+ }</code_text>
+	<description>This Analytic is for using adjustCorAx with getBars functionality 
+</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Table</datatype>
+	</param>
+	<param>
+		<parameter>colClause</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<param>
+		<parameter>byClause</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Character</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

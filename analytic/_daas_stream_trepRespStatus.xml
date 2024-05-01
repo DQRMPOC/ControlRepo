@@ -1,0 +1,25 @@
+<analytic>
+	<analytic>.daas.stream.trepRespStatus</analytic>
+	<code_text>{[]
+    .log.out[.z.h;"checking watchlists";()];
+    // Watchlist Checks 
+    .tbl.gettable`respStatus;
+    .al.getfunction`.daas.util.respStatusEnumConvert;
+    .uc.getAndSaveActiveParamValue[`.daas.cfg.respStatusConversion;`;`.daas.cfg.respStatusConversion;()];
+ 
+    // NOTE: 2020.02 Jas R - This needs re-implementing to use the 'respStatus' table directly.
+    //       '.daas.mon.respStatus' has been deleted. See DAASI-1087
+    '"nyi";
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasStream</analyticgroup>
+</analytic>

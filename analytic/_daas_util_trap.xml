@@ -1,0 +1,45 @@
+<analytic>
+	<analytic>.daas.util.trap</analytic>
+	<code_text>{[f;args]
+		res:$[0=count args;
+			@[{[f;x](get(f;x);0b)}[f;];::;{[x](`$x;1b)}];
+			1=count args;
+			@[{[f;x](get(f;x);0b)}[f;];first args;{[x](`$x;1b)}];
+			@[{[f;x] (get f,x;0b)}[f;];args;{[x](`$x;1b)}] 
+			];
+		:`result`error!res;
+ }</code_text>
+	<description>run the function f against args (f can take 0+ arguments) and return a dictionary.
+
+f can be a symbol function name (for global functions) or the function itself.
+
+args should be a list; i.e. a call with no arguments should have args be the empty list or enlist[::], a call with one argument should have that argument enlisted, etc.
+
+key | value pairs:
+result | the returned value if the function worked; the error (as a symbol) otherwise
+error | boolean indicating whether an error occurred (0b means the function executed properly)</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>f</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>args</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

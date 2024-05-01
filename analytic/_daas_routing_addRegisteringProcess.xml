@@ -1,0 +1,97 @@
+<analytic>
+	<analytic>.daas.routing.addRegisteringProcess</analytic>
+	<code_text>{[data]
+
+	
+	//if not a master gw, do not add to table
+	if[not .daas.routingGatewayProcs[.ex.getInstanceName[]]`routingTableMaster;
+		:();
+		];
+	
+	
+	//only add if own request
+	if[not `info=(routeDict:data`info)`requestingGatewayName;
+		if[not .ex.getInstanceName[]=routeDict`requestingGatewayName;
+			:();
+			];
+		];
+	
+	//don't self register
+	if[.ex.getInstanceName[]=routeDict`procName;
+		:();
+		];
+		
+	routeDict:`requestingGatewayName _routeDict;
+	
+	//if routing table is pushed from other gw, set it and exit
+	if[`routingTable in key routeDict;
+		.daas.routingMetaData:routeDict`routingTable;
+		:();
+		];
+	
+	
+	
+	//additional logic for API tagging
+	if[not routeDict[`procType] in `gw`qr;
+		routeDict,:(enlist`supportedAPIs)!enlist(`getTicks`getStats);
+		];
+	if[`barStatTags in key routeDict;
+		routeDict,:(enlist`supportedAPIs)!enlist enlist`getBars;
+		];
+	if[routeDict[`procType]=`rte;
+		routeDict,:(enlist`supportedAPIs)!enlist enlist`getSummary;
+		];
+	if[routeDict[`procType]=`secMaster;
+		routeDict,:(enlist`supportedAPIs)!enlist (`getRef`getInstrumentTaxonomy);
+		];
+	if[all routeDict[`dataTypes]=`benchmarks;
+		routeDict,:(enlist`supportedAPIs)!enlist enlist`getBenchmarks;
+		];
+	if[routeDict[`procType]=`ctp;
+		routeDict,:(enlist`supportedAPIs)!enlist enlist`getTicksStreaming;
+		];
+    if[(`udf~routeDict`stack);
+        routeDict,:(enlist`dataTypes)!enlist enlist`realtimeUDFResults;
+        routeDict,:(enlist`supportedAPIs)!enlist enlist`getUDF;
+        if[routeDict[`procType] =`ctp ;
+            routeDict,:(enlist`supportedAPIs)!enlist enlist`getUDFStreaming;
+            ];
+        ];
+
+	if[not any (.daas.routingMetaData[] each $[count k:k where(k:($[count k:(key .daas.routingMetaData)`procName;k;enlist`])except procName)like(-1_string procName:routeDict`procName),"*"; k;enlist`])`primary;
+		routeDict,:(enlist`primary)!enlist 1b;
+	];
+	
+	if[-11h~type routeDict[`dataTypes]; routeDict[`dataTypes]:enlist routeDict[`dataTypes]];
+	
+	`.daas.routingMetaData upsert routeDict,(enlist`procUp)!enlist 1b;
+	
+	//update failover pairs
+    failovers:a where each (not a~\:/:a) and a like\:/:{(-1_/:string each x),\:"*"}(a:raze value each key .daas.routingMetaData);
+    update failoverTo:failovers from `.daas.routingMetaData;
+  
+    //push out new table
+    .daas.events.pubEventMessage[`routingTableUpdate;`;`;`;.daas.routingMetaData];
+	
+	
+	
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

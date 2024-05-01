@@ -1,0 +1,32 @@
+<analytic>
+	<analytic>.validation.SURV_BACKTEST_HDBS</analytic>
+	<code_text>{[config]
+    thisFunc:".validation.SURV_BACKTEST_HDBS";
+
+    parms:`region`vendor`assetClass`side;
+
+    if[any i:any each null config @ parms;
+    '"The following params are missing from this config for some entries: ", ", " sv string parms where i
+    ];
+
+    1b
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

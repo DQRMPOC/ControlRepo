@@ -1,0 +1,31 @@
+<analytic>
+	<analytic>.daas.events.runOnInitialBusCon</analytic>
+	<code_text>{[fnName]
+	refName: `$string[fnName], "InitialBusConRef";
+	refName set {[fnName;refName;x] 
+		isBusCon:(count select from .dm.filters where channel=`daasAdmin,table=`eventReporting);
+			if[isBusCon;
+						.d.prcl.removeFuncFromTimer[refName;1b];get(fnName;::)
+						];
+					}[fnName;refName;];
+	:.d.prcl.addFunctToTimer[refName;`;0Nz;0Nz;100;1b];
+ }</code_text>
+	<description>sets up a timer function to run the given function when an event bus first connects to a process</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>fnName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasEvents</analyticgroup>
+</analytic>

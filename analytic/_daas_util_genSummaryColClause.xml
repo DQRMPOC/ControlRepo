@@ -1,0 +1,38 @@
+<analytic>
+	<analytic>.daas.util.genSummaryColClause</analytic>
+	<code_text>{[params]
+if[`~params`analytics;
+	params[`analytics]:a where not(upper string(a:cols[params`dataType])) like "*NOTNULL";
+    columns:(raze params[`analytics]);
+    :((enlist `sym)!enlist `sym),columns!columns
+	];
+columns:(raze params[`analytics]);
+((enlist `sym)!enlist `sym),columns!columns
+ }</code_text>
+	<description>Applies column aggregations for correct table when aggregating by interval.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>params</parameter>
+		<default>
+			<dictkey>
+				<name>Key</name>
+				<datatype>Symbol</datatype>
+				<default></default>
+				<isrequired>true</isrequired>
+				<description></description>
+			</dictkey>
+		</default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Dict</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

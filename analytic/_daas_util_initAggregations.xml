@@ -1,0 +1,47 @@
+<analytic>
+	<analytic>.daas.util.initAggregations</analytic>
+	<code_text>{[]
+
+operatorNames:.uc.getActiveParamValue[`.daas.cfg.aggregationOperators;`]`operator;
+columns:(exec table from a)!({"`",/:string[x],\:")"}each exec column from a:`table xgroup .uc.getActiveParamValue[`.daas.cfg.tableAggregationColumns;`]);
+operators:"(",/:string[operatorNames],\:";";
+
+
+quoteStats:(raze `$(string each operatorNames),/:\:@[;0;upper] each string each value each -1_/:columns`quote)!raze (operators),/:\:columns`quote;
+quoteStats:quoteStats,(raze `$(enlist "med"),/:\:@[;0;upper] each string each value each -1_/:columns`quote)!(count columns`quote)#enlist "`median";
+tradeStats:(raze `$(string each operatorNames),/:\:@[;0;upper] each string each value each -1_/:columns`trade)!raze (operators),/:\:columns`trade;
+tradeStats:tradeStats,(raze `$(enlist "med"),/:\:@[;0;upper] each string each value each -1_/:columns`trade)!(count columns`trade)#enlist "`median";
+execStats:(raze `$(string each operatorNames),/:\:@[;0;upper] each string each value each -1_/:columns`execution)!raze (operators),/:\:columns`execution;
+execStats:execStats,(raze `$(enlist "med"),/:\:@[;0;upper] each string each value each -1_/:columns`execution)!(count columns`execution)#enlist "`median";
+orderStats:(raze `$(string each operatorNames),/:\:@[;0;upper] each string each value each -1_/:columns`order)!raze (operators),/:\:columns`order;
+orderStats:orderStats,(raze `$(enlist "med"),/:\:@[;0;upper] each string each value each -1_/:columns`order)!(count columns`order)#enlist "`median";
+bboStats:(raze `$(string each operatorNames),/:\:@[;0;upper] each string each value each -1_/:columns`bestBidOffer)!raze (operators),/:\:columns`bestBidOffer;
+bboStats:bboStats,(raze `$(enlist "med"),/:\:@[;0;upper] each string each value each -1_/:columns`bestBidOffer)!(count columns`bestBidOffer)#enlist "`median";
+
+
+quoteTables:`eqQuote`fiQuote`idxQuote`futQuote`fxQuote`mnQuote`lisOptQuote;
+tradeTables:`eqTrade`fiTrade`idxTrade`futTrade`fxTrade`mnTrade`lisOptTrade;
+execTables:`eqFuturesExecution`eqOptionsExecution`fiFuturesExecution`fiOptionsExecution`fxFuturesExecution`fxOptionsExecution`cryptoFuturesExecution`cryptoOptionsExecution`commFuturesExecution`commOptionsExecution`eqExecutions`fiExecutions`idxExecutions`futExecutions`fxExecutions`lisOptExecutions`eqExecution`fiExecution`fxExecution`eqTradePublic`fiTradePublic`fxTradePublic`cryptoExecution`cryptoTradePublic`commExecution`commTradePublic;
+orderTables:`eqFuturesOrder`eqOptionsOrder`fiFuturesOrder`fiOptionsOrder`fxFuturesOrder`fxOptionsOrder`cryptoFuturesOrder`cryptoOptionsOrder`commFuturesOrder`commOptionsOrder`eqOrders`fiOrders`idxOrders`futOrders`fxOrders`lisOptOrders`eqOrder`fiOrder`fxOrder`eqOrderPublic`fiOrderPublic`fxOrderPublic`cryptoOrder`cryptoOrderPublic`commOrder`commOrderPublic;
+bboTables:`eqFuturesBestBidOffer`eqOptionsBestBidOffer`fiFuturesBestBidOffer`fiOptionsBestBidOffer`fxFuturesBestBidOffer`fxOptionsBestBidOffer`cryptoFuturesBestBidOffer`cryptoOptionsBestBidOffer`commFuturesBestBidOffer`commOptionsBestBidOffer`eqBestBidOffer`fiBestBidOffer`fxBestBidOffer;
+
+aggregationFunctions:([]colName:raze key each (quoteStats;tradeStats;execStats;orderStats;bboStats);agg:raze value each (quoteStats;tradeStats;execStats;orderStats;bboStats);tableNames:(((count quoteStats)#enlist quoteTables),((count tradeStats)#enlist tradeTables),((count execStats)#enlist execTables),((count orderStats)#enlist orderTables),((count bboStats)#enlist bboTables)));
+aggregationFunctions,:update tableNames:value each tableNames from .uc.getActiveParamValue[`.daas.cfg.complexAggregationFunctions;`];
+
+/aggregation parse trees used in stats 
+.daas.cfg.aggregationFunctions:(aggregationFunctions`colName)!value each aggregationFunctions`agg;
+/which aggregations are offered on what table
+.daas.cfg.tableFunctionMap:a!{[x;y]exec colName from x where tableNames=y}[tab;] each a:distinct exec tableNames from tab:ungroup select colName,tableNames from aggregationFunctions;
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

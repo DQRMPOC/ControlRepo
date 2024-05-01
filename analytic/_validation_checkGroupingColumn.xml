@@ -1,0 +1,36 @@
+<analytic>
+	<analytic>.validation.checkGroupingColumn</analytic>
+	<code_text>{[config]
+
+	.debug.checkEntityLevel:config;
+    
+	// - Select column values from config update
+	columnColValue:config`column;
+	
+    // - Compare entity levels with columns in order and execution	
+	if[not all configBoolean:columnColValue in validEntityLevels:``disabled,exec distinct column from .tbl.tablecolumn where table in `order`execution;
+            '"Validation Message:  The column value(s): ",(", " sv string columnColValue where not configBoolean)," are not valid."
+	];
+    
+    /at this stage, valid filters detected, so return true
+ 	:1b
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>config</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>DxConfigValidationAnalytics</analyticgroup>
+</analytic>

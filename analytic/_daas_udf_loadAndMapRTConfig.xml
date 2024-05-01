@@ -1,0 +1,29 @@
+<analytic>
+	<analytic>.daas.udf.loadAndMapRTConfig</analytic>
+	<code_text>{[]
+	    .daas.udf.rtConfig:dropped where 0&lt;count each dropped:.daas.udf.checkRTConfigRow each .uc.getActiveParamValue[`.daas.udf.realtimeConfig;`];
+        if[not count .daas.udf.rtConfig;
+            .daas.udf.rtConfig:0#.uc.getActiveParamValue[`.daas.udf.realtimeConfig;`];
+            ];
+        .daas.udf.rtConfig:update dataReq:((),/:value each dataReq),value each dataTabMeta,value each trigCond,value each trigTabMeta from .daas.udf.rtConfig;
+        .daas.udf.rtConfig:update mappedTab:.daas.meta.getSchemaFromArgs[args;;;`getTicks] .'' (dataReq,''dataTabMeta@\:`assetClass) from .daas.udf.rtConfig;
+            
+        .daas.udf.rtConfig:update mappedTab:dataReq from .daas.udf.rtConfig where ` in/: mappedTab;
+        .daas.udf.rtConfig:update mappedTab:dataReq from .daas.udf.rtConfig where (`$())~/: mappedTab;
+    
+        .daas.udf.rtConfig:update mappedTrig:.daas.meta.getSchemaFromArgs[args;;;`getTicks] .' (trigTab,'trigTabMeta@\:`assetClass) from .daas.udf.rtConfig;
+        .daas.udf.rtConfig:update mappedTrig:trigTab from .daas.udf.rtConfig where `= mappedTrig; 
+        .daas.udf.rtConfig
+	}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype></analytictype>
+	<returndescription></returndescription>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

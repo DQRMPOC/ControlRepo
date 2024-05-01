@@ -1,0 +1,35 @@
+<analytic>
+	<analytic>.daas.routing.addRegisteringQPProcess</analytic>
+	<code_text>{[data]
+	if[not .daas.routingGatewayProcs[.ex.getInstanceName[]]`routingTableMaster;
+		:();
+		];
+	QPDict:data`info;
+	
+	
+	`.daas.routingQPs upsert QPDict,(enlist`procUp)!enlist 1b;
+	//update the QR variable
+	.daas.routingQPs:1!(0!.daas.routingQPs)lj `region`env xkey select QR:procName,region,env from .daas.routingGatewayProcs where procType=`qr;
+	
+	
+	.daas.events.pubEventMessage[`QPProcsTableUpdate;`;`;`;.daas.routingQPs];
+  }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>data</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasRouting</analyticgroup>
+</analytic>

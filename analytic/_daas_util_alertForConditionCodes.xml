@@ -1,0 +1,31 @@
+<analytic>
+	<analytic>.daas.util.alertForConditionCodes</analytic>
+	<code_text>{[lookback]
+   
+    alertArgs:(
+        (`trade;`.daas.cfg.filterRuleConfig;`conditions;`tradedExchange);
+        (`quote;`.daas.cfg.quoteFilterRuleConfig;`conditions;`askExchange)
+    );
+    
+   .daas.util.publishConditionCodes[lookback;;;;] ./: alertArgs;
+ 
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>lookback</parameter>
+		<default>00:00:00.000</default>
+		<description>lookback period to search for new cond codes</description>
+		<required>1</required>
+		<datatype>Time</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

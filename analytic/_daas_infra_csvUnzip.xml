@@ -1,0 +1,58 @@
+<analytic>
+	<analytic>.daas.infra.csvUnzip</analytic>
+	<code_text>{[dir;file]
+.log.out[.z.h;"upload of file STARTING ",string[file],".";()];
+.daas.catch1:dir;.daas.catch2:file;
+
+dir:.utils.checkForEnvVar dir;
+filePath:`$"/" sv (string dir; string file);
+rgex:.fd[`fileListConfigName][`value]`fileregex;
+
+/ if the last 3 chars of the file name = ".gz" then use gunzip, else use unzip cmd
+$[".gz" ~ -3#string file;
+	[
+		/ gunzip decompresses the .csv.gz file and then leaves the .csv
+		system "gunzip ", 1_string[filePath];
+		.log.out[.z.h;"File unzipped using gunzip: ";file];
+	];
+	[
+		system "unzip ", 1_string[filePath], " -d ", 1_string[dir],"/";
+		fileregex:first rgex where (`$-4_ string filePath) like ' string rgex;
+		system "mv ",(1_first (1_string fileregex) vs (-4_string filePath)),".csv ",(1_first (1_string fileregex) vs (-4_ string filePath)), (1_string fileregex);
+		.log.out[.z.h;"Renaming file";file];
+		.log.out[.z.h;"upload of file PROCESSING ",string[file],".";()];
+		newFile:string[file],".", raze ":" vs string .z.Z;
+		newPath:"/" sv ( string[dir]; newFile);
+		system "mv ",1_string[filePath] ," ",1_newPath;
+		.log.out[.z.h;"File renamed";newFile];
+		.log.out[.z.h;"upload of file COMPLETED ",string[file],".";()];
+	]
+];
+
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>dir</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>file</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasFilewatcher</analyticgroup>
+</analytic>

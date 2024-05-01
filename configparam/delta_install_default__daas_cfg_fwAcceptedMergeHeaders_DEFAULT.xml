@@ -1,0 +1,46 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.fwAcceptedMergeHeaders</parameter>
+	<description>Configuration parameter containing information on acceptable merge headers for transaction data batch files. If the file contains no merge headers, the first entry per option is the default
+Mode - how the data should be merged into the system, i.e. added to the existing hdb or replacing entire dates
+When - when the data should be merged into the system (eod or immediately)
+Copy - If the data needs to be copied to the a/b side</description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>mode</element>
+		<elementType>Symbol</elementType>
+		<elementValue>add</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>when</element>
+		<elementType>Symbol</elementType>
+		<elementValue>eod</elementValue>
+	</param>
+	<param>
+		<index>0</index>
+		<element>copy</element>
+		<elementType>Symbol</elementType>
+		<elementValue>0</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>mode</element>
+		<elementType>Symbol</elementType>
+		<elementValue>replace</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>when</element>
+		<elementType>Symbol</elementType>
+		<elementValue>immediate</elementValue>
+	</param>
+	<param>
+		<index>1</index>
+		<element>copy</element>
+		<elementType>Symbol</elementType>
+		<elementValue>1</elementValue>
+	</param>
+</configparam>

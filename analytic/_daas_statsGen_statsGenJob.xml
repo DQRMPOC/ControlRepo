@@ -1,0 +1,83 @@
+<analytic>
+	<analytic>.daas.statsGen.statsGenJob</analytic>
+	<code_text>{[statsJob]
+ 		/takes dictionary set, which is row of the statsgen jobs table.
+ 	
+ /For the time being this is just run directly on statsGen process. but it is structured so a slave can just grab the info and run it
+ 	
+ 	
+ 		/unpack "args" in the statsJob to make the .daas.rules format of params
+ 		/translate dataClass into assetClass
+ 		params:(`jobID`slaveNum`region`source`class`dataClass`date`args _statsJob),((enlist`assetClass)!enlist statsJob`dataClass),statsJob`args;
+ 		
+ 		//Addressing issue of duplicate data, and also the fact that we've been generating stats (changing hdb) while hdb still active
+ 		/block hdb
+ 		port:getenv `$string[params[`processName]],"_",(last string .ex.getInstanceName[]),"_PORT";
+ 		host:getenv `$string[params[`processName]],"_",(last string .ex.getInstanceName[]),"_HOST";
+
+ 	/TODO:Add in support for clustered stats hdbs
+ 	/TODO:Add authentication (this won't work if pass proctected hdbs)
+ 	.handles.hdbs:enlist @[hopen;`$":",host,":",port;{.log.out[.z.h;"could not open handle";x];0}];
+	.handles.hdbs: .handles.hdbs except 0;
+	///DO SOMETHING IF CAN'T ESTABLISH CONNECTION TO ALL HDBS
+	if[nohandles:not count .handles.hdbs;
+		.log.out[.z.h;"no hdb handles. Skipping blocking";()];
+		];
+			
+	/block them all
+	if[not nohandles;
+		.log.out[.z.h;"Triggering block on process";params[`processName]];
+		{neg[x]".daas.util.timeoutOff[]"} each .handles.hdbs;
+		.daas.processing.blockHDB[.handles.hdbs];
+		.log.out[.z.h;"All hdbs blocked";()];
+		.handles.blocked:1b;
+		];
+		
+	.log.out[.z.h;"Opened handles";()];
+ 		
+ 		/delete current partition
+ 		.log.out[.z.h;"deleting partition for date";statsJob`date];
+ 		@[{system"rm -rf ",x};(getenv `$-1_4_string statsJob`directoryPath),"/",string statsJob`date;{.log.out[.z.h;"could not delete partition";x]}];
+ 		
+ 		/remove entries from dayStats
+ 		/this is finance specific (ish) now. Just going to find any "*day*" tables and wipe entries.
+ 		b:b where a:(upper b:key `$":",c:getenv `$-1_4_string statsJob`directoryPath)like "*DAY*";
+ 		if[count b;
+ 			.log.out[.z.h;"Wiping date ",string[statsJob[`date]]," for tables ",","sv string b;()];
+ 			@[{[c;s;b] (`$":",d,"/") set .Q.en[`$":",c,"/sym";delete from (get `$":",d:(c,"/"),string b) where time=`timestamp$`date$s`date]}[c;statsJob;];;
+ 				{.log.err[.z.h;"failed wiping day table";x]}] each b;
+ 			];
+ 		
+ 		/generate stats
+ 		/TODO: update subsiquent processing funcs to be config driven and point to any region/source/vendor
+ 		.daas.maint.historicalStatsGeneration[statsJob`date;params;`$statsJob`region];
+ 	
+ 	
+ 	/unblock all with reload
+	if[not nohandles;
+		.log.out[.z.h;"Unblocking all hdbs and calling reload";params[`processName]];	
+		.daas.processing.unlockHDB[.handles.hdbs];
+		.log.out[.z.h;"hdbs unblocked and reloaded";()];
+		.handles.blocked:0b;
+		hclose each .handles.hdbs;	
+		];
+ }</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>statsJob</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUtil</analyticgroup>
+</analytic>

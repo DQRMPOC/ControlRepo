@@ -1,0 +1,36 @@
+<analytic>
+	<analytic>.daas.udf.checkUDFPermissions</analytic>
+	<code_text>{[funcName;user]
+	if[not funcName in exec funcName from .daas.udf.udfFuncStore;
+		'"User Defined Function ",string[funcName]," not found.";
+		];
+		
+ }</code_text>
+	<description>check permissions for a unser and UDF function combination
+
+should throw a descriptive error if the user does not have permission; if they do have permission, return nothing.</description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>funcName</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<param>
+		<parameter>user</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasUDF</analyticgroup>
+</analytic>

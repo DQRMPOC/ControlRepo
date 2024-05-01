@@ -1,0 +1,19 @@
+<workflow>
+<wfName>DAAS_DATA_PROCESSING_B</wfName>
+	<branch>
+		<tName1>daas_processingDaemon_b.1</tName1>
+		<tName2>daas_dataMergeDaemon_b.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+	<branch>
+		<tName1>daas_dataMergeDaemon_b.1</tName1>
+		<tName2>emea_tr_statsGen_b.1</tName2>
+		<fName></fName>
+		<fRes>0</fRes>
+		<fParams>
+		</fParams>
+	</branch>
+</workflow>

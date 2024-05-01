@@ -1,0 +1,72 @@
+<analytic>
+	<analytic>.daas.merge.bootSlave</analytic>
+	<code_text>{[ID]
+		
+	
+	//Port selection
+	//Pre-defined port range
+	ports:value getenv`DAAS_MERGE_PORTSTART;
+	ports+:til value getenv`DAAS_MERGE_SLAVELIMIT;
+	
+	//instantiate process definition dictionary
+	p:(enlist[::]!enlist[::]);
+
+
+
+	//the job/slavenumber is the lowest not in use, assign this in the job queue
+	jobs:til[count ports] except a where not null a:exec slaveID from .daas.merge.mergeJobs;
+	if[not count jobs;
+		.log.out[.z.h;"no slaves left to service jobs, adding to queue";];
+		:();
+		];
+
+	job: first jobs;
+	update state:`initalising,slaveID:job from `.daas.merge.mergeJobs where jobID=ID;
+	.daas.merge.initaliseStatus[ID];
+	
+	//variable for the environment for further setup
+	senv:string[.daas.cfg.env];
+	
+			
+	//Update name and process-specific parameters
+	p,:(((key l)except r)!first each l ((key l)except r)),(r!l r:where (type each l:.ex.getdetails[`$raze "daas_merge_template"]`paramvalues)&lt;&gt;99);
+	p:(enlist[::]!enlist[::]),(`consumerProcesses`fileListConfigName _ 1_p);
+	p[`procName]:`$raze "daas_merge_",string[job],"_",senv;
+	p[`dc_host]:`$getenv `$"daas_processingDaemon_",senv,"_HOST";
+	p[`initialStateFunct]:`.daas.process.init;
+	p[`dc_algroups]:`daasMerge;	
+	p[`procType]:`daas_merge;
+	p[`messagingServer]:((.ex.getdetails[.ex.getInstanceName[`]])[`paramvalues]`messagingServer)`configname;
+	p[`dc_algroups]:l where not null l:(distinct p[`dc_algroups],`daasProcessing`daasPlatform);
+
+	//take minimum port that is not assigned to a job
+	p[`dc_port]:first ports jobs;
+
+	
+	//create and run processes
+	@[.daas.infra.processCreation;1_p;{$[x~"Name already in use";.log.out[.z.h;"Process instance already exists";()];.log.error[.z.h;raze string x;()]]}];
+	{.ex.prh(".ts.runinstance";x;("s"$())!())} p[`procName];
+	
+    .log.out[.z.h;"Instance booted";p[`procName]];	
+	
+	/TODO:run a timer to move job back to the queue if it does not start processing within a few minutes
+}</code_text>
+	<description></description>
+	<dictionaryparams>0</dictionaryparams>
+	<typ>Analytic</typ>
+	<private>0</private>
+	<returntype></returntype>
+	<returndata></returndata>
+	<defaultconnection></defaultconnection>
+	<alias></alias>
+	<analytictype>polling</analytictype>
+	<returndescription></returndescription>
+	<param>
+		<parameter>ID</parameter>
+		<default></default>
+		<description>default parameter</description>
+		<required>1</required>
+		<datatype>Symbol</datatype>
+	</param>
+	<analyticgroup>daasMerge</analyticgroup>
+</analytic>

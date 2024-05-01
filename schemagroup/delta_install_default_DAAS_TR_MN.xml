@@ -1,0 +1,13 @@
+<schemagroup>
+	<ucname>delta_install_default</ucname>
+	<tablegroup>DAAS_TR_MN</tablegroup>
+	<tablename>ConditionalAnalytics</tablename>
+	<tablename>auction</tablename>
+	<tablename>dacsUpdate</tablename>
+	<tablename>mnCanCor</tablename>
+	<tablename>mnOpenClose</tablename>
+	<tablename>mnQuote</tablename>
+	<tablename>mnTrade</tablename>
+	<tablename>respStatus</tablename>
+	<tablename>ricInfo</tablename>
+</schemagroup>

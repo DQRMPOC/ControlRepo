@@ -1,0 +1,13 @@
+<configparam>
+	<ucname>delta_install_default</ucname>
+	<override>DEFAULT</override>
+	<parameter>.daas.cfg.autoHdbCopy</parameter>
+	<description></description>
+	<validationAnalytic></validationAnalytic>
+	<param>
+		<index>0</index>
+		<element>runAtEOD</element>
+		<elementType>Boolean</elementType>
+		<elementValue>false</elementValue>
+	</param>
+</configparam>
